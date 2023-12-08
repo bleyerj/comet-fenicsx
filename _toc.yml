@@ -1,0 +1,10 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: intro/linear_elasticity
+- file: notebooks
+- file: markdown-notebooks
+- file: tips/mass_lumping

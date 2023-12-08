@@ -1,0 +1,67 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Computational Mechanics Numerical Tours with FEniCSx
+author: Jeremy Bleyer
+logo: logo.png
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: cache
+
+  # Set timeout for any example to 20 minutes
+  timeout: 1800
+  
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: book.tex
+
+# Add a bibtex file so that we can create citations
+bibtex_bibfiles:
+  - references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/bleyerj/comet-fenicsx  # Online location of your book
+  path_to_book: docs  # Optional path to your book, relative to the repository root
+  branch: master  # Which branch of the repository should be used when creating links (optional)
+
+# Add GitHub buttons to your book
+# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
+html:
+  use_issues_button: true
+  use_repository_button: true
+  use_edit_page_button: true
+
+  extra_footer: |
+    <div>
+        This webpage is an adaptation of <a href=https://comet-fenics.readthedocs.io>The FEniCS tutorial</a> and
+        is distributed under the terms of the <a href=http://creativecommons.org/licenses/by-sa/4.0/>Creative Commons Attribution-ShareAlike 4.0 International License  </a>
+        which permits use, duplication, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source,
+        provide a link to the Creative Commons license and indicate if changes were made.  If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. 
+    </div>
+
+exclude_patterns: [README.md]
+
+# Sphinx configuration for custom theme
+sphinx:
+  config:
+    html_theme: pydata_sphinx_theme
+    html_show_copyright: false
+
+
+parse:
+  myst_enable_extensions:
+    - "amsmath"
+    - "colon_fence"
+    - "deflist"
+    - "dollarmath"
+    - "html_admonition"
+    - "html_image"
+    - "linkify"
+    - "replacements"
+    - "smartquotes"
+    - "substitution"
+
