@@ -1,0 +1,29 @@
+:root {
+  --my-blue: #003B71; /* Define your custom color value */
+}
+
+html[data-theme="light"] {
+  /* teal in the original theme */
+  --pst-color-primary: var(--my-blue);
+  --pst-color-secondary: #eb6004;
+}
+
+h1 {
+    color: var(--my-blue) !important;
+    font-weight: 700 !important;
+}
+
+h2 {
+    color: var(--my-blue) !important;
+    font-weight: 600 !important;
+}
+
+h3 {
+    color: var(--my-blue) !important;
+    font-weight: 400 !important;
+}
+
+
+.bd-sidebar nav ul.nav a:hover, .bd-sidebar nav ul.nav li.active>a, .bd-sidebar nav ul.nav li.active>a:hover {
+    color: var(--my-blue) !important
+}
