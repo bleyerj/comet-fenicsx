@@ -22,6 +22,8 @@ venv*
 
 # Python #
 ##########
+# track only text representation of notebooks
+*.ipynb 
 *.pyc
 .ipynb_checkpoints
 .pytest_cache

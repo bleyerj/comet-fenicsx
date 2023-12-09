@@ -1,8 +1,8 @@
-# Welcome to these Numerical Tours of Computational Mechanics with FEniCS.
+# Welcome to these Numerical Tours of Computational Mechanics with FEniCSx
 
 ## What is it about ?
 
-These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software FEniCSx. Many covered topics can be considered as standard and will help the reader in getting started with FEniCS using solid mechanics examples.
+These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software `FEniCSx`, http://fenicsproject.org. Many covered topics can be considered as standard and will help the reader in getting started with FEniCS using solid mechanics examples.
 
 Other topics will also be more exploratory and will reflect currently investigated research topics, illustrating the versatility of FEniCS.
 

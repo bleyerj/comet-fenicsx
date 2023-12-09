@@ -14,8 +14,11 @@ jupyter:
 ---
 
 # Linear elasticity
-$$
-\newcommand{\bsig}{\boldsymbol{\sigma}}
+```{admonition} Objectives
+:class: seealso
+
+This demo shows how to define a linear problem, apply boundary conditions, solve for the solution and output to a results file.
+$\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\beps}{\boldsymbol{\varepsilon}}
 \newcommand{\bu}{\boldsymbol{u}}
 \newcommand{\bv}{\boldsymbol{v}}
@@ -23,8 +26,8 @@ $$
 \newcommand{\dOm}{\,\text{d}\Omega}
 \newcommand{\dS}{\,\text{d}S}
 \newcommand{\Neumann}{{\partial \Omega_\text{N}}}
-\newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}
-$$
+\newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}$
+```
 
 ## Variational formulation
 
@@ -137,6 +140,19 @@ L = inner(f, v) * dx
 
 
 We now define boundary conditions. For simplicity, we first fix both the left and right boundaries. To do so, we must locate the corresponding degrees of freedom from a marker function thet returns `True` for points `x` on the boundary and `False` otherwise.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

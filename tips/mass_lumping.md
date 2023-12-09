@@ -1,5 +1,6 @@
 ---
 jupytext:
+  formats: md:myst,ipynb
   text_representation:
     extension: .md
     format_name: myst
@@ -21,9 +22,12 @@ We show how to do this for Lagrange elements using the Gauss-Lobatto-Legendre va
 import numpy as np
 from mpi4py import MPI
 import ufl
+import dolfinx.fem.petsc
 from dolfinx import fem, mesh
 
-domain = mesh.create_unit_square(MPI.COMM_WORLD, 1, 1, cell_type=mesh.CellType.quadrilateral)
+domain = mesh.create_unit_square(
+    MPI.COMM_WORLD, 1, 1, cell_type=mesh.CellType.quadrilateral
+)
 
 for order in range(1, 3):
     V = fem.FunctionSpace(domain, ("CG", order))
@@ -34,7 +38,7 @@ for order in range(1, 3):
     dx_lumped = dx(metadata={"quadrature_rule": "GLL", "quadrature_degree": order})
     mass_form = v * u * dx
     lumped_mass_form = v * u * dx_lumped
-    
+
     M_consistent = fem.assemble_matrix(fem.form(mass_form))
     print(
         "Consistent mass matrix:\n", np.array_str(M_consistent.to_dense(), precision=3)
@@ -47,8 +51,9 @@ for order in range(1, 3):
 For explicit dynamics simulation, the mass matrix can then be manipulated using the diagonal vector, to compute for instance $M^{-1}w$ where $w$ is some Function.
 
 ```{code-cell} ipython3
-M_vect = assemble(mass_action_form)
-w = Function(V1)
-iMw = Function(V1)
-iMw.vector().set_local(w.vector().get_local()/M_vect.get_local())
+mass_diagonal = u * dx_lumped
+M_vect = fem.petsc.assemble_vector(fem.form(mass_diagonal))
+w = fem.Function(V)
+iMw = fem.Function(V)
+iMw.vector.pointwiseDivide(M_vect, w.vector)
 ```

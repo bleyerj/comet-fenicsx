@@ -4,7 +4,10 @@
 format: jb-book
 root: intro
 chapters:
-- file: intro/linear_elasticity
-- file: notebooks
-- file: markdown-notebooks
-- file: tips/mass_lumping
+- file: intro/intro
+  sections:
+  - file: intro/linear_elasticity
+  - file: intro/hyperelasticity
+- file: tips/tips
+  sections:
+  - file: tips/mass_lumping
