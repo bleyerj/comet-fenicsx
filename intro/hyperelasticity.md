@@ -155,6 +155,12 @@ Now, we set up the boundary conditions by first identifying the top and bottom d
 
 
 
+
+
+
+
+
+
 ```python
 def bottom(x):
     return np.isclose(x[2], 0)

@@ -73,6 +73,7 @@ from ufl import sym, grad, Identity, tr, inner, Measure, TestFunction, TrialFunc
 from mpi4py import MPI
 
 from dolfinx import fem, io
+import dolfinx.fem.petsc
 from dolfinx.mesh import create_rectangle, CellType
 
 length, height = 10, 1.0
@@ -145,22 +146,6 @@ We now define boundary conditions. For simplicity, we first fix both the left an
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ```python
 def left(x):
     return np.isclose(x[0], 0)
@@ -180,7 +165,7 @@ bcs = [
 ```
 
 Finally, a `LinearProblem` object is created based on the variational problem, the boundary conditions and a Function `u` in which we want to store the solution. We can also pass parameters to setup he solver type.
-Results are then stored in a ".xdmf" format to be visualized using Paraview for instance.
+Results are then stored in a ".pvd" format to be visualized using Paraview for instance.
 
 ```python
 problem = fem.petsc.LinearProblem(
@@ -188,9 +173,9 @@ problem = fem.petsc.LinearProblem(
 )
 problem.solve()
 
-with io.XDMFFile(domain.comm, "linear_elasticity.xdmf", "w") as xdmf:
-    xdmf.write_mesh(domain)
-    xdmf.write_function(u_sol)
+
+vtk = io.VTKFile(domain.comm, "linear_elasticity.pvd", "w")
+vtk.write_function(u_sol)
 ```
 
 ### Changing boundary conditions
@@ -212,9 +197,9 @@ problem = fem.petsc.LinearProblem(
 )
 problem.solve()
 
-with io.XDMFFile(domain.comm, "linear_elasticity.xdmf", "w") as xdmf:
-    xdmf.write_mesh(domain)
-    xdmf.write_function(u_sol)
+
+vtk = io.VTKFile(domain.comm, "linear_elasticity.pvd", "w")
+vtk.write_function(u_sol)
 ```
 
 ### Exercise : thermal strains
@@ -228,15 +213,14 @@ We consider the presence of thermal strains $\beps^\text{th} = \alpha \Delta T(\
 * Change the definition of the stress-strain relation and compute the corresponding linear and bilinear form.
 * Solve the problem with only the left boundary being fixed.
 
-> **Hint**: You can use the UFL functions `ufl.lhs`/`ufl.rhs` to extract the bilinear form (lhs), resp. the linear form (rhs), of a UFL expression containing both bilinear and linear forms.
+```{admonition} Hint
+:class: tip
+
+You can use the UFL functions `ufl.lhs`/`ufl.rhs` to extract the bilinear form (lhs), resp. the linear form (rhs), of a UFL expression containing both bilinear and linear forms.
 
 ```python
 from ufl import lhs, rhs, SpatialCoordinate
 
 alp = fem.Constant(domain, 1e-5)
 x = SpatialCoordinate(domain)
-```
-
-```python
-
 ```

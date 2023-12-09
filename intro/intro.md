@@ -6,5 +6,7 @@ This section contains a set of short numerical tours to get introduced to `FEniC
 For another general introduction to `FEniCSx`, we heavily recommand to follow the "official" [FEniCSx tutorial](https://jsdokken.com/dolfinx-tutorial/index.html) by Jørgen S. Dokken.
 ```
 
+## Contents
+
 ```{tableofcontents}
 ```

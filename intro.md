@@ -7,9 +7,9 @@ These numerical tours will introduce you to a wide variety of topics in computat
 Other topics will also be more exploratory and will reflect currently investigated research topics, illustrating the versatility of FEniCS.
 
 This book is organized in the following different parts:
-* [Introduction](intro) is a set of short numerical tours to get introduced to FEniCSx, covering a simple linear elasticity problem, a non-linear elasticity problem and a multi-field plate problem
-* [Tours](tours) is the main body of this book and contains a many numerical tours covering a large range of various topics of interest in computational mechanics
-* [Tips & Tricks](tips) contains different code snippets which can be useful in various occasions
+* [Introduction](intro/intro) is a set of short numerical tours to get introduced to FEniCSx, covering a simple linear elasticity problem, a non-linear elasticity problem and a multi-field plate problem
+* [Tours](tours/tours) is the main body of this book and contains a many numerical tours covering a large range of various topics of interest in computational mechanics
+* [Tips & Tricks](tips/tips) contains different code snippets which can be useful in various occasions
 
 ```{tableofcontents}
 ```
