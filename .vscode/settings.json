@@ -1,0 +1,10 @@
+{
+    "command-runner.commands": {
+
+
+
+        
+        "sync, build and preview Jupyter book": "jupytext --update --to notebook */*.md && jupytext --to myst --pipe black */*.ipynb && jupyter-book build . && firefox _build/html/index.html &",
+        "execute notebooks": "jupytext --to notebook --execute */*.md",
+    }
+}
