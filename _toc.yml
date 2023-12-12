@@ -7,13 +7,15 @@ title: My alternate page title
 parts:
 - caption: Introduction
   chapters:
-  - file: intro/linear_elasticity
-  - file: intro/hyperelasticity
+  - file: intro/linear_elasticity.md
+  - file: intro/hyperelasticity.md
+  - file: intro/plates.md
 - caption: Tours
   chapters:
   - file: tours/linear_problems/contents
     sections:
-    - file: tours/linear_problems/linear_elasticity
+    - file: tours/linear_problems/linear_elasticity.md
 - caption: Tips and tricks
   chapters:
-  - file: tips/mass_lumping
+  - file: tips/mark_facets.md
+  - file: tips/mass_lumping.md

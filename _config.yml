@@ -3,8 +3,7 @@
 
 title: Computational Mechanics Numerical Tours with FEniCSx
 author: Jeremy Bleyer
-copyright: "2023"
-logo: logo.png
+logo: images/logo.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -55,6 +54,7 @@ sphinx:
     html_theme_options:
       pygment_light_style: "friendly"
       show_navbar_depth: 2
+      home_page_in_toc: true
 
 
 parse:

@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-# Linear elasticity
+# Linear elasticity {far}`star`
 ```{admonition} Objectives
 :class: seealso
 
@@ -139,41 +139,7 @@ a = inner(sigma(u), epsilon(v)) * dx
 L = inner(f, v) * dx
 ```
 
-
 We now define boundary conditions. For simplicity, we first fix both the left and right boundaries. To do so, we must locate the corresponding degrees of freedom from a marker function thet returns `True` for points `x` on the boundary and `False` otherwise.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ```python
