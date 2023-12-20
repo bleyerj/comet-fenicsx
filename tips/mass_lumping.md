@@ -30,7 +30,7 @@ domain = mesh.create_unit_square(
 )
 
 for order in range(1, 3):
-    V = fem.FunctionSpace(domain, ("CG", order))
+    V = fem.FunctionSpace(domain, ("P", order))
     v = ufl.TestFunction(V)
     u = ufl.TrialFunction(V)
 

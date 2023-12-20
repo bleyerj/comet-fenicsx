@@ -1,4 +1,5 @@
 {
+    "python.terminal.executeInFileDir": false,
     "command-runner.commands": {
 
 

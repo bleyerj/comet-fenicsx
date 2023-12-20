@@ -14,8 +14,9 @@ parts:
   chapters:
   - file: tours/linear_problems/contents
     sections:
-    - file: tours/linear_problems/linear_elasticity.md
+    - file: tours/linear_problems/isotropic_orthotropic_elasticity.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets.md
+  - file: tips/import_msh.md
   - file: tips/mass_lumping.md

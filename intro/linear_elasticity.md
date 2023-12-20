@@ -34,17 +34,17 @@ Solving PDEs with FEniCSx requires to formulate the problem in *weak* or *variat
 
 In the context of solid mechanics, the variational formulation within a small strain setting reads as:
 > Find $\bu \in V$ such that:
-> \begin{equation}
+> \begin{equation*}
 \int_\Omega \bsig(\bu):\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
-\end{equation}
+\end{equation*}
 
 where $\bu$ is the unknown displacement (the *trial* function) living in the space of admissible displacements $V$ such that $\bu=\bu_0$ on the Dirichlet boundary $\Dirichlet$. $\boldsymbol{f}$ and $\bT$ are respectively body and surface traction forces. $\sigma(\bu)$ is the Cauchy stress field which depends on the displacement $\bu$. Finally, $\bv$ denotes *test* functions living in the space of admissible perturbations $V_0$ i.e. such that $\bv=0$ on $\Dirichlet$.
 
 The above variational formulation represents the weak form of equilibrium and must be supplemented by a constitutive relation. In the linear elastic case, we have $\bsig(\bu) = \mathbb{C}:\nabla^s \bu$ so that the above variational formulation reads:
 > Find $\bu \in V$ such that:
-> \begin{equation}
+> \begin{equation*}
 \int_\Omega \nabla^\text{s}\bu:\mathbb{C}:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
-\end{equation}
+\end{equation*}
 
 The left-hand side is a *bilinear form* of $\bu$ and $\bv$ whereas the right-hand side is a *linear form*. The above equality is generally written as $a(\bu,\bv) = L(\bv)\quad \forall \bv \in V_0$.
 
@@ -88,11 +88,14 @@ dim = domain.topology.dim
 print(f"Mesh topology dimension d={dim}.")
 ```
 
-Next, we define the finite-element `FunctionSpace` for our wanted solution `u_sol`. Here, we use a vector function space of "CG" (Continuous Galerkin), which implies standard Lagrange elements of degree `deg=2` here. (Note that the keyword "Lagrange" also works instead of "CG").
+Next, we define the finite-element `FunctionSpace` for our wanted solution `u_sol`. Here, we use a vector function space of type `"P"` (Polynomial), which implies standard Lagrange elements of degree `deg=2` here.
+```{note}
+The keyword `"Lagrange"` also works instead of `"P"`. You may also find in some older demos the keyword `"CG"` (Continuous Galerkin) which is now deprected.
+```
 
 ```{code-cell} ipython3
 degree = 2
-V = fem.VectorFunctionSpace(domain, ("CG", degree))
+V = fem.VectorFunctionSpace(domain, ("P", degree))
 
 u_sol = fem.Function(V, name="Displacement")
 ```
