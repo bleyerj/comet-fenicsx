@@ -47,6 +47,7 @@ exclude_patterns: [README.md]
 # Sphinx configuration for custom theme
 sphinx:
   config:
+    bibtex_reference_style: author_year
     html_theme: sphinx_book_theme
     html_show_copyright: false
     html_static_path: ["_static"]
@@ -55,7 +56,6 @@ sphinx:
       pygment_light_style: "friendly"
       show_navbar_depth: 2
       home_page_in_toc: true
-
 
 parse:
   myst_enable_extensions:

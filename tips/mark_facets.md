@@ -14,7 +14,7 @@ kernelspec:
 
 # Marking facets with geometrical functions
 
-We provide here a utility function to tag some facets of a mesh by providing geometrical locator functions
+We provide here a utility function to tag some facets of a mesh by providing geometrical marker functions
 
 ```{code-cell} ipython3
 from mpi4py import MPI
@@ -23,14 +23,14 @@ from dolfinx import mesh
 
 
 def mark_facets(domain, surfaces_dict):
-    """Mark facets of the domain according to geometrical location
+    """Mark facets of the domain according to a geometrical marker
 
     Parameters
     ----------
     domain : Mesh
         `dolfinx` mesh object
     surfaces_dict : dict
-        A dictionary mapping integer tags with geometrical location function {tag: locator(x)}
+        A dictionary mapping integer tags with a geometrical marker function {tag: marker(x)}
 
     Returns
     -------
@@ -78,4 +78,60 @@ def top(x):
 
 facets = mark_facets(domain, {1: bottom, 2: right, 3: top, 4: left})
 print(facets.values)
+```
+
+Note that we can also adapt the function to mark entities of specified dimension i.e. subdomains if `dim=tdim`, facets if `dim=tdim-1`, etc. where `tdim` is the domain topological dimension.
+
+```{code-cell} ipython3
+def mark_entities(domain, dim, entities_dict):
+    """Mark entities of specified dimension according to a geometrical marker function
+
+    Parameters
+    ----------
+    domain : Mesh
+        `dolfinx` mesh object
+    dim : int
+        Dimension of the entities to mark
+    entities_dict : dict
+        A dictionary mapping integer tags with a geometrical marker function {tag: marker(x)}
+
+    Returns
+    -------
+    entities_tag array
+    """
+    marked_values = []
+    marked_entities = []
+    # number of non-ghosted entities
+    num_entities_local = domain.topology.index_map(dim).size_local
+    # Concatenate and sort the arrays based on indices
+    for tag, location in entities_dict.items():
+        entities = mesh.locate_entities(domain, dim, location)
+        entities = entities[entities < num_entities_local]  # remove ghost entities
+        marked_entities.append(entities)
+        marked_values.append(np.full_like(entities, tag))
+    marked_entities = np.hstack(marked_entities)
+    marked_values = np.hstack(marked_values)
+    sorted_entities = np.argsort(marked_entities)
+    entities_tags = mesh.meshtags(
+        domain, dim, marked_entities[sorted_entities], marked_values[sorted_entities]
+    )
+    return entities_tags
+
+
+def half_left(x):
+    return x[0] <= 0.5
+
+
+def half_right(x):
+    return x[0] >= 0.5
+
+
+tdim = domain.topology.dim
+cell_markers = mark_entities(domain, tdim, {1: half_left, 2: half_right})
+print(cell_markers.values)
+```
+
+```{warning}
+
+When calling `mesh.locate_entities` for a cell or a facet, the geometrical marker function gets evaluated for all vertices of the cell/facet. The marker must therefore evaluate to `True` for all vertices to properly identify the entity.
 ```
