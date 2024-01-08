@@ -1,4 +1,17 @@
+<h1 style="text-align: center;" class="ignore-toc"> Numerical Tours of Computational Mechanics with FEniCSx</h1>
+<h3 style="text-align: center;" class="ignore-toc"> Jeremy Bleyer</h3>
+
+$\,$
+
+```{image} images/logo.png
+:width: 800px
+:align: center
+```
+
+$\,$
+
 # Welcome
+
 
 ## What is it about ?
 
@@ -44,7 +57,7 @@ This part provides code snippets for various small tasks frequently encountered 
 <img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_32x32.png" width="16" height="16" />
  0000-0001-8212-9921
 </a>
-
+$\,$
 ```{image} images/banner_tutelles.png
 :class: bg-primary mb-1
 :width: 600px

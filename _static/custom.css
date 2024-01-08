@@ -21,6 +21,12 @@ html[data-theme="light"] {
   --pst-color-secondary: #eb6004;
 }
 
+html[data-theme="dark"] {
+  /* teal in the original theme */
+  --pst-color-primary: #eb6004;
+  --pst-color-secondary: var(--my-blue);
+}
+
 h1 {
     color: var(--my-blue) !important;
     font-weight: 700 !important;
