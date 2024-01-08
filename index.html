@@ -36,9 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="_static/orginal.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="_static/orginal.css" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
@@ -67,6 +65,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -182,6 +182,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/thermoelasticity_transient.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
@@ -358,7 +359,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="welcome">
+  <h1 style="text-align: center;" class="ignore-toc"> Numerical Tours of Computational Mechanics with FEniCSx</h1>
+<h3 style="text-align: center;" class="ignore-toc"> Jérémy Bleyer</h3>
+<p><span class="math notranslate nohighlight">\(\,\)</span></p>
+<a class="reference internal image-reference" href="_images/logo.png"><img alt="_images/logo.png" class="align-center" src="_images/logo.png" style="width: 800px;" /></a>
+<p><span class="math notranslate nohighlight">\(\,\)</span></p>
+<section class="tex2jax_ignore mathjax_ignore" id="welcome">
 <h1>Welcome<a class="headerlink" href="#welcome" title="Permalink to this heading">#</a></h1>
 <section id="what-is-it-about">
 <h2>What is it about ?<a class="headerlink" href="#what-is-it-about" title="Permalink to this heading">#</a></h2>
@@ -402,7 +408,12 @@ Other topics will also be more advanced and exploratory and will reflect current
 <img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_32x32.png" width="16" height="16" />
  0000-0001-8212-9921
 </a>
-<a class="bg-primary mb-1 reference internal image-reference" href="_images/banner_tutelles.png"><img alt="_images/banner_tutelles.png" class="bg-primary mb-1 align-center" src="_images/banner_tutelles.png" style="width: 600px;" /></a>
+$\,$
+```{image} images/banner_tutelles.png
+:class: bg-primary mb-1
+:width: 600px
+:align: center
+```
 </section>
 <div class="toctree-wrapper compound">
 </div>

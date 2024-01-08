@@ -36,9 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/orginal.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/orginal.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
@@ -72,7 +70,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/linear_problems/isotropic_orthotropic_elasticity';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Thermo-elastic evolution problem (full coupling)" href="thermoelasticity_transient.html" />
+    <link rel="next" title="Axisymmetric formulation for elastic structures of revolution" href="axisymmetric_elasticity.html" />
     <link rel="prev" title="Linear problems" href="contents.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -185,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="thermoelasticity_transient.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
@@ -394,8 +393,8 @@ document.write(`
 <h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Permalink to this heading">#</a></h2>
 <p>We first recall that the variational formulation associated to the linear elastic case reads:</p>
 <p>Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a1af4bb4-89e3-40b8-ac45-5f6e1fa353e7">
-<span class="eqno">(6)<a class="headerlink" href="#equation-a1af4bb4-89e3-40b8-ac45-5f6e1fa353e7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-40b8f2cd-6ad2-4e1d-b7b8-0d040e01d017">
+<span class="eqno">(6)<a class="headerlink" href="#equation-40b8f2cd-6ad2-4e1d-b7b8-0d040e01d017" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \int_\Omega \nabla^\text{s}\bu:\CC:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\bv\)</span> is the test function, <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> the body and <span class="math notranslate nohighlight">\(\bT\)</span> the contact forces. <span class="math notranslate nohighlight">\(\CC\)</span> is the fourth-order elastic tensor characterizing the linear elastic behaviour. Introducing the linearized strain tensor field <span class="math notranslate nohighlight">\(\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)\)</span>, it relates the stress <span class="math notranslate nohighlight">\(\bsig\)</span> to the strain <span class="math notranslate nohighlight">\(\beps\)</span> using the linear elastic constitutive relation:</p>
@@ -420,8 +419,8 @@ Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:<
 \bsig = \bsig_0 + \CC:\beps
 \end{equation*}\]</div>
 <p>The constant part <span class="math notranslate nohighlight">\(\bsig_0\)</span> will therefore contribute to the right-hand side of the linear variational problem <a class="reference internal" href="#equation-bilinear">(8)</a> which now becomes:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-04d78fc2-4c59-465f-862a-e9df73a37717">
-<span class="eqno">(9)<a class="headerlink" href="#equation-04d78fc2-4c59-465f-862a-e9df73a37717" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8485454e-607a-48c7-ac73-040638e86767">
+<span class="eqno">(9)<a class="headerlink" href="#equation-8485454e-607a-48c7-ac73-040638e86767" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \int_\Omega \beps[\bu]:\CC:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS -\int_\Omega \bsig_0:\beps[\bv] \dOm \quad \forall \bv \in V_0
 \end{equation}\]</div>
 </div>
@@ -1388,11 +1387,11 @@ the linear form now contains a Neumann term corresponding to a uniform vertical 
       </div>
     </a>
     <a class="right-next"
-       href="thermoelasticity_transient.html"
+       href="axisymmetric_elasticity.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></p>
+        <p class="prev-next-title">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

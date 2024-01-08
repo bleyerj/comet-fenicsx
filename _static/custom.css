@@ -26,6 +26,7 @@ html[data-theme="dark"] {
   --pst-color-primary: #eb6004;
   --pst-color-secondary: var(--my-blue);
 }
+
 h1 {
     color: var(--my-blue) !important;
     font-weight: 700 !important;

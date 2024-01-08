@@ -36,9 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/orginal.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/orginal.css" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
     <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
@@ -185,6 +183,7 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tours/linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_transient.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
@@ -602,8 +601,8 @@ Results are then stored in a “.pvd” format to be visualized using Paraview f
 <section id="exercise-thermal-strains">
 <h3>Exercise : thermal strains<a class="headerlink" href="#exercise-thermal-strains" title="Permalink to this heading">#</a></h3>
 <p>We consider the presence of thermal strains <span class="math notranslate nohighlight">\(\beps^\text{th} = \alpha \Delta T(\boldsymbol{x}) \boldsymbol{I}\)</span> where <span class="math notranslate nohighlight">\(\Delta T(\boldsymbol{x})\)</span> varies linearly from 0 to +20° between the bottom and top face of the beam. The stress-strain consitutive relation is now:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c0b24632-ad15-4454-85b4-89addbbc9394">
-<span class="eqno">(1)<a class="headerlink" href="#equation-c0b24632-ad15-4454-85b4-89addbbc9394" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c431b631-54b5-4eb0-bcf8-57be1e863fc5">
+<span class="eqno">(1)<a class="headerlink" href="#equation-c431b631-54b5-4eb0-bcf8-57be1e863fc5" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \bsig(\bu) = \mathbb{C}:(\beps(\bu) - \beps^\text{th})
 \end{equation}\]</div>
 <ul class="simple">
