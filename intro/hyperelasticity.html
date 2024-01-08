@@ -385,16 +385,16 @@ document.write(`
 <p>Weak equilibrium reads here:</p>
 <blockquote>
 <div><p>Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-493445f7-5fba-48b9-8b91-700e0a87c959">
-<span class="eqno">(2)<a class="headerlink" href="#equation-493445f7-5fba-48b9-8b91-700e0a87c959" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6807bb14-b467-4e7b-aecd-fe3bc796a099">
+<span class="eqno">(2)<a class="headerlink" href="#equation-6807bb14-b467-4e7b-aecd-fe3bc796a099" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \int_\Omega \bP(\bu):\nabla \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
 \end{equation}\]</div>
 </div></blockquote>
 <p>where <span class="math notranslate nohighlight">\(\bP(\bu)\)</span> denotes the first Piola-Kirchhoff (PK1) stress.</p>
 <p>Moreover, in the case of a hyperelastic material, the constitutive relation derives from a free-energy potential <span class="math notranslate nohighlight">\(\psi(\bF)\)</span> depending on the deformation gradient <span class="math notranslate nohighlight">\(\bF = \bI + \nabla \bu\)</span>. The above non-linear variational equation corresponds in fact to the first-order optimality condition of the following minimum principle:</p>
 <blockquote>
-<div><div class="amsmath math notranslate nohighlight" id="equation-53639d16-a38c-4c7d-9fc4-ff9bf29e1e5a">
-<span class="eqno">(3)<a class="headerlink" href="#equation-53639d16-a38c-4c7d-9fc4-ff9bf29e1e5a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div><div class="amsmath math notranslate nohighlight" id="equation-4a543cf8-a1a7-41cf-9e55-751dff8465dd">
+<span class="eqno">(3)<a class="headerlink" href="#equation-4a543cf8-a1a7-41cf-9e55-751dff8465dd" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \min_{\bu\in V} \int_\Omega \psi(\bF) \dOm - \int_\Omega \boldsymbol{f}\cdot\bu \dOm - \int_\Neumann \bT\cdot\bu \dS
 \end{equation}\]</div>
 </div></blockquote>
@@ -403,8 +403,8 @@ document.write(`
 <section id="problem-position">
 <h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
 <p>We consider a cyclinder of square cross-section which is fixed at its bottom face and to which we impose a rigid rotation of the top face of angle <span class="math notranslate nohighlight">\(\theta\)</span> around the vertical axis. We start first with a simple compressible neo-Hookean model given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-804e14d0-325c-4fb3-8877-1c4a1f2dc2d7">
-<span class="eqno">(4)<a class="headerlink" href="#equation-804e14d0-325c-4fb3-8877-1c4a1f2dc2d7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fc0adf80-8d94-41d6-a36f-5e41a2c6b222">
+<span class="eqno">(4)<a class="headerlink" href="#equation-fc0adf80-8d94-41d6-a36f-5e41a2c6b222" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \psi(\bF) = \dfrac{\mu}{2}\left(I_1-3-2\ln J\right) + \dfrac{\lambda}{2}(J-1)^2
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(I_1 = \tr(\bC) = \tr(\bF\T\bF)\)</span> and <span class="math notranslate nohighlight">\(J = \det\bF\)</span>.</p>
@@ -648,8 +648,8 @@ Time step 12, Number of iterations 6, Angle 312 deg.
 <section id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <p>Change the hyperelasticity model to another version of a compressible neo-Hookean model:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-01b07d89-9544-47d7-942e-e5f7c01b74dd">
-<span class="eqno">(5)<a class="headerlink" href="#equation-01b07d89-9544-47d7-942e-e5f7c01b74dd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3bd36a79-bb4b-47e2-ac0b-dfbde651d814">
+<span class="eqno">(5)<a class="headerlink" href="#equation-3bd36a79-bb4b-47e2-ac0b-dfbde651d814" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \psi(\bF) = \dfrac{\mu}{2}(\overline{I}_1-3) + \left(\dfrac{\mu}{12}+\dfrac{\lambda}{8}\right)\left(J^2 + J^{-2}-2 \right)
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\overline{I}_1 = \tr(\overline{\bC})\)</span> with <span class="math notranslate nohighlight">\(\overline{\bC} = J^{-2/3}\bC\)</span>.</p>
