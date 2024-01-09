@@ -15,7 +15,7 @@ kernelspec:
 # Isotropic and orthotropic plane stress elasticity {far}`star`
 
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 This demo shows how to define a linear elastic problem with an isotropic and orthotropic material in plane stress conditions. It also shows how to use the `Gmsh` Python API to define a 2D perforated plate domain.
 $\newcommand{\bsig}{\boldsymbol{\sigma}}
@@ -34,7 +34,7 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 ```
 
 ```{seealso}
-The [linear elasticity introduction tour](/intro/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
+The [Linear Elasticity introduction tour](/intro/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
 ```
 
 ## Variational formulation

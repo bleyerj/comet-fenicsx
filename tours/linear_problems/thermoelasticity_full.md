@@ -14,13 +14,32 @@ kernelspec:
 
 # Thermo-elastic evolution problem (full coupling) {far}`star`{far}`star`
 
+```{admonition} Objectives
+:class: objectives
+
+This demo shows how to solve a transient thermoelastic evolution problem in which both thermo-mechanical fields are fully coupled.
+$\newcommand{\bsig}{\boldsymbol{\sigma}}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bT}{\boldsymbol{T}}
+\newcommand{\bI}{\boldsymbol{I}}
+\newcommand{\T}{^\text{T}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\dOm}{\,\text{d}\Omega}
+\newcommand{\dS}{\,\text{d}S}
+\newcommand{\Neumann}{{\partial \Omega_\text{N}}}
+\newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}$
+```
+
 ## Introduction
 
-In this tour, we will solve a transient thermoelastic evolution problem in which both thermo-mechanical fields are fully coupled, we will however assume that the evolution is quasi-static and will hence neglect inertial effects. Note that a staggered approach could also have been adopted in which one field is calculated first (say the temperature for instance) using predicted values of the other field and similarly for the other field in a second step (see for instance {cite:p}`farhat1991unconditionally`).
+We will assume that the evolution is quasi-static and will hence neglect inertial effects. Note that a staggered approach could also have been adopted in which one field is calculated first (say the temperature for instance) using predicted values of the other field and similarly for the other field in a second step (see for instance {cite:p}`farhat1991unconditionally`).
 
 ```{seealso}
 
-Static elastic computation with thermal strains is treated in the :ref:`LinearThermoelasticity` tour.
+Static elastic computation with thermal strains is treated in the [](/tours/linear_problems/thermoelasticity_weak.md) tour.
 ```
 
 ## Problem position
@@ -179,23 +198,25 @@ with $V_T$ being the FunctionSpace for the temperature field.
 
 The time derivatives are now replaced by an implicit Euler scheme, so that the previous weak form at the time increment $n+1$ is now:
 
-$$
-\int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T \qquad (1)
-$$
+```{math}
+:label: thermoelastic-thermal
+
+\int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T 
+```
 
 where $T$ and $\boldsymbol{\varepsilon}$ correspond to the *unknown* fields at the time increment $n+1$. For more details on the time discretization of the heat equation, see also the [Heat equation FEniCS tutorial](https://fenicsproject.org/pub/tutorial/html/._ftut1006.html).
 
 In addition to the previous thermal weak form, the mechanical weak form reads as:
 
-$$
-\int_{\Omega} \left(\lambda\text{tr}(\boldsymbol{\varepsilon})\boldsymbol{1}+2\mu\boldsymbol{\varepsilon} -\kappa(T-T_0)\boldsymbol{1}\right) :\nabla^s\widehat{\boldsymbol{v}}\text{ d} \Omega = W_{ext}(\widehat{\boldsymbol{v}}) \quad \forall \widehat{\boldsymbol{v}}\in V_U \qquad (2)
-$$
+```{math}
+:label: thermoelastic-mechanical
+
+\int_{\Omega} \left(\lambda\text{tr}(\boldsymbol{\varepsilon})\boldsymbol{1}+2\mu\boldsymbol{\varepsilon} -\kappa(T-T_0)\boldsymbol{1}\right) :\nabla^s\widehat{\boldsymbol{v}}\text{ d} \Omega = W_{ext}(\widehat{\boldsymbol{v}}) \quad \forall \widehat{\boldsymbol{v}}\in V_U 
+```
 
 where $V_U$ is the displacement FunctionSpace and $W_{ext}$ the linear functional corresponding to the work of external forces.
 
-The solution of the coupled problem at $t=t_{n+1}$ is now $(\boldsymbol{u}_{n+1},T_{n+1})=(\boldsymbol{u},T)\in V_U\times V_T$ verifying $(1)$ and $(2)$. These two forms are implemented below with zero right-hand sides (zero Neumann BCs for both problems here). One slight modification is that the temperature unknown $T$ is replaced by the temperature variation $\Theta=T-T_0$ which appears naturally in the stress constitutive relation.
-
-> **Note**: We will later make use of the `lhs` and `rhs` functions to extract the corresponding bilinear and linear forms.
+The solution of the coupled problem at $t=t_{n+1}$ is now $(\boldsymbol{u}_{n+1},T_{n+1})=(\boldsymbol{u},T)\in V_U\times V_T$ verifying {eq}`thermoelastic-thermal` and {eq}`thermoelastic-mechanical`. These two forms are implemented below with zero right-hand sides (zero Neumann BCs for both problems here). One slight modification is that the temperature unknown $T$ is replaced by the temperature variation $\Theta=T-T_0$ which appears naturally in the stress constitutive relation. Note that we use here a `NonlinearProblem` to be more general.
 
 ```{code-cell} ipython3
 v = fem.Function(V)

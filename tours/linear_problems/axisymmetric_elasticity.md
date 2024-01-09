@@ -15,7 +15,7 @@ kernelspec:
 # Axisymmetric formulation for elastic structures of revolution {far}`star`
 
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 This demo shows how to formulate a linear elastic problem under axisymmetric conditions.
 $\newcommand{\bsig}{\boldsymbol{\sigma}}
