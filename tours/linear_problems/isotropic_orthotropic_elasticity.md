@@ -293,12 +293,11 @@ from dolfinx import plot, fem
 
 pyvista.set_jupyter_backend("static")
 
-V0 = fem.functionspace(domain, ("P", 1))
-cells, types, x = plot.vtk_mesh(V0)
-grid = pyvista.UnstructuredGrid(cells, types, x)
+topology, cell_types, geometry = plot.vtk_mesh(domain, gdim)
+grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+
 # Create plotter and pyvista grid
 p = pyvista.Plotter()
-
 p.add_mesh(grid, show_edges=True)
 p.view_xy()
 p.show_axes()

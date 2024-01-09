@@ -62,7 +62,6 @@ $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat
 \text{ where}\quad \textsf{F} &= \dfrac{5}{6}\dfrac{E h}{2(1+\nu)}
 \end{align*}
 
-+++
 
 ## Implementation
 

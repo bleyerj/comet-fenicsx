@@ -43,3 +43,22 @@ print(f"Expected length = {4*L:.3f}   Computed length = {length_1:.3f}")
 length_2 = fem.assemble_scalar(fem.form(1.0 * ds(20)))
 print(f"Expected length = {2*np.pi*R:.3f}   Computed length = {length_2:.3f}")
 ```
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+import pyvista
+from dolfinx import plot
+
+pyvista.set_jupyter_backend("static")
+
+topology, cell_types, geometry = plot.vtk_mesh(domain, 2)
+grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+
+# Create plotter and pyvista grid
+p = pyvista.Plotter()
+p.add_mesh(grid, show_edges=True)
+p.view_xy()
+p.show_axes()
+p.show()
+```
