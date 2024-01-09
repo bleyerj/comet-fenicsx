@@ -209,9 +209,9 @@ vtk.write_function(u_sol)
 ### Exercise : thermal strains
 
 We consider the presence of thermal strains $\beps^\text{th} = \alpha \Delta T(\boldsymbol{x}) \boldsymbol{I}$ where $\Delta T(\boldsymbol{x})$ varies linearly from 0 to +20° between the bottom and top face of the beam. The stress-strain constitutive relation is now:
-\begin{equation}
+\begin{equation*}
 \bsig(\bu) = \mathbb{C}:(\beps(\bu) - \beps^\text{th})
-\end{equation}
+\end{equation*}
 
 * Implement a spatially dependent expression for $\Delta T$ using `x = ufl.SpatialCoordinate(domain)` for the position vector `x`.
 * Change the definition of the stress-strain relation and compute the corresponding linear and bilinear form.

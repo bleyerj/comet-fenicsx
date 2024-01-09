@@ -116,17 +116,17 @@ gmsh.finalize()
 
 For axisymmetric conditions, the unknown displacement field is of the form:
 
-$$\begin{equation}
+$$
 \boldsymbol{u} = u_r(r,z)\boldsymbol{e}_r + u_z(r,z)\boldsymbol{e}_z
-\end{equation}$$
+$$
 
 As a result, we will work with a standard vectorial function space of dimension 2 for discretizing $u_r$ and $u_z$ respectively. The associated strain components are however given by:
 
-$$\begin{equation}
+$$
 \boldsymbol{\varepsilon} = \begin{bmatrix} \partial_r u_r & 0 & (\partial_z u_r + \partial_r u_z)/2 \\ 
 0 & u_r/r & 0 \\
 (\partial_z u_r + \partial_r u_z)/2 & 0 & \partial_z u_z\end{bmatrix}_{(\boldsymbol{e}_r,\boldsymbol{e}_\theta,\boldsymbol{e}_z)}
-\end{equation}$$
+$$
 
 The previous relation involves explicitly the radial variable $r$, which can be obtained from the `ufl.SpatialCoordinate` `x[0]`, the strain-displacement relation is then defined explicitly in the `eps` function.
 
@@ -158,21 +158,21 @@ def sigma(v):
 
 The rest of the formulation is similar to the 2D elastic case with a small difference in the integration measure. Indeed, the virtual work principle reads as:
 
-$$\begin{equation}
+$$
  \text{Find } \boldsymbol{u}\in V \text{ s.t. } \int_{\Omega}
  \boldsymbol{\sigma}(\boldsymbol{u}):\boldsymbol{\varepsilon}(\boldsymbol{v}) \dOm
  = \int_{\Neumann} \boldsymbol{T}\cdot\boldsymbol{v} \dS \quad \forall\boldsymbol{v} \in V
- \end{equation}$$
+ $$
  
 where $\boldsymbol{T}$ is the imposed traction on some part $\Neumann$ of the domain boundary.
 
 In axisymmetric conditions, the full 3D domain $\Omega$ can be decomposed as $\Omega = \omega \times [0;2\pi]$ where the interval represents the $\theta$ variable. The integration measures therefore reduce to $\dOm = \dom\cdot(r\,\text{d}\theta)$ and $\dS = \ds\cdot(r\,\text{d}\theta)$ where $dS$ is the surface integration measure on the 3D domain $\Omega$ and $ds$ its counterpart on the cross-section boundary $\partial \omega$. Exploiting the invariance of all fields with respect to $\theta$, the previous virtual work principle is reformulated on the cross-section only as follows:
 
-$$\begin{equation}
+$$
  \text{Find } \boldsymbol{u}\in V \text{ s.t. } \int_{\omega}
  \boldsymbol{\sigma}(\boldsymbol{u}):\boldsymbol{\varepsilon}(\boldsymbol{v}) r \dom
  = \int_{\neumann} \boldsymbol{T}\cdot\boldsymbol{v}  r\ds \quad \forall\boldsymbol{v} \in V
- \end{equation}$$
+ $$
  
 where the $2\pi$ constants arising from the integration on $\theta$ have been cancelled on both sides. As a result, the bilinear and linear form are similar to the plane 2D case with the exception of the additional $r$ term in the integration measures.
 
