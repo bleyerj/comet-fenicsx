@@ -15,28 +15,37 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-tdim = domain.topology.dim
-cell_markers = mark_entities(
-    domain, tdim, {1: inclusions, 2: lambda x: np.logical_not(inclusions(x))}
-)
+import pyvista
+from dolfinx import plot
 
-k = create_piecewise_constant_field(domain, cell_markers, {1: 1.0, 2: 10.0})
-xdofs = k.function_space().tabulate_dofs_coordinates()
-plt.scatter(*xdofs, k.vector.array)
-plt.show()
+pyvista.set_jupyter_backend("static")
+
+topology, cell_types, geometry = plot.vtk_mesh(domain, 2)
+grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+grid.cell_data["k"] = k.x.array
+grid.set_active_scalar("k")
+# Create plotter and pyvista grid
+p = pyvista.Plotter()
+p.add_mesh(grid, show_edges=True)
+p.view_xy()
+p.show_axes()
+p.show()
 ------------------
 
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mTypeError[0m                                 Traceback (most recent call last)
-Cell [0;32mIn[4], line 7[0m
-[1;32m      2[0m cell_markers [38;5;241m=[39m mark_entities(
-[1;32m      3[0m     domain, tdim, {[38;5;241m1[39m: inclusions, [38;5;241m2[39m: [38;5;28;01mlambda[39;00m x: np[38;5;241m.[39mlogical_not(inclusions(x))}
-[1;32m      4[0m )
-[1;32m      6[0m k [38;5;241m=[39m create_piecewise_constant_field(domain, cell_markers, {[38;5;241m1[39m: [38;5;241m1.0[39m, [38;5;241m2[39m: [38;5;241m10.0[39m})
-[0;32m----> 7[0m xdofs [38;5;241m=[39m [43mk[49m[38;5;241;43m.[39;49m[43mfunction_space[49m[43m([49m[43m)[49m[38;5;241m.[39mtabulate_dofs_coordinates()
-[1;32m      8[0m plt[38;5;241m.[39mscatter([38;5;241m*[39mxdofs, k[38;5;241m.[39mvector[38;5;241m.[39marray)
-[1;32m      9[0m plt[38;5;241m.[39mshow()
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[5], line 9[0m
+[1;32m      7[0m grid [38;5;241m=[39m pyvista[38;5;241m.[39mUnstructuredGrid(topology, cell_types, geometry)
+[1;32m      8[0m grid[38;5;241m.[39mcell_data[[38;5;124m"[39m[38;5;124mk[39m[38;5;124m"[39m] [38;5;241m=[39m k[38;5;241m.[39mx[38;5;241m.[39marray
+[0;32m----> 9[0m [43mgrid[49m[38;5;241;43m.[39;49m[43mset_active_scalar[49m([38;5;124m"[39m[38;5;124mk[39m[38;5;124m"[39m)
+[1;32m     10[0m [38;5;66;03m# Create plotter and pyvista grid[39;00m
+[1;32m     11[0m p [38;5;241m=[39m pyvista[38;5;241m.[39mPlotter()
 
-[0;31mTypeError[0m: 'FunctionSpaceBase' object is not callable
+File [0;32m~/.local/lib/python3.10/site-packages/pyvista/core/dataset.py:150[0m, in [0;36mDataSet.__getattr__[0;34m(self, item)[0m
+[1;32m    148[0m [38;5;28;01mdef[39;00m [38;5;21m__getattr__[39m([38;5;28mself[39m, item) [38;5;241m-[39m[38;5;241m>[39m Any:
+[1;32m    149[0m [38;5;250m    [39m[38;5;124;03m"""Get attribute from base class if not found."""[39;00m
+[0;32m--> 150[0m     [38;5;28;01mreturn[39;00m [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__getattribute__[39;49m[43m([49m[43mitem[49m[43m)[49m
+
+[0;31mAttributeError[0m: 'UnstructuredGrid' object has no attribute 'set_active_scalar'
 

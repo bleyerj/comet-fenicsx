@@ -195,6 +195,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../tips/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tips/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tips/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tips/quadrature_schemes.html">Quadrature schemes</a></li>
 </ul>
 
     </div>
@@ -406,10 +407,10 @@ document.write(`
 <p>The above variational formulation can therefore be rewritten as:
 Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
 <div class="math notranslate nohighlight" id="equation-weak-form">
-<span class="eqno">(3)<a class="headerlink" href="#equation-weak-form" title="Permalink to this equation">#</a></span>\[\int_\Omega \bsig[\bu]:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-weak-form" title="Permalink to this equation">#</a></span>\[\int_\Omega \bsig[\bu]:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0\]</div>
 <p>The above problem is a linear variational problem since <span class="math notranslate nohighlight">\(\bsig\)</span> depends linearly upon the unknown field <span class="math notranslate nohighlight">\(\bu\)</span>. It can be formally written as:</p>
 <div class="math notranslate nohighlight" id="equation-bilinear">
-<span class="eqno">(4)<a class="headerlink" href="#equation-bilinear" title="Permalink to this equation">#</a></span>\[a(\bu,\bv)=L(\bv) \quad \forall \bv \in V_0\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-bilinear" title="Permalink to this equation">#</a></span>\[a(\bu,\bv)=L(\bv) \quad \forall \bv \in V_0\]</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>In some cases, one may want to consider a non-zero initial stress state <span class="math notranslate nohighlight">\(\bsig_0\)</span> associated with the reference undeformed configuration. In this case, the stress/strain relation is written as:</p>
@@ -417,7 +418,7 @@ Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:<
 \[\begin{equation*}
 \bsig = \bsig_0 + \CC:\beps
 \end{equation*}\]</div>
-<p>The constant part <span class="math notranslate nohighlight">\(\bsig_0\)</span> will therefore contribute to the right-hand side of the linear variational problem <a class="reference internal" href="#equation-bilinear">(4)</a> which now becomes:</p>
+<p>The constant part <span class="math notranslate nohighlight">\(\bsig_0\)</span> will therefore contribute to the right-hand side of the linear variational problem <a class="reference internal" href="#equation-bilinear">(3)</a> which now becomes:</p>
 <div class="math notranslate nohighlight">
 \[
 \int_\Omega \beps[\bu]:\CC:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS -\int_\Omega \bsig_0:\beps[\bv] \dOm \quad \forall \bv \in V_0
@@ -427,10 +428,10 @@ Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:<
 <h3>Constitutive relation<a class="headerlink" href="#constitutive-relation" title="Permalink to this heading">#</a></h3>
 <p>In practice for a concrete implementation, the formal stress/strain relation  <span class="math notranslate nohighlight">\(\bsig = \CC:\beps\)</span> can be defined either using intrinsic tensorial or using instead engineering (vectorial) notation. For instance, the isotropic linear elastic case reads in tensorial notation:</p>
 <div class="math notranslate nohighlight" id="equation-isotropic">
-<span class="eqno">(5)<a class="headerlink" href="#equation-isotropic" title="Permalink to this equation">#</a></span>\[\bsig = \lambda \tr(\beps)\bI + 2\mu\beps\]</div>
+<span class="eqno">(4)<a class="headerlink" href="#equation-isotropic" title="Permalink to this equation">#</a></span>\[\bsig = \lambda \tr(\beps)\bI + 2\mu\beps\]</div>
 <p>in 3D and 2D plane strain conditions. The relation can also be inverted as follows:</p>
 <div class="math notranslate nohighlight" id="equation-isotropic-compliance">
-<span class="eqno">(6)<a class="headerlink" href="#equation-isotropic-compliance" title="Permalink to this equation">#</a></span>\[\beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1}{E}\bsig\]</div>
+<span class="eqno">(5)<a class="headerlink" href="#equation-isotropic-compliance" title="Permalink to this equation">#</a></span>\[\beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1}{E}\bsig\]</div>
 <p>On the other hand, the engineering notation represents the tensor as a list of its Cartesian components using either the Voigt convention:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -494,7 +495,7 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 </div>
 <section id="isotropic-plane-strain-case">
 <h4>Isotropic plane strain case<a class="headerlink" href="#isotropic-plane-strain-case" title="Permalink to this heading">#</a></h4>
-<p>In the isotropic case the elastic stiffness matrix associated with <a class="reference internal" href="#equation-isotropic">(5)</a> becomes:</p>
+<p>In the isotropic case the elastic stiffness matrix associated with <a class="reference internal" href="#equation-isotropic">(4)</a> becomes:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 [\mathbf{C}] = \begin{bmatrix}
@@ -506,9 +507,9 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 </section>
 <section id="isotropic-plane-stress-case">
 <h4>Isotropic plane stress case<a class="headerlink" href="#isotropic-plane-stress-case" title="Permalink to this heading">#</a></h4>
-<p>In the plane stress case, an out-of-plane strain component <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span> must be considered so that <span class="math notranslate nohighlight">\(\sigma_{zz}=0\)</span>. Using this condition in the 3D constitutive relation <a class="reference internal" href="#equation-isotropic-compliance">(6)</a>, one has <span class="math notranslate nohighlight">\(\varepsilon_{zz}=-\frac{\nu}{E}(\sigma_{xx}+\sigma_{yy})\)</span>. The resulting plane-stress compliance matrix therefore reads:</p>
+<p>In the plane stress case, an out-of-plane strain component <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span> must be considered so that <span class="math notranslate nohighlight">\(\sigma_{zz}=0\)</span>. Using this condition in the 3D constitutive relation <a class="reference internal" href="#equation-isotropic-compliance">(5)</a>, one has <span class="math notranslate nohighlight">\(\varepsilon_{zz}=-\frac{\nu}{E}(\sigma_{xx}+\sigma_{yy})\)</span>. The resulting plane-stress compliance matrix therefore reads:</p>
 <div class="math notranslate nohighlight" id="equation-compliance-plane-stress">
-<span class="eqno">(7)<a class="headerlink" href="#equation-compliance-plane-stress" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E &amp; -\nu/E &amp; 0\\
+<span class="eqno">(6)<a class="headerlink" href="#equation-compliance-plane-stress" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E &amp; -\nu/E &amp; 0\\
    -\nu/E &amp; 1/E &amp; 0 \\ 0 &amp; 0 &amp; 1/\mu \end{bmatrix}\end{split}\]</div>
 <p>This relation needs to be inverted to obtain the corresponding stiffness matrix <span class="math notranslate nohighlight">\(\mathbf{C}=\mathbf{S}^{-1}\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -519,9 +520,9 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 </section>
 <section id="orthotropic-plane-stress-case">
 <h4>Orthotropic plane stress case<a class="headerlink" href="#orthotropic-plane-stress-case" title="Permalink to this heading">#</a></h4>
-<p>In the plane-stress orthotropic case, we assume that the 2D material possesses 2 planes of symmetry corresponding to the global <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> directions. Adapting the plane-stress compliance matrix <a class="reference internal" href="#equation-compliance-plane-stress">(7)</a> to the orthotropic case yields:</p>
+<p>In the plane-stress orthotropic case, we assume that the 2D material possesses 2 planes of symmetry corresponding to the global <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> directions. Adapting the plane-stress compliance matrix <a class="reference internal" href="#equation-compliance-plane-stress">(6)</a> to the orthotropic case yields:</p>
 <div class="math notranslate nohighlight" id="equation-compliance-plane-stress-orthotropic">
-<span class="eqno">(8)<a class="headerlink" href="#equation-compliance-plane-stress-orthotropic" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E_x &amp; -\nu_{xy}/E_x &amp; 0\\
+<span class="eqno">(7)<a class="headerlink" href="#equation-compliance-plane-stress-orthotropic" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E_x &amp; -\nu_{xy}/E_x &amp; 0\\
    -\nu_{yx}/E_y &amp; 1/E_y &amp; 0 \\ 0 &amp; 0 &amp; 1/G_{xy} \end{bmatrix}\end{split}\]</div>
 <p>with <span class="math notranslate nohighlight">\(E_x, E_y\)</span> being the two Young’s moduli in the orthotropy directions, <span class="math notranslate nohighlight">\(\nu_{xy}\)</span> the in-plane Poisson ration (with the following relation ensuring the constitutive relation symmetry <span class="math notranslate nohighlight">\(\nu_{yx}=\nu_{xy}E_y/E_x\)</span>) and <span class="math notranslate nohighlight">\(G_{xy}\)</span> being the shear modulus. Again, this relation needs to be inverted to obtain the stiffness matrix.</p>
 <div class="cell docutils container">
@@ -635,10 +636,10 @@ Info    : [ 20%] Meshing curve 2 (Line)
 Info    : [ 40%] Meshing curve 3 (Line)
 Info    : [ 60%] Meshing curve 4 (Line)
 Info    : [ 80%] Meshing curve 5 (Line)
-Info    : Done meshing 1D (Wall 0.000473228s, CPU 0.000689s)
+Info    : Done meshing 1D (Wall 0.000512085s, CPU 0s)
 Info    : Meshing 2D...
 Info    : Meshing surface 1 (Plane, Frontal-Delaunay)
-Info    : Done meshing 2D (Wall 0.0903831s, CPU 0.083288s)
+Info    : Done meshing 2D (Wall 0.0930255s, CPU 0.087135s)
 Info    : 3010 nodes 6023 elements
 </pre></div>
 </div>
@@ -656,12 +657,11 @@ Info    : 3010 nodes 6023 elements
 
 <span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
 
-<span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">cells</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">V0</span><span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="n">topology</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">gdim</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">topology</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+
 <span class="c1"># Create plotter and pyvista grid</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-
 <span class="n">p</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">p</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
 <span class="n">p</span><span class="o">.</span><span class="n">show_axes</span><span class="p">()</span>
@@ -674,7 +674,7 @@ Info    : 3010 nodes 6023 elements
 <img alt="../../_images/40038fe084927bc51bca8a8fa5491402d15b40a7a8a6a0f4b654793a74dfe113.png" src="../../_images/40038fe084927bc51bca8a8fa5491402d15b40a7a8a6a0f4b654793a74dfe113.png" />
 </div>
 </div>
-<p>We are now in position to define the variational form which is given by <a class="reference internal" href="#equation-weak-form">(3)</a>,
+<p>We are now in position to define the variational form which is given by <a class="reference internal" href="#equation-weak-form">(2)</a>,
 the linear form now contains a Neumann term corresponding to a uniform vertical traction <span class="math notranslate nohighlight">\(T\)</span> on the right and top boundaries (tag <code class="docutils literal notranslate"><span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">3</span></code> respectively). On boundaries <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">4</span></code>, we respectively impose symmetry boundary conditions: <span class="math notranslate nohighlight">\(u_y=0\)</span> and <span class="math notranslate nohighlight">\(u_x=0\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

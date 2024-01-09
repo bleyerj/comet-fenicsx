@@ -70,6 +70,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'tips/mass_lumping';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quadrature schemes" href="quadrature_schemes.html" />
     <link rel="prev" title="Create a piecewise constant field for spatially varying properties" href="piecewise_constant_field.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -194,6 +195,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quadrature_schemes.html">Quadrature schemes</a></li>
 </ul>
 
     </div>
@@ -347,7 +349,7 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="lumping-a-mass-matrix">
 <h1>Lumping a mass matrix<a class="headerlink" href="#lumping-a-mass-matrix" title="Permalink to this heading">#</a></h1>
 <p>Explicit dynamics simulations require the usage of lumped mass matrices i.e. diagonal mass matrices for which inversion can be done explicitly.</p>
-<p>We show how to do this for Lagrange elements using the Gauss-Lobatto-Legendre variant. For the high order case in wave propagation, this setting defines the so-called <em>spectral element method</em>.</p>
+<p>We show how to do this for Lagrange elements using the Gauss-Lobatto-Legendre quadrature rule, see also the <a class="reference internal" href="quadrature_schemes.html"><span class="doc std std-doc">Quadrature schemes</span></a> tour. For the high order case in wave propagation, this setting defines the so-called <em>spectral element method</em>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -381,14 +383,6 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don&#39;t enable unless really needed).
-hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don&#39;t enable unless really needed).
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Consistent mass matrix:
  [[0.111 0.056 0.056 0.028]
  [0.056 0.111 0.028 0.056]
@@ -426,7 +420,7 @@ Lumped mass matrix:
 <p>For explicit dynamics simulation, the mass matrix can then be manipulated using the diagonal vector, to compute for instance <span class="math notranslate nohighlight">\(M^{-1}w\)</span> where <span class="math notranslate nohighlight">\(w\)</span> is some Function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mass_diagonal</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">dx_lumped</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mass_diagonal</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">dx_lumped</span>  <span class="c1"># defines a linear form corresponding to the diagonal</span>
 <span class="n">M_vect</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">mass_diagonal</span><span class="p">))</span>
 <span class="n">w</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">iMw</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
@@ -475,6 +469,15 @@ Lumped mass matrix:
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">Create a piecewise constant field for spatially varying properties</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="quadrature_schemes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Quadrature schemes</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>

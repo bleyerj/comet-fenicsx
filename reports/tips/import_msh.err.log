@@ -15,58 +15,31 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-from mpi4py import MPI
-from dolfinx import io
-import ufl
+import pyvista
+from dolfinx import plot
 
-domain, markers, facets = io.gmshio.read_from_msh("generated_mesh.msh", MPI.COMM_WORLD)
+pyvista.set_jupyter_backend("static")
 
-dx = ufl.Measure("dx", domain=domain, subdomain_data=markers)
-ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
+topology, cell_types, geometry = plot.vtk_mesh(domain, gdim)
+grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
 
-vol = fem.assemble_scalar(fem.form(1.0 * dx))
-print("Total volume = {vol}")
+# Create plotter and pyvista grid
+p = pyvista.Plotter()
+p.add_mesh(grid, show_edges=True)
+p.view_xy()
+p.show_axes()
+p.show()
 ------------------
 
------ stderr -----
-hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don't enable unless really needed).
-hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don't enable unless really needed).
------ stderr -----
-Error   : Unable to open file 'generated_mesh.msh'
-------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mException[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_14471/3544667698.py[0m in [0;36m?[0;34m()[0m
-[1;32m      1[0m [0;32mfrom[0m [0mmpi4py[0m [0;32mimport[0m [0mMPI[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      2[0m [0;32mfrom[0m [0mdolfinx[0m [0;32mimport[0m [0mio[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      3[0m [0;32mimport[0m [0mufl[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      4[0m [0;34m[0m[0m
-[0;32m----> 5[0;31m [0mdomain[0m[0;34m,[0m [0mmarkers[0m[0;34m,[0m [0mfacets[0m [0;34m=[0m [0mio[0m[0;34m.[0m[0mgmshio[0m[0;34m.[0m[0mread_from_msh[0m[0;34m([0m[0;34m"generated_mesh.msh"[0m[0;34m,[0m [0mMPI[0m[0;34m.[0m[0mCOMM_WORLD[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      6[0m [0;34m[0m[0m
-[1;32m      7[0m [0mdx[0m [0;34m=[0m [0mufl[0m[0;34m.[0m[0mMeasure[0m[0;34m([0m[0;34m"dx"[0m[0;34m,[0m [0mdomain[0m[0;34m=[0m[0mdomain[0m[0;34m,[0m [0msubdomain_data[0m[0;34m=[0m[0mmarkers[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      8[0m [0mds[0m [0;34m=[0m [0mufl[0m[0;34m.[0m[0mMeasure[0m[0;34m([0m[0;34m"ds"[0m[0;34m,[0m [0mdomain[0m[0;34m=[0m[0mdomain[0m[0;34m,[0m [0msubdomain_data[0m[0;34m=[0m[0mfacets[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[2], line 6[0m
+[1;32m      2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdolfinx[39;00m [38;5;28;01mimport[39;00m plot
+[1;32m      4[0m pyvista[38;5;241m.[39mset_jupyter_backend([38;5;124m"[39m[38;5;124mstatic[39m[38;5;124m"[39m)
+[0;32m----> 6[0m topology, cell_types, geometry [38;5;241m=[39m plot[38;5;241m.[39mvtk_mesh(domain, [43mgdim[49m)
+[1;32m      7[0m grid [38;5;241m=[39m pyvista[38;5;241m.[39mUnstructuredGrid(topology, cell_types, geometry)
+[1;32m      9[0m [38;5;66;03m# Create plotter and pyvista grid[39;00m
 
-[0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/io/gmshio.py[0m in [0;36m?[0;34m(filename, comm, rank, gdim, partitioner)[0m
-[1;32m    327[0m [0;34m[0m[0m
-[1;32m    328[0m     [0;32mif[0m [0mcomm[0m[0;34m.[0m[0mrank[0m [0;34m==[0m [0mrank[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    329[0m         [0mgmsh[0m[0;34m.[0m[0minitialize[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    330[0m         [0mgmsh[0m[0;34m.[0m[0mmodel[0m[0;34m.[0m[0madd[0m[0;34m([0m[0;34m"Mesh from file"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 331[0;31m         [0mgmsh[0m[0;34m.[0m[0mmerge[0m[0;34m([0m[0mfilename[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m    332[0m         [0mmsh[0m [0;34m=[0m [0mmodel_to_mesh[0m[0;34m([0m[0mgmsh[0m[0;34m.[0m[0mmodel[0m[0;34m,[0m [0mcomm[0m[0;34m,[0m [0mrank[0m[0;34m,[0m [0mgdim[0m[0;34m=[0m[0mgdim[0m[0;34m,[0m [0mpartitioner[0m[0;34m=[0m[0mpartitioner[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    333[0m         [0mgmsh[0m[0;34m.[0m[0mfinalize[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    334[0m         [0;32mreturn[0m [0mmsh[0m[0;34m[0m[0;34m[0m[0m
-
-[0;32m/usr/local/gmsh-4.11.1-Linux64-sdk/lib/gmsh.py[0m in [0;36m?[0;34m(fileName)[0m
-[1;32m    350[0m     lib.gmshMerge(
-[1;32m    351[0m         [0mc_char_p[0m[0;34m([0m[0mfileName[0m[0;34m.[0m[0mencode[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
-[1;32m    352[0m         byref(ierr))
-[1;32m    353[0m     [0;32mif[0m [0mierr[0m[0;34m.[0m[0mvalue[0m [0;34m!=[0m [0;36m0[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m--> 354[0;31m         [0;32mraise[0m [0mException[0m[0;34m([0m[0mlogger[0m[0;34m.[0m[0mgetLastError[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;31mException[0m: Unable to open file 'generated_mesh.msh'
+[0;31mNameError[0m: name 'gdim' is not defined
 

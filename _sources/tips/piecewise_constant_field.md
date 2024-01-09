@@ -47,17 +47,20 @@ def create_piecewise_constant_field(domain, cell_markers, property_dict, name=No
     return k
 ```
 
-For instance, we first create a square mesh with a central region:
+For instance, we first create a square mesh and define a geometric marker marking a square strip of inner radius `a` and outer radius `b`:
 
 ```{code-cell} ipython3
-N = 8
+N = 40
 domain = mesh.create_unit_square(
     MPI.COMM_WORLD, N, N, cell_type=mesh.CellType.quadrilateral
 )
 
 
-def inclusions(x):
-    return np.logical_and(np.abs(x[0] - 0.5) <= 0.25, np.abs(x[1] - 0.5) <= 0.25)
+def strip(x, a, b, eps=1e-8):
+    return np.logical_and(
+        np.logical_and(np.abs(x[0] - 0.5) <= b + eps, np.abs(x[1] - 0.5) <= b + eps),
+        np.logical_or(np.abs(x[0] - 0.5) >= a - eps, np.abs(x[1] - 0.5) >= a - eps),
+    )
 ```
 
 We then use the function `mark_entities` introduced in [](/tips/mark_facets) to mark the corresponding cells and create a piecewise constant field.
@@ -102,12 +105,38 @@ def mark_entities(domain, dim, entities_dict):
 
 ```{code-cell} ipython3
 tdim = domain.topology.dim
-cell_markers = mark_entities(domain, tdim, {1: inclusions})
-k = create_piecewise_constant_field(domain, cell_markers, {0: 1.0, 1: 2.0})
-xdofs = k.function_space.tabulate_dof_coordinates()
+cell_markers = mark_entities(
+    domain,
+    tdim,
+    {
+        0: lambda x: strip(x, 0, 0.1),
+        1: lambda x: strip(x, 0.1, 0.2),
+        2: lambda x: strip(x, 0.2, 0.3),
+        3: lambda x: strip(x, 0.3, 0.4),
+        4: lambda x: strip(x, 0.4, 0.5),
+    },
+)
+func = create_piecewise_constant_field(
+    domain, cell_markers, {k: float(k) for k in range(5)}
+)
+```
 
-plt.scatter(xdofs[:, 0], xdofs[:, 1], c=k.vector.array, cmap="bwr")
-plt.colorbar()
-plt.gca().set_aspect("equal")
-plt.show()
+```{code-cell} ipython3
+:tags: [hide-input]
+
+import pyvista
+from dolfinx import plot
+
+pyvista.set_jupyter_backend("static")
+
+topology, cell_types, geometry = plot.vtk_mesh(domain, 2)
+grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+grid.cell_data["func"] = func.x.array
+grid.set_active_scalars("func")
+# Create plotter and pyvista grid
+p = pyvista.Plotter()
+p.add_mesh(grid, show_edges=True, cmap="bwr")
+p.view_xy()
+p.show_axes()
+p.show()
 ```

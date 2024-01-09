@@ -1,0 +1,783 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Quadrature schemes &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tips/quadrature_schemes';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Lumping a mass matrix" href="mass_lumping.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../intro/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tours/linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Quadrature schemes</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tips/quadrature_schemes.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Quadrature schemes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-quadrature-rule">2D Quadrature rule</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-quadrature-rule">Default quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-jacobi-quadrature-rule">Gauss-Jacobi quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-legendre-lobatto-quadrature-rule">Gauss-Legendre-Lobatto quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xiao-gimbutas-quadrature-rule">Xiao-Gimbutas quadrature rule</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rules">3D rules</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Default quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Gauss-Jacobi quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Gauss-Legendre-Lobatto quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Xiao-Gimbutas quadrature rule</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="quadrature-schemes">
+<h1>Quadrature schemes<a class="headerlink" href="#quadrature-schemes" title="Permalink to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This code snippet shows the location of the quadrature points for different degrees, cell types and quadrature rules both in 2D and 3D.</p>
+</div>
+<section id="d-quadrature-rule">
+<h2>2D Quadrature rule<a class="headerlink" href="#d-quadrature-rule" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">basix</span>
+<span class="kn">from</span> <span class="nn">basix</span> <span class="kn">import</span> <span class="n">CellType</span><span class="p">,</span> <span class="n">QuadratureType</span>
+
+<span class="n">all_cell_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">,</span> <span class="n">CellType</span><span class="o">.</span><span class="n">quadrilateral</span><span class="p">]</span>
+<span class="n">degrees</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">quad_rules</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gauss_jacobi</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gll</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">quadrilateral</span><span class="p">]),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">xiao_gimbutas</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">]),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_quad_points_2D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="n">points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">make_quadrature</span><span class="p">(</span><span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">cell_type</span><span class="p">)</span>
+    <span class="n">facets</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">sub_entity_connectivity</span><span class="p">(</span><span class="n">cell_type</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">facets</span><span class="p">:</span>
+        <span class="n">vert</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">:]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">vert</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">vert</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">500</span> <span class="o">*</span> <span class="n">weights</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">):</span>
+    <span class="n">degs</span><span class="p">,</span> <span class="n">cell_types</span> <span class="o">=</span> <span class="n">quad_rules</span><span class="p">[</span><span class="n">rule</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="n">degs</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cell_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell_types</span><span class="p">):</span>
+            <span class="n">no_subplot</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cell_types</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">no_subplot</span><span class="p">:</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+            <span class="n">plot_quad_points_2D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">no_subplot</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> rule, degree $d=</span><span class="si">{</span><span class="n">deg</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> rule, degree $d=</span><span class="si">{</span><span class="n">deg</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="default-quadrature-rule">
+<h3>Default quadrature rule<a class="headerlink" href="#default-quadrature-rule" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/064e5c6de4433a93f8b5479698fd5e0b42ed768e216eee836ab619ad703a9520.png" src="../_images/064e5c6de4433a93f8b5479698fd5e0b42ed768e216eee836ab619ad703a9520.png" />
+<img alt="../_images/f8de37a42bef53d5c4556b505748abc31983c78a01c1479d839ff616233bfe66.png" src="../_images/f8de37a42bef53d5c4556b505748abc31983c78a01c1479d839ff616233bfe66.png" />
+<img alt="../_images/f3a6f13dcee8956761eff7f377996f2c919550d5fcb797b2aef5ad96ee6de08c.png" src="../_images/f3a6f13dcee8956761eff7f377996f2c919550d5fcb797b2aef5ad96ee6de08c.png" />
+<img alt="../_images/54f9eea056c82f56ce384c9293022fc657801fd4086bfb30b838983f2f3686bc.png" src="../_images/54f9eea056c82f56ce384c9293022fc657801fd4086bfb30b838983f2f3686bc.png" />
+<img alt="../_images/01d733e4a87b01c8c85567344fa04bd99250a7eac997ae5a9fd3b118b4c34fb0.png" src="../_images/01d733e4a87b01c8c85567344fa04bd99250a7eac997ae5a9fd3b118b4c34fb0.png" />
+</div>
+</div>
+</section>
+<section id="gauss-jacobi-quadrature-rule">
+<h3>Gauss-Jacobi quadrature rule<a class="headerlink" href="#gauss-jacobi-quadrature-rule" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">gauss_jacobi</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/30646ca55f413a0a813a964e2a764e58cabce834dc6935c5377f43ea5699fd22.png" src="../_images/30646ca55f413a0a813a964e2a764e58cabce834dc6935c5377f43ea5699fd22.png" />
+<img alt="../_images/ccede05713e61c4724de8abfb812fdcef5bcb1cc9dae995bbca2ea46813cb206.png" src="../_images/ccede05713e61c4724de8abfb812fdcef5bcb1cc9dae995bbca2ea46813cb206.png" />
+<img alt="../_images/dc5b7b2b41d652d2e3ad695ec31f628326c426ac4c4541a27d79450551de8bba.png" src="../_images/dc5b7b2b41d652d2e3ad695ec31f628326c426ac4c4541a27d79450551de8bba.png" />
+<img alt="../_images/53717bfbc9fd930b029a4e009450d396f56c6568e8a98a0ddd3b32377f816bf6.png" src="../_images/53717bfbc9fd930b029a4e009450d396f56c6568e8a98a0ddd3b32377f816bf6.png" />
+<img alt="../_images/332cd028a9b286d589b702ef85cb3cee7c8434390b66720e765551f786e13f1d.png" src="../_images/332cd028a9b286d589b702ef85cb3cee7c8434390b66720e765551f786e13f1d.png" />
+</div>
+</div>
+</section>
+<section id="gauss-legendre-lobatto-quadrature-rule">
+<h3>Gauss-Legendre-Lobatto quadrature rule<a class="headerlink" href="#gauss-legendre-lobatto-quadrature-rule" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">gll</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/47dbc89b62ab09fad1074bf1cdeb6935bda1617a66766ecbaf31bc760120c249.png" src="../_images/47dbc89b62ab09fad1074bf1cdeb6935bda1617a66766ecbaf31bc760120c249.png" />
+<img alt="../_images/b52e61254a53bca538f073a8ce6e68f79bd181288df5020508eb0f3f10af4061.png" src="../_images/b52e61254a53bca538f073a8ce6e68f79bd181288df5020508eb0f3f10af4061.png" />
+<img alt="../_images/f7d0f78cf0bd7e51cb827e41d9dae557f1a72681b0ef516341b386db3db845c4.png" src="../_images/f7d0f78cf0bd7e51cb827e41d9dae557f1a72681b0ef516341b386db3db845c4.png" />
+<img alt="../_images/43277bca59421bf5fb013439a4bd7653d07fddf2f37947f118639327da5fc434.png" src="../_images/43277bca59421bf5fb013439a4bd7653d07fddf2f37947f118639327da5fc434.png" />
+<img alt="../_images/4633240ed9137a98a0e6cdeb53f0f61dfd45325612de55507297ba42411e23fe.png" src="../_images/4633240ed9137a98a0e6cdeb53f0f61dfd45325612de55507297ba42411e23fe.png" />
+</div>
+</div>
+</section>
+<section id="xiao-gimbutas-quadrature-rule">
+<h3>Xiao-Gimbutas quadrature rule<a class="headerlink" href="#xiao-gimbutas-quadrature-rule" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">xiao_gimbutas</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0748265640402881deb0ec5fe064fb9da7a3d2ef5faa610b63ad682e62149d77.png" src="../_images/0748265640402881deb0ec5fe064fb9da7a3d2ef5faa610b63ad682e62149d77.png" />
+<img alt="../_images/e7b43eda8aa616dad0e1bf0ef96af4f5396c0cf85c342f7ce5c1409e0d6e22be.png" src="../_images/e7b43eda8aa616dad0e1bf0ef96af4f5396c0cf85c342f7ce5c1409e0d6e22be.png" />
+<img alt="../_images/b8deb39e2d85375e4958b01c2c7c4c22e4c86929047c2ca97bf3765c2e09ea4c.png" src="../_images/b8deb39e2d85375e4958b01c2c7c4c22e4c86929047c2ca97bf3765c2e09ea4c.png" />
+<img alt="../_images/c1a47491071f98c598cfc4297df6ad184c08844a5cee792851237be3a76866ef.png" src="../_images/c1a47491071f98c598cfc4297df6ad184c08844a5cee792851237be3a76866ef.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="d-rules">
+<h2>3D rules<a class="headerlink" href="#d-rules" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cell_type</span> <span class="o">=</span> <span class="n">CellType</span><span class="o">.</span><span class="n">hexahedron</span>
+<span class="n">dim</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">deg</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">cpp</span><span class="p">,</span> <span class="n">mesh</span>
+<span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">to_hex</span>
+
+<span class="n">pv</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+
+<span class="n">all_cell_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">tetrahedron</span><span class="p">,</span> <span class="n">CellType</span><span class="o">.</span><span class="n">hexahedron</span><span class="p">]</span>
+<span class="n">degrees</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">quad_rules</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gauss_jacobi</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gll</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">hexahedron</span><span class="p">]),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">xiao_gimbutas</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">tetrahedron</span><span class="p">]),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_quad_points_3D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">plotter</span><span class="p">):</span>
+    <span class="n">points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">make_quadrature</span><span class="p">(</span><span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">)</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="n">cell_type</span><span class="p">)</span>
+    <span class="n">facets</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">sub_entity_connectivity</span><span class="p">(</span><span class="n">cell_type</span><span class="p">)</span>
+
+    <span class="n">num_nodes_per_cell</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">facets</span><span class="p">[</span><span class="n">dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">subentity_cell_type</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">CellType</span><span class="o">.</span><span class="n">tetrahedron</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">,</span>
+        <span class="n">CellType</span><span class="o">.</span><span class="n">hexahedron</span><span class="p">:</span> <span class="n">mesh</span><span class="o">.</span><span class="n">CellType</span><span class="o">.</span><span class="n">quadrilateral</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">map_vtk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span>
+        <span class="n">cpp</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">perm_vtk</span><span class="p">(</span><span class="n">subentity_cell_type</span><span class="p">[</span><span class="n">cell_type</span><span class="p">],</span> <span class="n">num_nodes_per_cell</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">faces</span> <span class="o">=</span> <span class="p">[[</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">m</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">map_vtk</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">facets</span><span class="p">[</span><span class="n">dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="o">.</span><span class="n">from_regular_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
+
+    <span class="c1"># Add the mesh to the plotter</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">point_cloud</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">point_cloud</span><span class="p">[</span><span class="s2">&quot;weights&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.33</span> <span class="o">*</span> <span class="mf">0.25</span>
+    <span class="n">glyphs</span> <span class="o">=</span> <span class="n">point_cloud</span><span class="o">.</span><span class="n">glyph</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="s2">&quot;weights&quot;</span><span class="p">,</span> <span class="n">geom</span><span class="o">=</span><span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(),</span> <span class="n">orient</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">glyphs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">to_hex</span><span class="p">(</span><span class="n">color</span><span class="p">))</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">azimuth</span> <span class="o">=</span> <span class="mf">10.0</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">elevation</span> <span class="o">=</span> <span class="o">-</span><span class="mf">30.0</span>
+
+
+<span class="k">def</span> <span class="nf">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">):</span>
+    <span class="n">degs</span><span class="p">,</span> <span class="n">cell_types</span> <span class="o">=</span> <span class="n">quad_rules</span><span class="p">[</span><span class="n">rule</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">deg</span> <span class="ow">in</span> <span class="n">degs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cell_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cell_types</span><span class="p">):</span>
+            <span class="n">no_subplot</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cell_types</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span>
+            <span class="c1"># Create a PyVista plotter</span>
+            <span class="k">if</span> <span class="n">no_subplot</span><span class="p">:</span>
+                <span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+                <span class="n">plotter</span><span class="o">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+                <span class="n">plotter</span><span class="o">.</span><span class="n">add_title</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> rule, degree d=</span><span class="si">{</span><span class="n">deg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+                    <span class="n">plotter</span><span class="o">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+                <span class="n">plotter</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                <span class="n">plotter</span><span class="o">.</span><span class="n">add_title</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> rule, degree d=</span><span class="si">{</span><span class="n">deg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+            <span class="n">plot_quad_points_3D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">plotter</span><span class="p">)</span>
+
+        <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="id1">
+<h3>Default quadrature rule<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span> <span class="s2">&quot;C3&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/471439399ca59dbe88288abcc9c3c9114e35c57c9b251417324dad162402cc41.png" src="../_images/471439399ca59dbe88288abcc9c3c9114e35c57c9b251417324dad162402cc41.png" />
+<img alt="../_images/8f2992d1eb9571b33283e674613af29020b2b7cbc32a5ad1e6e19bdde407d5a7.png" src="../_images/8f2992d1eb9571b33283e674613af29020b2b7cbc32a5ad1e6e19bdde407d5a7.png" />
+<img alt="../_images/fde9696be7ba49929bc114db603f6010d2d4d9eb375b27b9439f93bc111a9709.png" src="../_images/fde9696be7ba49929bc114db603f6010d2d4d9eb375b27b9439f93bc111a9709.png" />
+<img alt="../_images/8d0fca629ca8e316eb902f438a1cc824bd1fe232201a4068742800d98e9974b3.png" src="../_images/8d0fca629ca8e316eb902f438a1cc824bd1fe232201a4068742800d98e9974b3.png" />
+<img alt="../_images/51cb56709203d4a7c95ee6bb6c8cc7722f8cda9e419a07596c7d20e9c5161d11.png" src="../_images/51cb56709203d4a7c95ee6bb6c8cc7722f8cda9e419a07596c7d20e9c5161d11.png" />
+</div>
+</div>
+</section>
+<section id="id2">
+<h3>Gauss-Jacobi quadrature rule<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">gauss_jacobi</span><span class="p">,</span> <span class="s2">&quot;C2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/78f005538a0a9f41769d481ccf5d61bf014ba867995c7066f6e4f15491bf43b0.png" src="../_images/78f005538a0a9f41769d481ccf5d61bf014ba867995c7066f6e4f15491bf43b0.png" />
+<img alt="../_images/20b28aa5a8c902d1b7d112fe9a4ab3ff6d0a0300fc4207686321762085d4090d.png" src="../_images/20b28aa5a8c902d1b7d112fe9a4ab3ff6d0a0300fc4207686321762085d4090d.png" />
+<img alt="../_images/cc05ddd19282f53884b6782f1d68b564109902ccc7a99cf8efc54df8fdbc0d93.png" src="../_images/cc05ddd19282f53884b6782f1d68b564109902ccc7a99cf8efc54df8fdbc0d93.png" />
+<img alt="../_images/12a11e7735943bb84e6558049cf463a1d509d6519526a95af2746e98e958aaa0.png" src="../_images/12a11e7735943bb84e6558049cf463a1d509d6519526a95af2746e98e958aaa0.png" />
+<img alt="../_images/2ee82d5257c46a72d160c2c10a6c6fdb71cdd6114237b6fd9de0506ef3595d71.png" src="../_images/2ee82d5257c46a72d160c2c10a6c6fdb71cdd6114237b6fd9de0506ef3595d71.png" />
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>Gauss-Legendre-Lobatto quadrature rule<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">gll</span><span class="p">,</span> <span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/8f07587395902b3926dc23b0644caa2704d515e379bc6a1b93dc1de2bb8a91df.png" src="../_images/8f07587395902b3926dc23b0644caa2704d515e379bc6a1b93dc1de2bb8a91df.png" />
+<img alt="../_images/7448b610c55a2624159fd3a06531ee7e63f41d53c0e5a3b9de523ed948d2470b.png" src="../_images/7448b610c55a2624159fd3a06531ee7e63f41d53c0e5a3b9de523ed948d2470b.png" />
+<img alt="../_images/c64c7a25aba37c9bd5d36acd04799280fc5ebe46168bfe186970ad359b1257d5.png" src="../_images/c64c7a25aba37c9bd5d36acd04799280fc5ebe46168bfe186970ad359b1257d5.png" />
+<img alt="../_images/cdec45403b28eb707bf5ff5324601b0c443487fada1afded46bf12b25a1389ac.png" src="../_images/cdec45403b28eb707bf5ff5324601b0c443487fada1afded46bf12b25a1389ac.png" />
+<img alt="../_images/58a823d8e31a1bde39d6781e1cad15f7bbe8c7f41afb360ec665f888db486b37.png" src="../_images/58a823d8e31a1bde39d6781e1cad15f7bbe8c7f41afb360ec665f888db486b37.png" />
+</div>
+</div>
+</section>
+<section id="id4">
+<h3>Xiao-Gimbutas quadrature rule<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">xiao_gimbutas</span><span class="p">,</span> <span class="s2">&quot;C0&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/90852b2fc29541c445007833cbaeca0a88087b6e5805f01952b86da1b10383f4.png" src="../_images/90852b2fc29541c445007833cbaeca0a88087b6e5805f01952b86da1b10383f4.png" />
+<img alt="../_images/a431d4c768e9ba15b77c404dc141a49041a4673e772fc08921da52136a40280a.png" src="../_images/a431d4c768e9ba15b77c404dc141a49041a4673e772fc08921da52136a40280a.png" />
+<img alt="../_images/6686783d800277f212654fafc16c072b2f9c61c5a233ab1496ba9221577e5bed.png" src="../_images/6686783d800277f212654fafc16c072b2f9c61c5a233ab1496ba9221577e5bed.png" />
+<img alt="../_images/ad5c35d8b88dc7b1b5382ad51eaf1a30ebf981cc089152be3496dea406315019.png" src="../_images/ad5c35d8b88dc7b1b5382ad51eaf1a30ebf981cc089152be3496dea406315019.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tips"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="mass_lumping.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Lumping a mass matrix</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-quadrature-rule">2D Quadrature rule</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-quadrature-rule">Default quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-jacobi-quadrature-rule">Gauss-Jacobi quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-legendre-lobatto-quadrature-rule">Gauss-Legendre-Lobatto quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xiao-gimbutas-quadrature-rule">Xiao-Gimbutas quadrature rule</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rules">3D rules</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Default quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Gauss-Jacobi quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Gauss-Legendre-Lobatto quadrature rule</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Xiao-Gimbutas quadrature rule</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

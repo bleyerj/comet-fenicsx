@@ -236,7 +236,7 @@ for n, angle in enumerate(np.linspace(0, angle_max, Nsteps + 1)[1:]):
 ## Exercise
 
 Change the hyperelasticity model to another version of a compressible neo-Hookean model:
-\begin{equation}
+\begin{equation*}
 \psi(\bF) = \dfrac{\mu}{2}(\overline{I}_1-3) + \left(\dfrac{\mu}{12}+\dfrac{\lambda}{8}\right)\left(J^2 + J^{-2}-2 \right)
-\end{equation}
+\end{equation*}
 where $\overline{I}_1 = \tr(\overline{\bC})$ with $\overline{\bC} = J^{-2/3}\bC$.

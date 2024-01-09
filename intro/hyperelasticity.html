@@ -195,6 +195,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../tips/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tips/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tips/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tips/quadrature_schemes.html">Quadrature schemes</a></li>
 </ul>
 
     </div>
@@ -636,10 +637,10 @@ Time step 14, Number of iterations 6, Angle 360 deg.
 <section id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <p>Change the hyperelasticity model to another version of a compressible neo-Hookean model:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fb3873bc-4bd6-45a8-8cb7-53ddc7e920d9">
-<span class="eqno">(2)<a class="headerlink" href="#equation-fb3873bc-4bd6-45a8-8cb7-53ddc7e920d9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
 \psi(\bF) = \dfrac{\mu}{2}(\overline{I}_1-3) + \left(\dfrac{\mu}{12}+\dfrac{\lambda}{8}\right)\left(J^2 + J^{-2}-2 \right)
-\end{equation}\]</div>
+\end{equation*}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\overline{I}_1 = \tr(\overline{\bC})\)</span> with <span class="math notranslate nohighlight">\(\overline{\bC} = J^{-2/3}\bC\)</span>.</p>
 </section>
 </section>

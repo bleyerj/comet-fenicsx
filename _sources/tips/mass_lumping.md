@@ -16,7 +16,7 @@ kernelspec:
 
 Explicit dynamics simulations require the usage of lumped mass matrices i.e. diagonal mass matrices for which inversion can be done explicitly.
 
-We show how to do this for Lagrange elements using the Gauss-Lobatto-Legendre variant. For the high order case in wave propagation, this setting defines the so-called *spectral element method*.
+We show how to do this for Lagrange elements using the Gauss-Lobatto-Legendre quadrature rule, see also the [](/tips/quadrature_schemes.md) tour. For the high order case in wave propagation, this setting defines the so-called *spectral element method*.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -51,7 +51,7 @@ for order in range(1, 3):
 For explicit dynamics simulation, the mass matrix can then be manipulated using the diagonal vector, to compute for instance $M^{-1}w$ where $w$ is some Function.
 
 ```{code-cell} ipython3
-mass_diagonal = u * dx_lumped
+mass_diagonal = u * dx_lumped  # defines a linear form corresponding to the diagonal
 M_vect = fem.petsc.assemble_vector(fem.form(mass_diagonal))
 w = fem.Function(V)
 iMw = fem.Function(V)

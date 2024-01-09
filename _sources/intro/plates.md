@@ -17,13 +17,13 @@ kernelspec:
 ```{admonition} Objectives
 :class: objectives
 
+This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field $w$ and a rotation vector field $\boldsymbol{theta}$.
 $\newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\bQ}{\boldsymbol{Q}}
 \newcommand{\bgamma}{\boldsymbol{\gamma}}
 \newcommand{\btheta}{\boldsymbol{\theta}}
 \newcommand{\bchi}{\boldsymbol{\chi}}
 \renewcommand{\div}{\operatorname{div}}$
-This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field $w$ and a rotation vector field $\btheta$.
 ```
 
 
@@ -62,7 +62,6 @@ $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat
 \text{ where}\quad \textsf{F} &= \dfrac{5}{6}\dfrac{E h}{2(1+\nu)}
 \end{align*}
 
-+++
 
 ## Implementation
 
