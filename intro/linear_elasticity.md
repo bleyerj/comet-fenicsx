@@ -14,7 +14,7 @@ kernelspec:
 
 # Linear elasticity
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 This demo shows how to define a linear problem, apply boundary conditions, solve for the solution and output to a results file.
 $\newcommand{\bsig}{\boldsymbol{\sigma}}
@@ -92,9 +92,8 @@ Next, we define the finite-element `FunctionSpace` for our wanted solution `u_so
 The keyword `"Lagrange"` also works instead of `"P"`.
 ```
 
-```{admonition} Deprecation
-:class: warning
-Since `dolfinx` version 0.7, the definition of *Function Spaces* has slightly changed.
+```{deprecated} 0.7
+The definition of *Function Spaces* has slightly changed.
 1. `VectorFunctionSpace` and `TensorFunctionSpace` are now deprecated and we must pass instead a shape argument when creating a standard function space.
 2. We should no longer use the class initializer `FunctionSpace` as this is meant for internal use only. We must now use the function `functionspace` instead.
 3. You may also find in some older demos the keyword `"CG"` (Continuous Galerkin) which is now deprecated.
@@ -209,7 +208,7 @@ vtk.write_function(u_sol)
 
 ### Exercise : thermal strains
 
-We consider the presence of thermal strains $\beps^\text{th} = \alpha \Delta T(\boldsymbol{x}) \boldsymbol{I}$ where $\Delta T(\boldsymbol{x})$ varies linearly from 0 to +20° between the bottom and top face of the beam. The stress-strain consitutive relation is now:
+We consider the presence of thermal strains $\beps^\text{th} = \alpha \Delta T(\boldsymbol{x}) \boldsymbol{I}$ where $\Delta T(\boldsymbol{x})$ varies linearly from 0 to +20° between the bottom and top face of the beam. The stress-strain constitutive relation is now:
 \begin{equation}
 \bsig(\bu) = \mathbb{C}:(\beps(\bu) - \beps^\text{th})
 \end{equation}

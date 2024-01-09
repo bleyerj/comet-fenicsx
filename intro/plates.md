@@ -15,7 +15,7 @@ kernelspec:
 # Reissner-Mindlin plates
 
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 $\newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\bQ}{\boldsymbol{Q}}
@@ -23,12 +23,14 @@ $\newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\btheta}{\boldsymbol{\theta}}
 \newcommand{\bchi}{\boldsymbol{\chi}}
 \renewcommand{\div}{\operatorname{div}}$
-This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field $w$ and a rotation vector field $\btheta$. We recall below the main relations defining this model in the linear elastic case.
+This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field $w$ and a rotation vector field $\btheta$.
 ```
 
-+++
 
 ## Governing equations
+
+We recall below the main relations defining this model in the linear elastic case.
+
 ### Generalized strains
 
 * *Bending curvature* strain $\bchi = \dfrac{1}{2}(\nabla \btheta + \nabla^\text{T} \btheta) = \nabla^\text{s}\btheta$
@@ -214,10 +216,11 @@ warped = w_grid.warp_by_scalar("Deflection", factor=5)
 plotter = pyvista.Plotter()
 plotter.add_mesh(
     warped,
-    show_edges=True,
     show_scalar_bar=True,
     scalars="Deflection",
 )
+edges = warped.extract_all_edges()
+plotter.add_mesh(edges, color="k", line_width=1)
 plotter.show()
 
 theta = u.sub(1).collapse()
@@ -296,9 +299,11 @@ for i in range(2):
         wi = eigvec_r[current_index].sub(0).collapse()
         w_grid[eigenmode] = wi.x.array
         pl.add_mesh(
-            w_grid.warp_by_scalar(eigenmode, factor=0.03),
+            w_grid.warp_by_scalar(eigenmode, factor=10.0),
             scalars=eigenmode,
             show_scalar_bar=False,
+            specular=0.5,
+            specular_power=30,
         )
 pl.show()
 ```

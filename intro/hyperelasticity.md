@@ -15,7 +15,7 @@ kernelspec:
 # Hyperelasticity
 
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 In this tour, we will build upon the previous one on linear elasticity to formulate a non-linear problem arising from finite-strain elasticity. The symbolic differentiation capabilities of UFL prove to be very useful in such examples.
 $\newcommand{\bsig}{\boldsymbol{\sigma}}
@@ -42,26 +42,28 @@ There exist different ways of writing a variational formulation in a finite-stra
 
 Weak equilibrium reads here:
 > Find $\bu \in V$ such that:
-> \begin{equation}
+> \begin{equation*}
 \int_\Omega \bP(\bu):\nabla \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
-\end{equation}
+\end{equation*}
 
 where $\bP(\bu)$ denotes the first Piola-Kirchhoff (PK1) stress.
 
 Moreover, in the case of a hyperelastic material, the constitutive relation derives from a free-energy potential $\psi(\bF)$ depending on the deformation gradient $\bF = \bI + \nabla \bu$. The above non-linear variational equation corresponds in fact to the first-order optimality condition of the following minimum principle:
-> \begin{equation}
+> \begin{equation*}
 \min_{\bu\in V} \int_\Omega \psi(\bF) \dOm - \int_\Omega \boldsymbol{f}\cdot\bu \dOm - \int_\Neumann \bT\cdot\bu \dS
-\end{equation}
+\end{equation*}
 
 which we will use in the subsequent implementation.
 
 ## Problem position
 
-We consider a cyclinder of square cross-section which is fixed at its bottom face and to which we impose a rigid rotation of the top face of angle $\theta$ around the vertical axis. We start first with a simple compressible neo-Hookean model given by:
+We consider a cylinder of square cross-section which is fixed at its bottom face and to which we impose a rigid rotation of the top face of angle $\theta$ around the vertical axis. We start first with a simple compressible neo-Hookean model given by:
 
-\begin{equation}
+```{math}
+:label: psi-neo-Hookean
+
 \psi(\bF) = \dfrac{\mu}{2}\left(I_1-3-2\ln J\right) + \dfrac{\lambda}{2}(J-1)^2
-\end{equation}
+```
 
 where $I_1 = \tr(\bC) = \tr(\bF\T\bF)$ and $J = \det\bF$.
 
@@ -114,7 +116,7 @@ V = fem.functionspace(mesh, ("P", degree, shape))
 u = fem.Function(V, name="Displacement")
 ```
 
-Next, we define the corresponding hyperelastic potential using UFL operators. We can easily obtain the UFL expression for the PK1 stress by differentiating the potential $\psi$ with respect to the deformation gradient $\bF$. We therefore declare it as a variable using `ufl.variable` and then compute $\bP = \dfrac{\partial \psi}{\partial \bF}$ using `ufl.diff`.
+Next, we define the corresponding hyperelastic potential using UFL operators. We can easily obtain the UFL expression for the PK1 stress by differentiating the potential $\psi$ {eq}`psi-neo-Hookean` with respect to the deformation gradient $\bF$. We therefore declare it as a variable using `ufl.variable` and then compute $\bP = \dfrac{\partial \psi}{\partial \bF}$ using `ufl.diff`.
 
 ```{code-cell} ipython3
 # Identity tensor
