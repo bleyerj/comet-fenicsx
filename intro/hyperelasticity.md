@@ -108,7 +108,8 @@ dim = mesh.topology.dim
 print(f"Mesh topology dimension d={dim}.")
 
 degree = 1
-V = fem.VectorFunctionSpace(mesh, ("P", degree))
+shape = (dim,)
+V = fem.functionspace(mesh, ("P", degree, shape))
 
 u = fem.Function(V, name="Displacement")
 ```
