@@ -37,6 +37,11 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\dirichlet}{{\partial \omega_\text{D}}}$
 ```
 
+```{image} axisymmetric_elasticity.png
+:align: center
+:width: 400px
+```
+
  We will consider a solid of revolution around a fixed axis $(Oz)$, the loading, boundary conditions and material properties being also invariant with respect to a rotation along the symmetry axis. The solid cross-section in a plane $\theta=\text{cst}$ will be represented by a two-dimensional domain $\omega$. With such a 2D mesh, the first spatial variable (`x[0]` in `UFL`) will represent the radial coordinate $r$ whereas the second spatial variable (`x[1]`) will denote the axial variable $z$.
 
 ## Problem position

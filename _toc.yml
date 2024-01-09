@@ -16,7 +16,8 @@ parts:
     sections:
     - file: tours/linear_problems/isotropic_orthotropic_elasticity.md
     - file: tours/linear_problems/axisymmetric_elasticity.md
-    - file: tours/linear_problems/thermoelasticity_transient.md
+    - file: tours/linear_problems/thermoelasticity_weak.md
+    - file: tours/linear_problems/thermoelasticity_full.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets.md
