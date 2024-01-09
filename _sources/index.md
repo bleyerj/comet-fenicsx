@@ -51,7 +51,7 @@ If you find these demos useful for your research work, please consider citing th
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10470942.svg)](https://doi.org/10.5281/zenodo.10470942)
 
 ```
-@software{bleyer_2024_10470943,
+@software{bleyer2024comet,
   author       = {Bleyer, Jeremy},
   title        = {{Numerical tours of Computational Mechanics with 
                    FEniCSx}},

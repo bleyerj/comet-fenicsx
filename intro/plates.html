@@ -184,7 +184,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tours/linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_transient.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
 </ul>
@@ -364,7 +365,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="reissner-mindlin-plates">
 <h1>Reissner-Mindlin plates<a class="headerlink" href="#reissner-mindlin-plates" title="Permalink to this heading">#</a></h1>
-<div class="seealso admonition">
+<div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p><span class="math notranslate nohighlight">\(\newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\bQ}{\boldsymbol{Q}}
@@ -372,10 +373,11 @@ document.write(`
 \newcommand{\btheta}{\boldsymbol{\theta}}
 \newcommand{\bchi}{\boldsymbol{\chi}}
 \renewcommand{\div}{\operatorname{div}}\)</span>
-This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field <span class="math notranslate nohighlight">\(w\)</span> and a rotation vector field <span class="math notranslate nohighlight">\(\btheta\)</span>. We recall below the main relations defining this model in the linear elastic case.</p>
+This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field <span class="math notranslate nohighlight">\(w\)</span> and a rotation vector field <span class="math notranslate nohighlight">\(\btheta\)</span>.</p>
 </div>
 <section id="governing-equations">
 <h2>Governing equations<a class="headerlink" href="#governing-equations" title="Permalink to this heading">#</a></h2>
+<p>We recall below the main relations defining this model in the linear elastic case.</p>
 <section id="generalized-strains">
 <h3>Generalized strains<a class="headerlink" href="#generalized-strains" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
@@ -397,8 +399,9 @@ This demo illustrates how to implement a Reissner-Mindlin thick plate model. The
 <li><p>Vertical equilibrium: <span class="math notranslate nohighlight">\(\div \bQ + f = 0\)</span></p></li>
 <li><p>Moment equilibrium: <span class="math notranslate nohighlight">\(\div \bM + \bQ = 0\)</span></p></li>
 </ul>
-<p>In weak form:
-$<span class="math notranslate nohighlight">\(\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f w \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}\)</span>$</p>
+<p>In weak form:</p>
+<div class="math notranslate nohighlight">
+\[\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f w \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}\]</div>
 </section>
 <section id="isotropic-linear-elastic-constitutive-relation">
 <h3>Isotropic linear elastic constitutive relation<a class="headerlink" href="#isotropic-linear-elastic-constitutive-relation" title="Permalink to this heading">#</a></h3>
@@ -431,21 +434,18 @@ $<span class="math notranslate nohighlight">\(\int_{\Omega} (\bM:\nabla^\text{s}
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
 <span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
-<span class="kn">from</span> <span class="nn">dolfinx.mesh</span> <span class="kn">import</span> <span class="n">create_unit_square</span><span class="p">,</span> <span class="n">CellType</span><span class="p">,</span> <span class="n">locate_entities_boundary</span>
+<span class="kn">from</span> <span class="nn">dolfinx.mesh</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">create_unit_square</span><span class="p">,</span>
+    <span class="n">CellType</span><span class="p">,</span>
+    <span class="n">DiagonalType</span><span class="p">,</span>
+    <span class="n">locate_entities_boundary</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">create_unit_square</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don&#39;t enable unless really needed).
-hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don&#39;t enable unless really needed).
+<span class="n">domain</span> <span class="o">=</span> <span class="n">create_unit_square</span><span class="p">(</span>
+    <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">cell_type</span><span class="o">=</span><span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="n">DiagonalType</span><span class="o">.</span><span class="n">crossed</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -459,12 +459,12 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 <span class="n">nu</span> <span class="o">=</span> <span class="mf">0.3</span>
 
 <span class="c1"># bending stiffness</span>
-<span class="n">D</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">E</span> <span class="o">*</span> <span class="n">thick</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">12.0</span><span class="p">)</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">E</span> <span class="o">*</span> <span class="n">thick</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">12.0</span><span class="p">)</span>
 <span class="c1"># shear stiffness</span>
-<span class="n">F</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">E</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">*</span> <span class="n">thick</span> <span class="o">*</span> <span class="mf">5.0</span> <span class="o">/</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="n">F</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">E</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">*</span> <span class="n">thick</span> <span class="o">*</span> <span class="mf">5.0</span> <span class="o">/</span> <span class="mf">6.0</span><span class="p">)</span>
 
 <span class="c1"># uniform transversal load</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="o">-</span><span class="mf">100.0</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="o">-</span><span class="mf">100.0</span><span class="p">)</span>
 
 
 <span class="c1"># Useful function for defining strains and stresses</span>
@@ -495,9 +495,9 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Definition of function space for U:displacement, T:rotation</span>
-<span class="n">Ue</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FiniteElement</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">Te</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">mesh</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">FunctionSpace</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">ufl</span><span class="o">.</span><span class="n">MixedElement</span><span class="p">([</span><span class="n">Ue</span><span class="p">,</span> <span class="n">Te</span><span class="p">]))</span>
+<span class="n">Ue</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FiniteElement</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Te</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">ufl</span><span class="o">.</span><span class="n">MixedElement</span><span class="p">([</span><span class="n">Ue</span><span class="p">,</span> <span class="n">Te</span><span class="p">]))</span>
 
 <span class="c1"># Functions</span>
 <span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span>
@@ -506,7 +506,7 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 <span class="n">du</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 
 <span class="c1"># Linear and bilinear forms</span>
-<span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">mesh</span><span class="p">)</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span>
 <span class="n">L</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">w_</span> <span class="o">*</span> <span class="n">dx</span>
 <span class="n">a</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">bending_moment</span><span class="p">(</span><span class="n">u_</span><span class="p">),</span> <span class="n">curvature</span><span class="p">(</span><span class="n">du</span><span class="p">))</span>
@@ -528,7 +528,7 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 
 
 <span class="n">facet_dim</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">clamped_facets</span> <span class="o">=</span> <span class="n">locate_entities_boundary</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">facet_dim</span><span class="p">,</span> <span class="n">border</span><span class="p">)</span>
+<span class="n">clamped_facets</span> <span class="o">=</span> <span class="n">locate_entities_boundary</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">facet_dim</span><span class="p">,</span> <span class="n">border</span><span class="p">)</span>
 <span class="n">clamped_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">facet_dim</span><span class="p">,</span> <span class="n">clamped_facets</span><span class="p">)</span>
 
 <span class="n">u0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
@@ -537,7 +537,11 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 </div>
 </div>
 </div>
-<p>We now solve the problem and output the result. To get the deflection <span class="math notranslate nohighlight">\(w\)</span>, we use <code class="docutils literal notranslate"><span class="pre">u.sub(0).collapse()</span></code> to extract a new function living in the corresponding subspace. Note that <code class="docutils literal notranslate"><span class="pre">u.sub(0)</span></code> provides only an indexed view of the <span class="math notranslate nohighlight">\(w\)</span> component of <code class="docutils literal notranslate"><span class="pre">u</span></code>.</p>
+<p>We now solve the problem and output the result. To get the deflection <span class="math notranslate nohighlight">\(w\)</span>, we use <code class="docutils literal notranslate"><span class="pre">u.sub(0).collapse()</span></code> to extract a new function living in the corresponding subspace. Note that <code class="docutils literal notranslate"><span class="pre">u.sub(0)</span></code> provides only an indexed view of the <span class="math notranslate nohighlight">\(w\)</span> component of <code class="docutils literal notranslate"><span class="pre">u</span></code>. The computed results is compared with the analytical maximum deflection of a clamped Love-Kirchhoff plate:</p>
+<div class="math notranslate nohighlight">
+\[
+w_\text{LK} = 1.265319087.10^{-3} \dfrac{f}{\mathsf{D}}
+\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">(</span>
@@ -545,7 +549,7 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 <span class="p">)</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 
-<span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">comm</span><span class="p">,</span> <span class="s2">&quot;plates.xdmf&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">vtk</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">,</span> <span class="s2">&quot;plates.xdmf&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">vtk</span><span class="p">:</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
     <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Deflection&quot;</span>
     <span class="n">vtk</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
@@ -557,10 +561,68 @@ Pass --enable-32bits-pci-domain to configure to support such devices
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reissner-Mindlin deflection: 0.05180
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reissner-Mindlin deflection: 0.05380
 Love-Kirchhoff deflection: 0.05264
 </pre></div>
 </div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This simple formulation may suffer from <strong>shear locking</strong> issues in the thin plate limit. We refer to the various plate tours dedicated to this specific issue for more accurate treatment of plate shear locking.</p>
+</div>
+<p>We can plot the plate deflection <span class="math notranslate nohighlight">\(w\)</span> and the rotation vector <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \boldsymbol{e}_z\times \btheta\)</span> using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>. <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> represents the axis vector around which the plate is rotating.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvista</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">plot</span>
+
+<span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+
+<span class="n">Vw</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">function_space</span>
+<span class="n">w_topology</span><span class="p">,</span> <span class="n">w_cell_types</span><span class="p">,</span> <span class="n">w_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">Vw</span><span class="p">)</span>
+<span class="n">w_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">w_topology</span><span class="p">,</span> <span class="n">w_cell_types</span><span class="p">,</span> <span class="n">w_geometry</span><span class="p">)</span>
+<span class="n">w_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Deflection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+<span class="n">w_grid</span><span class="o">.</span><span class="n">set_active_scalars</span><span class="p">(</span><span class="s2">&quot;Deflection&quot;</span><span class="p">)</span>
+<span class="n">warped</span> <span class="o">=</span> <span class="n">w_grid</span><span class="o">.</span><span class="n">warp_by_scalar</span><span class="p">(</span><span class="s2">&quot;Deflection&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">warped</span><span class="p">,</span>
+    <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">scalars</span><span class="o">=</span><span class="s2">&quot;Deflection&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="n">warped</span><span class="o">.</span><span class="n">extract_all_edges</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">Vt</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">function_space</span>
+<span class="n">theta_topology</span><span class="p">,</span> <span class="n">theta_cell_types</span><span class="p">,</span> <span class="n">theta_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">Vt</span><span class="p">)</span>
+<span class="n">theta_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">theta_topology</span><span class="p">,</span> <span class="n">theta_cell_types</span><span class="p">,</span> <span class="n">theta_geometry</span><span class="p">)</span>
+<span class="n">beta_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">theta_geometry</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">beta_3D</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">theta</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">theta_grid</span><span class="p">[</span><span class="s2">&quot;beta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">beta_3D</span>
+<span class="n">theta_grid</span><span class="o">.</span><span class="n">set_active_vectors</span><span class="p">(</span><span class="s2">&quot;beta&quot;</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">theta_grid</span><span class="o">.</span><span class="n">arrows</span><span class="p">,</span> <span class="n">lighting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Rotation Magnitude&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">theta_grid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">ambient</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/9cf6b9050bc893ea5593ae657702b11aaecbe295bfdde50f82a1e2b9d5d271b6.png" src="../_images/9cf6b9050bc893ea5593ae657702b11aaecbe295bfdde50f82a1e2b9d5d271b6.png" />
+<img alt="../_images/3664c70c3a0554100dffc502cc39dff1a2eff741a44c0f6c8329910f45920f86.png" src="../_images/3664c70c3a0554100dffc502cc39dff1a2eff741a44c0f6c8329910f45920f86.png" />
 </div>
 </div>
 </section>
@@ -569,8 +631,8 @@ Love-Kirchhoff deflection: 0.05264
 <p>Now we define the form corresponding to the definition of the mass matrix and we assemble the stiffness and mass forms into corresponding PETSc matrix objects. We use a value of 1 on the diagonal for K and 0 for M for the rows corresponding to the boundary conditions. Doing so, eigenvalues associated to boundary conditions are equal to infinity and will not pollute the low-frequency spectrum.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
-<span class="n">m_form</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">2700.0</span><span class="p">)</span>
+<span class="n">m_form</span> <span class="o">=</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">thick</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
 
 <span class="n">K</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">bcs</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">K</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
@@ -598,14 +660,11 @@ enable to define the corresponding objects, set up the parameters, monitor the r
 <span class="c1"># Extract results</span>
 <span class="p">(</span><span class="n">eigval</span><span class="p">,</span> <span class="n">eigvec_r</span><span class="p">,</span> <span class="n">eigvec_i</span><span class="p">)</span> <span class="o">=</span> <span class="n">EPS_get_spectrum</span><span class="p">(</span><span class="n">eigensolver</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
 <span class="c1"># Output eigenmodes</span>
-<span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">comm</span><span class="p">,</span> <span class="s2">&quot;plates_eigenvalues.xdmf&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">vtk</span><span class="p">:</span>
+<span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">,</span> <span class="s2">&quot;plates_eigenvalues.xdmf&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">vtk</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_eig</span><span class="p">):</span>
         <span class="n">w</span> <span class="o">=</span> <span class="n">eigvec_r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
         <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Deflection&quot;</span>
         <span class="n">vtk</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
-    <span class="n">w</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Deflection&quot;</span>
-    <span class="n">vtk</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -614,27 +673,64 @@ enable to define the corresponding objects, set up the parameters, monitor the r
 ***  SLEPc Iterations...   ***
 ******************************
 Iter. | Conv. | Max. error
-    1 |     4 | 7.8e-07
-    2 |     8 | 1.9e-04
+    1 |     3 | 6.7e-01
+    2 |     7 | 3.0e-07
 
 ******************************
 *** SLEPc Solution Results ***
 ******************************
 Iteration number: 2
-Converged eigenpairs: 8
+Converged eigenpairs: 7
 
 Converged eigval.  Error 
 ----------------- -------
- 1.28e+02             1.4e-14
- 2.33e+02             4.7e-15
- 2.42e+02             1.5e-14
- 3.46e+02             2.9e-11
- 4.20e+02             1.8e-15
- 4.61e+02             7.9e-15
- 5.22e+02             2.6e-12
- 5.58e+02             2.5e-11
+ 9.12e-01             2.0e-12
+ 1.67e+00             7.8e-10
+ 1.67e+00             6.9e-13
+ 2.34e+00             1.4e-09
+ 2.89e+00             2.8e-13
+ 3.15e+00             3.3e-13
+ 3.56e+00             4.7e-12
 </pre></div>
 </div>
+</div>
+</div>
+<p>The eigenmodes look as follows using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">w_topology</span><span class="p">,</span> <span class="n">w_cell_types</span><span class="p">,</span> <span class="n">w_geometry</span><span class="p">)</span>
+
+<span class="n">pl</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="n">current_index</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span>
+        <span class="n">eigenmode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;eigenmode_</span><span class="si">{</span><span class="n">current_index</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;eigenmode </span><span class="si">{</span><span class="n">current_index</span><span class="si">}</span><span class="s2">, freq. </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">eigval</span><span class="p">[</span><span class="n">current_index</span><span class="p">]))</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">1e3</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">,</span>
+            <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">wi</span> <span class="o">=</span> <span class="n">eigvec_r</span><span class="p">[</span><span class="n">current_index</span><span class="p">]</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+        <span class="n">w_grid</span><span class="p">[</span><span class="n">eigenmode</span><span class="p">]</span> <span class="o">=</span> <span class="n">wi</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+        <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+            <span class="n">w_grid</span><span class="o">.</span><span class="n">warp_by_scalar</span><span class="p">(</span><span class="n">eigenmode</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">10.0</span><span class="p">),</span>
+            <span class="n">scalars</span><span class="o">=</span><span class="n">eigenmode</span><span class="p">,</span>
+            <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">specular</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">specular_power</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+        <span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../_images/e7c7d2a35d0b75448d5e045caac6e2d75f7d4c2dc1b7ebb64c68d7fa86d2c0af.png" src="../_images/e7c7d2a35d0b75448d5e045caac6e2d75f7d4c2dc1b7ebb64c68d7fa86d2c0af.png" />
 </div>
 </div>
 </section>

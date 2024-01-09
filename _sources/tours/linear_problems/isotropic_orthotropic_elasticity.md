@@ -15,7 +15,7 @@ kernelspec:
 # Isotropic and orthotropic plane stress elasticity {far}`star`
 
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 This demo shows how to define a linear elastic problem with an isotropic and orthotropic material in plane stress conditions. It also shows how to use the `Gmsh` Python API to define a 2D perforated plate domain.
 $\newcommand{\bsig}{\boldsymbol{\sigma}}
@@ -34,7 +34,7 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 ```
 
 ```{seealso}
-The [linear elasticity introduction tour](/intro/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
+The [Linear Elasticity introduction tour](/intro/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
 ```
 
 ## Variational formulation
@@ -42,9 +42,11 @@ The [linear elasticity introduction tour](/intro/linear_elasticity) covers a ver
 We first recall that the variational formulation associated to the linear elastic case reads:
 
 Find $\bu \in V$ such that:
-\begin{equation}
+
+$$
 \int_\Omega \nabla^\text{s}\bu:\CC:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
-\end{equation}
+$$
+
 where $\bv$ is the test function, $\boldsymbol{f}$ the body and $\bT$ the contact forces. $\CC$ is the fourth-order elastic tensor characterizing the linear elastic behaviour. Introducing the linearized strain tensor field $\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)$, it relates the stress $\bsig$ to the strain $\beps$ using the linear elastic constitutive relation:
 \begin{equation*}
 \bsig = \CC:\beps
@@ -54,9 +56,8 @@ The above variational formulation can therefore be rewritten as:
 Find $\bu \in V$ such that:
 ```{math}
 :label: weak-form
-\begin{equation}
+
 \int_\Omega \bsig[\bu]:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
-\end{equation}
 ```
 
 The above problem is a linear variational problem since $\bsig$ depends linearly upon the unknown field $\bu$. It can be formally written as:
@@ -75,9 +76,10 @@ In some cases, one may want to consider a non-zero initial stress state $\bsig_0
 \end{equation*}
 
 The constant part $\bsig_0$ will therefore contribute to the right-hand side of the linear variational problem {eq}`bilinear` which now becomes:
-\begin{equation}
+
+$$
 \int_\Omega \beps[\bu]:\CC:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS -\int_\Omega \bsig_0:\beps[\bv] \dOm \quad \forall \bv \in V_0
-\end{equation}
+$$
 ```
 
 ### Constitutive relation
@@ -169,12 +171,11 @@ In the plane stress case, an out-of-plane strain component $\varepsilon_{zz}$ mu
    -\nu/E & 1/E & 0 \\ 0 & 0 & 1/\mu \end{bmatrix}
 ```
 This relation needs to be inverted to obtain the corresponding stiffness matrix $\mathbf{C}=\mathbf{S}^{-1}$:
-```{math}
-:label: stiffness-plane-stress
 
+$$
 [\mathbf{C}] = \dfrac{E}{1-\nu^2}\begin{bmatrix} 1 & \nu & 0\\
    \nu & 1 & 0 \\ 0 & 0 & (1-\nu)/2 \end{bmatrix}
-```
+$$
 
 
 #### Orthotropic plane stress case
@@ -287,28 +288,21 @@ if mesh_comm.rank == model_rank:
 ```{code-cell} ipython3
 :tags: [hide-input]
 
-try:
-    import pyvista
-    from dolfinx import plot, fem
-    import warnings
+import pyvista
+from dolfinx import plot, fem
 
-    warnings.filterwarnings("ignore")
+pyvista.set_jupyter_backend("static")
 
-    pyvista.set_jupyter_backend("panel")
-    pyvista.set_plot_theme("paraview")
+V0 = fem.functionspace(domain, ("P", 1))
+cells, types, x = plot.vtk_mesh(V0)
+grid = pyvista.UnstructuredGrid(cells, types, x)
+# Create plotter and pyvista grid
+p = pyvista.Plotter()
 
-    V0 = fem.functionspace(domain, ("P", 1))
-    cells, types, x = plot.vtk_mesh(V0)
-    grid = pyvista.UnstructuredGrid(cells, types, x)
-    # Create plotter and pyvista grid
-    p = pyvista.Plotter()
-
-    p.add_mesh(grid, show_edges=True)
-    p.view_xy()
-    p.show_axes()
-    p.show()
-except:
-    pass
+p.add_mesh(grid, show_edges=True)
+p.view_xy()
+p.show_axes()
+p.show()
 ```
 
 We are now in position to define the variational form which is given by {eq}`weak-form`,

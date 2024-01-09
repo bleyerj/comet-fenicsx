@@ -184,7 +184,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 has-children"><a class="reference internal" href="../tours/linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_transient.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tours/linear_problems/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
 </ul>
@@ -359,7 +360,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="hyperelasticity">
 <h1>Hyperelasticity<a class="headerlink" href="#hyperelasticity" title="Permalink to this heading">#</a></h1>
-<div class="seealso admonition">
+<div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>In this tour, we will build upon the previous one on linear elasticity to formulate a non-linear problem arising from finite-strain elasticity. The symbolic differentiation capabilities of UFL prove to be very useful in such examples.
 <span class="math notranslate nohighlight">\(\newcommand{\bsig}{\boldsymbol{\sigma}}
@@ -385,28 +386,26 @@ document.write(`
 <p>Weak equilibrium reads here:</p>
 <blockquote>
 <div><p>Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6807bb14-b467-4e7b-aecd-fe3bc796a099">
-<span class="eqno">(2)<a class="headerlink" href="#equation-6807bb14-b467-4e7b-aecd-fe3bc796a099" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
 \int_\Omega \bP(\bu):\nabla \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
-\end{equation}\]</div>
+\end{equation*}\]</div>
 </div></blockquote>
 <p>where <span class="math notranslate nohighlight">\(\bP(\bu)\)</span> denotes the first Piola-Kirchhoff (PK1) stress.</p>
 <p>Moreover, in the case of a hyperelastic material, the constitutive relation derives from a free-energy potential <span class="math notranslate nohighlight">\(\psi(\bF)\)</span> depending on the deformation gradient <span class="math notranslate nohighlight">\(\bF = \bI + \nabla \bu\)</span>. The above non-linear variational equation corresponds in fact to the first-order optimality condition of the following minimum principle:</p>
 <blockquote>
-<div><div class="amsmath math notranslate nohighlight" id="equation-4a543cf8-a1a7-41cf-9e55-751dff8465dd">
-<span class="eqno">(3)<a class="headerlink" href="#equation-4a543cf8-a1a7-41cf-9e55-751dff8465dd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div><div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
 \min_{\bu\in V} \int_\Omega \psi(\bF) \dOm - \int_\Omega \boldsymbol{f}\cdot\bu \dOm - \int_\Neumann \bT\cdot\bu \dS
-\end{equation}\]</div>
+\end{equation*}\]</div>
 </div></blockquote>
 <p>which we will use in the subsequent implementation.</p>
 </section>
 <section id="problem-position">
 <h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
-<p>We consider a cyclinder of square cross-section which is fixed at its bottom face and to which we impose a rigid rotation of the top face of angle <span class="math notranslate nohighlight">\(\theta\)</span> around the vertical axis. We start first with a simple compressible neo-Hookean model given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fc0adf80-8d94-41d6-a36f-5e41a2c6b222">
-<span class="eqno">(4)<a class="headerlink" href="#equation-fc0adf80-8d94-41d6-a36f-5e41a2c6b222" title="Permalink to this equation">#</a></span>\[\begin{equation}
-\psi(\bF) = \dfrac{\mu}{2}\left(I_1-3-2\ln J\right) + \dfrac{\lambda}{2}(J-1)^2
-\end{equation}\]</div>
+<p>We consider a cylinder of square cross-section which is fixed at its bottom face and to which we impose a rigid rotation of the top face of angle <span class="math notranslate nohighlight">\(\theta\)</span> around the vertical axis. We start first with a simple compressible neo-Hookean model given by:</p>
+<div class="math notranslate nohighlight" id="equation-psi-neo-hookean">
+<span class="eqno">(1)<a class="headerlink" href="#equation-psi-neo-hookean" title="Permalink to this equation">#</a></span>\[\psi(\bF) = \dfrac{\mu}{2}\left(I_1-3-2\ln J\right) + \dfrac{\lambda}{2}(J-1)^2\]</div>
 <p>where <span class="math notranslate nohighlight">\(I_1 = \tr(\bC) = \tr(\bF\T\bF)\)</span> and <span class="math notranslate nohighlight">\(J = \det\bF\)</span>.</p>
 </section>
 <section id="implementation">
@@ -452,29 +451,20 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mesh topology dimension d=</span><span class="si">{</span><span class="n">dim</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
 
 <span class="n">degree</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">VectorFunctionSpace</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="p">))</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">dim</span><span class="p">,)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
 
 <span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Displacement&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don&#39;t enable unless really needed).
-hwloc/linux: Ignoring PCI device with non-16bit domain.
-Pass --enable-32bits-pci-domain to configure to support such devices
-(warning: it would break the library ABI, don&#39;t enable unless really needed).
-WARNING:py.warnings:/tmp/ipykernel_28703/3251464685.py:39: DeprecationWarning: This method is deprecated. Use FunctionSpace with an element shape argument instead
-  V = fem.VectorFunctionSpace(mesh, (&quot;P&quot;, degree))
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mesh topology dimension d=3.
 </pre></div>
 </div>
 </div>
 </div>
-<p>Next, we define the corresponding hyperelastic potential using UFL operators. We can easily obtain the UFL expression for the PK1 stress by differentiating the potential <span class="math notranslate nohighlight">\(\psi\)</span> with respect to the deformation gradient <span class="math notranslate nohighlight">\(\bF\)</span>. We therefore declare it as a variable using <code class="docutils literal notranslate"><span class="pre">ufl.variable</span></code> and then compute <span class="math notranslate nohighlight">\(\bP = \dfrac{\partial \psi}{\partial \bF}\)</span> using <code class="docutils literal notranslate"><span class="pre">ufl.diff</span></code>.</p>
+<p>Next, we define the corresponding hyperelastic potential using UFL operators. We can easily obtain the UFL expression for the PK1 stress by differentiating the potential <span class="math notranslate nohighlight">\(\psi\)</span> <a class="reference internal" href="#equation-psi-neo-hookean">(1)</a> with respect to the deformation gradient <span class="math notranslate nohighlight">\(\bF\)</span>. We therefore declare it as a variable using <code class="docutils literal notranslate"><span class="pre">ufl.variable</span></code> and then compute <span class="math notranslate nohighlight">\(\bP = \dfrac{\partial \psi}{\partial \bF}\)</span> using <code class="docutils literal notranslate"><span class="pre">ufl.diff</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Identity tensor</span>
@@ -623,23 +613,21 @@ Time step 5, Number of iterations 5, Angle 144 deg.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 7, Number of iterations 6, Angle 192 deg.
+Time step 8, Number of iterations 6, Angle 216 deg.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 8, Number of iterations 6, Angle 216 deg.
-Time step 9, Number of iterations 6, Angle 240 deg.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 9, Number of iterations 6, Angle 240 deg.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 10, Number of iterations 6, Angle 264 deg.
+Time step 11, Number of iterations 6, Angle 288 deg.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 11, Number of iterations 6, Angle 288 deg.
-Time step 12, Number of iterations 6, Angle 312 deg.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 12, Number of iterations 6, Angle 312 deg.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 13, Number of iterations 6, Angle 336 deg.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Time step 14, Number of iterations 6, Angle 360 deg.
+Time step 14, Number of iterations 6, Angle 360 deg.
 </pre></div>
 </div>
 </div>
@@ -648,8 +636,8 @@ Time step 12, Number of iterations 6, Angle 312 deg.
 <section id="exercise">
 <h2>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <p>Change the hyperelasticity model to another version of a compressible neo-Hookean model:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3bd36a79-bb4b-47e2-ac0b-dfbde651d814">
-<span class="eqno">(5)<a class="headerlink" href="#equation-3bd36a79-bb4b-47e2-ac0b-dfbde651d814" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fb3873bc-4bd6-45a8-8cb7-53ddc7e920d9">
+<span class="eqno">(2)<a class="headerlink" href="#equation-fb3873bc-4bd6-45a8-8cb7-53ddc7e920d9" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \psi(\bF) = \dfrac{\mu}{2}(\overline{I}_1-3) + \left(\dfrac{\mu}{12}+\dfrac{\lambda}{8}\right)\left(J^2 + J^{-2}-2 \right)
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\overline{I}_1 = \tr(\overline{\bC})\)</span> with <span class="math notranslate nohighlight">\(\overline{\bC} = J^{-2/3}\bC\)</span>.</p>

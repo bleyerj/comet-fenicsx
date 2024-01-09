@@ -15,7 +15,7 @@ kernelspec:
 # Reissner-Mindlin plates
 
 ```{admonition} Objectives
-:class: seealso
+:class: objectives
 
 $\newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\bQ}{\boldsymbol{Q}}
@@ -23,12 +23,14 @@ $\newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\btheta}{\boldsymbol{\theta}}
 \newcommand{\bchi}{\boldsymbol{\chi}}
 \renewcommand{\div}{\operatorname{div}}$
-This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field $w$ and a rotation vector field $\btheta$. We recall below the main relations defining this model in the linear elastic case.
+This demo illustrates how to implement a Reissner-Mindlin thick plate model. The main specificity of such models is that one needs to solve for two different fields: a vertical deflection field $w$ and a rotation vector field $\btheta$.
 ```
 
-+++
 
 ## Governing equations
+
+We recall below the main relations defining this model in the linear elastic case.
+
 ### Generalized strains
 
 * *Bending curvature* strain $\bchi = \dfrac{1}{2}(\nabla \btheta + \nabla^\text{T} \btheta) = \nabla^\text{s}\btheta$
@@ -44,6 +46,7 @@ For a distributed transverse surface loading $f$,
 * Moment equilibrium: $\div \bM + \bQ = 0$
 
 In weak form:
+
 $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f w \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}$$
 
 ### Isotropic linear elastic constitutive relation
@@ -72,11 +75,18 @@ import ufl
 from mpi4py import MPI
 from dolfinx import fem, io
 import dolfinx.fem.petsc
-from dolfinx.mesh import create_unit_square, CellType, locate_entities_boundary
+from dolfinx.mesh import (
+    create_unit_square,
+    CellType,
+    DiagonalType,
+    locate_entities_boundary,
+)
 
 
 N = 10
-mesh = create_unit_square(MPI.COMM_WORLD, N, N, CellType.triangle)
+domain = create_unit_square(
+    MPI.COMM_WORLD, N, N, cell_type=CellType.triangle, diagonal=DiagonalType.crossed
+)
 ```
 
 Next we define material properties and functions which will be used for defining the variational formulation.
@@ -88,12 +98,12 @@ E = 210.0e3
 nu = 0.3
 
 # bending stiffness
-D = fem.Constant(mesh, E * thick**3 / (1 - nu**2) / 12.0)
+D = fem.Constant(domain, E * thick**3 / (1 - nu**2) / 12.0)
 # shear stiffness
-F = fem.Constant(mesh, E / 2 / (1 + nu) * thick * 5.0 / 6.0)
+F = fem.Constant(domain, E / 2 / (1 + nu) * thick * 5.0 / 6.0)
 
 # uniform transversal load
-f = fem.Constant(mesh, -100.0)
+f = fem.Constant(domain, -100.0)
 
 
 # Useful function for defining strains and stresses
@@ -122,9 +132,9 @@ Now we define the corresponding function space. Our dofs are $w$ and $\btheta$, 
 
 ```{code-cell} ipython3
 # Definition of function space for U:displacement, T:rotation
-Ue = ufl.FiniteElement("P", mesh.ufl_cell(), 2)
-Te = ufl.VectorElement("P", mesh.ufl_cell(), 1)
-V = fem.FunctionSpace(mesh, ufl.MixedElement([Ue, Te]))
+Ue = ufl.FiniteElement("P", domain.ufl_cell(), 2)
+Te = ufl.VectorElement("P", domain.ufl_cell(), 1)
+V = fem.functionspace(domain, ufl.MixedElement([Ue, Te]))
 
 # Functions
 u = fem.Function(V, name="Unknown")
@@ -133,7 +143,7 @@ u_ = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 
 # Linear and bilinear forms
-dx = ufl.Measure("dx", domain=mesh)
+dx = ufl.Measure("dx", domain=domain)
 L = f * w_ * dx
 a = (
     ufl.dot(bending_moment(u_), curvature(du))
@@ -153,14 +163,18 @@ def border(x):
 
 
 facet_dim = 1
-clamped_facets = locate_entities_boundary(mesh, facet_dim, border)
+clamped_facets = locate_entities_boundary(domain, facet_dim, border)
 clamped_dofs = fem.locate_dofs_topological(V, facet_dim, clamped_facets)
 
 u0 = fem.Function(V)
 bcs = [fem.dirichletbc(u0, clamped_dofs)]
 ```
 
-We now solve the problem and output the result. To get the deflection $w$, we use `u.sub(0).collapse()` to extract a new function living in the corresponding subspace. Note that `u.sub(0)` provides only an indexed view of the $w$ component of `u`.
+We now solve the problem and output the result. To get the deflection $w$, we use `u.sub(0).collapse()` to extract a new function living in the corresponding subspace. Note that `u.sub(0)` provides only an indexed view of the $w$ component of `u`. The computed results is compared with the analytical maximum deflection of a clamped Love-Kirchhoff plate:
+
+$$
+w_\text{LK} = 1.265319087.10^{-3} \dfrac{f}{\mathsf{D}}
+$$
 
 ```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
@@ -168,7 +182,7 @@ problem = fem.petsc.LinearProblem(
 )
 problem.solve()
 
-with io.VTKFile(mesh.comm, "plates.xdmf", "w") as vtk:
+with io.VTKFile(domain.comm, "plates.xdmf", "w") as vtk:
     w = u.sub(0).collapse()
     w.name = "Deflection"
     vtk.write_function(w)
@@ -178,13 +192,61 @@ print(f"Reissner-Mindlin deflection: {max(abs(w.vector.array)):.5f}")
 print(f"Love-Kirchhoff deflection: {w_LK:.5f}")
 ```
 
+```{warning}
+This simple formulation may suffer from **shear locking** issues in the thin plate limit. We refer to the various plate tours dedicated to this specific issue for more accurate treatment of plate shear locking.
+```
+
+We can plot the plate deflection $w$ and the rotation vector $\boldsymbol{\beta} = \boldsymbol{e}_z\times \btheta$ using `pyvista`. $\boldsymbol{\beta}$ represents the axis vector around which the plate is rotating.
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+import pyvista
+from dolfinx import plot
+
+pyvista.set_jupyter_backend("static")
+
+Vw = w.function_space
+w_topology, w_cell_types, w_geometry = plot.vtk_mesh(Vw)
+w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)
+w_grid.point_data["Deflection"] = w.x.array
+w_grid.set_active_scalars("Deflection")
+warped = w_grid.warp_by_scalar("Deflection", factor=5)
+
+plotter = pyvista.Plotter()
+plotter.add_mesh(
+    warped,
+    show_scalar_bar=True,
+    scalars="Deflection",
+)
+edges = warped.extract_all_edges()
+plotter.add_mesh(edges, color="k", line_width=1)
+plotter.show()
+
+theta = u.sub(1).collapse()
+Vt = theta.function_space
+theta_topology, theta_cell_types, theta_geometry = plot.vtk_mesh(Vt)
+theta_grid = pyvista.UnstructuredGrid(theta_topology, theta_cell_types, theta_geometry)
+beta_3D = np.zeros((theta_geometry.shape[0], 3))
+beta_3D[:, :2] = theta.x.array.reshape(-1, 2) @ np.array([[0, -1], [1, 0]])
+theta_grid["beta"] = beta_3D
+theta_grid.set_active_vectors("beta")
+
+plotter = pyvista.Plotter()
+plotter.add_mesh(
+    theta_grid.arrows, lighting=False, scalar_bar_args={"title": "Rotation Magnitude"}
+)
+plotter.add_mesh(theta_grid, color="grey", ambient=0.6, opacity=0.5, show_edges=True)
+plotter.show()
+```
+
 ## Modal analysis
 
 Now we define the form corresponding to the definition of the mass matrix and we assemble the stiffness and mass forms into corresponding PETSc matrix objects. We use a value of 1 on the diagonal for K and 0 for M for the rows corresponding to the boundary conditions. Doing so, eigenvalues associated to boundary conditions are equal to infinity and will not pollute the low-frequency spectrum.
 
 ```{code-cell} ipython3
-rho = fem.Constant(mesh, 1.0)
-m_form = rho * ufl.dot(du, u_) * dx
+rho = fem.Constant(domain, 2700.0)
+m_form = rho * thick * ufl.dot(du, u_) * dx
 
 K = fem.petsc.assemble_matrix(fem.form(a), bcs, diagonal=1)
 K.assemble()
@@ -210,12 +272,38 @@ eigensolver = solve_GEP_shiftinvert(
 # Extract results
 (eigval, eigvec_r, eigvec_i) = EPS_get_spectrum(eigensolver, V)
 # Output eigenmodes
-with io.VTKFile(mesh.comm, "plates_eigenvalues.xdmf", "w") as vtk:
+with io.VTKFile(domain.comm, "plates_eigenvalues.xdmf", "w") as vtk:
     for i in range(N_eig):
         w = eigvec_r[i].sub(0).collapse()
         w.name = "Deflection"
         vtk.write_function(w, i)
-    w = u.sub(0).collapse()
-    w.name = "Deflection"
-    vtk.write_function(w, i)
+```
+
+The eigenmodes look as follows using `pyvista`:
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)
+
+pl = pyvista.Plotter(shape=(2, 3))
+for i in range(2):
+    for j in range(3):
+        pl.subplot(i, j)
+        current_index = 3 * i + j
+        eigenmode = f"eigenmode_{current_index:02}"
+        pl.add_text(
+            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index]))/2/np.pi*1e3:.1f} Hz",
+            font_size=10,
+        )
+        wi = eigvec_r[current_index].sub(0).collapse()
+        w_grid[eigenmode] = wi.x.array
+        pl.add_mesh(
+            w_grid.warp_by_scalar(eigenmode, factor=10.0),
+            scalars=eigenmode,
+            show_scalar_bar=False,
+            specular=0.5,
+            specular_power=30,
+        )
+pl.show()
 ```
