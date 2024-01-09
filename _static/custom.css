@@ -36,13 +36,6 @@ h3 {
     color: var(--my-blue) !important
 }
 
-.custom-admonition {
-    border: 2px solid rgb(85, 1, 85);
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 5px;
-    position: relative;
-}
 
 .admonition.objectives {
   border-color: var(--my-pink);
