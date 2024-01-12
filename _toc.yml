@@ -3,7 +3,7 @@
 
 format: jb-book
 root: index
-title: My alternate page title
+title: Numerical tours of Computational Mechanics using FEniCSx
 parts:
 - caption: Introduction
   chapters:
@@ -14,14 +14,14 @@ parts:
   chapters:
   - file: tours/linear_problems/contents
     sections:
-    - file: tours/linear_problems/isotropic_orthotropic_elasticity.md
-    - file: tours/linear_problems/axisymmetric_elasticity.md
-    - file: tours/linear_problems/thermoelasticity_weak.md
-    - file: tours/linear_problems/thermoelasticity_full.md
+    - file: tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md
+    - file: tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md
+    - file: tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md
+    - file: tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md
 - caption: Tips and tricks
   chapters:
-  - file: tips/mark_facets.md
-  - file: tips/import_msh.md
-  - file: tips/piecewise_constant_field.md
-  - file: tips/mass_lumping.md
-  - file: tips/quadrature_schemes.md
+  - file: tips/mark_facets/mark_facets.md
+  - file: tips/import_msh/import_msh.md
+  - file: tips/piecewise_constant_field/piecewise_constant_field.md
+  - file: tips/mass_lumping/mass_lumping.md
+  - file: tips/quadrature_schemes/quadrature_schemes.md

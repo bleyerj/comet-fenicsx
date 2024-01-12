@@ -56,7 +56,7 @@ sphinx:
       repository_url: https://github.com/bleyerj/comet-fenicsx
       use_edit_page_button: true
       use_repository_button: true
-      use_issues_button: true
+      use_download_button: false
 parse:
   myst_enable_extensions:
     - "amsmath"

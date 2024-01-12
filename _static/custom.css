@@ -51,6 +51,21 @@ h3 {
   color: var(--my-pink);
 }
 
+.admonition.download {
+  border-color: var(--my-blue);
+}
+.admonition.download > .admonition-title {
+  border-color: var(--my-blue);
+}
+.admonition.download > .admonition-title::before {
+  background-color: rgba(var(--my-blue), 0.25);
+}
+.admonition.download > .admonition-title::after {
+  content: "\f019";
+  color: var(--my-blue);
+}
+
+
 button.theme-switch-button {
     display: none !important;
 }
