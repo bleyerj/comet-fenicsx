@@ -20,9 +20,9 @@ These numerical tours will introduce you to a wide variety of topics in computat
 This book is organized in the following different parts:
 ### Introduction
 This part contains a set of short numerical tours to get introduced to `FEniCSx` via basic examples:
-  - a [linear elasticity problem](intro/linear_elasticity.md)
-  - a [non-linear elasticity problem](intro/hyperelasticity.md)
-  - a [multi-field plate problem](intro/plates.md)
+  - a [linear elasticity problem](intro/linear_elasticity/linear_elasticity.md)
+  - a [non-linear elasticity problem](intro/hyperelasticity/hyperelasticity.md)
+  - a [multi-field plate problem](intro/plates/plates.md)
 
 ```{seealso}
 For another general introduction to `FEniCSx`, we heavily recommend to follow the "official" [FEniCSx tutorial](https://jsdokken.com/dolfinx-tutorial/index.html) by Jørgen S. Dokken.
