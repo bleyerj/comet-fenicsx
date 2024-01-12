@@ -7,7 +7,7 @@ jupytext:
     jupytext_version: 1.16.0
 ---
 
-# Shear-locking in thick plate models with quadrilateral elements
+# Shear-locking in thick plate models with quadrilateral elements  {far}`star`
 
 ```{admonition} Objectives
 :class: objectives
