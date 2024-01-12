@@ -18,6 +18,9 @@ parts:
     - file: tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md
     - file: tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md
     - file: tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md
+  - file: tours/plates/contents
+    sections:
+    - file: tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets/mark_facets.md
