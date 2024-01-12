@@ -121,7 +121,7 @@ $$
 where $\lambda,\mu$ are the Lamé parameters and $\alpha$ is the thermal expansion coefficient. As regards the current problem, the last term corresponding to the thermal strains is completely known. The following formulation can thus be generalized to any kind of known initial stress or eigenstrain state such as pre-stress or phase changes.
 
 ```{note}
-The weak formulation for the mechanical problem builds upon the presentation of the [](/intro/linear_elasticity.md) tour. 
+The weak formulation for the mechanical problem builds upon the presentation of the [](/intro/linear_elasticity/linear_elasticity.md) tour. 
 The main difference lies in the presence of the temperature term in the constitutive relation which introduces a linear term with respect to the TestFunction {code}`u_` when writing the work of internal forces {code}`ufl.inner(sigma(du, Delta_T), eps(u_)) * ufl.dx`. As a result, the bilinear form is extracted using the left-hand side {code}`ufl.lhs` function whereas the thermal strain term, acting as a loading term, is extracted using the right-hand side {code}`ufl.rhs` function and added to the work of external forces when defining the linear form {code}`LM`.
 ```
 

@@ -7,9 +7,9 @@ title: My alternate page title
 parts:
 - caption: Introduction
   chapters:
-  - file: intro/linear_elasticity.md
-  - file: intro/hyperelasticity.md
-  - file: intro/plates.md
+  - file: intro/linear_elasticity/linear_elasticity.md
+  - file: intro/hyperelasticity/hyperelasticity.md
+  - file: intro/plates/plates.md
 - caption: Tours
   chapters:
   - file: tours/linear_problems/contents

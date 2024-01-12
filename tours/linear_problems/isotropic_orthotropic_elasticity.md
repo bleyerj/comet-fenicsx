@@ -34,7 +34,7 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 ```
 
 ```{seealso}
-The [Linear Elasticity introduction tour](/intro/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
+The [Linear Elasticity introduction tour](/intro/linear_elasticity/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
 ```
 
 ## Variational formulation

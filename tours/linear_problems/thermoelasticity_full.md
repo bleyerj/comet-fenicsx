@@ -107,7 +107,7 @@ We now define the relevant function space for the considered problem. Since we w
 
 ```{seealso}
 
-For an introduction on the use of mixed function spaces, check out the tutorials on the [mixed Poisson equation](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_mixed-poisson.html) or the [Stokes problem](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html) of the official documentation or the [](/intro/plates) tour in this book.
+For an introduction on the use of mixed function spaces, check out the tutorials on the [mixed Poisson equation](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_mixed-poisson.html) or the [Stokes problem](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html) of the official documentation or the [](/intro/plates/plates.md) tour in this book.
 ```
 
 ```{code-cell} ipython3
