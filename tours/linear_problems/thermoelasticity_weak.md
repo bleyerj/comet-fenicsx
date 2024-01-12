@@ -23,7 +23,7 @@ In this tour, we will solve a linear thermoelastic problem. In permanent regime,
 ```
 
 ```{seealso}
-*Full* thermomechanical coupling for a transient evolution problem is treated [in this tour](/tours/linear_problems/thermoelasticity_full.md_transient.ipynb).
+*Full* thermomechanical coupling for a transient evolution problem is treated [in this tour](/tours/linear_problems/thermoelasticity_full.md).
 ```
 
 In the present setting, the temperature field can be either given as a `Constant` or an `Expression` throughout the domain or obtained as the solution of a steady-state heat (Poisson) equation. This last case will be implemented in this tour.

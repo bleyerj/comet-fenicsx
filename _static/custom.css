@@ -50,3 +50,7 @@ h3 {
   content: "\f140";
   color: var(--my-pink);
 }
+
+button.theme-switch-button {
+    display: none !important;
+}
