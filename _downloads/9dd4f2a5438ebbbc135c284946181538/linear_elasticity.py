@@ -13,6 +13,7 @@
 # ---
 
 # # Linear elasticity
+#
 # ```{admonition} Objectives
 # :class: objectives
 #
@@ -95,6 +96,7 @@ print(f"Mesh topology dimension d={dim}.")
 # -
 
 # Next, we define the finite-element `FunctionSpace` for our wanted solution `u_sol`. Here, we use a vector function space of type `"P"` (Polynomial), which implies standard Lagrange elements of degree `deg=2` here.
+#
 # ```{note}
 # The keyword `"Lagrange"` also works instead of `"P"`.
 # ```
