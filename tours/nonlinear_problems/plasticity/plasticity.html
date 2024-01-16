@@ -1,0 +1,843 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>&lt;no title&gt; &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/plasticity/plasticity';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Introduction</a></li>
+
+
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/plasticity/plasticity.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1><no title></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <p>Implementation of 2D elasto-plastic problem using FEniCS-X. The code is based on a <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/2D_plasticity/vonMises_plasticity.py.html">legacy solution</a> for FEniCS 2019.</p>
+<p>The program was tested for 0.3.1.0 version of Dolfinx.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">import</span> <span class="nn">gmsh</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">import</span> <span class="nn">ufl</span>
+<span class="kn">import</span> <span class="nn">basix</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
+<span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
+<span class="kn">from</span> <span class="nn">petsc4py</span> <span class="kn">import</span> <span class="n">PETSc</span>
+
+<span class="n">hsize</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="n">Re</span> <span class="o">=</span> <span class="mf">1.3</span>
+<span class="n">Ri</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.Terminal&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># to disable meshing info</span>
+    <span class="n">gdim</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">model_rank</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">)</span>
+
+    <span class="n">geom</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">geo</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Ri</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Re</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">p3</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">p4</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Ri</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">x_radius</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+    <span class="n">outer_circ</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_circle_arc</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">p3</span><span class="p">)</span>
+    <span class="n">y_radius</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">)</span>
+    <span class="n">inner_circ</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_circle_arc</span><span class="p">(</span><span class="n">p4</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+
+    <span class="n">boundary</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_curve_loop</span><span class="p">([</span><span class="n">x_radius</span><span class="p">,</span> <span class="n">outer_circ</span><span class="p">,</span> <span class="n">y_radius</span><span class="p">,</span> <span class="n">inner_circ</span><span class="p">])</span>
+    <span class="n">surf</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_plane_surface</span><span class="p">([</span><span class="n">boundary</span><span class="p">])</span>
+
+    <span class="n">geom</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMin&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMax&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
+
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="p">[</span><span class="n">surf</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">x_radius</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">y_radius</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">outer_circ</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+
+
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
+
+    <span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span>
+    <span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># elastic parameters</span>
+
+<span class="n">sig0_dim</span> <span class="o">=</span> <span class="mf">1.</span> <span class="c1">#[Pa]</span>
+<span class="n">Ri_dim</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1">#[m]</span>
+
+<span class="n">E</span> <span class="o">=</span> <span class="mf">70e3</span> <span class="o">/</span> <span class="n">sig0_dim</span>
+<span class="n">nu</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">lmbda</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">nu</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">nu</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">nu</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">E</span><span class="o">/</span><span class="mf">2.</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">nu</span><span class="p">)</span> <span class="c1">#fem.Constant(mesh, PETSc.ScalarType(E/2./(1+nu)))</span>
+<span class="n">sig0</span> <span class="o">=</span> <span class="mi">250</span> <span class="o">/</span> <span class="n">sig0_dim</span> <span class="c1">#fem.Constant(mesh, PETSc.ScalarType(250 / sig0_dim))  # yield strength</span>
+<span class="n">Et</span> <span class="o">=</span> <span class="n">E</span><span class="o">/</span><span class="mf">100.</span>  <span class="c1"># tangent modulus</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">Et</span><span class="o">/</span><span class="p">(</span><span class="n">E</span><span class="o">-</span><span class="n">Et</span><span class="p">)</span>  <span class="c1"># hardening modulus</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">deg_u</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">deg_quad</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">deg_u</span><span class="p">,</span> <span class="n">shape</span><span class="p">))</span>
+<span class="n">W0e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FiniteElement</span><span class="p">(</span>
+    <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
+    <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span><span class="p">,</span>
+    <span class="n">quad_scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">We</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span>
+    <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
+    <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span><span class="p">,</span>
+    <span class="n">dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">quad_scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">We</span><span class="p">)</span>
+<span class="n">W0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">W0e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sig</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="n">sig_old</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="n">n_elas</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W0</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Cumulative_plastic_strain&quot;</span><span class="p">)</span>
+<span class="n">dp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W0</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Total_displacement&quot;</span><span class="p">)</span>
+<span class="n">du</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Iteration_correction&quot;</span><span class="p">)</span>
+<span class="n">Du</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Current_increment&quot;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+<span class="n">P0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">p_avg</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Plastic_strain&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Vx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">Vy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">bottom_dofsy</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Vy</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">top_dofsx</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vx</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># used for post-processing</span>
+<span class="n">bottom_dofsx</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vx</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">u0x</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vx</span><span class="p">)</span>
+<span class="n">u0y</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vy</span><span class="p">)</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0x</span><span class="p">,</span> <span class="n">top_dofsx</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0y</span><span class="p">,</span> <span class="n">bottom_dofsy</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetNormal</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">q_lim</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">2</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Re</span><span class="o">/</span><span class="n">Ri</span><span class="p">)</span><span class="o">*</span><span class="n">sig0</span><span class="p">)</span>
+
+<span class="n">loading</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+
+
+
+<span class="k">def</span> <span class="nf">eps</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">([[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+                          <span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+<span class="k">def</span> <span class="nf">sigma</span><span class="p">(</span><span class="n">eps_el</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lmbda</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">eps_el</span><span class="p">)</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">eps_el</span>
+
+<span class="k">def</span> <span class="nf">as_3D_tensor</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">([[</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+                          <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+                          <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]]])</span>
+
+<span class="n">ppos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">/</span><span class="mf">2.</span>
+<span class="k">def</span> <span class="nf">proj_sig</span><span class="p">(</span><span class="n">deps</span><span class="p">,</span> <span class="n">old_sig</span><span class="p">,</span> <span class="n">old_p</span><span class="p">):</span>
+    <span class="n">sig_n</span> <span class="o">=</span> <span class="n">as_3D_tensor</span><span class="p">(</span><span class="n">old_sig</span><span class="p">)</span>
+    <span class="n">sig_elas</span> <span class="o">=</span> <span class="n">sig_n</span> <span class="o">+</span> <span class="n">sigma</span><span class="p">(</span><span class="n">deps</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dev</span><span class="p">(</span><span class="n">sig_elas</span><span class="p">)</span>
+    <span class="n">sig_eq</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mf">2.</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+    <span class="n">f_elas</span> <span class="o">=</span> <span class="n">sig_eq</span> <span class="o">-</span> <span class="n">sig0</span> <span class="o">-</span> <span class="n">H</span><span class="o">*</span><span class="n">old_p</span>
+    <span class="n">dp</span> <span class="o">=</span> <span class="n">ppos</span><span class="p">(</span><span class="n">f_elas</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">+</span><span class="n">H</span><span class="p">)</span>
+    <span class="n">n_elas</span> <span class="o">=</span> <span class="n">s</span><span class="o">/</span><span class="n">sig_eq</span><span class="o">*</span><span class="n">ppos</span><span class="p">(</span><span class="n">f_elas</span><span class="p">)</span><span class="o">/</span><span class="n">f_elas</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">dp</span><span class="o">/</span><span class="n">sig_eq</span>
+    <span class="n">new_sig</span> <span class="o">=</span> <span class="n">sig_elas</span><span class="o">-</span><span class="n">beta</span><span class="o">*</span><span class="n">s</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">new_sig</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">new_sig</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">new_sig</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">new_sig</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> \
+           <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">n_elas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">n_elas</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">n_elas</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">n_elas</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]),</span> \
+           <span class="n">beta</span><span class="p">,</span> <span class="n">dp</span>       
+
+<span class="k">def</span> <span class="nf">sigma_tang</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="n">N_elas</span> <span class="o">=</span> <span class="n">as_3D_tensor</span><span class="p">(</span><span class="n">n_elas</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sigma</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">+</span><span class="n">H</span><span class="p">)</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">N_elas</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">N_elas</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">beta</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">dev</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facets</span><span class="p">)</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span>
+    <span class="s2">&quot;dx&quot;</span><span class="p">,</span>
+    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="n">deg_quad</span><span class="p">,</span> <span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">tangent_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">eps</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">sigma_tang</span><span class="p">(</span><span class="n">eps</span><span class="p">(</span><span class="n">u_</span><span class="p">)))</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="n">Residual</span> <span class="o">=</span> <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">eps</span><span class="p">(</span><span class="n">u_</span><span class="p">),</span> <span class="n">as_3D_tensor</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">-</span> <span class="n">loading</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">u_</span>
+<span class="p">)</span> <span class="o">*</span> <span class="n">ds</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basix_celltype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">CellType</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">cell_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">quadrature_points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">make_quadrature</span><span class="p">(</span><span class="n">basix_celltype</span><span class="p">,</span> <span class="n">deg_quad</span><span class="p">)</span>
+
+<span class="n">map_c</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+<span class="n">num_cells</span> <span class="o">=</span> <span class="n">map_c</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">map_c</span><span class="o">.</span><span class="n">num_ghosts</span>
+<span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">interpolate_quadrature</span><span class="p">(</span><span class="n">ufl_expr</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+    <span class="n">expr_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">ufl_expr</span><span class="p">,</span> <span class="n">quadrature_points</span><span class="p">)</span>
+    <span class="n">expr_eval</span> <span class="o">=</span> <span class="n">expr_expr</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
+    <span class="n">function</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">expr_eval</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:]</span>
+
+
+<span class="k">class</span> <span class="nc">CustomLinearProblem</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">assemble_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Assemble rhs</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">localForm</span><span class="p">()</span> <span class="k">as</span> <span class="n">b_loc</span><span class="p">:</span>
+            <span class="n">b_loc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">)</span>
+
+        <span class="c1"># Apply boundary conditions to the rhs</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">apply_lifting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">],</span> <span class="n">bcs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">REVERSE</span><span class="p">)</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">assemble_lhs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="o">.</span><span class="n">zeroEntries</span><span class="p">()</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix_mat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">solve_system</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Solve linear system and update ghost values in the solution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+
+
+<span class="n">tangent_problem</span> <span class="o">=</span> <span class="n">CustomLinearProblem</span><span class="p">(</span><span class="n">tangent_form</span><span class="p">,</span> <span class="n">Residual</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">du</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span>
+                                                                     <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
+                                                                     <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Nitermax</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">1e-6</span>  <span class="c1"># parameters of the Newton-Raphson procedure</span>
+<span class="n">Nincr</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">load_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">**</span> <span class="mf">0.5</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">load_steps</span> <span class="o">=</span> <span class="n">load_steps</span>
+<span class="c1"># xdmf = io.XDMFFile(MPI.COMM_WORLD, &quot;plasticity.xdmf&quot;, &quot;w&quot;, encoding=io.XDMFFile.Encoding.HDF5)</span>
+<span class="c1"># xdmf.write_mesh(mesh)</span>
+
+<span class="n">sig</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">sig_old</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">n_elas</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">beta</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+<span class="n">deps</span> <span class="o">=</span> <span class="n">eps</span><span class="p">(</span><span class="n">Du</span><span class="p">)</span>
+<span class="n">sig_</span><span class="p">,</span> <span class="n">n_elas_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">dp_</span> <span class="o">=</span> <span class="n">proj_sig</span><span class="p">(</span><span class="n">deps</span><span class="p">,</span> <span class="n">sig_old</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+
+
+<span class="n">return_mapping_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">load_steps</span><span class="p">)))</span>
+
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">load_steps</span><span class="p">):</span>
+    <span class="n">return_mapping_times_tmp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">loading</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">q_lim</span>
+
+    <span class="n">tangent_problem</span><span class="o">.</span><span class="n">assemble_rhs</span><span class="p">()</span>
+    <span class="n">nRes0</span> <span class="o">=</span> <span class="n">tangent_problem</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+
+    <span class="n">nRes</span> <span class="o">=</span> <span class="n">nRes0</span>
+    <span class="n">Du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">if</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">nRes0 , </span><span class="si">{</span><span class="n">nRes0</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> Increment: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="si">}</span><span class="s2">, load = </span><span class="si">{</span><span class="n">t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">q_lim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">niter</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span> <span class="n">nRes</span> <span class="o">/</span> <span class="n">nRes0</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">niter</span> <span class="o">&lt;</span> <span class="n">Nitermax</span><span class="p">:</span>
+        <span class="n">tangent_problem</span><span class="o">.</span><span class="n">assemble_lhs</span><span class="p">()</span>
+        <span class="n">tangent_problem</span><span class="o">.</span><span class="n">solve_system</span><span class="p">()</span>
+
+        <span class="n">Du</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">du</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>  <span class="c1"># Du = Du + 1*du</span>
+        <span class="n">Du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+
+        <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">sig_</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
+        <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">n_elas_</span><span class="p">,</span> <span class="n">n_elas</span><span class="p">)</span>
+        <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">beta_</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+        <span class="n">tangent_problem</span><span class="o">.</span><span class="n">assemble_rhs</span><span class="p">()</span>
+        <span class="n">nRes</span> <span class="o">=</span> <span class="n">tangent_problem</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Residual: </span><span class="si">{</span><span class="n">nRes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">niter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Du</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>  <span class="c1"># u = u + 1*Du</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+
+    <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">dp_</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dp</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+
+    <span class="n">sig_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
+
+
+    <span class="c1"># if len(points_on_proc) &gt; 0:</span>
+    <span class="c1">#     results[i + 1, :] = (u.eval(points_on_proc, cells)[0], t)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">line</span> <span class="mi">17</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">beta</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">deps</span> <span class="o">=</span> <span class="n">eps</span><span class="p">(</span><span class="n">Du</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">17</span> <span class="n">sig_</span><span class="p">,</span> <span class="n">n_elas_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">dp_</span> <span class="o">=</span> <span class="n">proj_sig</span><span class="p">(</span><span class="n">deps</span><span class="p">,</span> <span class="n">sig_old</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="n">return_mapping_times</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">load_steps</span><span class="p">)))</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">load_steps</span><span class="p">):</span>
+
+<span class="nn">Cell In[7], line 29,</span> in <span class="ni">proj_sig</span><span class="nt">(deps, old_sig, old_p)</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="n">sig_eq</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mf">2.</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+<span class="g g-Whitespace">     </span><span class="mi">28</span> <span class="n">f_elas</span> <span class="o">=</span> <span class="n">sig_eq</span> <span class="o">-</span> <span class="n">sig0</span> <span class="o">-</span> <span class="n">H</span><span class="o">*</span><span class="n">old_p</span>
+<span class="ne">---&gt; </span><span class="mi">29</span> <span class="n">dp</span> <span class="o">=</span> <span class="n">ppos</span><span class="p">(</span><span class="n">f_elas</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">+</span><span class="n">H</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">30</span> <span class="n">n_elas</span> <span class="o">=</span> <span class="n">s</span><span class="o">/</span><span class="n">sig_eq</span><span class="o">*</span><span class="n">ppos</span><span class="p">(</span><span class="n">f_elas</span><span class="p">)</span><span class="o">/</span><span class="n">f_elas</span>
+<span class="g g-Whitespace">     </span><span class="mi">31</span> <span class="n">beta</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">mu</span><span class="o">*</span><span class="n">dp</span><span class="o">/</span><span class="n">sig_eq</span>
+
+<span class="nn">Cell In[7], line 22,</span> in <span class="ni">&lt;lambda&gt;</span><span class="nt">(x)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="k">def</span> <span class="nf">as_3D_tensor</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span>     <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">([[</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+<span class="g g-Whitespace">     </span><span class="mi">19</span>                           <span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">],</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span>                           <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="mi">2</span><span class="p">]]])</span>
+<span class="ne">---&gt; </span><span class="mi">22</span> <span class="n">ppos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">/</span><span class="mf">2.</span>
+<span class="g g-Whitespace">     </span><span class="mi">23</span> <span class="k">def</span> <span class="nf">proj_sig</span><span class="p">(</span><span class="n">deps</span><span class="p">,</span> <span class="n">old_sig</span><span class="p">,</span> <span class="n">old_p</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">sig_n</span> <span class="o">=</span> <span class="n">as_3D_tensor</span><span class="p">(</span><span class="n">old_sig</span><span class="p">)</span>
+
+<span class="ne">AttributeError</span>: module &#39;ufl&#39; has no attribute &#39;abs&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_on_proc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">results</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">results</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Displacement of inner boundary&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Applied pressure $q/q_</span><span class="si">{lim}</span><span class="s2">$&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;displacement_rank</span><span class="si">{</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span><span class="si">:</span><span class="s2">d</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">37</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">points_on_proc</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">results</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">results</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;-o&quot;</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;points_on_proc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/nonlinear_problems/plasticity"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="simple visible nav section-nav flex-column">
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

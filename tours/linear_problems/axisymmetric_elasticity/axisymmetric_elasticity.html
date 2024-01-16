@@ -192,6 +192,10 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture</a></li>
+</ul>
+</li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
 <ul class="nav bd-sidenav">
@@ -396,7 +400,7 @@ document.write(`
 <p>We will consider a solid of revolution around a fixed axis <span class="math notranslate nohighlight">\((Oz)\)</span>, the loading, boundary conditions and material properties being also invariant with respect to a rotation along the symmetry axis. The solid cross-section in a plane <span class="math notranslate nohighlight">\(\theta=\text{cst}\)</span> will be represented by a two-dimensional domain <span class="math notranslate nohighlight">\(\omega\)</span>. With such a 2D mesh, the first spatial variable (<code class="docutils literal notranslate"><span class="pre">x[0]</span></code> in <code class="docutils literal notranslate"><span class="pre">UFL</span></code>) will represent the radial coordinate <span class="math notranslate nohighlight">\(r\)</span> whereas the second spatial variable (<code class="docutils literal notranslate"><span class="pre">x[1]</span></code>) will denote the axial variable <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <section id="problem-position">
 <h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
-<p>We will investigate here the case of a hollow hemisphere of inner (resp. outer) radius <span class="math notranslate nohighlight">\(R_i\)</span> (resp. <span class="math notranslate nohighlight">\(R_e\)</span>). Due to the revolution symmetry, the 2D cross-section corresponds to a quarter of a hollow cylinder.</p>
+<p>We will investigate here the case of a hollow hemisphere of inner (resp. outer) radius <span class="math notranslate nohighlight">\(R_i\)</span> (resp. <span class="math notranslate nohighlight">\(R_e\)</span>). We impose an external pressure on the outer radius boundary. Due to the revolution symmetry, the 2D cross-section corresponds to a quarter of a hollow cylinder.</p>
 <p>We first import the relevant modules.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -452,9 +456,9 @@ document.write(`
 <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMax&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
 
 <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="p">[</span><span class="n">surf</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">x_radius</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">y_radius</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">outer_circ</span><span class="p">],</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">x_radius</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">y_radius</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">outer_circ</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
 
 
 <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
@@ -462,7 +466,6 @@ document.write(`
 <span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
     <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span>
 <span class="p">)</span>
-<span class="n">facets</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Facet markers&quot;</span>
 <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
 </pre></div>
 </div>

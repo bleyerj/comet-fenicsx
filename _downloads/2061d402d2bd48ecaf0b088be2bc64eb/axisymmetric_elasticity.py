@@ -54,7 +54,7 @@
 #
 # ## Problem position
 #
-# We will investigate here the case of a hollow hemisphere of inner (resp. outer) radius $R_i$ (resp. $R_e$). Due to the revolution symmetry, the 2D cross-section corresponds to a quarter of a hollow cylinder.
+# We will investigate here the case of a hollow hemisphere of inner (resp. outer) radius $R_i$ (resp. $R_e$). We impose an external pressure on the outer radius boundary. Due to the revolution symmetry, the 2D cross-section corresponds to a quarter of a hollow cylinder.
 #
 # We first import the relevant modules.
 
@@ -104,9 +104,9 @@ gmsh.option.setNumber("Mesh.CharacteristicLengthMin", hsize)
 gmsh.option.setNumber("Mesh.CharacteristicLengthMax", hsize)
 
 gmsh.model.addPhysicalGroup(gdim, [surf], 1)
-gmsh.model.addPhysicalGroup(gdim - 1, [x_radius], 1)
-gmsh.model.addPhysicalGroup(gdim - 1, [y_radius], 2)
-gmsh.model.addPhysicalGroup(gdim - 1, [outer_circ], 3)
+gmsh.model.addPhysicalGroup(gdim - 1, [x_radius], 1, name="bottom")
+gmsh.model.addPhysicalGroup(gdim - 1, [y_radius], 2, name="left")
+gmsh.model.addPhysicalGroup(gdim - 1, [outer_circ], 3, name="outer")
 
 
 gmsh.model.mesh.generate(gdim)
@@ -114,7 +114,6 @@ gmsh.model.mesh.generate(gdim)
 domain, _, facets = io.gmshio.model_to_mesh(
     gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
 )
-facets.name = "Facet markers"
 gmsh.finalize()
 # -
 

@@ -46,7 +46,7 @@ We will assume that the evolution is quasi-static and will hence neglect inertia
 
 ```{seealso}
 
-Static elastic computation with thermal strains is treated in the [](/tours/linear_problems/thermoelasticity_weak.md) tour.
+Static elastic computation with thermal strains is treated in the [](/tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md) tour.
 ```
 
 ## Problem position
@@ -95,17 +95,17 @@ gmsh.option.setNumber("Mesh.CharacteristicLengthMax", L / N)
 
 volumes = gmsh.model.getEntities(gdim)
 assert len(volumes) == 1
-gmsh.model.addPhysicalGroup(gdim, [volumes[i][1] for i in range(len(volumes))], 1)
-gmsh.model.setPhysicalName(gdim, 1, "Volume")
+gmsh.model.addPhysicalGroup(
+    gdim, [volumes[i][1] for i in range(len(volumes))], 1, name="Volume"
+)
 
-gmsh.model.addPhysicalGroup(gdim - 1, [1], 1)  # inner circle surface
-gmsh.model.addPhysicalGroup(gdim - 1, [5], 2)  # bottom surface
-gmsh.model.addPhysicalGroup(gdim - 1, [2], 3)  # left surface
-gmsh.model.addPhysicalGroup(gdim - 1, [3, 4], 4)  # right and top surface
+gmsh.model.addPhysicalGroup(gdim - 1, [1], 1, name="inner_circle")
+gmsh.model.addPhysicalGroup(gdim - 1, [5], 2, name="bottom")
+gmsh.model.addPhysicalGroup(gdim - 1, [2], 3, name="left")
+gmsh.model.addPhysicalGroup(gdim - 1, [3, 4], 4, name="right_top")
 gmsh.model.mesh.generate(gdim)
 
 domain, _, facets = model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
-facets.name = "Facet markers"
 
 gmsh.finalize()
 ```
