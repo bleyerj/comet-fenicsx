@@ -12,7 +12,7 @@ def check_source(directory):
         with open(source_list_path, "r") as file:
             try:
                 source_list = yaml.safe_load(file)
-                source_zip = getattr(source_list, "zip", None)
+                source_zip = source_list.get("zip", None)
                 convert_and_zip(directory, source_zip)
             except yaml.YAMLError as e:
                 print(f"Error loading YAML file in {directory}: {e}")
@@ -60,12 +60,16 @@ def convert_and_zip(directory, source_zip=None):
         with zipfile.ZipFile(os.path.join(directory, f"{demo}.zip"), "w") as zip_file:
             zip_file.write(os.path.join(directory, nb_file_name), nb_file_name)
             zip_file.write(os.path.join(directory, py_file_name), py_file_name)
-            if source_zip:
+            if source_zip is not None:
                 if isinstance(source_zip, list):
                     for source in source_zip:
+                        print("File to zip:", source)
                         zip_file.write(os.path.join(directory, source), source)
                 else:
+                    print("File to zip:", source_zip)
                     zip_file.write(os.path.join(directory, source_zip), source_zip)
+            else:
+                print("No other file to zip.")
 
         print(f"Conversion and zip completed for {directory}")
     else:
