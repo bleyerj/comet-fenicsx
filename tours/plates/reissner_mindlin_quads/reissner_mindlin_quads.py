@@ -8,7 +8,7 @@
 #       jupytext_version: 1.16.0
 # ---
 
-# # Shear-locking in thick plate models with quadrilateral elements
+# # Shear-locking in thick plate models with quadrilateral elements  {far}`star`
 #
 # ```{admonition} Objectives
 # :class: objectives
@@ -90,7 +90,7 @@ f = -D / 1.265319087e-3  # with this we have w_Love-Kirchhoff = 1.0
 # `````
 
 deg = 2
-el_type = "S"  # or "Q"s
+el_type = "S"  # or "Q"
 We = ufl.FiniteElement(el_type, domain.ufl_cell(), deg)
 Te = ufl.VectorElement(el_type, domain.ufl_cell(), deg)
 V = fem.functionspace(domain, ufl.MixedElement([We, Te]))
@@ -98,6 +98,7 @@ V = fem.functionspace(domain, ufl.MixedElement([We, Te]))
 
 # Clamped boundary conditions on the lateral boundary are defined as::
 
+# +
 # Boundary of the plate
 def border(x):
     return np.logical_or(
@@ -114,8 +115,10 @@ u0 = fem.Function(V)
 bcs = [fem.dirichletbc(u0, clamped_dofs)]
 
 
+# -
+
 # Some useful functions for implementing generalized constitutive relations are now
-# defined::
+# defined:
 
 # +
 def strain2voigt(eps):
@@ -162,8 +165,7 @@ u_ = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 
 dx = ufl.Measure("dx")
-# dx_shear = ufl.Measure("dx", metadata={"quadrature_degree": 2 * deg - 2})
-dx_shear = dx
+dx_shear = ufl.Measure("dx", metadata={"quadrature_degree": 2 * deg - 2})
 
 L = f * u_[0] * dx
 a = (
@@ -172,7 +174,7 @@ a = (
 )
 # -
 
-# We then solve for the solution and export the relevant fields to XDMF files ::
+# We then solve for the solution and print the deflection normalized with respect to the Love-Kirchhoff thin plate analytical solution:
 
 # +
 problem = fem.petsc.LinearProblem(
@@ -182,11 +184,9 @@ problem.solve()
 
 w = u.sub(0).collapse()
 w.name = "Deflection"
-# -
-
-# The solution is compared to the Kirchhoff analytical solution::
 
 print(f"Reissner-Mindlin FE deflection: {max(abs(w.vector.array)):.5f}")
+# -
 
 # ## Results
 #

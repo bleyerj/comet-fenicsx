@@ -116,6 +116,7 @@ def border(x):
         np.logical_or(np.isclose(x[1], 0), np.isclose(x[1], 1)),
     )
 
+
 facet_dim = 1
 clamped_facets = mesh.locate_entities_boundary(domain, facet_dim, border)
 clamped_dofs = fem.locate_dofs_topological(V, facet_dim, clamped_facets)
