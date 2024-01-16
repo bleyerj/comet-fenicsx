@@ -71,7 +71,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Marking facets with geometrical functions" href="../../../tips/mark_facets/mark_facets.html" />
-    <link rel="prev" title="Nonlinear problems" href="../contents.html" />
+    <link rel="prev" title="Elasto-plastic analysis of a 2D von Mises material" href="../plasticity/plasticity.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -193,7 +193,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Localized 1D solutions in phase-field approach to brittle fracture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
 </ul>
@@ -341,7 +342,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Localized 1D solutions in phase-field approach to brittle fracture</h1>
+    <h1>Localized 1D solutions in phase-field approach to brittle fracture </h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -367,7 +368,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="localized-1d-solutions-in-phase-field-approach-to-brittle-fracture">
-<h1>Localized 1D solutions in phase-field approach to brittle fracture<a class="headerlink" href="#localized-1d-solutions-in-phase-field-approach-to-brittle-fracture" title="Permalink to this heading">#</a></h1>
+<h1>Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#localized-1d-solutions-in-phase-field-approach-to-brittle-fracture" title="Permalink to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This demo demonstrates how to solve a bound-constrained PDE optimization problem using <code class="docutils literal notranslate"><span class="pre">PETSc</span> <span class="pre">TAO</span></code> solver. The application examples involves the computation of localized solutions in the phase-field/damage gradient approach to brittle fracture.
@@ -399,22 +400,22 @@ document.write(`
 </section>
 <section id="problem-position">
 <h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
-<p>We consider a simple 1D bound constrained problem which arise from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span id="id1">[<a class="reference internal" href="#id5" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id6" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
+<p>We consider a simple 1D bound constrained problem which arise from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span id="id1">[<a class="reference internal" href="#id7" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id8" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra">
-<span class="eqno">(10)<a class="headerlink" href="#equation-at1-efra" title="Permalink to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
+<span class="eqno">(14)<a class="headerlink" href="#equation-at1-efra" title="Permalink to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
 <p>where <span class="math notranslate nohighlight">\(d\)</span> is a damage-like variable (with values in <span class="math notranslate nohighlight">\([0;1]\)</span>) which smears the discrete crack representation (corresponding to <span class="math notranslate nohighlight">\(d=1\)</span>) over a regularization length <span class="math notranslate nohighlight">\(\ell_0\)</span>. <span class="math notranslate nohighlight">\(G_\text{c}\)</span> represents the material fracture energy.</p>
 <p>During the solution process, the damage field is found by minimizing the total energy for a fixed displacement field and subject to bound constraints <span class="math notranslate nohighlight">\(d_n \leq d \leq 1\)</span> where <span class="math notranslate nohighlight">\(d_n\)</span> denotes the damage field at the previous time step which is used to enforce the irreversible evolution of damage.</p>
-<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(10)</a>.</p>
+<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(14)</a>.</p>
 </section>
 <section id="localized-1d-solutions">
 <h2>Localized 1D solutions<a class="headerlink" href="#localized-1d-solutions" title="Permalink to this heading">#</a></h2>
 <p>More precisely, we consider a 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span> of length <span class="math notranslate nohighlight">\(2L\)</span> and we look for a minimizer <span class="math notranslate nohighlight">\(d(x)\)</span> of:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra-1d">
-<span class="eqno">(11)<a class="headerlink" href="#equation-at1-efra-1d" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
+<span class="eqno">(15)<a class="headerlink" href="#equation-at1-efra-1d" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
 \text{s.t.} &amp; 0 \leq d(x) \leq 1 \quad \forall x \in \Omega
 \end{array}\end{split}\]</div>
-<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(11)</a>.</p>
-<p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span id="id2">[<a class="reference internal" href="#id6" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id7" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013.">Pham and Marigo, 2013</a>]</span>.</p>
+<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(15)</a>.</p>
+<p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span id="id2">[<a class="reference internal" href="#id8" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id9" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013.">Pham and Marigo, 2013</a>]</span>.</p>
 <p>In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective is null, that is:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -433,7 +434,7 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 \]</div>
 <p>we easily show that the localization region size is <span class="math notranslate nohighlight">\(D=2\ell_0\sqrt{d_0}\)</span> and that the solution is given by:</p>
 <div class="math notranslate nohighlight" id="equation-at1-1d-solution">
-<span class="eqno">(12)<a class="headerlink" href="#equation-at1-1d-solution" title="Permalink to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
+<span class="eqno">(16)<a class="headerlink" href="#equation-at1-1d-solution" title="Permalink to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
 \left(\sqrt{d_0} - \dfrac{|x|}{2\ell_0}\right)^2 &amp; \text{if } |x| \leq D \\
 0 &amp; \text{otherwise}
 \end{cases}\end{split}\]</div>
@@ -512,7 +513,7 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 <p>We now setup the TAO solver object using <code class="docutils literal notranslate"><span class="pre">petsc4py</span></code>. We use a Bounded Newton Line Search <code class="docutils literal notranslate"><span class="pre">bnls</span></code> method and use a direct LU solver for the resolution of linear systems arising in the underlying Newton method.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For more details on the algorithm and other available solvers, see the <a class="reference external" href="https://petsc.org/main/manual/tao/#bound-constrained-optimization"></a></p>
+<p>For more details on the algorithm and other available solvers, see the <a class="reference external" href="https://petsc.org/main/manual/tao/#bound-constrained-optimization">bound-constrained solvers documentation</a>.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -591,13 +592,13 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 </div>
 <div class="docutils container" id="id3">
 <dl class="citation">
-<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id1">BFM00</a></span></dt>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">BFM00</a></span></dt>
 <dd><p>Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. <em>Journal of the Mechanics and Physics of Solids</em>, 48(4):797–826, 2000.</p>
 </dd>
-<dt class="label" id="id6"><span class="brackets">PAMM11</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dt class="label" id="id8"><span class="brackets">PAMM11</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
 <dd><p>Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. <em>International Journal of Damage Mechanics</em>, 20(4):618–652, 2011.</p>
 </dd>
-<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id2">PM13</a></span></dt>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id2">PM13</a></span></dt>
 <dd><p>Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. <em>Continuum Mechanics and Thermodynamics</em>, 25:147–171, 2013.</p>
 </dd>
 </dl>
@@ -636,12 +637,12 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../contents.html"
+       href="../plasticity/plasticity.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Nonlinear problems</p>
+        <p class="prev-next-title">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
     </a>
     <a class="right-next"

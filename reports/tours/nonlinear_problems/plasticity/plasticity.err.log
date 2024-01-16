@@ -15,100 +15,22 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-Nitermax, tol = 200, 1e-6  # parameters of the Newton-Raphson procedure
-Nincr = 20
-load_steps = np.linspace(0, 1.1, Nincr + 1)[1:] ** 0.5
-results = np.zeros((Nincr + 1, 2))
-load_steps = load_steps
-# xdmf = io.XDMFFile(MPI.COMM_WORLD, "plasticity.xdmf", "w", encoding=io.XDMFFile.Encoding.HDF5)
-# xdmf.write_mesh(mesh)
-
-sig.vector.set(0.0)
-sig_old.vector.set(0.0)
-p.vector.set(0.0)
-u.vector.set(0.0)
-n_elas.vector.set(0.0)
-beta.vector.set(0.0)
-
-deps = eps(Du)
-sig_, n_elas_, beta_, dp_ = proj_sig(deps, sig_old, p)
-
-
-return_mapping_times = np.zeros((len(load_steps)))
-
-
-for i, t in enumerate(load_steps):
-    return_mapping_times_tmp = []
-    loading.value = t * q_lim
-
-    tangent_problem.assemble_rhs()
-    nRes0 = tangent_problem._b.norm()
-
-    nRes = nRes0
-    Du.x.array[:] = 0
-
-    if MPI.COMM_WORLD.rank == 0:
-        print(f"\nnRes0 , {nRes0} \n Increment: {str(i+1)}, load = {t * q_lim}")
-    niter = 0
-
-    while nRes / nRes0 > tol and niter < Nitermax:
-        tangent_problem.assemble_lhs()
-        tangent_problem.solve_system()
-
-        Du.vector.axpy(1, du.vector)  # Du = Du + 1*du
-        Du.x.scatter_forward()
-
-        interpolate_quadrature(sig_, sig)
-        interpolate_quadrature(n_elas_, n_elas)
-        interpolate_quadrature(beta_, beta)
-
-        tangent_problem.assemble_rhs()
-        nRes = tangent_problem._b.norm()
-
-        if MPI.COMM_WORLD.rank == 0:
-            print(f"    Residual: {nRes}")
-        niter += 1
-
-    u.vector.axpy(1, Du.vector)  # u = u + 1*Du
-    u.x.scatter_forward()
-
-    interpolate_quadrature(dp_, dp)
-    p.vector.axpy(1, dp.vector)
-    p.x.scatter_forward()
-
-    sig_old.x.array[:] = sig.x.array[:]
-
-
-    # if len(points_on_proc) > 0:
-    #     results[i + 1, :] = (u.eval(points_on_proc, cells)[0], t)
-
+if len(points_on_proc) > 0:
+    import matplotlib.pyplot as plt
+    plt.plot(results[:, 0], results[:, 1], "-oC3")
+    plt.xlabel("Displacement of inner boundary")
+    plt.ylabel(r"Applied pressure $q/q_{lim}$")
+    plt.savefig(f"displacement_rank{MPI.COMM_WORLD.rank:d}.png")
+    plt.show()
 ------------------
 
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mAttributeError[0m                            Traceback (most recent call last)
-Cell [0;32mIn[10], line 17[0m
-[1;32m     14[0m beta[38;5;241m.[39mvector[38;5;241m.[39mset([38;5;241m0.0[39m)
-[1;32m     16[0m deps [38;5;241m=[39m eps(Du)
-[0;32m---> 17[0m sig_, n_elas_, beta_, dp_ [38;5;241m=[39m [43mproj_sig[49m[43m([49m[43mdeps[49m[43m,[49m[43m [49m[43msig_old[49m[43m,[49m[43m [49m[43mp[49m[43m)[49m
-[1;32m     20[0m return_mapping_times [38;5;241m=[39m np[38;5;241m.[39mzeros(([38;5;28mlen[39m(load_steps)))
-[1;32m     23[0m [38;5;28;01mfor[39;00m i, t [38;5;129;01min[39;00m [38;5;28menumerate[39m(load_steps):
+[0;31mNameError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[14], line 1[0m
+[0;32m----> 1[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m([43mpoints_on_proc[49m) [38;5;241m>[39m [38;5;241m0[39m:
+[1;32m      2[0m     [38;5;28;01mimport[39;00m [38;5;21;01mmatplotlib[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpyplot[39;00m [38;5;28;01mas[39;00m [38;5;21;01mplt[39;00m
+[1;32m      3[0m     plt[38;5;241m.[39mplot(results[:, [38;5;241m0[39m], results[:, [38;5;241m1[39m], [38;5;124m"[39m[38;5;124m-oC3[39m[38;5;124m"[39m)
 
-Cell [0;32mIn[7], line 29[0m, in [0;36mproj_sig[0;34m(deps, old_sig, old_p)[0m
-[1;32m     27[0m sig_eq [38;5;241m=[39m ufl[38;5;241m.[39msqrt([38;5;241m3[39m[38;5;241m/[39m[38;5;241m2.[39m[38;5;241m*[39mufl[38;5;241m.[39minner(s, s))
-[1;32m     28[0m f_elas [38;5;241m=[39m sig_eq [38;5;241m-[39m sig0 [38;5;241m-[39m H[38;5;241m*[39mold_p
-[0;32m---> 29[0m dp [38;5;241m=[39m [43mppos[49m[43m([49m[43mf_elas[49m[43m)[49m[38;5;241m/[39m([38;5;241m3[39m[38;5;241m*[39mmu[38;5;241m+[39mH)
-[1;32m     30[0m n_elas [38;5;241m=[39m s[38;5;241m/[39msig_eq[38;5;241m*[39mppos(f_elas)[38;5;241m/[39mf_elas
-[1;32m     31[0m beta [38;5;241m=[39m [38;5;241m3[39m[38;5;241m*[39mmu[38;5;241m*[39mdp[38;5;241m/[39msig_eq
-
-Cell [0;32mIn[7], line 22[0m, in [0;36m<lambda>[0;34m(x)[0m
-[1;32m     17[0m [38;5;28;01mdef[39;00m [38;5;21mas_3D_tensor[39m(X):
-[1;32m     18[0m     [38;5;28;01mreturn[39;00m ufl[38;5;241m.[39mas_tensor([[X[[38;5;241m0[39m], X[[38;5;241m3[39m], [38;5;241m0[39m],
-[1;32m     19[0m                           [X[[38;5;241m3[39m], X[[38;5;241m1[39m], [38;5;241m0[39m],
-[1;32m     20[0m                           [[38;5;241m0[39m, [38;5;241m0[39m, X[[38;5;241m2[39m]]])
-[0;32m---> 22[0m ppos [38;5;241m=[39m [38;5;28;01mlambda[39;00m x: (x [38;5;241m+[39m [43mufl[49m[38;5;241;43m.[39;49m[43mabs[49m(x))[38;5;241m/[39m[38;5;241m2.[39m
-[1;32m     23[0m [38;5;28;01mdef[39;00m [38;5;21mproj_sig[39m(deps, old_sig, old_p):
-[1;32m     24[0m     sig_n [38;5;241m=[39m as_3D_tensor(old_sig)
-
-[0;31mAttributeError[0m: module 'ufl' has no attribute 'abs'
+[0;31mNameError[0m: name 'points_on_proc' is not defined
 

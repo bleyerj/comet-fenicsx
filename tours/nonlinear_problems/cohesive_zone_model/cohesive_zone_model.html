@@ -191,9 +191,8 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Introduction</a></li>
-
-
+<li class="toctree-l2"><a class="reference internal" href="../plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
 </ul>
@@ -388,25 +387,25 @@ document.write(`
 <h2>Traction-separation law<a class="headerlink" href="#traction-separation-law" title="Permalink to this heading">#</a></h2>
 <p>Cohesive zone models are interface elements characterized by a discontinuous displacement and are able to transmit forces through the interface. The link between the interface opening (displacement jump) <span class="math notranslate nohighlight">\([\![\bu]\!]\)</span> and the traction <span class="math notranslate nohighlight">\(\bT\)</span> is given by the choice of a specific constitutive law, usually refered to as a <em>traction-separation</em> law.</p>
 <p>Among the many models available in the literature, we choose here one of the simplest ones, namely an exponential traction separation law given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f2096d3c-a4b1-43e1-b674-66e583d1cd9e">
-<span class="eqno">()<a class="headerlink" href="#equation-f2096d3c-a4b1-43e1-b674-66e583d1cd9e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-809c9444-b2ce-4c2b-9b03-24109a3c85a4">
+<span class="eqno">()<a class="headerlink" href="#equation-809c9444-b2ce-4c2b-9b03-24109a3c85a4" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \bT(\jump{\bu}) = \dfrac{G_{\text{c}}}{\delta_0^2}\exp(-g_{max}/\delta_0)\jump{\bu}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(g_{max}\)</span> is the maximum effective opening displacement given by:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-63b07dfb-33e8-4f2a-8b48-526708d96959">
-<span class="eqno">()<a class="headerlink" href="#equation-63b07dfb-33e8-4f2a-8b48-526708d96959" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3cb83633-d89c-4e2b-91cf-072456b393d9">
+<span class="eqno">()<a class="headerlink" href="#equation-3cb83633-d89c-4e2b-91cf-072456b393d9" title="Permalink to this equation">#</a></span>\[\begin{align}
 g_{max}(t)&amp;:=\max_{t'\in[0;t]} g(t') \\
 g(t) &amp;:= \sqrt{[\![u_n(t)]\!]^2+\beta[\![u_t(t)]\!]^2}
 \end{align}\]</div>
 <p>and where <span class="math notranslate nohighlight">\(\beta\)</span> is a coupling coefficient which enables to link the normal opening <span class="math notranslate nohighlight">\(\jump{u_n} = \jump{\bu}\cdot\bn\)</span> and the tangential opening <span class="math notranslate nohighlight">\(\jump{u_t}=\jump{\bu}\cdot\bt\)</span> with <span class="math notranslate nohighlight">\(\bn\)</span> (resp. <span class="math notranslate nohighlight">\(\bt\)</span>) being the unit normal (resp. tangential vector) of the considered interface.</p>
 <p>Note that the above law works as a nonlinear “spring” model with a secant stiffness given by <span class="math notranslate nohighlight">\(\dfrac{G_{\text{c}}}{\delta_0^2}\exp(-g_{max}/\delta_0)\)</span>. In an unloading phase (i.e. \dot{g} &lt; 0), the stiffness does not evolve and the interface acts as a linear elastic spring. In a loading phase for which \dot{g}&gt;0 and <span class="math notranslate nohighlight">\(g = g_\text{max}\)</span>, we have a nonlinear elastic spring. For a purely normal opening <span class="math notranslate nohighlight">\((\jump{u_t}=0)\)</span> in a loading phase, we have:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-761d5edd-6f12-4145-af00-8f26e86e2e29">
-<span class="eqno">()<a class="headerlink" href="#equation-761d5edd-6f12-4145-af00-8f26e86e2e29" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6f24c561-357e-429d-af2a-2109e648da32">
+<span class="eqno">()<a class="headerlink" href="#equation-6f24c561-357e-429d-af2a-2109e648da32" title="Permalink to this equation">#</a></span>\[\begin{equation}
 T_n(\jump{u})=\dfrac{G_{\text{c}}}{\delta_0^2}\exp(-\jump{u}/\delta_0)\jump{u}
 \end{equation}\]</div>
 <p>which is maximum when <span class="math notranslate nohighlight">\(\jump{u}=\delta_0\)</span> with a value <span class="math notranslate nohighlight">\(T_n(\delta_0) = \sigma_0 = \dfrac{G_{\text{c}}}{\delta_0^2}\exp(-1)\)</span>. <span class="math notranslate nohighlight">\(\delta_0\)</span> therefore characterizes the critical opening for which the maximum strength <span class="math notranslate nohighlight">\(\sigma_0\)</span> is reached. For <span class="math notranslate nohighlight">\(\jump{u}\gg \delta_0\)</span>, the stiffness vanishes and the cohesive element does not sustain any load anymore. Finally, when integrating the traction-separation law for <span class="math notranslate nohighlight">\(\jump{u}\)</span> from 0 to <span class="math notranslate nohighlight">\(+\infty\)</span>, we see that the total dissipated surface energy is:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bc9308a6-f98f-498e-8eb9-01c0b8338755">
-<span class="eqno">()<a class="headerlink" href="#equation-bc9308a6-f98f-498e-8eb9-01c0b8338755" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0f126574-775f-476f-87c5-8c10d470d084">
+<span class="eqno">()<a class="headerlink" href="#equation-0f126574-775f-476f-87c5-8c10d470d084" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \text{Dissipation} = \int_0^{+\infty} T_n(\jump{u})d\jump{u} = G_\text{c}
 \end{equation}\]</div>
 <p>which is then the fracture energy spent when completely opening the interface.</p>
@@ -454,14 +453,14 @@ T_n(\jump{u})=\dfrac{G_{\text{c}}}{\delta_0^2}\exp(-\jump{u}/\delta_0)\jump{u}
 <section id="nonlinear-resolution">
 <h2>Nonlinear resolution<a class="headerlink" href="#nonlinear-resolution" title="Permalink to this heading">#</a></h2>
 <p>The above traction-separation law is highly nonlinear. Newton-Raphson method is not necessarily extremely robust in such softening situations, especially in the presence of unstable crack propagation phases. For this reason, we prefer here to resort to a fixed-point iteration scheme in which, for a given load step, we solve an elastic displacement problem with <span class="math notranslate nohighlight">\(g_\text{max}\)</span> being fixed to a previously known value:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d708616a-320e-4cab-85a1-e9301850ceb4">
-<span class="eqno">()<a class="headerlink" href="#equation-d708616a-320e-4cab-85a1-e9301850ceb4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8f2a740b-2638-4c3e-acca-11b95bd21589">
+<span class="eqno">()<a class="headerlink" href="#equation-8f2a740b-2638-4c3e-acca-11b95bd21589" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \mathbf{K}^{(i)}\mathbf{U}^{(i+1)} = \mathbf{F}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{K}^{(i)}\)</span> denotes the elastic stiffness matrix evaluated using the value of <span class="math notranslate nohighlight">\(g_\text{max}\)</span> corresponding to the previous displacement <span class="math notranslate nohighlight">\(\mathbf{U}^{(i)}\)</span>.</p>
 <p>We then update the value of <span class="math notranslate nohighlight">\(g_\text{max}\)</span> using the newly computed displacement field <span class="math notranslate nohighlight">\(\mathbf{U}^{(i+1)}\)</span>. This process is iterated until convergence of the mechanical residual:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-52e534f7-1c11-4704-bc25-d7a458cd2699">
-<span class="eqno">()<a class="headerlink" href="#equation-52e534f7-1c11-4704-bc25-d7a458cd2699" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4a67fc8a-3afa-4ac3-a0b3-7dd388a571c6">
+<span class="eqno">()<a class="headerlink" href="#equation-4a67fc8a-3afa-4ac3-a0b3-7dd388a571c6" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \|\mathbf{K}^{(i+1)}\mathbf{U}^{(i+1)} - \mathbf{F}\|_2 &lt; \epsilon
 \end{equation}\]</div>
 </section>
@@ -744,8 +743,8 @@ T_n(\jump{u})=\dfrac{G_{\text{c}}}{\delta_0^2}\exp(-\jump{u}/\delta_0)\jump{u}
 <section id="variational-form-and-linear-solver">
 <h3>Variational form and linear solver<a class="headerlink" href="#variational-form-and-linear-solver" title="Permalink to this heading">#</a></h3>
 <p>The variational form is now formulated as: Find <span class="math notranslate nohighlight">\(\bu\in V\)</span> such that:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-868fe2e3-ed5a-483a-b19b-aa1387a714ef">
-<span class="eqno">()<a class="headerlink" href="#equation-868fe2e3-ed5a-483a-b19b-aa1387a714ef" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-43f0f1da-d32f-45b2-aa2b-ed68133f059b">
+<span class="eqno">()<a class="headerlink" href="#equation-43f0f1da-d32f-45b2-aa2b-ed68133f059b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \int_{\Omega} \boldsymbol{\sigma}(\bu):\boldsymbol{\varepsilon}(\bv)d\Omega + \int_{\Gamma} \boldsymbol{T}([\![\bu]\!],g_{max})\cdot[\![\bv]\!] dS = F_{ext}(\bv) \quad \forall \bv \in V
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(F_{ext}\)</span> is the work of applied external loads (zero in the present example), <span class="math notranslate nohighlight">\(\Omega\)</span> denotes the domain and <span class="math notranslate nohighlight">\(\Gamma\)</span> the cohesive interfaces which are located here across all elements and, in particular, on the interface. For fixed <span class="math notranslate nohighlight">\(g_{max}\)</span>, the problem is linear and will be solved as such. Once a new displacement has been found, <span class="math notranslate nohighlight">\(g_{max}\)</span> will be updated until convergence for a given load step.</p>
