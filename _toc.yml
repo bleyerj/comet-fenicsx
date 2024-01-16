@@ -21,6 +21,9 @@ parts:
   - file: tours/plates/contents
     sections:
     - file: tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.md
+  - file: tours/nonlinear_problems/contents
+    sections:
+    - file: tours/nonlinear_problems/bound_constrained/bound_constrained.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets/mark_facets.md
