@@ -12,7 +12,7 @@ kernelspec:
   name: python3
 ---
 
-# Localized 1D solutions in phase-field approach to brittle fracture
+# Localized 1D solutions in phase-field approach to brittle fracture {far}`star`{far}`star`
 
 ```{admonition} Objectives
 :class: objectives
