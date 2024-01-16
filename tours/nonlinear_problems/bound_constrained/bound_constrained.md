@@ -173,7 +173,7 @@ problem = TAOProblem(energy, D_energy, D2_energy, d, bcs)
 We now setup the TAO solver object using `petsc4py`. We use a Bounded Newton Line Search `bnls` method and use a direct LU solver for the resolution of linear systems arising in the underlying Newton method.
 
 ```{seealso}
-For more details on the algorithm and other available solvers, see the [](https://petsc.org/main/manual/tao/#bound-constrained-optimization)
+For more details on the algorithm and other available solvers, see the [bound-constrained solvers documentation](https://petsc.org/main/manual/tao/#bound-constrained-optimization).
 ```
 
 ```{code-cell} ipython3
