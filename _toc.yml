@@ -32,3 +32,4 @@ parts:
   - file: tips/piecewise_constant_field/piecewise_constant_field.md
   - file: tips/mass_lumping/mass_lumping.md
   - file: tips/quadrature_schemes/quadrature_schemes.md
+  - file: tips/computing_reactions/computing_reactions.md
