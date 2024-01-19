@@ -43,6 +43,13 @@ This tour has been written with the help of:
 :align: center
 ```
 
+```{admonition} Download sources
+:class: download
+
+* {Download}`Python script<./plasticity.py>`
+* {Download}`Jupyter notebook<./plasticity.ipynb>`
+```
+
 ## Problem position
 
 This example is concerned with the incremental analysis of an elasto-plastic von Mises material. The structure response is computed using an iterative predictor-corrector return mapping algorithm embedded in a Newton-Raphson global loop for restoring equilibrium. Due to the simple expression of the von Mises criterion, the return mapping procedure is completely analytical (with linear isotropic hardening).
@@ -138,7 +145,7 @@ The considered problem is that of a plane strain hollow cylinder of internal (re
 
 We start by importing the relevant modules and define some geometrical constants.
 
-```{code-cell} ipython3
+```{code-cell}
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -158,7 +165,7 @@ Ri = 1.0
 
 We then model a quarter of cylinder using `Gmsh` similarly to the [](/tours/linear_elasticity/axisymmetric_elasticity.md) demo.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 gmsh.initialize()
@@ -203,7 +210,7 @@ gmsh.finalize()
 
 We now define some material parameters and the function space for the displacement field. We choose here a standard $\mathbb{P}_2$ Lagrange space.
 
-```{code-cell} ipython3
+```{code-cell}
 E = fem.Constant(domain, 70e3)  # in MPa
 nu = fem.Constant(domain, 0.3)
 lmbda = E * nu / (1 + nu) / (1 - 2 * nu)
@@ -224,7 +231,7 @@ Elasto-plastic computations might result in volumetric locking issues induced by
 
 Boundary conditions correspond to symmetry conditions on the bottom and left parts (resp. numbered 1 and 2). Loading consists of a uniform pressure on the internal boundary (numbered 3). It will be progressively increased from 0 to a value slightly larger than $q_\text{lim}=\dfrac{2}{\sqrt{3}}\sigma_0\log\left(\dfrac{R_e}{R_i}\right)$ which is the analytical collapse load for a perfectly-plastic material (no hardening).
 
-```{code-cell} ipython3
+```{code-cell}
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
@@ -259,7 +266,7 @@ When dealing with nonlinear constitutive models, internal state variables such a
 We point out that, although the problem is 2D, plastic strain still occur in the transverse $zz$ direction. This will require us to keep track of the out-of-plane $zz$ components of stress/strain states.
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 deg_quad = 2  # quadrature degree for internal state variable representation
 W0e = ufl.FiniteElement(
     "Quadrature",
@@ -280,7 +287,7 @@ W0 = fem.functionspace(domain, W0e)
 
 Various functions are defined to keep track of the current internal state and currently computed increments.
 
-```{code-cell} ipython3
+```{code-cell}
 sig = fem.Function(W)
 sig_old = fem.Function(W)
 n_elas = fem.Function(W)
@@ -299,7 +306,7 @@ p_avg = fem.Function(P0, name="Plastic_strain")
 
 Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function `as_3D_tensor` will enable to represent a 4 dimensional vector containing respectively $xx, yy, zz$ and $xy$ components as a 3D tensor::
 
-```{code-cell} ipython3
+```{code-cell}
 def eps(v):
     e = ufl.sym(ufl.grad(v))
     return ufl.as_tensor([[e[0, 0], e[0, 1], 0], [e[0, 1], e[1, 1], 0], [0, 0, 0]])
@@ -321,7 +328,7 @@ The return mapping procedure is implemented in the `constitutive_update` functio
 
 Plastic evolution also requires the computation of the normal vector to the final yield surface given by $\boldsymbol{n}_{\text{elas}} = \boldsymbol{s}_\text{elas}/\sigeq^{\text{elas}}$. In the following, this vector must be zero in case of elastic evolution. Hence, we multiply it by $\dfrac{\langle f_{\text{elas}}\rangle_+}{ f_{\text{elas}}}$ to tackle both cases in a single expression. The final stress state is corrected by the plastic strain as follows $\bsig_{n+1} = \bsig_{\text{elas}} - \beta \boldsymbol{s}_\text{elas}$ with $\beta = \dfrac{3\mu}{\sigeq^{\text{elas}}}\Delta p$. It can be observed that the last term vanishes in case of elastic evolution so that the final stress is indeed the elastic predictor.
 
-```{code-cell} ipython3
+```{code-cell}
 ppos = lambda x: ufl.max_value(x, 0)
 
 
@@ -345,7 +352,7 @@ In order to use a Newton-Raphson procedure to resolve global equilibrium, we als
 
 where $\mathbb{Dev}$ is the 4th-order tensor associated with the deviatoric operator (note that $\CC_{\text{tang}}^{\text{alg}}=\CC$ for elastic evolution). Contrary to what is done in {cite:p}`logg2012fenicsbook`, we do not store it as the components of a 4th-order tensor but it will suffice keeping track of the normal vector and the $\beta$ parameter related to the plastic strains. We instead define the function `sigma_tang` computing the tangent stress $\bsig_\text{tang} = \CC_{\text{tang}}^{\text{alg}}: \boldsymbol{\varepsilon}$ as follows:
 
-```{code-cell} ipython3
+```{code-cell}
 def sigma_tang(eps):
     N_elas = as_3D_tensor(n_elas)
     return (
@@ -363,7 +370,7 @@ In this simple case, the stress expression from `constitutive_update` is explici
 
 We now are in position to define the nonlinear residual variational form and the corresponding tangent bilinear form to be used in a global Newton-Raphson scheme. Each iteration will require establishing equilibrium by driving to zero the residual between the internal forces associated with the current stress state `sig` and the external force vector. Because we use `Quadrature` elements a custom integration measure `dx` must be defined to match the quadrature degree and scheme used by the Quadrature elements.
 
-```{code-cell} ipython3
+```{code-cell}
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 dx = ufl.Measure(
     "dx",
@@ -378,7 +385,7 @@ tangent_form = ufl.inner(eps(v), sigma_tang(eps(u_))) * dx
 
 During the Newton-Raphson iterations, we will have to interpolate some `ufl` expressions at quadrature points to update the corresponding functions. We define the `interpolate_quadrature` function to do so. We first get the quadrature points location in the reference element and then use the `fem.Expression.eval` to evaluate the expression on all cells.
 
-```{code-cell} ipython3
+```{code-cell}
 basix_celltype = getattr(basix.CellType, domain.topology.cell_types[0].name)
 quadrature_points, weights = basix.make_quadrature(basix_celltype, deg_quad)
 
@@ -401,7 +408,7 @@ $$
 
 where $\mathbf{R}$ is the current value of the nonlinear residual, $\mathbf{du}$ the iteration correction to the unknown field $\mathbf{u}$ and $\mathbf{A}_\text{tang}$ the tangent operator of the nonlinear residual. To simplify the implementation, we rely on the `fem.petsc.LinearProblem` utility class to define and solve linear problems. In the following, we need to explicitly separate the steps where we assemble the linear system right-hand side from when we assemble the matrix left-hand side and solve the linear system. We therefore define a new class inheriting from `LinearProblem` and splitting these different steps.
 
-```{code-cell} ipython3
+```{code-cell}
 class CustomLinearProblem(fem.petsc.LinearProblem):
     def assemble_rhs(self):
         # Assemble rhs
@@ -440,7 +447,7 @@ tangent_problem = CustomLinearProblem(
 
 We discretize the applied loading using `Nincr` increments from $0$ up to a value slightly larger than $1$ (we exclude $0$ from the list of load steps). A nonlinear discretization is adopted to refine the load steps during the plastic evolution phase. At each time increment, the system is assembled and the residual norm is computed. The incremental displacement `Du` is initialized to zero and the inner iteration loop performing the constitutive update is initiated. Inside this loop, corrections `du` to the displacement increment `Du` are computed by solving the Newton system and the return mapping update is performed using the current total strain increment `deps`. The resulting quantities are then interpolated onto their appropriate `Quadrature` function space. The Newton system and residuals are reassembled and this procedure continues until the residual norm falls below a given tolerance. After convergence of the iteration loop, the total displacement, stress and plastic strain states are updated for the next time step.
 
-```{code-cell} ipython3
+```{code-cell}
 Nitermax, tol = 200, 1e-6  # parameters of the Newton-Raphson procedure
 Nincr = 20
 load_steps = np.linspace(0, 1.1, Nincr + 1)[1:] ** 0.5
@@ -505,7 +512,7 @@ for i, t in enumerate(load_steps):
 
 We plot the evolution e of the cylinder displacement on the inner boundary with the applied loading. We can check that we recover the correct analytical limit load when considering no hardening.
 
-```{code-cell} ipython3
+```{code-cell}
 if len(bottom_inside_dof) > 0:  # test if proc has dof
     plt.plot(results[:, 0], results[:, 1], "-oC3")
     plt.xlabel("Displacement of inner boundary")
@@ -514,15 +521,15 @@ if len(bottom_inside_dof) > 0:  # test if proc has dof
 ```
 
 Finally, we also report the evolution of the number of Newton iterations as a function of the loading increments:
-```{code-cell} ipython3
+
+```{code-cell}
 if len(bottom_inside_dof) > 0:
-    plt.bar(np.arange(Nincr+1), results[:, 2], color="C2")
+    plt.bar(np.arange(Nincr + 1), results[:, 2], color="C2")
     plt.xlabel("Loading step")
     plt.ylabel("Number of iterations")
     plt.xlim(0)
     plt.show()
 ```
-
 
 ## References
 
