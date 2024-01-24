@@ -205,6 +205,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
 </ul>
 
     </div>
@@ -533,12 +534,20 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 [\mathbf{C}] = \dfrac{E}{1-\nu^2}\begin{bmatrix} 1 &amp; \nu &amp; 0\\
    \nu &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; (1-\nu)/2 \end{bmatrix}
 \end{split}\]</div>
+<p>If using a tensorial notation, simple computations show that the 2D plane-stress constitutive equation reads:</p>
+<div class="math notranslate nohighlight" id="equation-isotropic-plane-stress">
+<span class="eqno">(7)<a class="headerlink" href="#equation-isotropic-plane-stress" title="Permalink to this equation">#</a></span>\[\bsig = \lambda^* \tr(\beps)\bI + 2\mu\beps\]</div>
+<p>that is as <a class="reference internal" href="#equation-isotropic">(4)</a> except that we are using a modified value of the Lamé coefficient:</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda^* = \dfrac{2\lambda\mu}{\lambda+2\mu} = \dfrac{E\nu}{1-\nu^2}
+\]</div>
 </section>
 <section id="orthotropic-plane-stress-case">
 <h4>Orthotropic plane stress case<a class="headerlink" href="#orthotropic-plane-stress-case" title="Permalink to this heading">#</a></h4>
 <p>In the plane-stress orthotropic case, we assume that the 2D material possesses 2 planes of symmetry corresponding to the global <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> directions. Adapting the plane-stress compliance matrix <a class="reference internal" href="#equation-compliance-plane-stress">(6)</a> to the orthotropic case yields:</p>
 <div class="math notranslate nohighlight" id="equation-compliance-plane-stress-orthotropic">
-<span class="eqno">(7)<a class="headerlink" href="#equation-compliance-plane-stress-orthotropic" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E_x &amp; -\nu_{xy}/E_x &amp; 0\\
+<span class="eqno">(8)<a class="headerlink" href="#equation-compliance-plane-stress-orthotropic" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E_x &amp; -\nu_{xy}/E_x &amp; 0\\
    -\nu_{yx}/E_y &amp; 1/E_y &amp; 0 \\ 0 &amp; 0 &amp; 1/G_{xy} \end{bmatrix}\end{split}\]</div>
 <p>with <span class="math notranslate nohighlight">\(E_x, E_y\)</span> being the two Young’s moduli in the orthotropy directions, <span class="math notranslate nohighlight">\(\nu_{xy}\)</span> the in-plane Poisson ration (with the following relation ensuring the constitutive relation symmetry <span class="math notranslate nohighlight">\(\nu_{yx}=\nu_{xy}E_y/E_x\)</span>) and <span class="math notranslate nohighlight">\(G_{xy}\)</span> being the shear modulus. Again, this relation needs to be inverted to obtain the stiffness matrix.</p>
 <div class="cell docutils container">
