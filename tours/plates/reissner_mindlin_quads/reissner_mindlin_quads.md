@@ -29,7 +29,7 @@ For more details on the Reissner-Mindlin plate model and its implementation, we 
 
 ```{seealso}
 
-For more advanced Reissner-Mindlin plate elements, we refer to [FEniCSx-Shells](https://github.com/FEniCS-Shells/fenicsx-shells). 
+For more advanced Reissner-Mindlin plate elements, we refer to [FEniCSx-Shells](https://github.com/FEniCS-Shells/fenicsx-shells).
 ```
 
 ## Introduction

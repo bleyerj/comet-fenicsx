@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
 # Computing consistent reaction forces
 
 ```{admonition} Objectives
@@ -134,24 +133,18 @@ The first, and most widely used, method for computing the above reactions relies
 ```{code-cell} ipython3
 x = ufl.SpatialCoordinate(domain)
 
-Rx = fem.assemble_scalar(fem.form(-sigma(u)[0, 0]*ds(1)))
-print(
-    f"Horizontal reaction Rx = {Rx:.6f}"
-)
+Rx = fem.assemble_scalar(fem.form(-sigma(u)[0, 0] * ds(1)))
+print(f"Horizontal reaction Rx = {Rx:.6f}")
 print(f"             (analytic = {-L * H * fx})")
 print("-" * 50)
 
 Ry = fem.assemble_scalar(fem.form(-sigma(u)[0, 1] * ds(1)))
-print(
-    f"Vertical reaction Ry = {Ry:.6f}"
-)
+print(f"Vertical reaction Ry = {Ry:.6f}")
 print(f"           (analytic = {-L * H * fy})")
 print("-" * 50)
 
 Mz = fem.assemble_scalar(fem.form(-x[1] * sigma(u)[0, 0] * ds(1)))
-print(
-    f"Bending moment Mz = {Mz:.6f}"
-)
+print(f"Bending moment Mz = {Mz:.6f}")
 print(f"        (analytic = {H * L**2 / 2 * fy})".format())
 print("-" * 50)
 print("\n")
@@ -176,7 +169,7 @@ $$
 Defining the **residual**:
 
 $$
-Res(\bv) = \int_\Omega \bsig(\boldsymbol{u}):\nabla^s \boldsymbol{v} \dx - \int_\Omega \boldsymbol{f}\cdot\boldsymbol{v} \dx - \int_{\partial \Omega_N} \boldsymbol{T}\cdot\boldsymbol{v}\dS = a(\boldsymbol{u}, \boldsymbol{v}) -\ell(\boldsymbol{v}) 
+Res(\bv) = \int_\Omega \bsig(\boldsymbol{u}):\nabla^s \boldsymbol{v} \dx - \int_\Omega \boldsymbol{f}\cdot\boldsymbol{v} \dx - \int_{\partial \Omega_N} \boldsymbol{T}\cdot\boldsymbol{v}\dS = a(\boldsymbol{u}, \boldsymbol{v}) -\ell(\boldsymbol{v})
 $$
 
 we have that $Res(\bv)= 0$ if $\boldsymbol{v}=0$ on $\partial \Omega_D$.

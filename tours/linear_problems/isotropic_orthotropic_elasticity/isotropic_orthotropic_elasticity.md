@@ -185,6 +185,18 @@ $$
    \nu & 1 & 0 \\ 0 & 0 & (1-\nu)/2 \end{bmatrix}
 $$
 
+If using a tensorial notation, simple computations show that the 2D plane-stress constitutive equation reads:
+
+```{math}
+:label: isotropic-plane-stress
+\bsig = \lambda^* \tr(\beps)\bI + 2\mu\beps
+```
+
+that is as {eq}`isotropic` except that we are using a modified value of the Lamé coefficient:
+
+$$
+\lambda^* = \dfrac{2\lambda\mu}{\lambda+2\mu} = \dfrac{E\nu}{1-\nu^2}
+$$
 
 #### Orthotropic plane stress case
 
