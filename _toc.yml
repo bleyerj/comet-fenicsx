@@ -21,6 +21,10 @@ parts:
   - file: tours/plates/contents
     sections:
     - file: tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.md
+  - file: tours/shells/contents
+    sections:
+    - file: tours/shells/linear_shell/linear_shell.md
+    - file: tours/shells/I_beam_gmsh/I_beam_gmsh.md
   - file: tours/nonlinear_problems/contents
     sections:
     - file: tours/nonlinear_problems/plasticity/plasticity.md
