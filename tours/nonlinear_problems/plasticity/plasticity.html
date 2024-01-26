@@ -192,7 +192,12 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -426,21 +431,21 @@ document.write(`
 \[\dot{\beps}^\text{p} = \dot{\lambda}\dfrac{\partial f}{\partial \bsig}\]</div>
 <p>which gives in the present case:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule">
-<span class="eqno">(11)<a class="headerlink" href="#equation-flow-rule" title="Permalink to this equation">#</a></span>\[\dot{\beps}^\text{p} = \dot{p}\dfrac{3}{2\sigeq}\bs\]</div>
+<span class="eqno">(17)<a class="headerlink" href="#equation-flow-rule" title="Permalink to this equation">#</a></span>\[\dot{\beps}^\text{p} = \dot{p}\dfrac{3}{2\sigeq}\bs\]</div>
 </section>
 <section id="predictor-corrector-algorithm-for-constitutive-behavior-integration">
 <h3>Predictor-corrector algorithm for constitutive behavior integration<a class="headerlink" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration" title="Permalink to this heading">#</a></h3>
-<p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follow notations from <span id="id1">[<a class="reference internal" href="#id7" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
-<p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(11)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
+<p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follow notations from <span id="id1">[<a class="reference internal" href="#id7" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
+<p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(17)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule-incr">
-<span class="eqno">(12)<a class="headerlink" href="#equation-flow-rule-incr" title="Permalink to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
+<span class="eqno">(18)<a class="headerlink" href="#equation-flow-rule-incr" title="Permalink to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
 <p>An elastic trial stress <span class="math notranslate nohighlight">\(\bsig_{\text{elas}} = \bsig_{n} + \CC:\Delta \beps\)</span> is first computed. The plasticity criterion is then evaluated with the previous plastic strain <span class="math notranslate nohighlight">\(f_{\text{elas}} = \sigeq^{\text{elas}} - \sigma_0 - H p_n\)</span> where <span class="math notranslate nohighlight">\(\sigeq^{\text{elas}}\)</span> is the von Mises equivalent stress of the elastic trial stress.</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(f_{\text{elas}} &lt; 0\)</span>, no plasticity occurs during this time increment and <span class="math notranslate nohighlight">\(\Delta p,\Delta  \boldsymbol{\varepsilon}^p =0\)</span> and <span class="math notranslate nohighlight">\(\bsig_{n+1} = \bsig_\text{elas}\)</span>.</p></li>
 <li><p>Otherwise, plasticity occurs and the increment of plastic strain <span class="math notranslate nohighlight">\(\Delta p\)</span> is such that:</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-plastic-ev-discr">
-<span class="eqno">(13)<a class="headerlink" href="#equation-plastic-ev-discr" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(19)<a class="headerlink" href="#equation-plastic-ev-discr" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align}
 \bsig_{n+1} &amp;= \bsig_\text{elas} - 2\mu\Delta \bepsp\\
 \Delta \bepsp &amp;= \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\\
 f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\\
@@ -455,7 +460,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \[
 \sigma_{\text{eq},n+1} = \sigeq^\text{elas} - 3\mu \Delta p
 \]</div>
-<p>Replacing in the third equation of <a class="reference internal" href="#equation-plastic-ev-discr">(13)</a>, we deduce the value of the cumulated plastic strain increment:</p>
+<p>Replacing in the third equation of <a class="reference internal" href="#equation-plastic-ev-discr">(19)</a>, we deduce the value of the cumulated plastic strain increment:</p>
 <div class="math notranslate nohighlight">
 \[
 \Delta p = \dfrac{f_\text{elas}}{3\mu+H}
@@ -467,7 +472,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \]</div>
 <p>Hence, both elastic and plastic evolution can be accounted for by defining the plastic strain increment as follows:</p>
 <div class="math notranslate nohighlight" id="equation-deltap-formula">
-<span class="eqno">(14)<a class="headerlink" href="#equation-deltap-formula" title="Permalink to this equation">#</a></span>\[\Delta p = \dfrac{\langle f_\text{elas}\rangle_+}{3\mu+H}\]</div>
+<span class="eqno">(20)<a class="headerlink" href="#equation-deltap-formula" title="Permalink to this equation">#</a></span>\[\Delta p = \dfrac{\langle f_\text{elas}\rangle_+}{3\mu+H}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\langle \star \rangle_+\)</span> denotes the positive part of <span class="math notranslate nohighlight">\(\star\)</span>.</p>
 </section>
 </section>
@@ -673,7 +678,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>The return mapping procedure is implemented in the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function which takes as an argument a total strain increment Δε, the previous stress state <code class="docutils literal notranslate"><span class="pre">old_sig</span></code> and the previous plastic strain <code class="docutils literal notranslate"><span class="pre">old_p</span></code>. For computing the plastic strain increment, we use formula <a class="reference internal" href="#equation-deltap-formula">(14)</a> where <code class="docutils literal notranslate"><span class="pre">ppos</span></code> implements the positive part function.</p>
+<p>The return mapping procedure is implemented in the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function which takes as an argument a total strain increment Δε, the previous stress state <code class="docutils literal notranslate"><span class="pre">old_sig</span></code> and the previous plastic strain <code class="docutils literal notranslate"><span class="pre">old_p</span></code>. For computing the plastic strain increment, we use formula <a class="reference internal" href="#equation-deltap-formula">(20)</a> where <code class="docutils literal notranslate"><span class="pre">ppos</span></code> implements the positive part function.</p>
 <p>Plastic evolution also requires the computation of the normal vector to the final yield surface given by <span class="math notranslate nohighlight">\(\boldsymbol{n}_{\text{elas}} = \boldsymbol{s}_\text{elas}/\sigeq^{\text{elas}}\)</span>. In the following, this vector must be zero in case of elastic evolution. Hence, we multiply it by <span class="math notranslate nohighlight">\(\dfrac{\langle f_{\text{elas}}\rangle_+}{ f_{\text{elas}}}\)</span> to tackle both cases in a single expression. The final stress state is corrected by the plastic strain as follows <span class="math notranslate nohighlight">\(\bsig_{n+1} = \bsig_{\text{elas}} - \beta \boldsymbol{s}_\text{elas}\)</span> with <span class="math notranslate nohighlight">\(\beta = \dfrac{3\mu}{\sigeq^{\text{elas}}}\Delta p\)</span>. It can be observed that the last term vanishes in case of elastic evolution so that the final stress is indeed the elastic predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -906,7 +911,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <div class="docutils container" id="id4">
 <dl class="citation">
 <dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">BFR14</a></span></dt>
-<dd><p>Marc Bonnet, Attilio Frangi, and Christian Rey. <em>The finite element method in solid mechanics</em>. McGraw-Hill Education New York, 2014.</p>
+<dd><p>Marc Bonnet, Attilio Frangi, and Christian Rey. <em>The finite element method in solid mechanics</em>. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.</p>
 </dd>
 <dt class="label" id="id5"><span class="brackets">LMW+12</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
 <dd><p>Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. <em>Automated Solution of Differential Equations by the Finite Element Method</em>. Springer, 2012. ISBN 978-3-642-23098-1. <a class="reference external" href="https://doi.org/10.1007/978-3-642-23099-8">doi:10.1007/978-3-642-23099-8</a>.</p>

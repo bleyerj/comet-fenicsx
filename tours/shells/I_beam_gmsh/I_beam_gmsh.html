@@ -1,0 +1,690 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Generating a shell model with the Gmsh Python API &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/clipboard.min.js"></script>
+    <script src="../../../_static/copybutton.js"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/shells/I_beam_gmsh/I_beam_gmsh';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Nonlinear problems" href="../../nonlinear_problems/contents.html" />
+    <link rel="prev" title="Linear shell model" href="../linear_shell/linear_shell.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/shells/I_beam_gmsh/I_beam_gmsh.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Generating a shell model with the Gmsh Python API </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-parameters">Geometric parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-points-and-lines-for-the-left-hand-side-cross-section">Defining points and lines for the left-hand side cross-section</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-section-rotation-and-extrusion">Cross-section rotation and extrusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tagging-and-mesh-generation">Tagging and mesh generation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="generating-a-shell-model-with-the-gmsh-python-api">
+<h1>Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span><a class="headerlink" href="#generating-a-shell-model-with-the-gmsh-python-api" title="Permalink to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This notebook illustrates the use of the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API for generating a shell model of a curved I-beam model.</p>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../../../_images/curved_beam_mesh.png"><img alt="../../../_images/curved_beam_mesh.png" src="../../../_images/curved_beam_mesh.png" style="width: 800px;" /></a>
+</figure>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/f9e3a9531861821b7393c8d75e029971/I_beam_gmsh.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/e8844bc60b883bd812d4c75bd0c89dde/I_beam_gmsh.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
+<section id="geometric-parameters">
+<h2>Geometric parameters<a class="headerlink" href="#geometric-parameters" title="Permalink to this heading">#</a></h2>
+<p>We consider a I-shaped constant cross-section for the beam with bottom and top flange widths <code class="docutils literal notranslate"><span class="pre">wb</span></code> and <code class="docutils literal notranslate"><span class="pre">wt</span></code> and of height <code class="docutils literal notranslate"><span class="pre">h</span></code>. The arch will be a portion of a circular arc of total angle opening <span class="math notranslate nohighlight">\(2\theta\)</span> and chord length <span class="math notranslate nohighlight">\(L\)</span>. The circular arc radius is therefore given by <span class="math notranslate nohighlight">\(R=\dfrac{L}{2\sin(\theta)}\)</span> and the arch rise by <span class="math notranslate nohighlight">\(f=R-\dfrac{L}{2\tan(\theta)}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gmsh</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;I_beam&quot;</span>
+<span class="c1"># I-beam profile</span>
+<span class="n">wb</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># bottom flange width</span>
+<span class="n">wt</span> <span class="o">=</span> <span class="mf">0.3</span>  <span class="c1"># top flange width</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># web height</span>
+<span class="c1"># Arch geometry</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span>  <span class="c1"># arch opening half-angle</span>
+<span class="n">L</span> <span class="o">=</span> <span class="mf">10.0</span>  <span class="c1"># chord length</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>  <span class="c1"># arch radius</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">R</span> <span class="o">-</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>  <span class="c1"># arch rise</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="defining-points-and-lines-for-the-left-hand-side-cross-section">
+<h2>Defining points and lines for the left-hand side cross-section<a class="headerlink" href="#defining-points-and-lines-for-the-left-hand-side-cross-section" title="Permalink to this heading">#</a></h2>
+<p>We first begin by initializing Gmsh ang use the built-in <code class="docutils literal notranslate"><span class="pre">geo</span></code> CAD kernel since we won’t require any boolean operation which require the use of the Open Cascade kernel.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">geom</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">geo</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, we define the points and lines of the left-hand side cross-section. To facilitate their definition, these objects are first defined for a vertical cross-section located in the <span class="math notranslate nohighlight">\(X=0\)</span> plane and centered on the origin <span class="math notranslate nohighlight">\((0,0,0)\)</span>. We split them into a group of <code class="docutils literal notranslate"><span class="pre">bottom_points</span></code> for the <code class="docutils literal notranslate"><span class="pre">bottom_flange</span></code> and a group of <code class="docutils literal notranslate"><span class="pre">top_points</span></code> for the <code class="docutils literal notranslate"><span class="pre">top_flange</span></code>. The <code class="docutils literal notranslate"><span class="pre">web</span></code> then connects the middle points of each group. The <code class="docutils literal notranslate"><span class="pre">start_section</span></code> contains the web, bottom and top flange lines.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that Gmsh requires passing a mesh density for each point definition. However, this <code class="docutils literal notranslate"><span class="pre">lcar</span></code> value will not be used in the end since we will later define the number of points on each line using the <code class="docutils literal notranslate"><span class="pre">TransfiniteCurve</span></code> command.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lcar</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># characteristic mesh size density (will not be used)</span>
+<span class="n">bottom_points</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">wb</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lcar</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lcar</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wb</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lcar</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">top_points</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">wt</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lcar</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lcar</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wt</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lcar</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">bottom_flange</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bottom_points</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bottom_points</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+<span class="p">]</span>
+<span class="n">web</span> <span class="o">=</span> <span class="p">[</span><span class="n">geom</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top_points</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
+<span class="n">top_flange</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">top_points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">top_points</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">top_points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top_points</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+<span class="p">]</span>
+<span class="n">start_section</span> <span class="o">=</span> <span class="n">bottom_flange</span> <span class="o">+</span> <span class="n">web</span> <span class="o">+</span> <span class="n">top_flange</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cross-section-rotation-and-extrusion">
+<h2>Cross-section rotation and extrusion<a class="headerlink" href="#cross-section-rotation-and-extrusion" title="Permalink to this heading">#</a></h2>
+<p>Now, we rotate this section by an angle equal to <span class="math notranslate nohighlight">\(-\theta\)</span> around the <span class="math notranslate nohighlight">\(Y\)</span> axis to obtain our initial starting section for the arch. The <code class="docutils literal notranslate"><span class="pre">rotate</span></code> command requires a <code class="docutils literal notranslate"><span class="pre">dimTags</span></code> first argument i.e. a list of tuple of the form <code class="docutils literal notranslate"><span class="pre">(dim,</span> <span class="pre">label)</span></code> where <code class="docutils literal notranslate"><span class="pre">dim</span></code> is the entity dimension (<code class="docutils literal notranslate"><span class="pre">dim=1</span></code> here for lines) and <code class="docutils literal notranslate"><span class="pre">label</span></code> is the label entity. The following arguments are then <code class="docutils literal notranslate"><span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">z,</span> <span class="pre">ax,</span> <span class="pre">ay,</span> <span class="pre">az,</span> <span class="pre">angle</span></code> defining a rotation of angle <code class="docutils literal notranslate"><span class="pre">angle</span></code> around an axis of revolution passing through a point (<code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code>) along a direction (<code class="docutils literal notranslate"><span class="pre">ax</span></code>, <code class="docutils literal notranslate"><span class="pre">ay</span></code>, <code class="docutils literal notranslate"><span class="pre">az</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dimTags</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">start_section</span><span class="p">]</span>
+<span class="n">geom</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">dimTags</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">theta</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will now extrude the previously defined cross-section along a circular arc. The <code class="docutils literal notranslate"><span class="pre">extrude</span></code> command is used for extruding along a line, here we will need the ̀<code class="docutils literal notranslate"><span class="pre">revolve</span></code> command to extrude the cross-section by following a rotation  of angle <span class="math notranslate nohighlight">\(2\theta\)</span> which is defined similarly to the <code class="docutils literal notranslate"><span class="pre">rotate</span></code> command. Here, the axis follows the direction <span class="math notranslate nohighlight">\((0, 1, 0)\)</span> and passes through the point <span class="math notranslate nohighlight">\((L/2, 0, -(R-f))\)</span>. We also pass a list of layers and corresponding numbers of elements generated during extrusion. Here, we have only one layer (normalized height = 1.0) of 50 elements.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">revolve</span></code> command returns a list of <em>dimTags</em> corresponding to the newly created entities. For instance, when extruding a line, this will create a surface and three new lines. The output stores these entities as follows:
+<span class="math notranslate nohighlight">\([\text{end line}, \text{ surface}, \text{ lateral line }1,\text{ lateral line }2]\)</span>. We loop on the various entities composing the starting cross-section and append the newly created end-lines and surfaces in corresponding lists. Note that we need to call <code class="docutils literal notranslate"><span class="pre">synchronize</span></code> to update the corresponding Gmsh model with the newly created entities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">end_bottom_flange</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">end_top_flange</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">end_web</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">surfaces</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ini</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">bottom_flange</span><span class="p">,</span> <span class="n">web</span><span class="p">,</span> <span class="n">top_flange</span><span class="p">],</span> <span class="p">[</span><span class="n">end_bottom_flange</span><span class="p">,</span> <span class="n">end_web</span><span class="p">,</span> <span class="n">end_top_flange</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">ini</span><span class="p">:</span>
+        <span class="n">outDimTags</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">revolve</span><span class="p">(</span>
+            <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="p">)],</span>
+            <span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="o">-</span><span class="p">(</span><span class="n">R</span> <span class="o">-</span> <span class="n">f</span><span class="p">),</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">theta</span><span class="p">,</span>
+            <span class="n">numElements</span><span class="o">=</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span>
+            <span class="n">heights</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outDimTags</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">surfaces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">outDimTags</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">geom</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+<span class="n">end_section</span> <span class="o">=</span> <span class="n">end_bottom_flange</span> <span class="o">+</span> <span class="n">end_web</span> <span class="o">+</span> <span class="n">end_top_flange</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="tagging-and-mesh-generation">
+<h2>Tagging and mesh generation<a class="headerlink" href="#tagging-and-mesh-generation" title="Permalink to this heading">#</a></h2>
+<p>We finish by specifying the number of elements for the flange and web discretization using the <code class="docutils literal notranslate"><span class="pre">setTransfiniteCurve</span></code> command. We also affect the physical tag <code class="docutils literal notranslate"><span class="pre">1</span></code> for the left-hand side cross-section and <code class="docutils literal notranslate"><span class="pre">2</span></code> for the right-hand side cross section. We do not forget to also add physical tags to the surfaces otherwise they well later be ignored when generating the mesh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">bottom_flange</span> <span class="o">+</span> <span class="n">top_flange</span> <span class="o">+</span> <span class="n">end_bottom_flange</span> <span class="o">+</span> <span class="n">end_top_flange</span><span class="p">:</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">setTransfiniteCurve</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">web</span> <span class="o">+</span> <span class="n">end_web</span><span class="p">:</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">setTransfiniteCurve</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">surfaces</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">start_section</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">end_section</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now call the mesh <code class="docutils literal notranslate"><span class="pre">generate</span></code> function (up to dimension <code class="docutils literal notranslate"><span class="pre">dim=2</span></code> since we don’t have any 3D solid element here). The generated mesh is then exported to a <code class="docutils literal notranslate"><span class="pre">.msh</span></code>. We finish by the <code class="docutils literal notranslate"><span class="pre">finalize</span></code> command since we are finished with the Gmsh API.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can export the corresponding <code class="docutils literal notranslate"><span class="pre">geo</span></code> file by writing to a file with a <code class="docutils literal notranslate"><span class="pre">.geo_unrolled</span></code> extension.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s2">&quot;.msh&quot;</span><span class="p">)</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : Meshing 1D...
+Info    : [  0%] Meshing curve 1 (Line)
+Info    : [ 10%] Meshing curve 2 (Line)
+Info    : [ 20%] Meshing curve 3 (Line)
+Info    : [ 20%] Meshing curve 4 (Line)
+Info    : [ 30%] Meshing curve 5 (Line)
+Info    : [ 40%] Meshing curve 6 (Extruded)
+Info    : [ 40%] Meshing curve 7 (Extruded)
+Info    : [ 50%] Meshing curve 8 (Extruded)
+Info    : [ 50%] Meshing curve 10 (Extruded)
+Info    : [ 60%] Meshing curve 12 (Extruded)
+Info    : [ 70%] Meshing curve 14 (Extruded)
+Info    : [ 70%] Meshing curve 16 (Extruded)
+Info    : [ 80%] Meshing curve 18 (Extruded)
+Info    : [ 90%] Meshing curve 19 (Extruded)
+Info    : [ 90%] Meshing curve 22 (Extruded)
+Info    : [100%] Meshing curve 24 (Extruded)
+Info    : Done meshing 1D (Wall 0.00044066s, CPU 0.000716s)
+Info    : Meshing 2D...
+Info    : [  0%] Meshing surface 9 (Extruded)
+Info    : [ 20%] Meshing surface 13 (Extruded)
+Info    : [ 40%] Meshing surface 17 (Extruded)
+Info    : [ 60%] Meshing surface 21 (Extruded)
+Info    : [ 80%] Meshing surface 25 (Extruded)
+Info    : Done meshing 2D (Wall 0.00426477s, CPU 0.005001s)
+Info    : 617 nodes 1439 elements
+Info    : Writing &#39;I_beam.msh&#39;...
+Info    : Done writing &#39;I_beam.msh&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/shells/I_beam_gmsh"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../linear_shell/linear_shell.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../nonlinear_problems/contents.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Nonlinear problems</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometric-parameters">Geometric parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-points-and-lines-for-the-left-hand-side-cross-section">Defining points and lines for the left-hand side cross-section</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-section-rotation-and-extrusion">Cross-section rotation and extrusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tagging-and-mesh-generation">Tagging and mesh generation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
