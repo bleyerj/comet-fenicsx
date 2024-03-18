@@ -211,7 +211,7 @@ The time derivatives are now replaced by an implicit Euler scheme, so that the p
 \int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T
 ```
 
-where $T$ and $\boldsymbol{\varepsilon}$ correspond to the *unknown* fields at the time increment $n+1$. For more details on the time discretization of the heat equation, see also the [Heat equation FEniCS tutorial](https://fenicsproject.org/pub/tutorial/html/._ftut1006.html).
+where $T$ and $\boldsymbol{\varepsilon}$ correspond to the *unknown* fields at the time increment $n+1$. For more details on the time discretization of the heat equation, see also the [Heat equation FEniCS tutorial](https://jsdokken.com/dolfinx-tutorial/chapter2/heat_equation.html).
 
 In addition to the previous thermal weak form, the mechanical weak form reads as:
 
