@@ -233,10 +233,10 @@ tdim = domain.topology.dim
 print(f"Geometrical dimension = {gdim}")
 print(f"Topological dimension = {tdim}")
 
+pyvista.set_jupyter_backend("static")
 plotter = pyvista.Plotter()
 ugrid = pyvista.UnstructuredGrid(*plot.vtk_mesh(domain))
-show_edges = True
-plotter.add_mesh(ugrid, show_edges=show_edges)
+plotter.add_mesh(ugrid, show_edges=True)
 plotter.show_axes()
 plotter.show()
 # -

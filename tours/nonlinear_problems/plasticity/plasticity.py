@@ -264,6 +264,8 @@ loading = fem.Constant(domain, 0.0)
 # ```{note}
 # We point out that, although the problem is 2D, plastic strain still occur in the transverse $zz$ direction. This will require us to keep track of the out-of-plane $zz$ components of stress/strain states.
 # ```
+#
+# % TODO: Change to Basix elements
 
 deg_quad = 2  # quadrature degree for internal state variable representation
 W0e = ufl.FiniteElement(

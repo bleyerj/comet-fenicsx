@@ -49,9 +49,7 @@ from dolfinx import fem, mesh
 import dolfinx.fem.petsc
 
 N = 50
-domain = mesh.create_unit_square(
-    MPI.COMM_WORLD, N, N, cell_type=mesh.CellType.quadrilateral
-)
+domain = mesh.create_unit_square(MPI.COMM_WORLD, N, N, mesh.CellType.quadrilateral)
 # -
 
 # Material parameters for isotropic linear elastic behavior are first defined::
@@ -105,7 +103,6 @@ V = fem.functionspace(domain, ufl.MixedElement([We, Te]))
 
 # Clamped boundary conditions on the lateral boundary are defined as::
 
-
 # +
 # Boundary of the plate
 def border(x):
@@ -127,7 +124,6 @@ bcs = [fem.dirichletbc(u0, clamped_dofs)]
 
 # Some useful functions for implementing generalized constitutive relations are now
 # defined:
-
 
 # +
 def strain2voigt(eps):
