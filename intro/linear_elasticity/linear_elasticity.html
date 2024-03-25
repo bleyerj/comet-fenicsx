@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Linear elasticity &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,42 +28,36 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro/linear_elasticity/linear_elasticity';</script>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../tours/linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/intro/linear_elasticity/linear_elasticity.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/intro/linear_elasticity/linear_elasticity.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -378,7 +386,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="linear-elasticity">
-<h1>Linear elasticity<a class="headerlink" href="#linear-elasticity" title="Permalink to this heading">#</a></h1>
+<h1>Linear elasticity<a class="headerlink" href="#linear-elasticity" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This demo shows how to define a linear problem, apply boundary conditions, solve for the solution and output to a results file.
@@ -400,7 +408,7 @@ document.write(`
 </ul>
 </div>
 <section id="variational-formulation">
-<h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Permalink to this heading">#</a></h2>
+<h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Link to this heading">#</a></h2>
 <p>Solving PDEs with FEniCSx requires to formulate the problem in <em>weak</em> or <em>variational</em> form. For a general introduction to variational formulations within the FEniCSx context, we refer the reader to <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/chapter1/fundamentals.html">https://jsdokken.com/dolfinx-tutorial/chapter1/fundamentals.html</a>.</p>
 <p>In the context of solid mechanics, the variational formulation within a small strain setting reads as:</p>
 <blockquote>
@@ -423,9 +431,9 @@ document.write(`
 <p>The power of FEniCS is precisely to easily define such forms using symbolic expressions. After choosing a finite-element approximation for the test and trial function spaces, it will automatically generate code to compute the corresponding global stiffness matrix (for <span class="math notranslate nohighlight">\(a\)</span>) and vector of nodal forces (for <span class="math notranslate nohighlight">\(L\)</span>).</p>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <section id="relevant-packages">
-<h3>Relevant packages<a class="headerlink" href="#relevant-packages" title="Permalink to this heading">#</a></h3>
+<h3>Relevant packages<a class="headerlink" href="#relevant-packages" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p><strong>UFL</strong>: Symbolic expressions involved in the above expressions are handled by the <code class="docutils literal notranslate"><span class="pre">ufl</span></code> (<a class="reference external" href="https://github.com/FEniCS/ufl">Unified Form Language</a>] package which allows to combine abstract operators in a notation close to the mathematical one. UFL also provide the <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> and <code class="docutils literal notranslate"><span class="pre">TrialFunction</span></code> objects appearing as arguments of linear or bilinear forms.</p></li>
 <li><p><strong>DOLFINx</strong>: The <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code> package is the Python interface to the computational environment of FEniCSx. It provides all the necessary tools to load meshes, handle data structures and functions related to finite-elements (global FE function spaces and associated functions, assembling procedures, boundary conditions, solvers, etc.).</p></li>
@@ -433,7 +441,7 @@ document.write(`
 </ul>
 </section>
 <section id="problem-definition">
-<h3>Problem definition<a class="headerlink" href="#problem-definition" title="Permalink to this heading">#</a></h3>
+<h3>Problem definition<a class="headerlink" href="#problem-definition" title="Link to this heading">#</a></h3>
 <p>We will model a 2D rectangular beam of dimensions <span class="math notranslate nohighlight">\(10\times 1\)</span> which we will mesh with quadrangles. We first start by loading the relevant packages and functions. The <code class="docutils literal notranslate"><span class="pre">dolfinx.mesh</span></code> module provides a customary function for meshing a rectangular domain. For more complex cases, we can import meshes generated by external tools such as GMSH for instance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -569,7 +577,7 @@ sigma (UFL):
 </div>
 </div>
 </div>
-<p>Finally, a <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> object is created based on the variational problem, the boundary conditions and a Function <code class="docutils literal notranslate"><span class="pre">u</span></code> in which we want to store the solution. We can also pass parameters to setup he solver type.
+<p>Finally, a <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> object is created based on the variational problem, the boundary conditions and a Function <code class="docutils literal notranslate"><span class="pre">u</span></code> in which we want to store the solution. We can also pass parameters to setup the solver type (here we use a direct LU factorization).
 Results are then stored in a “.pvd” format to be visualized using Paraview for instance.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -587,7 +595,7 @@ Results are then stored in a “.pvd” format to be visualized using Paraview f
 </div>
 </section>
 <section id="changing-boundary-conditions">
-<h3>Changing boundary conditions<a class="headerlink" href="#changing-boundary-conditions" title="Permalink to this heading">#</a></h3>
+<h3>Changing boundary conditions<a class="headerlink" href="#changing-boundary-conditions" title="Link to this heading">#</a></h3>
 <p>If we want to constrain only the vertical component of the displacement field on some boundary, we need to work with the corresponding subspace of the original function space <code class="docutils literal notranslate"><span class="pre">V</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -614,7 +622,7 @@ Results are then stored in a “.pvd” format to be visualized using Paraview f
 </div>
 </section>
 <section id="exercise-thermal-strains">
-<h3>Exercise : thermal strains<a class="headerlink" href="#exercise-thermal-strains" title="Permalink to this heading">#</a></h3>
+<h3>Exercise : thermal strains<a class="headerlink" href="#exercise-thermal-strains" title="Link to this heading">#</a></h3>
 <p>We consider the presence of thermal strains <span class="math notranslate nohighlight">\(\beps^\text{th} = \alpha \Delta T(\boldsymbol{x}) \boldsymbol{I}\)</span> where <span class="math notranslate nohighlight">\(\Delta T(\boldsymbol{x})\)</span> varies linearly from 0 to +20° between the bottom and top face of the beam. The stress-strain constitutive relation is now:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}

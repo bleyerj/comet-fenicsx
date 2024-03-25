@@ -211,7 +211,7 @@ We can plot the plate deflection $w$ and the rotation vector $\boldsymbol{\beta}
 import pyvista
 from dolfinx import plot
 
-pyvista.set_jupyter_backend("trame")
+pyvista.set_jupyter_backend("static")
 
 Vw = w.function_space
 w_topology, w_cell_types, w_geometry = plot.vtk_mesh(Vw)

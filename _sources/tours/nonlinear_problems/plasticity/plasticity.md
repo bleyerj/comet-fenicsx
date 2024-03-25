@@ -267,6 +267,7 @@ We point out that, although the problem is 2D, plastic strain still occur in the
 ```
 
 % TODO: Change to Basix elements
+
 ```{code-cell}
 deg_quad = 2  # quadrature degree for internal state variable representation
 W0e = ufl.FiniteElement(

@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Isotropic and orthotropic plane stress elasticity &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,42 +28,36 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity';</script>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -383,7 +391,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="isotropic-and-orthotropic-plane-stress-elasticity">
-<h1>Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span><a class="headerlink" href="#isotropic-and-orthotropic-plane-stress-elasticity" title="Permalink to this heading">#</a></h1>
+<h1>Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span><a class="headerlink" href="#isotropic-and-orthotropic-plane-stress-elasticity" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This demo shows how to define a linear elastic problem with an isotropic and orthotropic material in plane stress conditions. It also shows how to use the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API to define a 2D perforated plate domain.
@@ -413,14 +421,14 @@ document.write(`
 <p>The <a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html"><span class="doc std std-doc">Linear Elasticity introduction tour</span></a> covers a very similar topic. We refer the reader to this tour for more details on some aspect of the <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).</p>
 </div>
 <section id="variational-formulation">
-<h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Permalink to this heading">#</a></h2>
+<h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Link to this heading">#</a></h2>
 <p>We first recall that the variational formulation associated to the linear elastic case reads:</p>
 <p>Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
 <div class="math notranslate nohighlight">
 \[
 \int_\Omega \nabla^\text{s}\bu:\CC:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\bv\)</span> is the test function, <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> the body and <span class="math notranslate nohighlight">\(\bT\)</span> the contact forces. <span class="math notranslate nohighlight">\(\CC\)</span> is the fourth-order elastic tensor characterizing the linear elastic behaviour. Introducing the linearized strain tensor field <span class="math notranslate nohighlight">\(\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)\)</span>, it relates the stress <span class="math notranslate nohighlight">\(\bsig\)</span> to the strain <span class="math notranslate nohighlight">\(\beps\)</span> using the linear elastic constitutive relation:</p>
+<p>where <span class="math notranslate nohighlight">\(\bv\)</span> is the test function, <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> the body and <span class="math notranslate nohighlight">\(\bT\)</span> the contact forces. <span class="math notranslate nohighlight">\(\CC\)</span> is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field <span class="math notranslate nohighlight">\(\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)\)</span>, it relates the stress <span class="math notranslate nohighlight">\(\bsig\)</span> to the strain <span class="math notranslate nohighlight">\(\beps\)</span> using the linear elastic constitutive relation:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 \bsig = \CC:\beps
@@ -428,10 +436,10 @@ document.write(`
 <p>The above variational formulation can therefore be rewritten as:
 Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
 <div class="math notranslate nohighlight" id="equation-weak-form">
-<span class="eqno">(2)<a class="headerlink" href="#equation-weak-form" title="Permalink to this equation">#</a></span>\[\int_\Omega \bsig[\bu]:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0\]</div>
+<span class="eqno">(2)<a class="headerlink" href="#equation-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega \bsig[\bu]:\beps[\bv] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0\]</div>
 <p>The above problem is a linear variational problem since <span class="math notranslate nohighlight">\(\bsig\)</span> depends linearly upon the unknown field <span class="math notranslate nohighlight">\(\bu\)</span>. It can be formally written as:</p>
 <div class="math notranslate nohighlight" id="equation-bilinear">
-<span class="eqno">(3)<a class="headerlink" href="#equation-bilinear" title="Permalink to this equation">#</a></span>\[a(\bu,\bv)=L(\bv) \quad \forall \bv \in V_0\]</div>
+<span class="eqno">(3)<a class="headerlink" href="#equation-bilinear" title="Link to this equation">#</a></span>\[a(\bu,\bv)=L(\bv) \quad \forall \bv \in V_0\]</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>In some cases, one may want to consider a non-zero initial stress state <span class="math notranslate nohighlight">\(\bsig_0\)</span> associated with the reference undeformed configuration. In this case, the stress/strain relation is written as:</p>
@@ -446,13 +454,13 @@ Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:<
 \]</div>
 </div>
 <section id="constitutive-relation">
-<h3>Constitutive relation<a class="headerlink" href="#constitutive-relation" title="Permalink to this heading">#</a></h3>
+<h3>Constitutive relation<a class="headerlink" href="#constitutive-relation" title="Link to this heading">#</a></h3>
 <p>In practice for a concrete implementation, the formal stress/strain relation  <span class="math notranslate nohighlight">\(\bsig = \CC:\beps\)</span> can be defined either using intrinsic tensorial or using instead engineering (vectorial) notation. For instance, the isotropic linear elastic case reads in tensorial notation:</p>
 <div class="math notranslate nohighlight" id="equation-isotropic">
-<span class="eqno">(4)<a class="headerlink" href="#equation-isotropic" title="Permalink to this equation">#</a></span>\[\bsig = \lambda \tr(\beps)\bI + 2\mu\beps\]</div>
+<span class="eqno">(4)<a class="headerlink" href="#equation-isotropic" title="Link to this equation">#</a></span>\[\bsig = \lambda \tr(\beps)\bI + 2\mu\beps\]</div>
 <p>in 3D and 2D plane strain conditions. The relation can also be inverted as follows:</p>
 <div class="math notranslate nohighlight" id="equation-isotropic-compliance">
-<span class="eqno">(5)<a class="headerlink" href="#equation-isotropic-compliance" title="Permalink to this equation">#</a></span>\[\beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1}{E}\bsig\]</div>
+<span class="eqno">(5)<a class="headerlink" href="#equation-isotropic-compliance" title="Link to this equation">#</a></span>\[\beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1}{E}\bsig\]</div>
 <p>On the other hand, the engineering notation represents the tensor as a list of its Cartesian components using either the Voigt convention:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -516,7 +524,7 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 </div>
 </div>
 <section id="isotropic-plane-strain-case">
-<h4>Isotropic plane strain case<a class="headerlink" href="#isotropic-plane-strain-case" title="Permalink to this heading">#</a></h4>
+<h4>Isotropic plane strain case<a class="headerlink" href="#isotropic-plane-strain-case" title="Link to this heading">#</a></h4>
 <p>In the isotropic case the elastic stiffness matrix associated with <a class="reference internal" href="#equation-isotropic">(4)</a> becomes:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
@@ -528,10 +536,10 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 \end{equation*}\]</div>
 </section>
 <section id="isotropic-plane-stress-case">
-<h4>Isotropic plane stress case<a class="headerlink" href="#isotropic-plane-stress-case" title="Permalink to this heading">#</a></h4>
+<h4>Isotropic plane stress case<a class="headerlink" href="#isotropic-plane-stress-case" title="Link to this heading">#</a></h4>
 <p>In the plane stress case, an out-of-plane strain component <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span> must be considered so that <span class="math notranslate nohighlight">\(\sigma_{zz}=0\)</span>. Using this condition in the 3D constitutive relation <a class="reference internal" href="#equation-isotropic-compliance">(5)</a>, one has <span class="math notranslate nohighlight">\(\varepsilon_{zz}=-\frac{\nu}{E}(\sigma_{xx}+\sigma_{yy})\)</span>. The resulting plane-stress compliance matrix therefore reads:</p>
 <div class="math notranslate nohighlight" id="equation-compliance-plane-stress">
-<span class="eqno">(6)<a class="headerlink" href="#equation-compliance-plane-stress" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E &amp; -\nu/E &amp; 0\\
+<span class="eqno">(6)<a class="headerlink" href="#equation-compliance-plane-stress" title="Link to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E &amp; -\nu/E &amp; 0\\
    -\nu/E &amp; 1/E &amp; 0 \\ 0 &amp; 0 &amp; 1/\mu \end{bmatrix}\end{split}\]</div>
 <p>This relation needs to be inverted to obtain the corresponding stiffness matrix <span class="math notranslate nohighlight">\(\mathbf{C}=\mathbf{S}^{-1}\)</span>:</p>
 <div class="math notranslate nohighlight">
@@ -541,7 +549,7 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 \end{split}\]</div>
 <p>If using a tensorial notation, simple computations show that the 2D plane-stress constitutive equation reads:</p>
 <div class="math notranslate nohighlight" id="equation-isotropic-plane-stress">
-<span class="eqno">(7)<a class="headerlink" href="#equation-isotropic-plane-stress" title="Permalink to this equation">#</a></span>\[\bsig = \lambda^* \tr(\beps)\bI + 2\mu\beps\]</div>
+<span class="eqno">(7)<a class="headerlink" href="#equation-isotropic-plane-stress" title="Link to this equation">#</a></span>\[\bsig = \lambda^* \tr(\beps)\bI + 2\mu\beps\]</div>
 <p>that is as <a class="reference internal" href="#equation-isotropic">(4)</a> except that we are using a modified value of the Lamé coefficient:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -549,10 +557,10 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 \]</div>
 </section>
 <section id="orthotropic-plane-stress-case">
-<h4>Orthotropic plane stress case<a class="headerlink" href="#orthotropic-plane-stress-case" title="Permalink to this heading">#</a></h4>
+<h4>Orthotropic plane stress case<a class="headerlink" href="#orthotropic-plane-stress-case" title="Link to this heading">#</a></h4>
 <p>In the plane-stress orthotropic case, we assume that the 2D material possesses 2 planes of symmetry corresponding to the global <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> directions. Adapting the plane-stress compliance matrix <a class="reference internal" href="#equation-compliance-plane-stress">(6)</a> to the orthotropic case yields:</p>
 <div class="math notranslate nohighlight" id="equation-compliance-plane-stress-orthotropic">
-<span class="eqno">(8)<a class="headerlink" href="#equation-compliance-plane-stress-orthotropic" title="Permalink to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E_x &amp; -\nu_{xy}/E_x &amp; 0\\
+<span class="eqno">(8)<a class="headerlink" href="#equation-compliance-plane-stress-orthotropic" title="Link to this equation">#</a></span>\[\begin{split}[\mathbf{S}] = \begin{bmatrix} 1/E_x &amp; -\nu_{xy}/E_x &amp; 0\\
    -\nu_{yx}/E_y &amp; 1/E_y &amp; 0 \\ 0 &amp; 0 &amp; 1/G_{xy} \end{bmatrix}\end{split}\]</div>
 <p>with <span class="math notranslate nohighlight">\(E_x, E_y\)</span> being the two Young’s moduli in the orthotropy directions, <span class="math notranslate nohighlight">\(\nu_{xy}\)</span> the in-plane Poisson ration (with the following relation ensuring the constitutive relation symmetry <span class="math notranslate nohighlight">\(\nu_{yx}=\nu_{xy}E_y/E_x\)</span>) and <span class="math notranslate nohighlight">\(G_{xy}\)</span> being the shear modulus. Again, this relation needs to be inverted to obtain the stiffness matrix.</p>
 <div class="cell docutils container">
@@ -592,9 +600,9 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 </section>
 </section>
 <section id="problem-implementation">
-<h2>Problem implementation<a class="headerlink" href="#problem-implementation" title="Permalink to this heading">#</a></h2>
+<h2>Problem implementation<a class="headerlink" href="#problem-implementation" title="Link to this heading">#</a></h2>
 <section id="geometry-and-mesh-generation-using-gmsh-api">
-<h3>Geometry and mesh generation using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> API<a class="headerlink" href="#geometry-and-mesh-generation-using-gmsh-api" title="Permalink to this heading">#</a></h3>
+<h3>Geometry and mesh generation using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> API<a class="headerlink" href="#geometry-and-mesh-generation-using-gmsh-api" title="Link to this heading">#</a></h3>
 <p>We now consider the case of a square plate perforated by a circular hole of radius <span class="math notranslate nohighlight">\(R\)</span>, the plate dimension is <span class="math notranslate nohighlight">\(2L\times 2L\)</span> with <span class="math notranslate nohighlight">\(L \gg R\)</span>. Loading will consists of a uniform isotropic traction on all boundaries. However, only the top-right quarter of the plate will be considered using appropriate symmetry boundary conditions. We use here the <code class="docutils literal notranslate"><span class="pre">gmsh</span></code> Python API with the Open-Cascade (<code class="docutils literal notranslate"><span class="pre">occ</span></code>) kernel to easily define the problem geometry. Creating entities using constructive solid geometry is very useful for building complex geometry but can lead to difficulties when identifying the resulting object boundaries. Here we use the <code class="docutils literal notranslate"><span class="pre">getEntitiesInBoundingBox</span></code> to identify the corresponding boundaries. Finally, we also set a global mesh size <code class="docutils literal notranslate"><span class="pre">h</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

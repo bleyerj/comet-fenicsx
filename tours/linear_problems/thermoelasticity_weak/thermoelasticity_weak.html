@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Linear thermoelasticity (weak coupling) &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,42 +28,36 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak';</script>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -374,9 +382,9 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="linear-thermoelasticity-weak-coupling">
-<h1>Linear thermoelasticity (weak coupling) <span class="far fa-star"></span><a class="headerlink" href="#linear-thermoelasticity-weak-coupling" title="Permalink to this heading">#</a></h1>
+<h1>Linear thermoelasticity (weak coupling) <span class="far fa-star"></span><a class="headerlink" href="#linear-thermoelasticity-weak-coupling" title="Link to this heading">#</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>In this tour, we will solve a linear thermoelastic problem. In permanent regime, the temperature field is uncoupled from the mechanical fields whereas the latter depend on the temperature due to presence of thermal strains in the thermoelastic constitutive relation. This situation can be described as <em>weak</em> thermomechanical coupling.</p>
@@ -390,12 +398,12 @@ document.write(`
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><em>Full</em> thermomechanical coupling for a transient evolution problem is treated <a class="reference internal" href="../thermoelasticity_full/thermoelasticity_full.html"><span class="doc std std-doc">in this tour</span></a>.</p>
+<p><em>Full</em> thermomechanical coupling for a transient evolution problem is treated <a class="reference internal" href="../thermoelasticity_full/thermoelasticity_full.html"><span class="std std-doc">in this tour</span></a>.</p>
 </div>
 <p>In the present setting, the temperature field can be either given as a <code class="docutils literal notranslate"><span class="pre">Constant</span></code> or an <code class="docutils literal notranslate"><span class="pre">Expression</span></code> throughout the domain or obtained as the solution of a steady-state heat (Poisson) equation. This last case will be implemented in this tour.</p>
 </section>
 <section id="problem-position">
-<h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
+<h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
 <p>We consider the case of a rectangular 2D domain of dimensions <span class="math notranslate nohighlight">\(L\times H\)</span> fully clamped on both lateral sides and subjected to a self-weight loading. The top side is subjected to a uniform temperature increase of <span class="math notranslate nohighlight">\(\Delta T = +20^{\circ}C\)</span> while the bottom and lateral boundaries remain at the initial temperature <span class="math notranslate nohighlight">\(T_0\)</span>. The geometry and boundary regions are first defined.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -436,7 +444,7 @@ document.write(`
 <p>Because of the weak coupling discussed before, the thermal and mechanical problem can be solved separately. As a result, we don’t need to resort to mixed function spaces but can just define separately both problems.</p>
 </section>
 <section id="resolution-of-the-thermal-problem">
-<h2>Resolution of the thermal problem<a class="headerlink" href="#resolution-of-the-thermal-problem" title="Permalink to this heading">#</a></h2>
+<h2>Resolution of the thermal problem<a class="headerlink" href="#resolution-of-the-thermal-problem" title="Link to this heading">#</a></h2>
 <p>The temperature is solution to the following equation <span class="math notranslate nohighlight">\(\text{div}(k\nabla T) = 0\)</span> where <span class="math notranslate nohighlight">\(k\)</span> is the thermal conductivity (here we have no heat source). Since <span class="math notranslate nohighlight">\(k\)</span> is assumed to be homogeneous, it will not influence the solution. We therefore obtain a standard Poisson equation without forcing terms. Its formulation and resolution in FEniCS is quite standard with the temperature variation <span class="math notranslate nohighlight">\(\Delta T\)</span> as the main unknown.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -502,7 +510,7 @@ document.write(`
 </div>
 </section>
 <section id="mechanical-problem">
-<h2>Mechanical problem<a class="headerlink" href="#mechanical-problem" title="Permalink to this heading">#</a></h2>
+<h2>Mechanical problem<a class="headerlink" href="#mechanical-problem" title="Link to this heading">#</a></h2>
 <p>The linearized thermoelastic constitutive equation is given by:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -511,7 +519,7 @@ document.write(`
 <p>where <span class="math notranslate nohighlight">\(\lambda,\mu\)</span> are the Lamé parameters and <span class="math notranslate nohighlight">\(\alpha\)</span> is the thermal expansion coefficient. As regards the current problem, the last term corresponding to the thermal strains is completely known. The following formulation can thus be generalized to any kind of known initial stress or eigenstrain state such as pre-stress or phase changes.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The weak formulation for the mechanical problem builds upon the presentation of the <a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html"><span class="doc std std-doc">Linear elasticity</span></a> tour.
+<p>The weak formulation for the mechanical problem builds upon the presentation of the <a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html"><span class="std std-doc">Linear elasticity</span></a> tour.
 The main difference lies in the presence of the temperature term in the constitutive relation which introduces a linear term with respect to the TestFunction <code class="code docutils literal notranslate"><span class="pre">u_</span></code> when writing the work of internal forces <code class="code docutils literal notranslate"><span class="pre">ufl.inner(sigma(du,</span> <span class="pre">Delta_T),</span> <span class="pre">eps(u_))</span> <span class="pre">*</span> <span class="pre">ufl.dx</span></code>. As a result, the bilinear form is extracted using the left-hand side <code class="code docutils literal notranslate"><span class="pre">ufl.lhs</span></code> function whereas the thermal strain term, acting as a loading term, is extracted using the right-hand side <code class="code docutils literal notranslate"><span class="pre">ufl.rhs</span></code> function and added to the work of external forces when defining the linear form <code class="code docutils literal notranslate"><span class="pre">LM</span></code>.</p>
 </div>
 <div class="cell docutils container">

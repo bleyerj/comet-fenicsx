@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Elasto-plastic analysis of a 2D von Mises material &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,42 +28,36 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/plasticity/plasticity';</script>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/plasticity/plasticity.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/plasticity/plasticity.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -381,7 +389,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="elasto-plastic-analysis-of-a-2d-von-mises-material">
-<h1>Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#elasto-plastic-analysis-of-a-2d-von-mises-material" title="Permalink to this heading">#</a></h1>
+<h1>Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#elasto-plastic-analysis-of-a-2d-von-mises-material" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This demo shows how to implement a 2D elasto-plastic problem. Since the elasto-plastic behavior is isotropic with von Mises plasticity and linear hardening, the elasto-plastic constitutive update will have a closed-form analytical solution. We also implement a custom Newton nonlinear solver interacting with the constitutive update.</p>
@@ -413,10 +421,10 @@ document.write(`
 </ul>
 </div>
 <section id="problem-position">
-<h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
+<h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
 <p>This example is concerned with the incremental analysis of an elasto-plastic von Mises material. The structure response is computed using an iterative predictor-corrector return mapping algorithm embedded in a Newton-Raphson global loop for restoring equilibrium. Due to the simple expression of the von Mises criterion, the return mapping procedure is completely analytical (with linear isotropic hardening).</p>
 <section id="elastoplastic-behavior">
-<h3>Elastoplastic behavior<a class="headerlink" href="#elastoplastic-behavior" title="Permalink to this heading">#</a></h3>
+<h3>Elastoplastic behavior<a class="headerlink" href="#elastoplastic-behavior" title="Link to this heading">#</a></h3>
 <p>The material is represented by an isotropic elasto-plastic von Mises yield condition of uniaxial strength <span class="math notranslate nohighlight">\(\sigma_0\)</span> and with isotropic hardening of modulus <span class="math notranslate nohighlight">\(H\)</span>. The elastic behavior is linear isotropic:</p>
 <div class="math notranslate nohighlight">
 \[\bsig = \lambda \tr(\beps-\bepsp)\bI + 2\mu(\beps-\bepsp) = \CC:(\beps-\bepsp)\]</div>
@@ -431,21 +439,21 @@ document.write(`
 \[\dot{\beps}^\text{p} = \dot{\lambda}\dfrac{\partial f}{\partial \bsig}\]</div>
 <p>which gives in the present case:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule">
-<span class="eqno">(17)<a class="headerlink" href="#equation-flow-rule" title="Permalink to this equation">#</a></span>\[\dot{\beps}^\text{p} = \dot{p}\dfrac{3}{2\sigeq}\bs\]</div>
+<span class="eqno">(21)<a class="headerlink" href="#equation-flow-rule" title="Link to this equation">#</a></span>\[\dot{\beps}^\text{p} = \dot{p}\dfrac{3}{2\sigeq}\bs\]</div>
 </section>
 <section id="predictor-corrector-algorithm-for-constitutive-behavior-integration">
-<h3>Predictor-corrector algorithm for constitutive behavior integration<a class="headerlink" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration" title="Permalink to this heading">#</a></h3>
-<p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follow notations from <span id="id1">[<a class="reference internal" href="#id7" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
-<p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(17)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
+<h3>Predictor-corrector algorithm for constitutive behavior integration<a class="headerlink" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration" title="Link to this heading">#</a></h3>
+<p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follow notations from <span id="id1">[<a class="reference internal" href="#id8" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
+<p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(21)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule-incr">
-<span class="eqno">(18)<a class="headerlink" href="#equation-flow-rule-incr" title="Permalink to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
+<span class="eqno">(22)<a class="headerlink" href="#equation-flow-rule-incr" title="Link to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
 <p>An elastic trial stress <span class="math notranslate nohighlight">\(\bsig_{\text{elas}} = \bsig_{n} + \CC:\Delta \beps\)</span> is first computed. The plasticity criterion is then evaluated with the previous plastic strain <span class="math notranslate nohighlight">\(f_{\text{elas}} = \sigeq^{\text{elas}} - \sigma_0 - H p_n\)</span> where <span class="math notranslate nohighlight">\(\sigeq^{\text{elas}}\)</span> is the von Mises equivalent stress of the elastic trial stress.</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(f_{\text{elas}} &lt; 0\)</span>, no plasticity occurs during this time increment and <span class="math notranslate nohighlight">\(\Delta p,\Delta  \boldsymbol{\varepsilon}^p =0\)</span> and <span class="math notranslate nohighlight">\(\bsig_{n+1} = \bsig_\text{elas}\)</span>.</p></li>
 <li><p>Otherwise, plasticity occurs and the increment of plastic strain <span class="math notranslate nohighlight">\(\Delta p\)</span> is such that:</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-plastic-ev-discr">
-<span class="eqno">(19)<a class="headerlink" href="#equation-plastic-ev-discr" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(23)<a class="headerlink" href="#equation-plastic-ev-discr" title="Link to this equation">#</a></span>\[\begin{split}\begin{align}
 \bsig_{n+1} &amp;= \bsig_\text{elas} - 2\mu\Delta \bepsp\\
 \Delta \bepsp &amp;= \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\\
 f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\\
@@ -460,7 +468,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \[
 \sigma_{\text{eq},n+1} = \sigeq^\text{elas} - 3\mu \Delta p
 \]</div>
-<p>Replacing in the third equation of <a class="reference internal" href="#equation-plastic-ev-discr">(19)</a>, we deduce the value of the cumulated plastic strain increment:</p>
+<p>Replacing in the third equation of <a class="reference internal" href="#equation-plastic-ev-discr">(23)</a>, we deduce the value of the cumulated plastic strain increment:</p>
 <div class="math notranslate nohighlight">
 \[
 \Delta p = \dfrac{f_\text{elas}}{3\mu+H}
@@ -472,12 +480,12 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \]</div>
 <p>Hence, both elastic and plastic evolution can be accounted for by defining the plastic strain increment as follows:</p>
 <div class="math notranslate nohighlight" id="equation-deltap-formula">
-<span class="eqno">(20)<a class="headerlink" href="#equation-deltap-formula" title="Permalink to this equation">#</a></span>\[\Delta p = \dfrac{\langle f_\text{elas}\rangle_+}{3\mu+H}\]</div>
+<span class="eqno">(24)<a class="headerlink" href="#equation-deltap-formula" title="Link to this equation">#</a></span>\[\Delta p = \dfrac{\langle f_\text{elas}\rangle_+}{3\mu+H}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\langle \star \rangle_+\)</span> denotes the positive part of <span class="math notranslate nohighlight">\(\star\)</span>.</p>
 </section>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>The considered problem is that of a plane strain hollow cylinder of internal (resp. external) radius <span class="math notranslate nohighlight">\(R_i\)</span> (resp. <span class="math notranslate nohighlight">\(R_e\)</span>) under internal uniform pressure <span class="math notranslate nohighlight">\(q\)</span>.</p>
 <p>We start by importing the relevant modules and define some geometrical constants.</p>
 <div class="cell docutils container">
@@ -501,7 +509,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>We then model a quarter of cylinder using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> similarly to the <span class="xref myst"></span> demo.</p>
+<p>We then model a quarter of cylinder using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> similarly to the <a class="reference internal" href="#/tours/linear_elasticity/axisymmetric_elasticity.md"><code class="xref myst docutils literal notranslate"><span class="pre">/tours/linear_elasticity/axisymmetric_elasticity.md</span></code></a> demo.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -607,8 +615,8 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 <section id="internal-state-variables-and-quadrature-elements">
-<h3>Internal state variables and <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements<a class="headerlink" href="#internal-state-variables-and-quadrature-elements" title="Permalink to this heading">#</a></h3>
-<p>When dealing with nonlinear constitutive models, internal state variables such as plastic strains represent the history seen by the material and have to be stored in some way. We choose here to represent them using <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements. This choice will make it possible to express the complex non-linear material constitutive equation at the Gauss points only, without involving any interpolation of non-linear expressions throughout the element. It will ensure an optimal convergence rate for the Newton-Raphson method, see chap. 26 of <span id="id2">[<a class="reference internal" href="#id5" title="Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. Automated Solution of Differential Equations by the Finite Element Method. Springer, 2012. ISBN 978-3-642-23098-1. doi:10.1007/978-3-642-23099-8.">Logg <em>et al.</em>, 2012</a>]</span>. We will need <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements for 4-dimensional vectors and scalars, the number of Gauss points will be determined by the required degree <code class="docutils literal notranslate"><span class="pre">deg_quad</span></code> of the <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> element, see the <a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html"><span class="doc std std-doc">Quadrature schemes</span></a> tour for more details on the choice of quadrature rules.</p>
+<h3>Internal state variables and <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements<a class="headerlink" href="#internal-state-variables-and-quadrature-elements" title="Link to this heading">#</a></h3>
+<p>When dealing with nonlinear constitutive models, internal state variables such as plastic strains represent the history seen by the material and have to be stored in some way. We choose here to represent them using <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements. This choice will make it possible to express the complex non-linear material constitutive equation at the Gauss points only, without involving any interpolation of non-linear expressions throughout the element. It will ensure an optimal convergence rate for the Newton-Raphson method, see chap. 26 of <span id="id2">[<a class="reference internal" href="#id5" title="Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. Automated Solution of Differential Equations by the Finite Element Method. Springer, 2012. ISBN 978-3-642-23098-1. doi:10.1007/978-3-642-23099-8.">Logg <em>et al.</em>, 2012</a>]</span>. We will need <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements for 4-dimensional vectors and scalars, the number of Gauss points will be determined by the required degree <code class="docutils literal notranslate"><span class="pre">deg_quad</span></code> of the <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> element, see the <a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html"><span class="std std-doc">Quadrature schemes</span></a> tour for more details on the choice of quadrature rules.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We point out that, although the problem is 2D, plastic strain still occur in the transverse <span class="math notranslate nohighlight">\(zz\)</span> direction. This will require us to keep track of the out-of-plane <span class="math notranslate nohighlight">\(zz\)</span> components of stress/strain states.</p>
@@ -678,7 +686,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>The return mapping procedure is implemented in the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function which takes as an argument a total strain increment Δε, the previous stress state <code class="docutils literal notranslate"><span class="pre">old_sig</span></code> and the previous plastic strain <code class="docutils literal notranslate"><span class="pre">old_p</span></code>. For computing the plastic strain increment, we use formula <a class="reference internal" href="#equation-deltap-formula">(20)</a> where <code class="docutils literal notranslate"><span class="pre">ppos</span></code> implements the positive part function.</p>
+<p>The return mapping procedure is implemented in the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function which takes as an argument a total strain increment Δε, the previous stress state <code class="docutils literal notranslate"><span class="pre">old_sig</span></code> and the previous plastic strain <code class="docutils literal notranslate"><span class="pre">old_p</span></code>. For computing the plastic strain increment, we use formula <a class="reference internal" href="#equation-deltap-formula">(24)</a> where <code class="docutils literal notranslate"><span class="pre">ppos</span></code> implements the positive part function.</p>
 <p>Plastic evolution also requires the computation of the normal vector to the final yield surface given by <span class="math notranslate nohighlight">\(\boldsymbol{n}_{\text{elas}} = \boldsymbol{s}_\text{elas}/\sigeq^{\text{elas}}\)</span>. In the following, this vector must be zero in case of elastic evolution. Hence, we multiply it by <span class="math notranslate nohighlight">\(\dfrac{\langle f_{\text{elas}}\rangle_+}{ f_{\text{elas}}}\)</span> to tackle both cases in a single expression. The final stress state is corrected by the plastic strain as follows <span class="math notranslate nohighlight">\(\bsig_{n+1} = \bsig_{\text{elas}} - \beta \boldsymbol{s}_\text{elas}\)</span> with <span class="math notranslate nohighlight">\(\beta = \dfrac{3\mu}{\sigeq^{\text{elas}}}\Delta p\)</span>. It can be observed that the last term vanishes in case of elastic evolution so that the final stress is indeed the elastic predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -723,7 +731,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </section>
 <section id="global-problem-and-custom-newton-raphson-procedure">
-<h3>Global problem and custom Newton-Raphson procedure<a class="headerlink" href="#global-problem-and-custom-newton-raphson-procedure" title="Permalink to this heading">#</a></h3>
+<h3>Global problem and custom Newton-Raphson procedure<a class="headerlink" href="#global-problem-and-custom-newton-raphson-procedure" title="Link to this heading">#</a></h3>
 <p>We now are in position to define the nonlinear residual variational form and the corresponding tangent bilinear form to be used in a global Newton-Raphson scheme. Each iteration will require establishing equilibrium by driving to zero the residual between the internal forces associated with the current stress state <code class="docutils literal notranslate"><span class="pre">sig</span></code> and the external force vector. Because we use <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements a custom integration measure <code class="docutils literal notranslate"><span class="pre">dx</span></code> must be defined to match the quadrature degree and scheme used by the Quadrature elements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -907,16 +915,19 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id4">
-<dl class="citation">
-<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">BFR14</a></span></dt>
-<dd><p>Marc Bonnet, Attilio Frangi, and Christian Rey. <em>The finite element method in solid mechanics</em>. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.</p>
-</dd>
-<dt class="label" id="id5"><span class="brackets">LMW+12</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
-<dd><p>Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. <em>Automated Solution of Differential Equations by the Finite Element Method</em>. Springer, 2012. ISBN 978-3-642-23098-1. <a class="reference external" href="https://doi.org/10.1007/978-3-642-23099-8">doi:10.1007/978-3-642-23099-8</a>.</p>
-</dd>
-</dl>
+<div role="list" class="citation-list">
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">BFR14</a><span class="fn-bracket">]</span></span>
+<p>Marc Bonnet, Attilio Frangi, and Christian Rey. <em>The finite element method in solid mechanics</em>. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.</p>
+</div>
+<div class="citation" id="id5" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>LMW+12<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
+<p>Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. <em>Automated Solution of Differential Equations by the Finite Element Method</em>. Springer, 2012. ISBN 978-3-642-23098-1. <a class="reference external" href="https://doi.org/10.1007/978-3-642-23099-8">doi:10.1007/978-3-642-23099-8</a>.</p>
+</div>
+</div>
 </div>
 </section>
 </section>

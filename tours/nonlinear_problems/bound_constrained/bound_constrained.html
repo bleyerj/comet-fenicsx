@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Localized 1D solutions in phase-field approach to brittle fracture &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,42 +28,36 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/bound_constrained/bound_constrained';</script>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/bound_constrained/bound_constrained.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/bound_constrained/bound_constrained.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -374,7 +382,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="localized-1d-solutions-in-phase-field-approach-to-brittle-fracture">
-<h1>Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#localized-1d-solutions-in-phase-field-approach-to-brittle-fracture" title="Permalink to this heading">#</a></h1>
+<h1>Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#localized-1d-solutions-in-phase-field-approach-to-brittle-fracture" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This demo demonstrates how to solve a bound-constrained PDE optimization problem using <code class="docutils literal notranslate"><span class="pre">PETSc</span> <span class="pre">TAO</span></code> solver. The application examples involves the computation of localized solutions in the phase-field/damage gradient approach to brittle fracture.
@@ -389,7 +397,7 @@ document.write(`
 </ul>
 </div>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>Bound-constrained problems involve finding the optimal solution of optimization problems of the form:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{array}{rl} \displaystyle{\min_{x\in\mathbb{R}^n}} &amp; f(x)\\
@@ -405,23 +413,23 @@ document.write(`
 <p>In the following demo, we will use</p>
 </section>
 <section id="problem-position">
-<h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
-<p>We consider a simple 1D bound constrained problem which arise from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span id="id1">[<a class="reference internal" href="#id7" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000. doi:10.1016/S0022-5096(99)00028-9.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id8" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
+<h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
+<p>We consider a simple 1D bound constrained problem which arise from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span id="id1">[<a class="reference internal" href="#id8" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000. doi:10.1016/S0022-5096(99)00028-9.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id9" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra">
-<span class="eqno">(21)<a class="headerlink" href="#equation-at1-efra" title="Permalink to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
+<span class="eqno">(25)<a class="headerlink" href="#equation-at1-efra" title="Link to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
 <p>where <span class="math notranslate nohighlight">\(d\)</span> is a damage-like variable (with values in <span class="math notranslate nohighlight">\([0;1]\)</span>) which smears the discrete crack representation (corresponding to <span class="math notranslate nohighlight">\(d=1\)</span>) over a regularization length <span class="math notranslate nohighlight">\(\ell_0\)</span>. <span class="math notranslate nohighlight">\(G_\text{c}\)</span> represents the material fracture energy.</p>
 <p>During the solution process, the damage field is found by minimizing the total energy for a fixed displacement field and subject to bound constraints <span class="math notranslate nohighlight">\(d_n \leq d \leq 1\)</span> where <span class="math notranslate nohighlight">\(d_n\)</span> denotes the damage field at the previous time step which is used to enforce the irreversible evolution of damage.</p>
-<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(21)</a>.</p>
+<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(25)</a>.</p>
 </section>
 <section id="localized-1d-solutions">
-<h2>Localized 1D solutions<a class="headerlink" href="#localized-1d-solutions" title="Permalink to this heading">#</a></h2>
+<h2>Localized 1D solutions<a class="headerlink" href="#localized-1d-solutions" title="Link to this heading">#</a></h2>
 <p>More precisely, we consider a 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span> of length <span class="math notranslate nohighlight">\(2L\)</span> and we look for a minimizer <span class="math notranslate nohighlight">\(d(x)\)</span> of:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra-1d">
-<span class="eqno">(22)<a class="headerlink" href="#equation-at1-efra-1d" title="Permalink to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
+<span class="eqno">(26)<a class="headerlink" href="#equation-at1-efra-1d" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
 \text{s.t.} &amp; 0 \leq d(x) \leq 1 \quad \forall x \in \Omega
 \end{array}\end{split}\]</div>
-<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(22)</a>.</p>
-<p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span id="id2">[<a class="reference internal" href="#id8" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id9" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013. doi:10.1007/s00161-011-0228-3.">Pham and Marigo, 2013</a>]</span>.</p>
+<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(26)</a>.</p>
+<p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span id="id2">[<a class="reference internal" href="#id9" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id10" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013. doi:10.1007/s00161-011-0228-3.">Pham and Marigo, 2013</a>]</span>.</p>
 <p>In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective is null, that is:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -440,13 +448,13 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 \]</div>
 <p>we easily show that the localization region size is <span class="math notranslate nohighlight">\(D=2\ell_0\sqrt{d_0}\)</span> and that the solution is given by:</p>
 <div class="math notranslate nohighlight" id="equation-at1-1d-solution">
-<span class="eqno">(23)<a class="headerlink" href="#equation-at1-1d-solution" title="Permalink to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
+<span class="eqno">(27)<a class="headerlink" href="#equation-at1-1d-solution" title="Link to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
 \left(\sqrt{d_0} - \dfrac{|x|}{2\ell_0}\right)^2 &amp; \text{if } |x| \leq D \\
 0 &amp; \text{otherwise}
 \end{cases}\end{split}\]</div>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>For the implementation, we first provide a utility class <code class="docutils literal notranslate"><span class="pre">TAOProblem</span></code> in the <a class="reference download internal" download="" href="../../../_downloads/c4f5f8086ad28f27befa74cf74e00b57/tao_problem.py"><code class="xref download docutils literal notranslate"><span class="pre">tao_problem.py</span></code></a> module. This class enables to interact with PETSc TAO solver objects by providing methods for computing the objective function, the gradient and the Hessian/Jacobian of the objective.</p>
 <p>We now import the relevant modules and define the 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span></p>
 <div class="cell docutils container">
@@ -597,17 +605,21 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 </div>
 </div>
 <div class="docutils container" id="id3">
-<dl class="citation">
-<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id1">BFM00</a></span></dt>
-<dd><p>Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. <em>Journal of the Mechanics and Physics of Solids</em>, 48(4):797–826, 2000. <a class="reference external" href="https://doi.org/10.1016/S0022-5096(99)00028-9">doi:10.1016/S0022-5096(99)00028-9</a>.</p>
-</dd>
-<dt class="label" id="id8"><span class="brackets">PAMM11</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
-<dd><p>Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. <em>International Journal of Damage Mechanics</em>, 20(4):618–652, 2011. <a class="reference external" href="https://doi.org/10.1177/1056789510386852">doi:10.1177/1056789510386852</a>.</p>
-</dd>
-<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id2">PM13</a></span></dt>
-<dd><p>Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. <em>Continuum Mechanics and Thermodynamics</em>, 25:147–171, 2013. <a class="reference external" href="https://doi.org/10.1007/s00161-011-0228-3">doi:10.1007/s00161-011-0228-3</a>.</p>
-</dd>
-</dl>
+<div role="list" class="citation-list">
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">BFM00</a><span class="fn-bracket">]</span></span>
+<p>Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. <em>Journal of the Mechanics and Physics of Solids</em>, 48(4):797–826, 2000. <a class="reference external" href="https://doi.org/10.1016/S0022-5096(99)00028-9">doi:10.1016/S0022-5096(99)00028-9</a>.</p>
+</div>
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>PAMM11<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. <em>International Journal of Damage Mechanics</em>, 20(4):618–652, 2011. <a class="reference external" href="https://doi.org/10.1177/1056789510386852">doi:10.1177/1056789510386852</a>.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">PM13</a><span class="fn-bracket">]</span></span>
+<p>Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. <em>Continuum Mechanics and Thermodynamics</em>, 25:147–171, 2013. <a class="reference external" href="https://doi.org/10.1007/s00161-011-0228-3">doi:10.1007/s00161-011-0228-3</a>.</p>
+</div>
+</div>
 </div>
 </section>
 </section>

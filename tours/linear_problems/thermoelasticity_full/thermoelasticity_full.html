@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Thermo-elastic evolution problem (full coupling) &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,48 +28,42 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/linear_problems/thermoelasticity_full/thermoelasticity_full';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Plates" href="../../plates/contents.html" />
+    <link rel="next" title="Dynamics problems" href="../../dynamics/contents.html" />
     <link rel="prev" title="Linear thermoelasticity (weak coupling)" href="../thermoelasticity_weak/thermoelasticity_weak.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/thermoelasticity_full/thermoelasticity_full.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -375,7 +383,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="thermo-elastic-evolution-problem-full-coupling">
-<h1>Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#thermo-elastic-evolution-problem-full-coupling" title="Permalink to this heading">#</a></h1>
+<h1>Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#thermo-elastic-evolution-problem-full-coupling" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This demo shows how to solve a transient thermoelastic evolution problem in which both thermo-mechanical fields are fully coupled.
@@ -401,15 +409,15 @@ document.write(`
 </ul>
 </div>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>We will assume that the evolution is quasi-static and will hence neglect inertial effects. Note that a staggered approach could also have been adopted in which one field is calculated first (say the temperature for instance) using predicted values of the other field and similarly for the other field in a second step (see for instance <span id="id1">[<a class="reference internal" href="#id4" title="Charbel Farhat, KC Park, and Yves Dubois-Pelerin. An unconditionally stable staggered algorithm for transient finite element analysis of coupled thermoelastic problems. Computer methods in applied mechanics and engineering, 85(3):349–365, 1991. doi:10.1016/0045-7825(91)90102-C.">Farhat <em>et al.</em>, 1991</a>]</span>).</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Static elastic computation with thermal strains is treated in the <a class="reference internal" href="../thermoelasticity_weak/thermoelasticity_weak.html"><span class="doc std std-doc">Linear thermoelasticity (weak coupling) </span></a> tour.</p>
+<p>Static elastic computation with thermal strains is treated in the <a class="reference internal" href="../thermoelasticity_weak/thermoelasticity_weak.html"><span class="std std-doc">Linear thermoelasticity (weak coupling) </span></a> tour.</p>
 </div>
 </section>
 <section id="problem-position">
-<h2>Problem position<a class="headerlink" href="#problem-position" title="Permalink to this heading">#</a></h2>
+<h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
 <p>The problem consists of a quarter of a square plate perforated by a circular hole. Thermo-elastic properties are isotropic and correspond to those of aluminium (note that stress units are in <span class="math notranslate nohighlight">\(\text{MPa}\)</span>, distances in <span class="math notranslate nohighlight">\(\text{m}\)</span> and mass in <span class="math notranslate nohighlight">\(\text{kg}\)</span>). Linearized thermo-elasticity will be considered around a reference temperature of <span class="math notranslate nohighlight">\(T_0 = 293 \text{ K}\)</span>. A temperature increase of <span class="math notranslate nohighlight">\(\Delta T=+10^{\circ}\text{C}\)</span> will be applied on the hole boundary. Symmetry conditions are applied on the corresponding symmetry planes and stress and flux-free boundary conditions are adopted on the plate outer boundary.</p>
 <p>We first import the relevant modules.</p>
 <div class="cell docutils container">
@@ -479,7 +487,7 @@ document.write(`
 <p>We now define the relevant function space for the considered problem. Since we will adopt a monolithic approach i.e. in which both fields are coupled and solved at the same time, we will need to resort to a mixed function space for both the displacement <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> and the temperature variation <span class="math notranslate nohighlight">\(\Theta=T-T_0\)</span>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For an introduction on the use of mixed function spaces, check out the tutorials on the <a class="reference external" href="https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_mixed-poisson.html">mixed Poisson equation</a> or the <a class="reference external" href="https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html">Stokes problem</a> of the official documentation or the <a class="reference internal" href="../../../intro/plates/plates.html"><span class="doc std std-doc">Reissner-Mindlin plates</span></a> tour in this book.</p>
+<p>For an introduction on the use of mixed function spaces, check out the tutorials on the <a class="reference external" href="https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_mixed-poisson.html">mixed Poisson equation</a> or the <a class="reference external" href="https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html">Stokes problem</a> of the official documentation or the <a class="reference internal" href="../../../intro/plates/plates.html"><span class="std std-doc">Reissner-Mindlin plates</span></a> tour in this book.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -536,7 +544,7 @@ document.write(`
 </div>
 </section>
 <section id="variational-formulation-and-time-discretization">
-<h2>Variational formulation and time discretization<a class="headerlink" href="#variational-formulation-and-time-discretization" title="Permalink to this heading">#</a></h2>
+<h2>Variational formulation and time discretization<a class="headerlink" href="#variational-formulation-and-time-discretization" title="Link to this heading">#</a></h2>
 <p>The linearized thermoelastic constitutive equations are given by:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -571,11 +579,11 @@ document.write(`
 <p>with <span class="math notranslate nohighlight">\(V_T\)</span> being the FunctionSpace for the temperature field.</p>
 <p>The time derivatives are now replaced by an implicit Euler scheme, so that the previous weak form at the time increment <span class="math notranslate nohighlight">\(n+1\)</span> is now:</p>
 <div class="math notranslate nohighlight" id="equation-thermoelastic-thermal">
-<span class="eqno">(9)<a class="headerlink" href="#equation-thermoelastic-thermal" title="Permalink to this equation">#</a></span>\[\int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T\]</div>
-<p>where <span class="math notranslate nohighlight">\(T\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span> correspond to the <em>unknown</em> fields at the time increment <span class="math notranslate nohighlight">\(n+1\)</span>. For more details on the time discretization of the heat equation, see also the <a class="reference external" href="https://fenicsproject.org/pub/tutorial/html/._ftut1006.html">Heat equation FEniCS tutorial</a>.</p>
+<span class="eqno">(9)<a class="headerlink" href="#equation-thermoelastic-thermal" title="Link to this equation">#</a></span>\[\int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T\]</div>
+<p>where <span class="math notranslate nohighlight">\(T\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon}\)</span> correspond to the <em>unknown</em> fields at the time increment <span class="math notranslate nohighlight">\(n+1\)</span>. For more details on the time discretization of the heat equation, see also the <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/chapter2/heat_equation.html">Heat equation FEniCS tutorial</a>.</p>
 <p>In addition to the previous thermal weak form, the mechanical weak form reads as:</p>
 <div class="math notranslate nohighlight" id="equation-thermoelastic-mechanical">
-<span class="eqno">(10)<a class="headerlink" href="#equation-thermoelastic-mechanical" title="Permalink to this equation">#</a></span>\[\int_{\Omega} \left(\lambda\text{tr}(\boldsymbol{\varepsilon})\boldsymbol{1}+2\mu\boldsymbol{\varepsilon} -\kappa(T-T_0)\boldsymbol{1}\right) :\nabla^s\widehat{\boldsymbol{v}}\text{ d} \Omega = W_{ext}(\widehat{\boldsymbol{v}}) \quad \forall \widehat{\boldsymbol{v}}\in V_U\]</div>
+<span class="eqno">(10)<a class="headerlink" href="#equation-thermoelastic-mechanical" title="Link to this equation">#</a></span>\[\int_{\Omega} \left(\lambda\text{tr}(\boldsymbol{\varepsilon})\boldsymbol{1}+2\mu\boldsymbol{\varepsilon} -\kappa(T-T_0)\boldsymbol{1}\right) :\nabla^s\widehat{\boldsymbol{v}}\text{ d} \Omega = W_{ext}(\widehat{\boldsymbol{v}}) \quad \forall \widehat{\boldsymbol{v}}\in V_U\]</div>
 <p>where <span class="math notranslate nohighlight">\(V_U\)</span> is the displacement FunctionSpace and <span class="math notranslate nohighlight">\(W_{ext}\)</span> the linear functional corresponding to the work of external forces.</p>
 <p>The solution of the coupled problem at <span class="math notranslate nohighlight">\(t=t_{n+1}\)</span> is now <span class="math notranslate nohighlight">\((\boldsymbol{u}_{n+1},T_{n+1})=(\boldsymbol{u},T)\in V_U\times V_T\)</span> verifying <a class="reference internal" href="#equation-thermoelastic-thermal">(9)</a> and <a class="reference internal" href="#equation-thermoelastic-mechanical">(10)</a>. These two forms are implemented below with zero right-hand sides (zero Neumann BCs for both problems here). One slight modification is that the temperature unknown <span class="math notranslate nohighlight">\(T\)</span> is replaced by the temperature variation <span class="math notranslate nohighlight">\(\Theta=T-T_0\)</span> which appears naturally in the stress constitutive relation. Note that we use here a <code class="docutils literal notranslate"><span class="pre">NonlinearProblem</span></code> to be more general.</p>
 <div class="cell docutils container">
@@ -638,7 +646,7 @@ document.write(`
 </div>
 </section>
 <section id="resolution">
-<h2>Resolution<a class="headerlink" href="#resolution" title="Permalink to this heading">#</a></h2>
+<h2>Resolution<a class="headerlink" href="#resolution" title="Link to this heading">#</a></h2>
 <p>The problem is now solved by looping over time increments. Because of the typical exponential time variation of temperature evolution of the heat equation, time steps are discretized on a non-uniform (logarithmic) scale. <span class="math notranslate nohighlight">\(\Delta t\)</span> is therefore updated at each time step. Note that since we work in terms of temperature variation and not absolute temperature all fields can be initialized to zero, otherwise <span class="math notranslate nohighlight">\(T\)</span> would have needed to be initialized to the reference temperature <span class="math notranslate nohighlight">\(T_0\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -694,13 +702,14 @@ document.write(`
 </div>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id2">
-<dl class="citation">
-<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id1">FPDP91</a></span></dt>
-<dd><p>Charbel Farhat, KC Park, and Yves Dubois-Pelerin. An unconditionally stable staggered algorithm for transient finite element analysis of coupled thermoelastic problems. <em>Computer methods in applied mechanics and engineering</em>, 85(3):349–365, 1991. <a class="reference external" href="https://doi.org/10.1016/0045-7825(91)90102-C">doi:10.1016/0045-7825(91)90102-C</a>.</p>
-</dd>
-</dl>
+<div role="list" class="citation-list">
+<div class="citation" id="id4" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">FPDP91</a><span class="fn-bracket">]</span></span>
+<p>Charbel Farhat, KC Park, and Yves Dubois-Pelerin. An unconditionally stable staggered algorithm for transient finite element analysis of coupled thermoelastic problems. <em>Computer methods in applied mechanics and engineering</em>, 85(3):349–365, 1991. <a class="reference external" href="https://doi.org/10.1016/0045-7825(91)90102-C">doi:10.1016/0045-7825(91)90102-C</a>.</p>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -745,11 +754,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="../../plates/contents.html"
+       href="../../dynamics/contents.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Plates</p>
+        <p class="prev-next-title">Dynamics problems</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

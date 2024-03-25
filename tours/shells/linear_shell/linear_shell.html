@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../../../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Linear shell model &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
@@ -29,42 +28,36 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" href="../../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
   <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/clipboard.min.js"></script>
-    <script src="../../../_static/copybutton.js"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js"></script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../../../_static/design-tabs.js"></script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
-    <script async="async" src="../../../_static/sphinx-thebe.js"></script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/shells/linear_shell/linear_shell';</script>
@@ -163,7 +156,18 @@ const thebe_selector_output = ".output, .cell_output"
   
   
 </a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -188,16 +192,20 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -282,7 +290,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/shells/linear_shell/linear_shell.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/shells/linear_shell/linear_shell.ipynb" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -386,7 +394,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="linear-shell-model">
-<h1>Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#linear-shell-model" title="Permalink to this heading">#</a></h1>
+<h1>Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#linear-shell-model" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>This tour shows how to implement a linear elastic shell model on a non-manifold mesh. We also cover locking-free discretization and drilling rotation stabilization.
@@ -433,17 +441,17 @@ document.write(`
 <li><p><a class="reference download internal" download="" href="../../../_downloads/57e0cd6ab1bc45c44544632e9de6ea38/linear_shell.zip"><code class="xref download docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">sources</span> <span class="pre">files</span></code></a></p></li>
 </ul>
 </div>
-<p>Implementing a shell model in <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> is not necessarily straightforward due to the different behavior in the shell normal and tangential directions. In the <a class="reference external" href="https://github.com/FEniCS-Shells/fenicsx-shells">FEniCSx-Shells</a> project <span id="id1">[<a class="reference internal" href="#id11" title="Jack S Hale, Matteo Brunetti, Stéphane PA Bordas, and Corrado Maurini. Simple and extensible plate and shell finite element models through automatic code generation tools. Computers &amp; Structures, 209:163–181, 2018. doi:10.1016/j.compstruc.2018.08.001.">Hale <em>et al.</em>, 2018</a>]</span>, the shell surface is described by a mapping between a parametric 2D domain and the shell initial stress-free configuration. This approach makes it impossible to tackle non-manifold surfaces or closed surfaces for which the mapping would exhibit singularities.</p>
+<p>Implementing a shell model in <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> is not necessarily straightforward due to the different behavior in the shell normal and tangential directions. In the <a class="reference external" href="https://github.com/FEniCS-Shells/fenicsx-shells">FEniCSx-Shells</a> project <span id="id1">[<a class="reference internal" href="#id12" title="Jack S Hale, Matteo Brunetti, Stéphane PA Bordas, and Corrado Maurini. Simple and extensible plate and shell finite element models through automatic code generation tools. Computers &amp; Structures, 209:163–181, 2018. doi:10.1016/j.compstruc.2018.08.001.">Hale <em>et al.</em>, 2018</a>]</span>, the shell surface is described by a mapping between a parametric 2D domain and the shell initial stress-free configuration. This approach makes it impossible to tackle non-manifold surfaces or closed surfaces for which the mapping would exhibit singularities.</p>
 <p>In the present implementation, we will instead work directly with the shell surface (either manifold or non-manifold) described as an assembly of planar facets. In this respect, the approach will bear important similarities with the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/beams_3D/beams_3D.html">Elastic 3D beam structures</a>. In particular, we will take advantage of <code class="docutils literal notranslate"><span class="pre">UFL</span></code> ability to compute gradients over a manifold.</p>
-<p>Regarding the interpolation spaces, we will use a <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code> mixed space for displacements and rotations, i.e. the same choice as in the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/reissner_mindlin_crouzeix_raviart/reissner_mindlin_CR.html">Locking-free Reissner-Mindlin plate with Crouzeix-Raviart interpolation</a> tour. The present shell model will therefore be a small-displacement version of the nonlinear shell model developed in <span id="id2">[<a class="reference internal" href="#id10" title="EMB Campello, PM Pimenta, and P Wriggers. A triangular finite shell element based on a fully nonlinear shell formulation. Computational mechanics, 31(6):505–518, 2003. doi:10.1007/s00466-003-0458-8.">Campello <em>et al.</em>, 2003</a>]</span>.</p>
+<p>Regarding the interpolation spaces, we will use a <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code> mixed space for displacements and rotations, i.e. the same choice as in the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/reissner_mindlin_crouzeix_raviart/reissner_mindlin_CR.html">Locking-free Reissner-Mindlin plate with Crouzeix-Raviart interpolation</a> tour. The present shell model will therefore be a small-displacement version of the nonlinear shell model developed in <span id="id2">[<a class="reference internal" href="#id11" title="EMB Campello, PM Pimenta, and P Wriggers. A triangular finite shell element based on a fully nonlinear shell formulation. Computational mechanics, 31(6):505–518, 2003. doi:10.1007/s00466-003-0458-8.">Campello <em>et al.</em>, 2003</a>]</span>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For the mesh generation, we refer to the <a class="reference internal" href="../I_beam_gmsh/I_beam_gmsh.html"><span class="doc std std-doc">Generating a shell model with the Gmsh Python API </span></a> tour.</p>
+<p>For the mesh generation, we refer to the <a class="reference internal" href="../I_beam_gmsh/I_beam_gmsh.html"><span class="std std-doc">Generating a shell model with the Gmsh Python API </span></a> tour.</p>
 </div>
 <section id="formulation">
-<h2>Formulation<a class="headerlink" href="#formulation" title="Permalink to this heading">#</a></h2>
+<h2>Formulation<a class="headerlink" href="#formulation" title="Link to this heading">#</a></h2>
 <section id="shell-kinematics-and-3d-linearized-strain">
-<h3>Shell kinematics and 3D linearized strain<a class="headerlink" href="#shell-kinematics-and-3d-linearized-strain" title="Permalink to this heading">#</a></h3>
+<h3>Shell kinematics and 3D linearized strain<a class="headerlink" href="#shell-kinematics-and-3d-linearized-strain" title="Link to this heading">#</a></h3>
 <p>The shell initial reference configuration consists of piecewise flat portions and <span class="math notranslate nohighlight">\(\bxi\)</span> in <span class="math notranslate nohighlight">\(\mathbb{R}^3\)</span> will denote an initial point on this surface. <span class="math notranslate nohighlight">\((\be_1,\be_2,\be_3)\)</span> will be a reference local frame with <span class="math notranslate nohighlight">\(\be_3\)</span> the normal to the shell surface, this frame being orthonormal and piecewise constant. A material point <span class="math notranslate nohighlight">\(\bX\)</span> in the shell reference configuration will then be given by:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -452,7 +460,7 @@ document.write(`
 <p>where <span class="math notranslate nohighlight">\(h\)</span> is the shell thickness</p>
 <p>The shell kinematics will be described by its mid-surface displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the infinitesimal rotation vector <span class="math notranslate nohighlight">\(\btheta\)</span> of its director. The new normal director is <span class="math notranslate nohighlight">\(\ba_3 = \bR(\btheta)\be_3 = \be_3+\btheta\times\be_3\)</span> with <span class="math notranslate nohighlight">\(\bR\)</span> the infinitesimal rotation matrix associated with <span class="math notranslate nohighlight">\(\btheta\)</span>. Neglecting any thickness change in the shell kinematics, the material point <span class="math notranslate nohighlight">\(\bx\)</span> in the deformed configuration associated with <span class="math notranslate nohighlight">\(\bX\)</span> will then be given by:</p>
 <div class="math notranslate nohighlight" id="equation-kinematics">
-<span class="eqno">(11)<a class="headerlink" href="#equation-kinematics" title="Permalink to this equation">#</a></span>\[\bx = \bxi + \bu(\bxi) + \zeta\ba_3 = \bxi + \bu(\bxi) + \zeta(\be_3+\btheta(\bxi)\times\be_3)\]</div>
+<span class="eqno">(15)<a class="headerlink" href="#equation-kinematics" title="Link to this equation">#</a></span>\[\bx = \bxi + \bu(\bxi) + \zeta\ba_3 = \bxi + \bu(\bxi) + \zeta(\be_3+\btheta(\bxi)\times\be_3)\]</div>
 <p>Differentiating with respect to <span class="math notranslate nohighlight">\(\bX\)</span>, we get:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -463,7 +471,7 @@ d\bx &amp;= d\bxi + \nabla\bu\cdot d\bxi + \zeta(\nabla\btheta\cdot d\bxi)\times
 \end{split}\]</div>
 <p>where we retained only up to first order terms in <span class="math notranslate nohighlight">\(\bu,\btheta\)</span>. The 3D deformation gradient is then given by:</p>
 <div class="math notranslate nohighlight" id="equation-defo-gradient">
-<span class="eqno">(12)<a class="headerlink" href="#equation-defo-gradient" title="Permalink to this equation">#</a></span>\[\bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3\]</div>
+<span class="eqno">(16)<a class="headerlink" href="#equation-defo-gradient" title="Link to this equation">#</a></span>\[\bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3\]</div>
 <p>where we introduced the in-plane gradient  (i.e. the gradient with respect to the shell local tangent plane <span class="math notranslate nohighlight">\((\be_1,\be_2)\)</span>) as follows <span class="math notranslate nohighlight">\(\tgrad\bv = \partial_1\bv \otimes \be_1+ \partial_2\bv \otimes \be_2\)</span>. More generally, we will use the following notation <span class="math notranslate nohighlight">\(\utilde{\bv} = v_1\be_1+v_2\be_2\)</span> to denote the in-plane part of <span class="math notranslate nohighlight">\(\bv\)</span>.</p>
 <p>The linearized strain tensor is then given by:</p>
 <div class="math notranslate nohighlight">
@@ -472,13 +480,13 @@ d\bx &amp;= d\bxi + \nabla\bu\cdot d\bxi + \zeta(\nabla\btheta\cdot d\bxi)\times
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sym\)</span> denotes the symmetrized part of a tensor and where we added an incompatible out-of-plane strain <span class="math notranslate nohighlight">\(\epsilon(\zeta)\)</span> which will enable to enforce a plane-stress constraint. The 3D strain can be split into its in-plane components <span class="math notranslate nohighlight">\(\utilde{\utilde{\bvarepsilon}}\)</span>, out-of-plane shear components <span class="math notranslate nohighlight">\(\bgamma = 2\utilde{\bvarepsilon}_3\)</span> and out-of-plane transverse components <span class="math notranslate nohighlight">\(\varepsilon_{33}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-strains">
-<span class="eqno">(13)<a class="headerlink" href="#equation-strains" title="Permalink to this equation">#</a></span>\[\begin{split}\uttilde{\bvarepsilon} &amp;= \sym\left(\tgrad\utilde{\bu} - \zeta \be_3\times \tgrad\btheta \right)= \boldsymbol{\epsilon} - \zeta \bchi \\
+<span class="eqno">(17)<a class="headerlink" href="#equation-strains" title="Link to this equation">#</a></span>\[\begin{split}\uttilde{\bvarepsilon} &amp;= \sym\left(\tgrad\utilde{\bu} - \zeta \be_3\times \tgrad\btheta \right)= \boldsymbol{\epsilon} - \zeta \bchi \\
 \bgamma &amp;= \tgrad u_3 - \be_3\times\btheta\\
 \varepsilon_{33} &amp;= \epsilon(\zeta)\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\bepsilon=\sym(\tgrad\utilde{\bu})\)</span> is the membrane strain and <span class="math notranslate nohighlight">\(\bchi = \sym(\be_3\times \tgrad\btheta)\)</span> the bending curvature. We see that we recover the definition of the curvature and shear strain of the Reissner-Mindlin plate model, see <a class="reference internal" href="../../../intro/plates/plates.html"><span class="doc std std-doc">Reissner-Mindlin plates</span></a> for more details.</p>
+<p>where <span class="math notranslate nohighlight">\(\bepsilon=\sym(\tgrad\utilde{\bu})\)</span> is the membrane strain and <span class="math notranslate nohighlight">\(\bchi = \sym(\be_3\times \tgrad\btheta)\)</span> the bending curvature. We see that we recover the definition of the curvature and shear strain of the Reissner-Mindlin plate model, see <a class="reference internal" href="../../../intro/plates/plates.html"><span class="std std-doc">Reissner-Mindlin plates</span></a> for more details.</p>
 </section>
 <section id="elastic-energy-density">
-<h3>Elastic energy density<a class="headerlink" href="#elastic-energy-density" title="Permalink to this heading">#</a></h3>
+<h3>Elastic energy density<a class="headerlink" href="#elastic-energy-density" title="Link to this heading">#</a></h3>
 <p>The internal work of deformation density per shell unit surface is then given by:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -506,13 +514,13 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\psi_\text{ps}\)</span> is the elastic strain energy density for a 2D plane-stress material:</p>
 <div class="math notranslate nohighlight" id="equation-strain-energy">
-<span class="eqno">(14)<a class="headerlink" href="#equation-strain-energy" title="Permalink to this equation">#</a></span>\[\psi_\text{ps}(\uttilde{\bvarepsilon}) = \frac{1}{2}\left(\lambda_\text{ps} (\tr\uttilde{\bvarepsilon})^2 + 2\mu \uttilde{\bvarepsilon}:\uttilde{\bvarepsilon}\right)\]</div>
-<p>with the plane-stress pseudo Lamé coefficient (see the <a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="doc std std-doc">Isotropic and orthotropic plane stress elasticity </span></a> tour):</p>
+<span class="eqno">(18)<a class="headerlink" href="#equation-strain-energy" title="Link to this equation">#</a></span>\[\psi_\text{ps}(\uttilde{\bvarepsilon}) = \frac{1}{2}\left(\lambda_\text{ps} (\tr\uttilde{\bvarepsilon})^2 + 2\mu \uttilde{\bvarepsilon}:\uttilde{\bvarepsilon}\right)\]</div>
+<p>with the plane-stress pseudo Lamé coefficient (see the <a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="std std-doc">Isotropic and orthotropic plane stress elasticity </span></a> tour):</p>
 <div class="math notranslate nohighlight">
 \[
 \lambda_\text{ps} = \dfrac{2\lambda\mu}{\lambda+2\mu}
 \]</div>
-<p>Taking the derivative of the strain energy <a class="reference internal" href="#equation-strain-energy">(14)</a> with respect to the 3D strain components gives the local 3D stress-strain constitutive relation:</p>
+<p>Taking the derivative of the strain energy <a class="reference internal" href="#equation-strain-energy">(18)</a> with respect to the 3D strain components gives the local 3D stress-strain constitutive relation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
@@ -524,10 +532,10 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 <p>where <span class="math notranslate nohighlight">\(\mathbb{C}_\text{ps}\)</span> is the plane-stress elasticity tensor.</p>
 </section>
 <section id="stress-resultant-constitutive-equations">
-<h3>Stress-resultant constitutive equations<a class="headerlink" href="#stress-resultant-constitutive-equations" title="Permalink to this heading">#</a></h3>
-<p>Plugging relations <a class="reference internal" href="#equation-strains">(13)</a> into the previous 3D constitutive relation yields the following stress-resultant equations, assuming a homogeneous shell across the thickness:</p>
+<h3>Stress-resultant constitutive equations<a class="headerlink" href="#stress-resultant-constitutive-equations" title="Link to this heading">#</a></h3>
+<p>Plugging relations <a class="reference internal" href="#equation-strains">(17)</a> into the previous 3D constitutive relation yields the following stress-resultant equations, assuming a homogeneous shell across the thickness:</p>
 <div class="math notranslate nohighlight" id="equation-shells-constitutive-equations">
-<span class="eqno">(15)<a class="headerlink" href="#equation-shells-constitutive-equations" title="Permalink to this equation">#</a></span>\[\begin{split}\bN &amp;= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
+<span class="eqno">(19)<a class="headerlink" href="#equation-shells-constitutive-equations" title="Link to this equation">#</a></span>\[\begin{split}\bN &amp;= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
 \bM &amp;= \int_{-h/2}^{h/2} (-\zeta)\uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} (-\zeta)\mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = \dfrac{h^3}{12}\mathbb{C}_\text{ps}:\boldsymbol{\bchi}\\
 \bQ &amp;= \int_{-h/2}^{h/2} \utilde{\bsig}_3 d \zeta = \mu h \bgamma\end{split}\]</div>
 <div class="admonition note">
@@ -537,10 +545,10 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 </section>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <section id="import-statements-and-physical-parameters">
-<h3>Import statements and physical parameters<a class="headerlink" href="#import-statements-and-physical-parameters" title="Permalink to this heading">#</a></h3>
-<p>We first load the relevant packages and the mesh which has been generated as <a class="reference download internal" download="" href="../../../_downloads/aab13f5f87574bdda15ca98a1b96a0d2/I_beam.msh"><code class="xref download docutils literal notranslate"><span class="pre">I_beam.msh</span></code></a>, see also <a class="reference internal" href="../../../tips/import_msh/import_msh.html"><span class="doc std std-doc">Importing a .msh file</span></a>. We check that the imported mesh is indeed embedded in a global geometry of dimension 3 (ambient 3D space) whereas its topological dimension is 2 (shell surface).</p>
+<h3>Import statements and physical parameters<a class="headerlink" href="#import-statements-and-physical-parameters" title="Link to this heading">#</a></h3>
+<p>We first load the relevant packages and the mesh which has been generated as <a class="reference download internal" download="" href="../../../_downloads/aab13f5f87574bdda15ca98a1b96a0d2/I_beam.msh"><code class="xref download docutils literal notranslate"><span class="pre">I_beam.msh</span></code></a>, see also <a class="reference internal" href="../../../tips/import_msh/import_msh.html"><span class="std std-doc">Importing a .msh file</span></a>. We check that the imported mesh is indeed embedded in a global geometry of dimension 3 (ambient 3D space) whereas its topological dimension is 2 (shell surface).</p>
 <p>We plot the mesh using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,7 +609,7 @@ Topological dimension = 2
 </div>
 </section>
 <section id="computing-a-local-tangent-frame">
-<h3>Computing a local tangent frame<a class="headerlink" href="#computing-a-local-tangent-frame" title="Permalink to this heading">#</a></h3>
+<h3>Computing a local tangent frame<a class="headerlink" href="#computing-a-local-tangent-frame" title="Link to this heading">#</a></h3>
 <p>We define the <code class="docutils literal notranslate"><span class="pre">local_frame</span></code> function which returns the UFL representation of the local frame  <span class="math notranslate nohighlight">\((\be_1,\be_2,\be_3)\)</span>. We first use UFL’s <code class="docutils literal notranslate"><span class="pre">Jacobian</span></code> function to retrieve the Jacobian of the mapping from reference cells to spatial coordinates. Contrary to the <a class="reference external" href="https://github.com/FEniCS-Shells/fenicsx-shells">FEniCSx-Shells</a> approach which uses a global analytical mapping between the reference domain and the shell surface, we use here the reference element mapping of the finite-element method. For a shell, the Jacobian is of size <span class="math notranslate nohighlight">\(3\times 2\)</span> with both columns <span class="math notranslate nohighlight">\(\bt_1,\bt_2\)</span> being a vector of the local tangent plane. We therefore compute <span class="math notranslate nohighlight">\(\be_3\)</span>, the normal to the mid-surface from <span class="math notranslate nohighlight">\(\bt_1\times \bt_2\)</span>. We then have to choose a convention to compute <span class="math notranslate nohighlight">\(\be_1,\be_2\)</span>, knowing <span class="math notranslate nohighlight">\(\be_3\)</span>. Our convention is that <span class="math notranslate nohighlight">\(\be_1\)</span> lies in the plane orthogonal to <span class="math notranslate nohighlight">\(\be_Y\)</span> and <span class="math notranslate nohighlight">\(\be_3\)</span>. If <span class="math notranslate nohighlight">\(\be_3\)</span> happens to be colinear to <span class="math notranslate nohighlight">\(\be_Y\)</span>, we set <span class="math notranslate nohighlight">\(\be_1=\be_Z\)</span>. <span class="math notranslate nohighlight">\(\be_2\)</span> then follows from <span class="math notranslate nohighlight">\(\be_2=\be_3\times\be_1\)</span>.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
@@ -660,7 +668,7 @@ Topological dimension = 2
 <a class="reference internal image-reference" href="../../../_images/local_frame.png"><img alt="../../../_images/local_frame.png" class="align-center" src="../../../_images/local_frame.png" style="width: 600px;" /></a>
 </section>
 <section id="function-space-choice-and-strain-measures">
-<h3>Function space choice and strain measures<a class="headerlink" href="#function-space-choice-and-strain-measures" title="Permalink to this heading">#</a></h3>
+<h3>Function space choice and strain measures<a class="headerlink" href="#function-space-choice-and-strain-measures" title="Link to this heading">#</a></h3>
 <p>We now use the afore-mentioned <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code>interpolation for the displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the rotation <span class="math notranslate nohighlight">\(\btheta\)</span> variables using a <code class="docutils literal notranslate"><span class="pre">MixedElement</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -703,7 +711,7 @@ Topological dimension = 2
 </div>
 </div>
 </div>
-<p>We then extract gradient of the in-plane displacement <span class="math notranslate nohighlight">\(\tilde\nabla\tilde\bu\)</span> and define the membrane strain <span class="math notranslate nohighlight">\(\bepsilon\)</span> as its symmetric part. We similarly define the bending curvature <span class="math notranslate nohighlight">\(\bchi\)</span> and shear strain <span class="math notranslate nohighlight">\(\bgamma\)</span> as defined in <a class="reference internal" href="#equation-strains">(13)</a>. We also define directional derivatives in a <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> for later use.</p>
+<p>We then extract gradient of the in-plane displacement <span class="math notranslate nohighlight">\(\tilde\nabla\tilde\bu\)</span> and define the membrane strain <span class="math notranslate nohighlight">\(\bepsilon\)</span> as its symmetric part. We similarly define the bending curvature <span class="math notranslate nohighlight">\(\bchi\)</span> and shear strain <span class="math notranslate nohighlight">\(\bgamma\)</span> as defined in <a class="reference internal" href="#equation-strains">(17)</a>. We also define directional derivatives in a <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> for later use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_gu</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">P_plane</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">t_grad</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>
@@ -721,8 +729,8 @@ Topological dimension = 2
 </div>
 </section>
 <section id="stress-measures">
-<h3>Stress measures<a class="headerlink" href="#stress-measures" title="Permalink to this heading">#</a></h3>
-<p>We now define the corresponding stress measure using the plane stress linear elastic constitutive laws <a class="reference internal" href="#equation-shells-constitutive-equations">(15)</a>.</p>
+<h3>Stress measures<a class="headerlink" href="#stress-measures" title="Link to this heading">#</a></h3>
+<p>We now define the corresponding stress measure using the plane stress linear elastic constitutive laws <a class="reference internal" href="#equation-shells-constitutive-equations">(19)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plane_stress_elasticity</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
@@ -738,7 +746,7 @@ Topological dimension = 2
 </div>
 </section>
 <section id="drilling-rotation-stabilization">
-<h3>Drilling rotation stabilization<a class="headerlink" href="#drilling-rotation-stabilization" title="Permalink to this heading">#</a></h3>
+<h3>Drilling rotation stabilization<a class="headerlink" href="#drilling-rotation-stabilization" title="Link to this heading">#</a></h3>
 <p>A classical problem in shell models involving 6 degrees of freedom (3D rotation) is the absence of any constraint on the drilling rotation <span class="math notranslate nohighlight">\(\theta_3=\btheta\cdot\be_3\)</span>. However, this degree of freedom is necessary to tackle non-smooth junctions
 between planar shell facets which have a different normal vector. In our implementation, we propose to add an additional quadratic energy penalizing the drilling strain, as commonly done for elastic shells.</p>
 <p>The drilling strain is obtained from the skew symmetric in-plane component of the transformation gradient <span class="math notranslate nohighlight">\(\bF\)</span> and the drilling rotation:</p>
@@ -748,7 +756,7 @@ between planar shell facets which have a different normal vector. In our impleme
 \]</div>
 <p>We consider an additional drilling contribution to the work of deformation given by:</p>
 <div class="math notranslate nohighlight" id="equation-drilling-stabilization">
-<span class="eqno">(16)<a class="headerlink" href="#equation-drilling-stabilization" title="Permalink to this equation">#</a></span>\[w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2\]</div>
+<span class="eqno">(20)<a class="headerlink" href="#equation-drilling-stabilization" title="Link to this equation">#</a></span>\[w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2\]</div>
 <p>where the drilling stiffness <span class="math notranslate nohighlight">\(\dfrac{E h^3}{h_\text{cell}^2}\)</span> is the usually recommended value in the literature with <span class="math notranslate nohighlight">\(h_\text{cell}\)</span> being the local mesh size which we can obtain from <code class="docutils literal notranslate"><span class="pre">ufl.CellDiameter</span></code>. We can observe that the drilling stiffness is equal to the typical membrane stiffness <span class="math notranslate nohighlight">\(Eh\)</span> times the non-dimensional factor <span class="math notranslate nohighlight">\(\left(\dfrac{h}{h_\text{cell}}\right)^2\)</span>. As the mesh size goes to zero, the drilling stiffness becomes increasingly larger.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -764,7 +772,7 @@ between planar shell facets which have a different normal vector. In our impleme
 </div>
 </section>
 <section id="boundary-conditions-and-resolution">
-<h3>Boundary conditions and resolution<a class="headerlink" href="#boundary-conditions-and-resolution" title="Permalink to this heading">#</a></h3>
+<h3>Boundary conditions and resolution<a class="headerlink" href="#boundary-conditions-and-resolution" title="Link to this heading">#</a></h3>
 <p>We then account for fixed supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -821,16 +829,18 @@ between planar shell facets which have a different normal vector. In our impleme
 </section>
 </section>
 <section id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <div class="docutils container" id="id3">
-<dl class="citation">
-<dt class="label" id="id10"><span class="brackets"><a class="fn-backref" href="#id2">CPW03</a></span></dt>
-<dd><p>EMB Campello, PM Pimenta, and P Wriggers. A triangular finite shell element based on a fully nonlinear shell formulation. <em>Computational mechanics</em>, 31(6):505–518, 2003. <a class="reference external" href="https://doi.org/10.1007/s00466-003-0458-8">doi:10.1007/s00466-003-0458-8</a>.</p>
-</dd>
-<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id1">HBBM18</a></span></dt>
-<dd><p>Jack S Hale, Matteo Brunetti, Stéphane PA Bordas, and Corrado Maurini. Simple and extensible plate and shell finite element models through automatic code generation tools. <em>Computers &amp; Structures</em>, 209:163–181, 2018. <a class="reference external" href="https://doi.org/10.1016/j.compstruc.2018.08.001">doi:10.1016/j.compstruc.2018.08.001</a>.</p>
-</dd>
-</dl>
+<div role="list" class="citation-list">
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">CPW03</a><span class="fn-bracket">]</span></span>
+<p>EMB Campello, PM Pimenta, and P Wriggers. A triangular finite shell element based on a fully nonlinear shell formulation. <em>Computational mechanics</em>, 31(6):505–518, 2003. <a class="reference external" href="https://doi.org/10.1007/s00466-003-0458-8">doi:10.1007/s00466-003-0458-8</a>.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">HBBM18</a><span class="fn-bracket">]</span></span>
+<p>Jack S Hale, Matteo Brunetti, Stéphane PA Bordas, and Corrado Maurini. Simple and extensible plate and shell finite element models through automatic code generation tools. <em>Computers &amp; Structures</em>, 209:163–181, 2018. <a class="reference external" href="https://doi.org/10.1016/j.compstruc.2018.08.001">doi:10.1016/j.compstruc.2018.08.001</a>.</p>
+</div>
+</div>
 </div>
 </section>
 </section>
