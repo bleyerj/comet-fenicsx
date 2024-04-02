@@ -163,7 +163,7 @@ Re = 1.3
 Ri = 1.0
 ```
 
-We then model a quarter of cylinder using `Gmsh` similarly to the [](/tours/linear_elasticity/axisymmetric_elasticity.md) demo.
+We then model a quarter of cylinder using `Gmsh` similarly to the [](/tours/linear_problem/axisymmetric_elasticity/axisymmetric_elasticity.md) demo.
 
 ```{code-cell}
 :tags: [hide-input]
@@ -306,7 +306,7 @@ P0 = fem.functionspace(domain, ("DG", 0))
 p_avg = fem.Function(P0, name="Plastic_strain")
 ```
 
-Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function `as_3D_tensor` will enable to represent a 4 dimensional vector containing respectively $xx, yy, zz$ and $xy$ components as a 3D tensor::
+Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function `as_3D_tensor` will enable to represent a 4 dimensional vector containing respectively $xx, yy, zz$ and $xy$ components as a 3D tensor:
 
 ```{code-cell}
 def eps(v):
