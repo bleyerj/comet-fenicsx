@@ -30,7 +30,7 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}$
 ```
 
-```{image} jax_framework.svg
+```{image} jax_framework.png
 :width: 600px
 :align: center
 ```
