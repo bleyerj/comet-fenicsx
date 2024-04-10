@@ -30,9 +30,17 @@
 # \newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}$
 # ```
 #
-# ```{image} jax_framework.svg
+# ```{image} jax_framework.png
 # :width: 600px
 # :align: center
+# ```
+#
+# ```{admonition} Download sources
+# :class: download
+#
+# * {Download}`Python script<./linear_viscoelasticity_jax.py>`
+# * {Download}`Jupyter notebook<./linear_viscoelasticity_jax.ipynb>`
+# * {Download}`Complete sources files<./linear_viscoelasticity_jax.zip>`
 # ```
 #
 # ```{seealso}

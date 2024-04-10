@@ -35,6 +35,14 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 :align: center
 ```
 
+```{admonition} Download sources
+:class: download
+
+* {Download}`Python script<./linear_viscoelasticity_jax.py>`
+* {Download}`Jupyter notebook<./linear_viscoelasticity_jax.ipynb>`
+* {Download}`Complete sources files<./linear_viscoelasticity_jax.zip>`
+```
+
 ```{seealso}
 
 For more details about JAX-based implementation of constitutive equations, we refer to https://github.com/a-latyshev/dolfinx-external-operator.
