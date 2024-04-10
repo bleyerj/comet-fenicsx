@@ -38,7 +38,11 @@ repository:
 #         provide a link to the Creative Commons license and indicate if changes were made.  If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original. 
 #     </div>
 
-exclude_patterns: [README.md]
+exclude_patterns: [
+    ...,
+    "**/*.ipynb",
+    "**/*.py",
+    README.md]
 
 # Sphinx configuration for custom theme
 sphinx:
@@ -57,6 +61,7 @@ sphinx:
       use_edit_page_button: true
       use_repository_button: true
       use_download_button: false
+    
 parse:
   myst_enable_extensions:
     - "amsmath"
