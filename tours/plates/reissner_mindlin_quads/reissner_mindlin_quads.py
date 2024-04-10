@@ -161,7 +161,7 @@ def shear_force(u):
 # and for quadratic ($d=2$) quadrilaterals, as if it were quadratic (2x2 Gauss points instead of 3x3).
 #
 # ```{seealso}
-# See the [](tips/quadrature_schemes/quadrature_schemes.md) tour for more details on the choice of quadrature points.
+# See the [](/tips/quadrature_schemes/quadrature_schemes.md) tour for more details on the choice of quadrature points.
 # ```
 
 # +
