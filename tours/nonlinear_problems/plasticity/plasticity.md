@@ -163,7 +163,7 @@ Re = 1.3
 Ri = 1.0
 ```
 
-We then model a quarter of cylinder using `Gmsh` similarly to the [](/tours/linear_problem/axisymmetric_elasticity/axisymmetric_elasticity.md) demo.
+We then model a quarter of cylinder using `Gmsh` similarly to the [](/tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md) demo.
 
 ```{code-cell}
 :tags: [hide-input]
@@ -410,18 +410,34 @@ $$
 
 where $\mathbf{R}$ is the current value of the nonlinear residual, $\mathbf{du}$ the iteration correction to the unknown field $\mathbf{u}$ and $\mathbf{A}_\text{tang}$ the tangent operator of the nonlinear residual. To simplify the implementation, we rely on the `fem.petsc.LinearProblem` utility class to define and solve linear problems. In the following, we need to explicitly separate the steps where we assemble the linear system right-hand side from when we assemble the matrix left-hand side and solve the linear system. We therefore define a new class inheriting from `LinearProblem` and splitting these different steps.
 
+```{warning}
+We will use the `CustomLinearProblem` class within a custom implementation of the Newton method. During the course of the Newton iterations, we need to account for possible non-zero Dirichlet boundary conditions (although all Dirichlet boundary conditions are zero in the present case). We use the implementation provided in [](https://jsdokken.com/dolfinx-tutorial/chapter4/newton-solver.html#newtons-method-with-dirichletbc) for lifting the right-hand side of the Newton system with non-zero Dirichlet boundary conditions.
+```
+
 ```{code-cell}
 class CustomLinearProblem(fem.petsc.LinearProblem):
-    def assemble_rhs(self):
+    def assemble_rhs(self, u=None):
+        """Assemble right-hand side and lift Dirichlet bcs.
+
+        Parameters
+        ----------
+        u : dolfinx.fem.Function, optional
+            For non-zero Dirichlet bcs u_D, use this function to assemble rhs with the value u_D - u_{bc}
+            where u_{bc} is the value of the given u at the corresponding. Typically used for custom Newton methods
+            with non-zero Dirichlet bcs.
+        """
+
         # Assemble rhs
         with self._b.localForm() as b_loc:
             b_loc.set(0)
         fem.petsc.assemble_vector(self._b, self._L)
 
         # Apply boundary conditions to the rhs
-        fem.petsc.apply_lifting(self._b, [self._a], bcs=[self.bcs])
+        x0 = [] if u is None else [u.vector]
+        fem.petsc.apply_lifting(self._b, [self._a], bcs=[self.bcs], x0=x0, scale=1.0)
         self._b.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
-        fem.petsc.set_bc(self._b, self.bcs)
+        x0 = None if u is None else u.vector
+        fem.petsc.set_bc(self._b, self.bcs, x0, scale=1.0)
 
     def assemble_lhs(self):
         self._A.zeroEntries()
