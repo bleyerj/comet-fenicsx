@@ -91,9 +91,9 @@
 #
 # ### Rayleigh damping
 #
-# When little is known about the origin of damping in the structure, a popular choice for the damping matrix, known as *Rayleigh damping*, consists in using a linear combination of the mass and stiffness matrix $[C] = \eta_M[M]+\eta_K[K]$ with two positive parameters $\eta_M,\eta_K$ which can be fitted against experimental measures for instance (usually by measuring the damping ratio of two natural modes of vibration).
+# When little is known about the origin of damping in the structure, a popular choice for the damping matrix, known as *Rayleigh damping*, consists in using a linear combination of the mass and stiffness matrix $[C] = \eta_M[M]+\eta_K[K]$ with two positive parameters $\eta_M,\eta_K$ which can be fitted against experimental data for instance (usually by measuring the damping ratio of two natural modes of vibration).
 #
-# One notable advantage of using such a choice is that modes identified from the modal analysis based on $[K]$ and $[M]$ still form an orthogonal basis, yielding decoupled evolution equations, even in the presence of damping.
+# One notable advantage of using such a choice is that modes identified from the modal analysis based on $[K]$ and $[M]$ still form an orthogonal basis, yielding decoupled evolution equations, even in the presence of damping. This is no longer the case in general for other forms of damping modeling.
 #
 # ## Time discretization using the Newmark scheme
 #
@@ -108,17 +108,22 @@
 # [M]\{\ddot{u}_{n+1}\} + [C]\{\dot{u}_{n+1}\}+[K]\{u_{n+1}\} = \{F(t_{n+1})\}
 # ```
 #
+#
 # In addition, the following approximation for the displacement and velocity
 # at $t_{n+1}$ are used:
 #
 # ```{math}
 # :label: displ-update
+#
 # \{u_{n+1}\} = \{u_{n}\}+\Delta t \{\dot{u}_{n}\} + \dfrac{\Delta t^2}{2}\left((1-2\beta)\{\ddot{u}_{n}\}+2\beta\{\ddot{u}_{n+1}\}\right)
 # ```
+#
 # ```{math}
 # :label: velocity-update
-# \{\dot{u}_{n+1}\} &= \{\dot{u}_{n}\} + \Delta t\left((1-\gamma)\{\ddot{u}_{n}\}+\gamma\{\ddot{u}_{n+1}\}\right)
+#
+# \{\dot{u}_{n+1}\} = \{\dot{u}_{n}\} + \Delta t\left((1-\gamma)\{\ddot{u}_{n}\}+\gamma\{\ddot{u}_{n+1}\}\right)
 # ```
+#
 # where the parameters $\gamma\in[0;1]$ and $\beta\in[0;1/2]$ determine the stability and accuracy of the approximation.
 #
 # We can use the previous expressions to express the acceleration $\ddot{u}_{n+1}$ in terms of unknown displacement at $t_{n+1}$ with:
@@ -134,7 +139,6 @@
 #
 # The most popular choice for the parameters is: $\gamma=\dfrac{1}{2}$,
 # $\beta=\dfrac{1}{4}$ which ensures unconditional stability, energy conservation and second-order accuracy.
-#
 #
 # ## Implementation
 #
@@ -285,10 +289,12 @@ problem = fem.petsc.LinearProblem(
 # -
 
 # We also define the forms corresponding to the total kinetic `E_kin` and elastic `E_el` energies as well as the damping dissipated power `P_damp`. Indeed, multiplying equation {eq}`discrete-elastodynamics` with $\{\dot{u}\}$ yields:
+#
 # $$
 # \dfrac{\text{d}}{\text{d}t}\left(\mathcal{E}_\text{kin} +\mathcal{E}_\text{el}\right) + \mathcal{P}_\text{damp} =  \mathcal{P}_\text{ext}
 # $$
 # where:
+#
 # $$
 # \begin{align*}
 # \mathcal{E}_\text{kin} &= \dfrac{1}{2}\{\dot{u}\}[M]\{\dot{u}\}\\
@@ -296,10 +302,13 @@ problem = fem.petsc.LinearProblem(
 # \mathcal{P}_\text{damp} &= \{\dot{u}\}[C]\{\dot{u}\}\\
 # \end{align*}
 # $$
+#
 # Thus, in the absence of external forcing ($\mathcal{P}_\text{ext}=0$), we see that the sum of all three contributions of kinetic, elastic and damping energies are conserved:
+#
 # $$
 # \mathcal{E}_\text{kin} +\mathcal{E}_\text{el} + \int_0^T \mathcal{P}_\text{damp} \text{d}t = \text{cst}
 # $$
+#
 # We compute all three contributions to check the conservation of total energy by the Newmark scheme.
 
 E_kin = fem.form(0.5 * mass(v_old, v_old))
@@ -437,6 +446,7 @@ plt.plot(times, np.sum(energies, axis=1), label="Total")
 plt.legend()
 plt.xlabel("Time")
 plt.ylabel("Energies")
+plt.show()
 
 # ## References
 #

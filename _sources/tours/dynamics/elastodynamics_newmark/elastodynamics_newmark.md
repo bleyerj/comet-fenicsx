@@ -107,18 +107,22 @@ The method consists in solving the dynamic evolution equation at intermediate ti
 [M]\{\ddot{u}_{n+1}\} + [C]\{\dot{u}_{n+1}\}+[K]\{u_{n+1}\} = \{F(t_{n+1})\}
 ```
 
+
 In addition, the following approximation for the displacement and velocity
 at $t_{n+1}$ are used:
 
 ```{math}
 :label: displ-update
+
 \{u_{n+1}\} = \{u_{n}\}+\Delta t \{\dot{u}_{n}\} + \dfrac{\Delta t^2}{2}\left((1-2\beta)\{\ddot{u}_{n}\}+2\beta\{\ddot{u}_{n+1}\}\right)
 ```
 
 ```{math}
 :label: velocity-update
+
 \{\dot{u}_{n+1}\} = \{\dot{u}_{n}\} + \Delta t\left((1-\gamma)\{\ddot{u}_{n}\}+\gamma\{\ddot{u}_{n+1}\}\right)
 ```
+
 where the parameters $\gamma\in[0;1]$ and $\beta\in[0;1/2]$ determine the stability and accuracy of the approximation.
 
 We can use the previous expressions to express the acceleration $\ddot{u}_{n+1}$ in terms of unknown displacement at $t_{n+1}$ with:
@@ -134,7 +138,6 @@ We can use the previous expressions to express the acceleration $\ddot{u}_{n+1}$
 
 The most popular choice for the parameters is: $\gamma=\dfrac{1}{2}$,
 $\beta=\dfrac{1}{4}$ which ensures unconditional stability, energy conservation and second-order accuracy.
-
 
 ## Implementation
 
@@ -441,6 +444,7 @@ plt.plot(times, np.sum(energies, axis=1), label="Total")
 plt.legend()
 plt.xlabel("Time")
 plt.ylabel("Energies")
+plt.show()
 ```
 
 ## References

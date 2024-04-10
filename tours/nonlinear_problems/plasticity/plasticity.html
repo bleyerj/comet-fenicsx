@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=e2c50d4c" />
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/plasticity/plasticity';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Localized 1D solutions in phase-field approach to brittle fracture" href="../bound_constrained/bound_constrained.html" />
+    <link rel="next" title="Linear viscoelasticity with JAX" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html" />
     <link rel="prev" title="Nonlinear problems" href="../contents.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -207,6 +207,7 @@
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
@@ -290,7 +291,7 @@
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/plasticity/plasticity.ipynb" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/nonlinear_problems/plasticity/plasticity.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -439,21 +440,21 @@ document.write(`
 \[\dot{\beps}^\text{p} = \dot{\lambda}\dfrac{\partial f}{\partial \bsig}\]</div>
 <p>which gives in the present case:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule">
-<span class="eqno">(21)<a class="headerlink" href="#equation-flow-rule" title="Link to this equation">#</a></span>\[\dot{\beps}^\text{p} = \dot{p}\dfrac{3}{2\sigeq}\bs\]</div>
+<span class="eqno">(22)<a class="headerlink" href="#equation-flow-rule" title="Link to this equation">#</a></span>\[\dot{\beps}^\text{p} = \dot{p}\dfrac{3}{2\sigeq}\bs\]</div>
 </section>
 <section id="predictor-corrector-algorithm-for-constitutive-behavior-integration">
 <h3>Predictor-corrector algorithm for constitutive behavior integration<a class="headerlink" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration" title="Link to this heading">#</a></h3>
 <p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follow notations from <span id="id1">[<a class="reference internal" href="#id8" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
-<p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(21)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
+<p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(22)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule-incr">
-<span class="eqno">(22)<a class="headerlink" href="#equation-flow-rule-incr" title="Link to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
+<span class="eqno">(23)<a class="headerlink" href="#equation-flow-rule-incr" title="Link to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
 <p>An elastic trial stress <span class="math notranslate nohighlight">\(\bsig_{\text{elas}} = \bsig_{n} + \CC:\Delta \beps\)</span> is first computed. The plasticity criterion is then evaluated with the previous plastic strain <span class="math notranslate nohighlight">\(f_{\text{elas}} = \sigeq^{\text{elas}} - \sigma_0 - H p_n\)</span> where <span class="math notranslate nohighlight">\(\sigeq^{\text{elas}}\)</span> is the von Mises equivalent stress of the elastic trial stress.</p>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(f_{\text{elas}} &lt; 0\)</span>, no plasticity occurs during this time increment and <span class="math notranslate nohighlight">\(\Delta p,\Delta  \boldsymbol{\varepsilon}^p =0\)</span> and <span class="math notranslate nohighlight">\(\bsig_{n+1} = \bsig_\text{elas}\)</span>.</p></li>
 <li><p>Otherwise, plasticity occurs and the increment of plastic strain <span class="math notranslate nohighlight">\(\Delta p\)</span> is such that:</p></li>
 </ul>
 <div class="math notranslate nohighlight" id="equation-plastic-ev-discr">
-<span class="eqno">(23)<a class="headerlink" href="#equation-plastic-ev-discr" title="Link to this equation">#</a></span>\[\begin{split}\begin{align}
+<span class="eqno">(24)<a class="headerlink" href="#equation-plastic-ev-discr" title="Link to this equation">#</a></span>\[\begin{split}\begin{align}
 \bsig_{n+1} &amp;= \bsig_\text{elas} - 2\mu\Delta \bepsp\\
 \Delta \bepsp &amp;= \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\\
 f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\\
@@ -468,7 +469,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \[
 \sigma_{\text{eq},n+1} = \sigeq^\text{elas} - 3\mu \Delta p
 \]</div>
-<p>Replacing in the third equation of <a class="reference internal" href="#equation-plastic-ev-discr">(23)</a>, we deduce the value of the cumulated plastic strain increment:</p>
+<p>Replacing in the third equation of <a class="reference internal" href="#equation-plastic-ev-discr">(24)</a>, we deduce the value of the cumulated plastic strain increment:</p>
 <div class="math notranslate nohighlight">
 \[
 \Delta p = \dfrac{f_\text{elas}}{3\mu+H}
@@ -480,7 +481,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \]</div>
 <p>Hence, both elastic and plastic evolution can be accounted for by defining the plastic strain increment as follows:</p>
 <div class="math notranslate nohighlight" id="equation-deltap-formula">
-<span class="eqno">(24)<a class="headerlink" href="#equation-deltap-formula" title="Link to this equation">#</a></span>\[\Delta p = \dfrac{\langle f_\text{elas}\rangle_+}{3\mu+H}\]</div>
+<span class="eqno">(25)<a class="headerlink" href="#equation-deltap-formula" title="Link to this equation">#</a></span>\[\Delta p = \dfrac{\langle f_\text{elas}\rangle_+}{3\mu+H}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\langle \star \rangle_+\)</span> denotes the positive part of <span class="math notranslate nohighlight">\(\star\)</span>.</p>
 </section>
 </section>
@@ -509,7 +510,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>We then model a quarter of cylinder using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> similarly to the <a class="reference internal" href="#/tours/linear_elasticity/axisymmetric_elasticity.md"><code class="xref myst docutils literal notranslate"><span class="pre">/tours/linear_elasticity/axisymmetric_elasticity.md</span></code></a> demo.</p>
+<p>We then model a quarter of cylinder using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> similarly to the <a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html"><span class="std std-doc">Axisymmetric formulation for elastic structures of revolution </span></a> demo.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -664,7 +665,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function <code class="docutils literal notranslate"><span class="pre">as_3D_tensor</span></code> will enable to represent a 4 dimensional vector containing respectively <span class="math notranslate nohighlight">\(xx, yy, zz\)</span> and <span class="math notranslate nohighlight">\(xy\)</span> components as a 3D tensor::</p>
+<p>Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function <code class="docutils literal notranslate"><span class="pre">as_3D_tensor</span></code> will enable to represent a 4 dimensional vector containing respectively <span class="math notranslate nohighlight">\(xx, yy, zz\)</span> and <span class="math notranslate nohighlight">\(xy\)</span> components as a 3D tensor:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">eps</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
@@ -686,7 +687,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>The return mapping procedure is implemented in the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function which takes as an argument a total strain increment Δε, the previous stress state <code class="docutils literal notranslate"><span class="pre">old_sig</span></code> and the previous plastic strain <code class="docutils literal notranslate"><span class="pre">old_p</span></code>. For computing the plastic strain increment, we use formula <a class="reference internal" href="#equation-deltap-formula">(24)</a> where <code class="docutils literal notranslate"><span class="pre">ppos</span></code> implements the positive part function.</p>
+<p>The return mapping procedure is implemented in the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function which takes as an argument a total strain increment Δε, the previous stress state <code class="docutils literal notranslate"><span class="pre">old_sig</span></code> and the previous plastic strain <code class="docutils literal notranslate"><span class="pre">old_p</span></code>. For computing the plastic strain increment, we use formula <a class="reference internal" href="#equation-deltap-formula">(25)</a> where <code class="docutils literal notranslate"><span class="pre">ppos</span></code> implements the positive part function.</p>
 <p>Plastic evolution also requires the computation of the normal vector to the final yield surface given by <span class="math notranslate nohighlight">\(\boldsymbol{n}_{\text{elas}} = \boldsymbol{s}_\text{elas}/\sigeq^{\text{elas}}\)</span>. In the following, this vector must be zero in case of elastic evolution. Hence, we multiply it by <span class="math notranslate nohighlight">\(\dfrac{\langle f_{\text{elas}}\rangle_+}{ f_{\text{elas}}}\)</span> to tackle both cases in a single expression. The final stress state is corrected by the plastic strain as follows <span class="math notranslate nohighlight">\(\bsig_{n+1} = \bsig_{\text{elas}} - \beta \boldsymbol{s}_\text{elas}\)</span> with <span class="math notranslate nohighlight">\(\beta = \dfrac{3\mu}{\sigeq^{\text{elas}}}\Delta p\)</span>. It can be observed that the last term vanishes in case of elastic evolution so that the final stress is indeed the elastic predictor.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -774,19 +775,35 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 \mathbf{A}_\text{tang}\mathbf{du} = -\mathbf{R}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> is the current value of the nonlinear residual, <span class="math notranslate nohighlight">\(\mathbf{du}\)</span> the iteration correction to the unknown field <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_\text{tang}\)</span> the tangent operator of the nonlinear residual. To simplify the implementation, we rely on the <code class="docutils literal notranslate"><span class="pre">fem.petsc.LinearProblem</span></code> utility class to define and solve linear problems. In the following, we need to explicitly separate the steps where we assemble the linear system right-hand side from when we assemble the matrix left-hand side and solve the linear system. We therefore define a new class inheriting from <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> and splitting these different steps.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> class within a custom implementation of the Newton method. During the course of the Newton iterations, we need to account for possible non-zero Dirichlet boundary conditions (although all Dirichlet boundary conditions are zero in the present case). We use the implementation provided in <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/chapter4/newton-solver.html#newtons-method-with-dirichletbc"></a> for lifting the right-hand side of the Newton system with non-zero Dirichlet boundary conditions.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomLinearProblem</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">assemble_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">assemble_rhs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Assemble right-hand side and lift Dirichlet bcs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : dolfinx.fem.Function, optional</span>
+<span class="sd">            For non-zero Dirichlet bcs u_D, use this function to assemble rhs with the value u_D - u_{bc}</span>
+<span class="sd">            where u_{bc} is the value of the given u at the corresponding. Typically used for custom Newton methods</span>
+<span class="sd">            with non-zero Dirichlet bcs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="c1"># Assemble rhs</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">localForm</span><span class="p">()</span> <span class="k">as</span> <span class="n">b_loc</span><span class="p">:</span>
             <span class="n">b_loc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">)</span>
 
         <span class="c1"># Apply boundary conditions to the rhs</span>
-        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">apply_lifting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">],</span> <span class="n">bcs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">])</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="p">]</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">apply_lifting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">],</span> <span class="n">bcs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">],</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">REVERSE</span><span class="p">)</span>
-        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">u</span><span class="o">.</span><span class="n">vector</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">assemble_lhs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="o">.</span><span class="n">zeroEntries</span><span class="p">()</span>
@@ -893,7 +910,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/bbdd5b53f8a2a2018cc1a8b8c4ae8edaa7161c63742eb4a9d484fca84ea98685.png" src="../../../_images/bbdd5b53f8a2a2018cc1a8b8c4ae8edaa7161c63742eb4a9d484fca84ea98685.png" />
+<img alt="../../../_images/29cfbf539a8ed8d98731bbfc33b0a1d9b8623b23edbad4a82262200d8b3bb72e.png" src="../../../_images/29cfbf539a8ed8d98731bbfc33b0a1d9b8623b23edbad4a82262200d8b3bb72e.png" />
 </div>
 </div>
 <p>Finally, we also report the evolution of the number of Newton iterations as a function of the loading increments:</p>
@@ -909,7 +926,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/6c9e5951eefef254cca8fb9f7c7a8d76d6ea77c64735d9b152e2312a2f69b74e.png" src="../../../_images/6c9e5951eefef254cca8fb9f7c7a8d76d6ea77c64735d9b152e2312a2f69b74e.png" />
+<img alt="../../../_images/3680113016ef7e23f06ca18bde4e7706b4e7adcb715a54441da2efc57c14a6f3.png" src="../../../_images/3680113016ef7e23f06ca18bde4e7706b4e7adcb715a54441da2efc57c14a6f3.png" />
 </div>
 </div>
 </section>
@@ -972,11 +989,11 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
       </div>
     </a>
     <a class="right-next"
-       href="../bound_constrained/bound_constrained.html"
+       href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></p>
+        <p class="prev-next-title">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
