@@ -9,6 +9,9 @@ kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
+language_info:
+  name: python3
+  pygments_lexer: ipython3
 ---
 
 # Transient elastodynamics with Newmark time-integration {far}`star`{far}`star`

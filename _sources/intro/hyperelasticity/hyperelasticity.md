@@ -78,7 +78,7 @@ where $I_1 = \tr(\bC) = \tr(\bF\T\bF)$ and $J = \det\bF$.
 
 We load the relevant modules and useful functions and setup the corresponding box mesh. In the following, we will use hexahedra of degree 1.
 
-```{code-cell}
+```{code-cell} ipython3
 import numpy as np
 import ufl
 
@@ -125,7 +125,7 @@ u = fem.Function(V, name="Displacement")
 
 Next, we define the corresponding hyperelastic potential using UFL operators. We can easily obtain the UFL expression for the PK1 stress by differentiating the potential $\psi$ {eq}`psi-neo-Hookean` with respect to the deformation gradient $\bF$. We therefore declare it as a variable using `ufl.variable` and then compute $\bP = \dfrac{\partial \psi}{\partial \bF}$ using `ufl.diff`.
 
-```{code-cell}
+```{code-cell} ipython3
 # Identity tensor
 Id = Identity(dim)
 
@@ -155,7 +155,7 @@ print(P)
 
 Now, we set up the boundary conditions by first identifying the top and bottom dofs. We use Functions to provide the imposed displacement on both faces. For now, such functions are zero.
 
-```{code-cell}
+```{code-cell} ipython3
 def bottom(x):
     return np.isclose(x[2], 0.0)
 
@@ -175,7 +175,7 @@ bcs = [fem.dirichletbc(u_bot, bottom_dofs), fem.dirichletbc(u_top, top_dofs)]
 
 We will later update the value of the `u_top` function based on a UFL expression corresponding to the imposed rigid body rotation. This expression depends on a scalar value $\theta$ represented as a `Constant` object. The use of a `fem.Expression` results in JIT compilation of the code corresponding to the evaluation of this expression at specific points in the reference elements (here the interpolation points of $V$ i.e. the hexahedron vertices).
 
-```{code-cell}
+```{code-cell} ipython3
 x = SpatialCoordinate(mesh)
 theta = fem.Constant(mesh, 0.0)
 Rot = as_matrix([[cos(theta), sin(theta), 0], [-sin(theta), cos(theta), 0], [0, 0, 1]])
@@ -188,7 +188,7 @@ Now, we define the global non-linear potential energy. Note that since we have n
 Next, we compute the corresponding non-linear residual using the `ufl.derivative` function which computes the directional derivative in the direction of the TestFunction `v`.
 We also apply it to the residual itself to compute the corresponding consistent tangent bilinear form, usually called the Jacobian in the context of a Newton method. The latter is computed in the direction of the TrialFunction `du`.
 
-```{code-cell}
+```{code-cell} ipython3
 dx = ufl.Measure("dx", domain=mesh, metadata={"quadrature_degree": 4})
 E_pot = psi * dx
 
@@ -202,7 +202,7 @@ Jacobian = derivative(Residual, u, du)
 
 Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. The latter will also be attached to a nonlinear solver implementing a Newton method.
 
-```{code-cell}
+```{code-cell} ipython3
 problem = fem.petsc.NonlinearProblem(Residual, u, bcs)
 
 solver = nls.petsc.NewtonSolver(mesh.comm, problem)
@@ -214,7 +214,7 @@ solver.convergence_criterion = "incremental"
 
 We are now in position to write the load-stepping loop which simply updates the value of $\theta$. Since, `rot_expr` is symbolically linked to `theta`, this new value is automatically accounted for when interpolating the imposed top displacement from `rot_expr`.
 
-```{code-cell}
+```{code-cell} ipython3
 angle_max = 2 * np.pi
 Nsteps = 15
 

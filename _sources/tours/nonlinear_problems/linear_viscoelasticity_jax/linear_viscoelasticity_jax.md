@@ -1,11 +1,17 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.16.0
+kernelspec:
+  display_name: Python 3.8.10 64-bit
+  language: python
+  name: python3
+language_info:
+  name: python3
+  pygments_lexer: ipython3
 ---
 
 # Linear viscoelasticity with JAX {far}`star`{far}`star`{far}`star`
@@ -45,12 +51,12 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 
 ```{seealso}
 
-For more details about JAX-based implementation of constitutive equations, we refer to https://github.com/a-latyshev/dolfinx-external-operator.
+For more details about JAX-based implementation of constitutive equations, we refer to Andrey's Latyshev work at https://github.com/a-latyshev/dolfinx-external-operator.
 ```
 
 ## Nonlinear constitutive models in FEniCS
 
-Although this tour considers **linear** viscoelasticity, we will treat treat the problem as involving a general nonlinear constitutive behavior. The latter will be implemented explicitly using Python, mimicking a generic black-box material library. In this case, the stress $\bsig$ is evaluated as a nonlinear function, which is a function of the total strain $\beps$, yielding the following nonlinear variational problem:
+Although this tour considers **linear** viscoelasticity, we will treat the problem as involving a general nonlinear constitutive behavior. The latter will be implemented explicitly using Python, mimicking a generic black-box material library. In this case, the stress $\bsig$ is evaluated as a nonlinear function of the total strain $\beps$, yielding the following nonlinear variational problem:
 
 ```{math}
 :label: nonlinear-variational-model
@@ -58,7 +64,7 @@ Although this tour considers **linear** viscoelasticity, we will treat treat the
 \int_{\Omega} \bsig(\beps):\nabla^s \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_{\partial \Omega_\text{N}} \bT\cdot\bv \dS \quad \forall\bv \in V
 ```
 
-Viscoelasticity involves solving for the time evolution of internal viscous strains $\bepsv$. The constitutive relation is therefore implicitly defined via the evolution of this internal state variable. We collect in the set $\mathcal{S}_n$ the state of the material at time $t_n$, here we have $\mathcal{S}_n = \{\bepsv_n\}$. The evaluation of the constitutive equation will be strain-driven in the sense that we provide a total strain increment $\Delta \beps$ and the previous state at time $t_n$ and the role of the constitutive model is to provide the new stress $\bsig_{n+1}$ and the new state $\mathcal{S}_{n+1}$:
+Viscoelasticity involves solving for the time evolution of internal viscous strains $\bepsv$. The constitutive relation is therefore implicitly defined via the evolution of this internal state variable. We collect in the set $\mathcal{S}_n$ the state of the material at time $t_n$, here we have $\mathcal{S}_n = \{\bepsv_n\}$. The evaluation of the constitutive equation will be strain-driven in the sense that we provide a total strain increment $\Delta \beps$ and the previous state at time $t_n$ and the role of the constitutive model is to compute the new stress $\bsig_{n+1}$ and the new state $\mathcal{S}_{n+1}$:
 
 ```{math}
 :label: constitutive-black-box
@@ -71,11 +77,9 @@ Viscoelasticity involves solving for the time evolution of internal viscous stra
 In the legacy FEniCS tour on [Linear Viscoelasticity](https://comet-fenics.readthedocs.io/en/latest/demo/viscoelasticity/linear_viscoelasticity.html), we relied on a mixed formulation discretizing both the displacement and viscous strains at the structure level which was solved in a monolithic fashion. In the present approach, we voluntarily depart from this choice to focus on the implementation of a user-defined constitutive model.
 ```
 
-The present approach will involve looping over all quadrature points to evaluate the constitutive behavior locally. This approach is obviously computationally inefficient due to the Python loop.
-
 ### Automation and high-performance computation using JAX
 
- To solve this issue, we will rely on the [JAX library](https://jax.readthedocs.io).
+The present approach will involve looping over all quadrature points to evaluate the constitutive behavior locally. This approach is obviously computationally inefficient due to the Python loop. To solve this issue, we will rely on the [JAX library](https://jax.readthedocs.io).
 
 ![](https://jax.readthedocs.io/en/latest/_static/jax_logo_250px.png)
 
@@ -87,11 +91,11 @@ JAX is a Python library for accelerated (GPU) array computation and program tran
 
 ## Linear viscoelastic behavior
 
-In this numerical tour, we will a simple linear viscoelastic behavior, the Standard Linear Solid model, which encompasses the case of a Maxwell or a Kelvin-Voigt model. The formulation can also be quite easily extended to a generalized Maxwell model.
+In this numerical tour, we consider a simple linear viscoelastic behavior, the Standard Linear Solid model, which encompasses the case of a Maxwell and a Kelvin-Voigt model. The formulation can also be quite easily extended to a generalized Maxwell model.
 
 ### 1D rheological formulation
 
-We consider a 1D Linear Standard Solid model consisting of a spring of stiffness $E_0$ in parallel to a Maxwell arm (spring of stiffness $E_1$ in series with a dashpot of viscosity $\eta_1$). 
+The Linear Standard Solid model consists of a spring of stiffness $E_0$ in parallel to a Maxwell arm (spring of stiffness $E_1$ in series with a dashpot of viscosity $\eta_1$).
 
 ```{image} 1D_rheological_model.png
 :width: 300px
@@ -106,7 +110,7 @@ whereas the evolution equation for the viscous internal strain is given by:
 
 $$\dot{\varepsilon}^\text{v} = \dfrac{E_1}{\eta_1}(\varepsilon-\epsv)$$
 
-Introducing $\tau=\eta_1/E_1$ the characteristic relaxation time, the viscous strain evolution equation can be equivalently written as:
+Introducing $\tau=\eta_1/E_1$ the characteristic relaxation time, the viscous strain evolution equation can be written as:
 ```{math}
 :label: viscous-strain-evolution
 
@@ -182,11 +186,16 @@ from solvers import CustomLinearProblem, CustomNewtonSolver
 import jax
 import jax.numpy as jnp
 
-jax.config.update("jax_enable_x64", True)  
+jax.config.update("jax_enable_x64", True)  # use double-precision
 
 length, height = 0.1, 0.2
 N = 20
-domain = mesh.create_rectangle(MPI.COMM_WORLD, ((0.0, 0.0), (length, height)), (N, N), ghost_mode=mesh.GhostMode.none)
+domain = mesh.create_rectangle(
+    MPI.COMM_WORLD,
+    ((0.0, 0.0), (length, height)),
+    (N, N),
+    ghost_mode=mesh.GhostMode.none,
+)
 gdim = domain.geometry.dim
 
 deg_u = 2
@@ -205,15 +214,21 @@ The boundary conditions consist of symmetry planes on $x=0$ and $y=0$ and smooth
 ```{code-cell} ipython3
 V_ux, _ = V.sub(0).collapse()
 V_uy, _ = V.sub(1).collapse()
-left_dofs = fem.locate_dofs_geometrical((V.sub(0), V_ux), lambda x: np.isclose(x[0], 0.0))
-bot_dofs = fem.locate_dofs_geometrical((V.sub(1), V_uy), lambda x: np.isclose(x[1], 0.0))
-top_dofs = fem.locate_dofs_geometrical((V.sub(1), V_uy),  lambda x: np.isclose(x[1], height))
+left_dofs = fem.locate_dofs_geometrical(
+    (V.sub(0), V_ux), lambda x: np.isclose(x[0], 0.0)
+)
+bot_dofs = fem.locate_dofs_geometrical(
+    (V.sub(1), V_uy), lambda x: np.isclose(x[1], 0.0)
+)
+top_dofs = fem.locate_dofs_geometrical(
+    (V.sub(1), V_uy), lambda x: np.isclose(x[1], height)
+)
 
 uD_x0 = fem.Function(V_ux)
 uD_y0 = fem.Function(V_uy)
 uD_y = fem.Function(V_uy)
 epsr = 1e-3
-uD_y.vector.set(epsr*height)
+uD_y.vector.set(epsr * height)
 bcs = [
     fem.dirichletbc(uD_x0, left_dofs, V.sub(0)),
     fem.dirichletbc(uD_y0, bot_dofs, V.sub(1)),
@@ -227,7 +242,7 @@ Similarly to the [](/tours/nonlinear_problems/plasticity/plasticity.md) tour, we
 
 ```{code-cell} ipython3
 deg_quad = 2  # quadrature degree for internal state variable representation
-vdim = 3      # dimension of the vectorial representation of tensors
+vdim = 3  # dimension of the vectorial representation of tensors
 W0e = ufl.FiniteElement(
     "Quadrature",
     domain.ufl_cell(),
@@ -272,6 +287,7 @@ def eps_Mandel(v):
     e = ufl.sym(ufl.grad(v))
     return ufl.as_tensor([e[0, 0], e[1, 1], np.sqrt(2) * e[0, 1]])
 
+
 dx = ufl.Measure(
     "dx",
     domain=domain,
@@ -283,7 +299,6 @@ tangent_form = ufl.dot(eps_Mandel(v), ufl.dot(Ct, eps_Mandel(u_))) * dx
 
 Now, we extract the total number of quadrature points and define the `fem.Expression` corresponding to the total strain `esp_Mandel(u)` to perform the evaluation at all quadrature points.
 
-
 ```{code-cell} ipython3
 basix_celltype = getattr(basix.CellType, domain.topology.cell_types[0].name)
 quadrature_points, weights = basix.make_quadrature(basix_celltype, deg_quad)
@@ -294,6 +309,7 @@ cells = np.arange(0, num_cells, dtype=np.int32)
 ngauss = num_cells * len(weights)
 
 eps_expr = fem.Expression(eps_Mandel(u), quadrature_points)
+
 
 def eval_at_quadrature_points(expression):
     return expression.eval(domain, cells).reshape(ngauss, -1)
@@ -312,21 +328,17 @@ def local_constitutive_update(deps, eps_old, epsv_old, dt):
     nu = mat_prop["PoissonRatio"]
     eta = mat_prop["eta"]
     tau = mat_prop["tau"]
-    E1 = eta/tau
-    
-    c = 1/(1-nu**2)*jnp.array(
-      [ 
-        [1, nu, 0],
-        [nu, 1, 0],
-        [0, 0, (1-nu)/2]
-      ]
-    )
-    C0 = E0*c
-    C1 = E1*c
+    E1 = eta / tau
 
-    epsv = eps+ jnp.exp(-dt/tau)*(epsv_old -eps_old)- jnp.exp(-dt/2/tau) *deps
+    c = 1 / (1 - nu**2) * jnp.array([[1, nu, 0], [nu, 1, 0], [0, 0, (1 - nu) / 2]])
+    C0 = E0 * c
+    C1 = E1 * c
+
+    epsv = (
+        eps + jnp.exp(-dt / tau) * (epsv_old - eps_old) - jnp.exp(-dt / 2 / tau) * deps
+    )
     sig = C0 @ eps + C1 @ (eps - epsv)
-    
+
     state = (sig, epsv)
     return sig, state
 ```
@@ -342,7 +354,7 @@ tangent_operator_and_state = jax.jacfwd(
 
 #### JIT and automatic vectorization
 
-Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the `local_constitutive_update` function in vectorized form to work on a batch of strain-like quantities of shape `(3,num_gauss)` where `num_gauss` is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to transform a function into an efficient vectorized automatically using `jax.vmap`. Applying this vectorization to the `tangent_operator_and_state` function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (`dt` is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.
+Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the `local_constitutive_update` function in vectorized form to work on a batch of strain-like quantities of shape `(3,num_gauss)` where `num_gauss` is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to automatically transform a function into an efficient vectorized form using `jax.vmap`. Applying this vectorization to the `tangent_operator_and_state` function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (`dt` is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.
 
 ```{code-cell} ipython3
 batched_constitutive_update = jax.jit(
@@ -362,7 +374,9 @@ def constitutive_update(u, sig, eps_old, epsv_old, epsv, dt):
         deps_values = eps_values - eps_old_values
         epsv_old_values = epsv_old.x.array.reshape(ngauss, -1)
 
-        Ct_values, state = batched_constitutive_update(deps_values, eps_old_values, epsv_old_values, dt)
+        Ct_values, state = batched_constitutive_update(
+            deps_values, eps_old_values, epsv_old_values, dt
+        )
         sig_values, epsv_new_values = state
 
         sig.x.array[:] = sig_values.ravel()
@@ -371,12 +385,11 @@ def constitutive_update(u, sig, eps_old, epsv_old, epsv, dt):
 ```
 
 ### Custom Newton solver
-We now define a custom Newton solver defined in the {download}`solvers.py` module. The latter first relies on a `CustomLinearProblem` which is the same custom `LinearProblem` implementation which was described in the [](/tours/nonlinear_problems/plasticity/plasticity.md) demo. The latter works in particular with the iteration correction field `du` as the main unknown and solves the Newton system:
+We now define a custom Newton solver defined in the {download}`solvers.py` module. The solver first relies on a `CustomLinearProblem` which is the same custom `LinearProblem` implementation which was described in the [](/tours/nonlinear_problems/plasticity/plasticity.md) demo. The latter works in particular with the iteration correction field `du` as the main unknown and solves the Newton system:
 
 $$[\mathbf{K}_\text{tang}]\{\delta U\} = -\{\text{Res}\}$$
 
 ```{code-cell} ipython3
-
 tangent_problem = CustomLinearProblem(
     tangent_form,
     -Residual,
@@ -414,7 +427,6 @@ u.vector.set(0.0)
 results = np.zeros((Nincr + 1, 2))
 
 for i, dti in enumerate(np.diff(time_steps)):
-
     state = (sig, eps_old, epsv_old, epsv, dti)
     with Timer("Nonlinear solve"):
         niter, converged = newton.solve(u, *state)
@@ -427,7 +439,7 @@ for i, dti in enumerate(np.diff(time_steps)):
     # Post-processing
     epsv_values = epsv.x.array.reshape(ngauss, -1)
     sig_values = sig.x.array.reshape(ngauss, -1)
-    
+
     results[i + 1, 0] = np.mean(epsv_values[:, 1])
     results[i + 1, 1] = np.mean(sig_values[:, 1])
 ```
@@ -436,9 +448,10 @@ for i, dti in enumerate(np.diff(time_steps)):
 
 We check that the solution we obtain corresponds to the exact solution of the recovery test given by:
 
-$$\begin{equation}
-\sigma_{yy}(t) = E_0\varepsilon_r + E_1\varepsilon_r \exp(-t/\tau)
-\end{equation}$$
+$$\begin{align*}
+\epsv_{yy}(t) &= \varpeislon_r(1- \exp(-t/\tau))\\
+\sigma_{yy}(t) &= E_0\varepsilon_r + E_1\varepsilon_r \exp(-t/\tau)
+\end{align*}$$
 
 ```{code-cell} ipython3
 E0 = mat_prop["YoungModulus"]
@@ -447,16 +460,18 @@ tau = mat_prop["tau"]
 E1 = eta / tau
 
 plt.figure()
-plt.plot(time_steps, epsr * (1-np.exp(-time_steps / tau)), "-C3", label="Exact")
+plt.plot(time_steps, epsr * (1 - np.exp(-time_steps / tau)), "-C3", label="Exact")
 plt.plot(time_steps, results[:, 0], "ok", label="FEM")
 plt.xlabel("Time $t$")
 plt.ylabel(r"Viscous strain $\varepsilon_{yy}^\text{v}$")
-plt.ylim(0, 1.2*epsr)
+plt.ylim(0, 1.2 * epsr)
 plt.legend()
 plt.show()
 
 plt.figure()
-plt.plot(time_steps, E0 * epsr + E1 * epsr * np.exp(-time_steps / tau), "-C3", label="Exact")
+plt.plot(
+    time_steps, E0 * epsr + E1 * epsr * np.exp(-time_steps / tau), "-C3", label="Exact"
+)
 plt.plot(time_steps, results[:, 1], "ok", label="FEM")
 plt.xlabel("Time $t$")
 plt.ylabel(r"Stress $\sigma_{yy}$ [MPa]")
@@ -464,12 +479,11 @@ plt.legend()
 plt.show()
 ```
 
-The FE solution matches indeed the exact solution as seen babove. The instantaneous stress being $\sigma_{yy}(t=0^+) = (E_0+E_1)\varepsilon_r = 90$ MPa whereas the long-term stress is being given by $\sigma_{yy}(t=\infty) = E_0\varepsilon_r = 70$ MPa.
-
+The FE solution matches indeed the exact solution as seen above. The instantaneous stress is $\sigma_{yy}(t=0^+) = (E_0+E_1)\varepsilon_r = 90$ MPa whereas the long-term stress is given by $\sigma_{yy}(t=\infty) = E_0\varepsilon_r = 70$ MPa.
 
 Finally, we look at the timings to check that the call to the constitutive equation is negligible compared to the time spent solving global linear systems when problems are sufficiently large.
 
-```{code-cell}
+```{code-cell} ipython3
 from dolfinx import common
 
 common.list_timings(MPI.COMM_WORLD, [common.TimingType.wall])

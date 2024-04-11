@@ -435,24 +435,23 @@ document.write(`
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For more details about JAX-based implementation of constitutive equations, we refer to <a class="github reference external" href="https://github.com/a-latyshev/dolfinx-external-operator">a-latyshev/dolfinx-external-operator</a>.</p>
+<p>For more details about JAX-based implementation of constitutive equations, we refer to Andrey’s Latyshev work at <a class="github reference external" href="https://github.com/a-latyshev/dolfinx-external-operator">a-latyshev/dolfinx-external-operator</a>.</p>
 </div>
 <section id="nonlinear-constitutive-models-in-fenics">
 <h2>Nonlinear constitutive models in FEniCS<a class="headerlink" href="#nonlinear-constitutive-models-in-fenics" title="Link to this heading">#</a></h2>
-<p>Although this tour considers <strong>linear</strong> viscoelasticity, we will treat treat the problem as involving a general nonlinear constitutive behavior. The latter will be implemented explicitly using Python, mimicking a generic black-box material library. In this case, the stress <span class="math notranslate nohighlight">\(\bsig\)</span> is evaluated as a nonlinear function, which is a function of the total strain <span class="math notranslate nohighlight">\(\beps\)</span>, yielding the following nonlinear variational problem:</p>
+<p>Although this tour considers <strong>linear</strong> viscoelasticity, we will treat the problem as involving a general nonlinear constitutive behavior. The latter will be implemented explicitly using Python, mimicking a generic black-box material library. In this case, the stress <span class="math notranslate nohighlight">\(\bsig\)</span> is evaluated as a nonlinear function of the total strain <span class="math notranslate nohighlight">\(\beps\)</span>, yielding the following nonlinear variational problem:</p>
 <div class="math notranslate nohighlight" id="equation-nonlinear-variational-model">
 <span class="eqno">(26)<a class="headerlink" href="#equation-nonlinear-variational-model" title="Link to this equation">#</a></span>\[\int_{\Omega} \bsig(\beps):\nabla^s \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_{\partial \Omega_\text{N}} \bT\cdot\bv \dS \quad \forall\bv \in V\]</div>
-<p>Viscoelasticity involves solving for the time evolution of internal viscous strains <span class="math notranslate nohighlight">\(\bepsv\)</span>. The constitutive relation is therefore implicitly defined via the evolution of this internal state variable. We collect in the set <span class="math notranslate nohighlight">\(\mathcal{S}_n\)</span> the state of the material at time <span class="math notranslate nohighlight">\(t_n\)</span>, here we have <span class="math notranslate nohighlight">\(\mathcal{S}_n = \{\bepsv_n\}\)</span>. The evaluation of the constitutive equation will be strain-driven in the sense that we provide a total strain increment <span class="math notranslate nohighlight">\(\Delta \beps\)</span> and the previous state at time <span class="math notranslate nohighlight">\(t_n\)</span> and the role of the constitutive model is to provide the new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and the new state <span class="math notranslate nohighlight">\(\mathcal{S}_{n+1}\)</span>:</p>
+<p>Viscoelasticity involves solving for the time evolution of internal viscous strains <span class="math notranslate nohighlight">\(\bepsv\)</span>. The constitutive relation is therefore implicitly defined via the evolution of this internal state variable. We collect in the set <span class="math notranslate nohighlight">\(\mathcal{S}_n\)</span> the state of the material at time <span class="math notranslate nohighlight">\(t_n\)</span>, here we have <span class="math notranslate nohighlight">\(\mathcal{S}_n = \{\bepsv_n\}\)</span>. The evaluation of the constitutive equation will be strain-driven in the sense that we provide a total strain increment <span class="math notranslate nohighlight">\(\Delta \beps\)</span> and the previous state at time <span class="math notranslate nohighlight">\(t_n\)</span> and the role of the constitutive model is to compute the new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and the new state <span class="math notranslate nohighlight">\(\mathcal{S}_{n+1}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-constitutive-black-box">
 <span class="eqno">(27)<a class="headerlink" href="#equation-constitutive-black-box" title="Link to this equation">#</a></span>\[\beps=\beps_n+\Delta\beps, \mathcal{S}_n \longrightarrow \boxed{\text{CONSTITUTIVE RELATION}}\longrightarrow \bsig_{n+1}, \mathcal{S}_{n+1}\]</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>In the legacy FEniCS tour on <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/viscoelasticity/linear_viscoelasticity.html">Linear Viscoelasticity</a>, we relied on a mixed formulation discretizing both the displacement and viscous strains at the structure level which was solved in a monolithic fashion. In the present approach, we voluntarily depart from this choice to focus on the implementation of a user-defined constitutive model.</p>
 </div>
-<p>The present approach will involve looping over all quadrature points to evaluate the constitutive behavior locally. This approach is obviously computationally inefficient due to the Python loop.</p>
 <section id="automation-and-high-performance-computation-using-jax">
 <h3>Automation and high-performance computation using JAX<a class="headerlink" href="#automation-and-high-performance-computation-using-jax" title="Link to this heading">#</a></h3>
-<p>To solve this issue, we will rely on the <a class="reference external" href="https://jax.readthedocs.io">JAX library</a>.</p>
+<p>The present approach will involve looping over all quadrature points to evaluate the constitutive behavior locally. This approach is obviously computationally inefficient due to the Python loop. To solve this issue, we will rely on the <a class="reference external" href="https://jax.readthedocs.io">JAX library</a>.</p>
 <p><img alt="" src="https://jax.readthedocs.io/en/latest/_static/jax_logo_250px.png" /></p>
 <p>JAX is a Python library for accelerated (GPU) array computation and program transformation, designed for high-performance numerical computing and large-scale machine learning. Its key features of interest here involve:</p>
 <ul class="simple">
@@ -465,10 +464,10 @@ document.write(`
 </section>
 <section id="linear-viscoelastic-behavior">
 <h2>Linear viscoelastic behavior<a class="headerlink" href="#linear-viscoelastic-behavior" title="Link to this heading">#</a></h2>
-<p>In this numerical tour, we will a simple linear viscoelastic behavior, the Standard Linear Solid model, which encompasses the case of a Maxwell or a Kelvin-Voigt model. The formulation can also be quite easily extended to a generalized Maxwell model.</p>
+<p>In this numerical tour, we consider a simple linear viscoelastic behavior, the Standard Linear Solid model, which encompasses the case of a Maxwell and a Kelvin-Voigt model. The formulation can also be quite easily extended to a generalized Maxwell model.</p>
 <section id="d-rheological-formulation">
 <h3>1D rheological formulation<a class="headerlink" href="#d-rheological-formulation" title="Link to this heading">#</a></h3>
-<p>We consider a 1D Linear Standard Solid model consisting of a spring of stiffness <span class="math notranslate nohighlight">\(E_0\)</span> in parallel to a Maxwell arm (spring of stiffness <span class="math notranslate nohighlight">\(E_1\)</span> in series with a dashpot of viscosity <span class="math notranslate nohighlight">\(\eta_1\)</span>).</p>
+<p>The Linear Standard Solid model consists of a spring of stiffness <span class="math notranslate nohighlight">\(E_0\)</span> in parallel to a Maxwell arm (spring of stiffness <span class="math notranslate nohighlight">\(E_1\)</span> in series with a dashpot of viscosity <span class="math notranslate nohighlight">\(\eta_1\)</span>).</p>
 <a class="reference internal image-reference" href="../../../_images/1D_rheological_model.png"><img alt="../../../_images/1D_rheological_model.png" class="align-center" src="../../../_images/1D_rheological_model.png" style="width: 300px;" /></a>
 <p>The uniaxial stress for this rheological model can be decomposed as the sum of a reversible and an irreversible stress:</p>
 <div class="math notranslate nohighlight">
@@ -476,7 +475,7 @@ document.write(`
 <p>whereas the evolution equation for the viscous internal strain is given by:</p>
 <div class="math notranslate nohighlight">
 \[\dot{\varepsilon}^\text{v} = \dfrac{E_1}{\eta_1}(\varepsilon-\epsv)\]</div>
-<p>Introducing <span class="math notranslate nohighlight">\(\tau=\eta_1/E_1\)</span> the characteristic relaxation time, the viscous strain evolution equation can be equivalently written as:</p>
+<p>Introducing <span class="math notranslate nohighlight">\(\tau=\eta_1/E_1\)</span> the characteristic relaxation time, the viscous strain evolution equation can be written as:</p>
 <div class="math notranslate nohighlight" id="equation-viscous-strain-evolution">
 <span class="eqno">(28)<a class="headerlink" href="#equation-viscous-strain-evolution" title="Link to this equation">#</a></span>\[\dot{\varepsilon}^\text{v} + \dfrac{1}{\tau}\epsv = \dfrac{1}{\tau}\varepsilon\]</div>
 <p>or, equivalently, in terms of the viscous stress <span class="math notranslate nohighlight">\(\sigv = E_1(\varepsilon-\epsv)\)</span>:</p>
@@ -537,11 +536,16 @@ document.write(`
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 
-<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># use double-precision</span>
 
 <span class="n">length</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">height</span><span class="p">)),</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span> <span class="n">ghost_mode</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">GhostMode</span><span class="o">.</span><span class="n">none</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span>
+    <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span>
+    <span class="p">((</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">height</span><span class="p">)),</span>
+    <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span>
+    <span class="n">ghost_mode</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">GhostMode</span><span class="o">.</span><span class="n">none</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">gdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span>
 
 <span class="n">deg_u</span> <span class="o">=</span> <span class="mi">2</span>
@@ -564,15 +568,21 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V_ux</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
 <span class="n">V_uy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
-<span class="n">left_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">V_ux</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">))</span>
-<span class="n">bot_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">V_uy</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">))</span>
-<span class="n">top_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">V_uy</span><span class="p">),</span>  <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">height</span><span class="p">))</span>
+<span class="n">left_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">V_ux</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">bot_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">V_uy</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">top_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">V_uy</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">height</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">uD_x0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_ux</span><span class="p">)</span>
 <span class="n">uD_y0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_uy</span><span class="p">)</span>
 <span class="n">uD_y</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_uy</span><span class="p">)</span>
 <span class="n">epsr</span> <span class="o">=</span> <span class="mf">1e-3</span>
-<span class="n">uD_y</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsr</span><span class="o">*</span><span class="n">height</span><span class="p">)</span>
+<span class="n">uD_y</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsr</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
 <span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">uD_x0</span><span class="p">,</span> <span class="n">left_dofs</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
     <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">uD_y0</span><span class="p">,</span> <span class="n">bot_dofs</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
@@ -589,7 +599,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">deg_quad</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># quadrature degree for internal state variable representation</span>
-<span class="n">vdim</span> <span class="o">=</span> <span class="mi">3</span>      <span class="c1"># dimension of the vectorial representation of tensors</span>
+<span class="n">vdim</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># dimension of the vectorial representation of tensors</span>
 <span class="n">W0e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FiniteElement</span><span class="p">(</span>
     <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
     <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
@@ -636,6 +646,7 @@ document.write(`
     <span class="n">e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 
+
 <span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span>
     <span class="s2">&quot;dx&quot;</span><span class="p">,</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
@@ -660,6 +671,7 @@ document.write(`
 
 <span class="n">eps_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">eps_Mandel</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">quadrature_points</span><span class="p">)</span>
 
+
 <span class="k">def</span> <span class="nf">eval_at_quadrature_points</span><span class="p">(</span><span class="n">expression</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">expression</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngauss</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -681,21 +693,17 @@ document.write(`
     <span class="n">nu</span> <span class="o">=</span> <span class="n">mat_prop</span><span class="p">[</span><span class="s2">&quot;PoissonRatio&quot;</span><span class="p">]</span>
     <span class="n">eta</span> <span class="o">=</span> <span class="n">mat_prop</span><span class="p">[</span><span class="s2">&quot;eta&quot;</span><span class="p">]</span>
     <span class="n">tau</span> <span class="o">=</span> <span class="n">mat_prop</span><span class="p">[</span><span class="s2">&quot;tau&quot;</span><span class="p">]</span>
-    <span class="n">E1</span> <span class="o">=</span> <span class="n">eta</span><span class="o">/</span><span class="n">tau</span>
-    
-    <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-      <span class="p">[</span> 
-        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="p">[</span><span class="n">nu</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">nu</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
-      <span class="p">]</span>
-    <span class="p">)</span>
-    <span class="n">C0</span> <span class="o">=</span> <span class="n">E0</span><span class="o">*</span><span class="n">c</span>
-    <span class="n">C1</span> <span class="o">=</span> <span class="n">E1</span><span class="o">*</span><span class="n">c</span>
+    <span class="n">E1</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">/</span> <span class="n">tau</span>
 
-    <span class="n">epsv</span> <span class="o">=</span> <span class="n">eps</span><span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span><span class="o">/</span><span class="n">tau</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">epsv_old</span> <span class="o">-</span><span class="n">eps_old</span><span class="p">)</span><span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="n">tau</span><span class="p">)</span> <span class="o">*</span><span class="n">deps</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">nu</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]])</span>
+    <span class="n">C0</span> <span class="o">=</span> <span class="n">E0</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="n">C1</span> <span class="o">=</span> <span class="n">E1</span> <span class="o">*</span> <span class="n">c</span>
+
+    <span class="n">epsv</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">eps</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">epsv_old</span> <span class="o">-</span> <span class="n">eps_old</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dt</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)</span> <span class="o">*</span> <span class="n">deps</span>
+    <span class="p">)</span>
     <span class="n">sig</span> <span class="o">=</span> <span class="n">C0</span> <span class="o">@</span> <span class="n">eps</span> <span class="o">+</span> <span class="n">C1</span> <span class="o">@</span> <span class="p">(</span><span class="n">eps</span> <span class="o">-</span> <span class="n">epsv</span><span class="p">)</span>
-    
+
     <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">epsv</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">sig</span><span class="p">,</span> <span class="n">state</span>
 </pre></div>
@@ -718,7 +726,7 @@ document.write(`
 </section>
 <section id="jit-and-automatic-vectorization">
 <h4>JIT and automatic vectorization<a class="headerlink" href="#jit-and-automatic-vectorization" title="Link to this heading">#</a></h4>
-<p>Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> function in vectorized form to work on a batch of strain-like quantities of shape <code class="docutils literal notranslate"><span class="pre">(3,num_gauss)</span></code> where <code class="docutils literal notranslate"><span class="pre">num_gauss</span></code> is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to transform a function into an efficient vectorized automatically using <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code>. Applying this vectorization to the <code class="docutils literal notranslate"><span class="pre">tangent_operator_and_state</span></code> function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (<code class="docutils literal notranslate"><span class="pre">dt</span></code> is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.</p>
+<p>Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> function in vectorized form to work on a batch of strain-like quantities of shape <code class="docutils literal notranslate"><span class="pre">(3,num_gauss)</span></code> where <code class="docutils literal notranslate"><span class="pre">num_gauss</span></code> is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to automatically transform a function into an efficient vectorized form using <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code>. Applying this vectorization to the <code class="docutils literal notranslate"><span class="pre">tangent_operator_and_state</span></code> function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (<code class="docutils literal notranslate"><span class="pre">dt</span></code> is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">batched_constitutive_update</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span>
@@ -741,7 +749,9 @@ document.write(`
         <span class="n">deps_values</span> <span class="o">=</span> <span class="n">eps_values</span> <span class="o">-</span> <span class="n">eps_old_values</span>
         <span class="n">epsv_old_values</span> <span class="o">=</span> <span class="n">epsv_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngauss</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-        <span class="n">Ct_values</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">batched_constitutive_update</span><span class="p">(</span><span class="n">deps_values</span><span class="p">,</span> <span class="n">eps_old_values</span><span class="p">,</span> <span class="n">epsv_old_values</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+        <span class="n">Ct_values</span><span class="p">,</span> <span class="n">state</span> <span class="o">=</span> <span class="n">batched_constitutive_update</span><span class="p">(</span>
+            <span class="n">deps_values</span><span class="p">,</span> <span class="n">eps_old_values</span><span class="p">,</span> <span class="n">epsv_old_values</span><span class="p">,</span> <span class="n">dt</span>
+        <span class="p">)</span>
         <span class="n">sig_values</span><span class="p">,</span> <span class="n">epsv_new_values</span> <span class="o">=</span> <span class="n">state</span>
 
         <span class="n">sig</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">sig_values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
@@ -755,7 +765,7 @@ document.write(`
 </section>
 <section id="custom-newton-solver">
 <h3>Custom Newton solver<a class="headerlink" href="#custom-newton-solver" title="Link to this heading">#</a></h3>
-<p>We now define a custom Newton solver defined in the <a class="reference download internal" download="" href="../../../_downloads/1d9925fc2f3fd576a7ea5981d4bcdd4b/solvers.py"><code class="xref download docutils literal notranslate"><span class="pre">solvers.py</span></code></a> module. The latter first relies on a <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> which is the same custom <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> implementation which was described in the <a class="reference internal" href="../plasticity/plasticity.html"><span class="std std-doc">Elasto-plastic analysis of a 2D von Mises material </span></a> demo. The latter works in particular with the iteration correction field <code class="docutils literal notranslate"><span class="pre">du</span></code> as the main unknown and solves the Newton system:</p>
+<p>We now define a custom Newton solver defined in the <a class="reference download internal" download="" href="../../../_downloads/1d9925fc2f3fd576a7ea5981d4bcdd4b/solvers.py"><code class="xref download docutils literal notranslate"><span class="pre">solvers.py</span></code></a> module. The solver first relies on a <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> which is the same custom <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> implementation which was described in the <a class="reference internal" href="../plasticity/plasticity.html"><span class="std std-doc">Elasto-plastic analysis of a 2D von Mises material </span></a> demo. The latter works in particular with the iteration correction field <code class="docutils literal notranslate"><span class="pre">du</span></code> as the main unknown and solves the Newton system:</p>
 <div class="math notranslate nohighlight">
 \[[\mathbf{K}_\text{tang}]\{\delta U\} = -\{\text{Res}\}\]</div>
 <div class="cell docutils container">
@@ -802,7 +812,6 @@ document.write(`
 <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">dti</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">time_steps</span><span class="p">)):</span>
-
     <span class="n">state</span> <span class="o">=</span> <span class="p">(</span><span class="n">sig</span><span class="p">,</span> <span class="n">eps_old</span><span class="p">,</span> <span class="n">epsv_old</span><span class="p">,</span> <span class="n">epsv</span><span class="p">,</span> <span class="n">dti</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">Timer</span><span class="p">(</span><span class="s2">&quot;Nonlinear solve&quot;</span><span class="p">):</span>
         <span class="n">niter</span><span class="p">,</span> <span class="n">converged</span> <span class="o">=</span> <span class="n">newton</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="o">*</span><span class="n">state</span><span class="p">)</span>
@@ -815,7 +824,7 @@ document.write(`
     <span class="c1"># Post-processing</span>
     <span class="n">epsv_values</span> <span class="o">=</span> <span class="n">epsv</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngauss</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">sig_values</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngauss</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-    
+
     <span class="n">results</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">epsv_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
     <span class="n">results</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sig_values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 </pre></div>
@@ -833,9 +842,10 @@ document.write(`
 <h2>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
 <p>We check that the solution we obtain corresponds to the exact solution of the recovery test given by:</p>
 <div class="math notranslate nohighlight">
-\[\begin{equation}
-\sigma_{yy}(t) = E_0\varepsilon_r + E_1\varepsilon_r \exp(-t/\tau)
-\end{equation}\]</div>
+\[\begin{split}\begin{align*}
+\epsv_{yy}(t) &amp;= \varpeislon_r(1- \exp(-t/\tau))\\
+\sigma_{yy}(t) &amp;= E_0\varepsilon_r + E_1\varepsilon_r \exp(-t/\tau)
+\end{align*}\end{split}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E0</span> <span class="o">=</span> <span class="n">mat_prop</span><span class="p">[</span><span class="s2">&quot;YoungModulus&quot;</span><span class="p">]</span>
@@ -844,16 +854,18 @@ document.write(`
 <span class="n">E1</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">/</span> <span class="n">tau</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">epsr</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">time_steps</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)),</span> <span class="s2">&quot;-C3&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">epsr</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">time_steps</span> <span class="o">/</span> <span class="n">tau</span><span class="p">)),</span> <span class="s2">&quot;-C3&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">results</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FEM&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time $t$&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Viscous strain $\varepsilon_</span><span class="si">{yy}</span><span class="s2">^\text</span><span class="si">{v}</span><span class="s2">$&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="o">*</span><span class="n">epsr</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span> <span class="o">*</span> <span class="n">epsr</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">E0</span> <span class="o">*</span> <span class="n">epsr</span> <span class="o">+</span> <span class="n">E1</span> <span class="o">*</span> <span class="n">epsr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">time_steps</span> <span class="o">/</span> <span class="n">tau</span><span class="p">),</span> <span class="s2">&quot;-C3&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">time_steps</span><span class="p">,</span> <span class="n">E0</span> <span class="o">*</span> <span class="n">epsr</span> <span class="o">+</span> <span class="n">E1</span> <span class="o">*</span> <span class="n">epsr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">time_steps</span> <span class="o">/</span> <span class="n">tau</span><span class="p">),</span> <span class="s2">&quot;-C3&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Exact&quot;</span>
+<span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time_steps</span><span class="p">,</span> <span class="n">results</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FEM&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time $t$&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Stress $\sigma_</span><span class="si">{yy}</span><span class="s2">$ [MPa]&quot;</span><span class="p">)</span>
@@ -867,7 +879,7 @@ document.write(`
 <img alt="../../../_images/62a7c2642c2016c5ced3245e818bb828c9288a3216af047b86ae51a891f5e339.png" src="../../../_images/62a7c2642c2016c5ced3245e818bb828c9288a3216af047b86ae51a891f5e339.png" />
 </div>
 </div>
-<p>The FE solution matches indeed the exact solution as seen babove. The instantaneous stress being <span class="math notranslate nohighlight">\(\sigma_{yy}(t=0^+) = (E_0+E_1)\varepsilon_r = 90\)</span> MPa whereas the long-term stress is being given by <span class="math notranslate nohighlight">\(\sigma_{yy}(t=\infty) = E_0\varepsilon_r = 70\)</span> MPa.</p>
+<p>The FE solution matches indeed the exact solution as seen above. The instantaneous stress is <span class="math notranslate nohighlight">\(\sigma_{yy}(t=0^+) = (E_0+E_1)\varepsilon_r = 90\)</span> MPa whereas the long-term stress is given by <span class="math notranslate nohighlight">\(\sigma_{yy}(t=\infty) = E_0\varepsilon_r = 70\)</span> MPa.</p>
 <p>Finally, we look at the timings to check that the call to the constitutive equation is negligible compared to the time spent solving global linear systems when problems are sufficiently large.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -880,23 +892,26 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[MPI_MAX] Summary of timings                                                |  reps  wall avg  wall tot
 -------------------------------------------------------------------------------------------------------
-Build dofmap data                                                           |     5  0.000145  0.000724
-Build sparsity                                                              |     1  0.000203  0.000203
-Compute dof reordering map                                                  |     5  0.000008  0.000042
-Compute entities of dim = 1                                                 |     1  0.000627  0.000627
-Compute local part of mesh dual graph                                       |     1  0.000348  0.000348
-Compute local-to-local map                                                  |     1  0.000047  0.000047
-Compute-local-to-global links for global/local adjacency list               |     1  0.000008  0.000008
-Constitutive update                                                         |   149  0.001227  0.182759
-Distribute row-wise data (scalable)                                         |     1  0.000050  0.000050
-GPS: create_level_structure                                                 |     2  0.000009  0.000019
-Gibbs-Poole-Stockmeyer ordering                                             |     1  0.000076  0.000076
-Init dofmap from element dofmap                                             |     5  0.000032  0.000159
-Nonlinear solve                                                             |    50  0.045377  2.268853
-SparsityPattern::finalize                                                   |     1  0.000268  0.000268
-Topology: create                                                            |     1  0.001228  0.001228
-Topology: determine shared index ownership                                  |     1  0.000689  0.000689
-Topology: determine vertex ownership groups (owned, undetermined, unowned)  |     1  0.000034  0.000034
+Build dofmap data                                                           |     5  0.000195  0.000973
+Build sparsity                                                              |     1  0.000227  0.000227
+Compute dof reordering map                                                  |     5  0.000011  0.000055
+Compute entities of dim = 1                                                 |     1  0.000883  0.000883
+Compute local part of mesh dual graph                                       |     1  0.000784  0.000784
+Compute local-to-local map                                                  |     1  0.000100  0.000100
+Compute-local-to-global links for global/local adjacency list               |     1  0.000015  0.000015
+Constitutive update                                            
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             |   149  0.001957  0.291532
+Distribute row-wise data (scalable)                                         |     1  0.000246  0.000246
+GPS: create_level_structure                                                 |     2  0.000019  0.000039
+Gibbs-Poole-Stockmeyer ordering                                             |     1  0.000159  0.000159
+Init dofmap from element dofmap                                             |     5  0.000042  0.000209
+Nonlinear solve                                                             |    50  0.047246  2.362288
+SparsityPattern::finalize                                                   |     1  0.000285  0.000285
+Topology: create                                                            |     1  0.003114  0.003114
+Topology: determine shared index ownership                                  |     1  0.001745  0.001745
+Topology: determine vertex ownership groups (owned, undetermined, unowned)  |     1  0.000244  0.000244
 </pre></div>
 </div>
 </div>
