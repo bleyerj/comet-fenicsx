@@ -9,6 +9,9 @@ kernelspec:
   display_name: Python 3
   language: python
   name: python3
+language_info:
+  name: python3
+  pygments_lexer: ipython3
 ---
 
 # Generating a shell model with the `Gmsh` Python API {far}`star`
