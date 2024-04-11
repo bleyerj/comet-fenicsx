@@ -1,6 +1,7 @@
 {
     "python.terminal.executeInFileDir": false,
     "command-runner.commands": {
+        
         "quick preview Jupyter book": "jupytext --update --to notebook */*.md && jupyter-book build . && firefox _build/html/index.html &",
         "process, build and preview Jupyter book": "python3 scripts/process_sources.py && jupyter-book build . && firefox _build/html/index.html &",
         "execute notebooks": "jupytext --to notebook --execute */*.md",

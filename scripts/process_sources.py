@@ -46,8 +46,9 @@ def convert_and_zip(directory, source_zip=None):
         subprocess.run(
             [
                 "jupytext",
-                "--to",
-                "myst",
+                "--sync",
+                # "--to",
+                # "myst",
                 "--pipe",
                 "black",
                 os.path.join(directory, nb_file_name),
