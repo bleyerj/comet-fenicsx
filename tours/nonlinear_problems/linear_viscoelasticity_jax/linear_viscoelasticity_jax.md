@@ -449,7 +449,7 @@ for i, dti in enumerate(np.diff(time_steps)):
 We check that the solution we obtain corresponds to the exact solution of the recovery test given by:
 
 $$\begin{align*}
-\epsv_{yy}(t) &= \varpeislon_r(1- \exp(-t/\tau))\\
+\epsv_{yy}(t) &= \varepsilon_r(1- \exp(-t/\tau))\\
 \sigma_{yy}(t) &= E_0\varepsilon_r + E_1\varepsilon_r \exp(-t/\tau)
 \end{align*}$$
 
