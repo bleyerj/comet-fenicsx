@@ -18,6 +18,7 @@ $\,$
 These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software `FEniCSx`, http://fenicsproject.org.
 
 This book is organized in the following different parts:
+
 ### Introduction
 This part contains a set of short numerical tours to get introduced to `FEniCSx` via basic examples:
   - a [linear elasticity problem](intro/linear_elasticity/linear_elasticity.md)
@@ -88,3 +89,8 @@ $\,$
 :width: 600px
 :align: center
 ```
+
+### Other contributors
+
+- Andrey Latyshev (University of Luxembourg, Sorbonne Université, andrey.latyshev@uni.lu)
+- Corrado Maurini (Sorbonne Université, corrado.maurini@sorbonne-universite.fr)
