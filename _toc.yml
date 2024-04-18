@@ -21,6 +21,14 @@ parts:
   - file: tours/dynamics/contents
     sections:
     - file: tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.md
+  - file: tours/nonlinear_problems/contents
+    sections:
+    - file: tours/nonlinear_problems/plasticity/plasticity.md
+    - file: tours/nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.md
+    - file: tours/nonlinear_problems/bound_constrained/bound_constrained.md
+  - file: tours/eigenvalue_problems/contents
+    sections:
+    - file: tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.md
   - file: tours/plates/contents
     sections:
     - file: tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.md
@@ -28,11 +36,6 @@ parts:
     sections:
     - file: tours/shells/linear_shell/linear_shell.md
     - file: tours/shells/I_beam_gmsh/I_beam_gmsh.md
-  - file: tours/nonlinear_problems/contents
-    sections:
-    - file: tours/nonlinear_problems/plasticity/plasticity.md
-    - file: tours/nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.md
-    - file: tours/nonlinear_problems/bound_constrained/bound_constrained.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets/mark_facets.md
