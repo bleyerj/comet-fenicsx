@@ -102,7 +102,7 @@ A given equilibrium solution $\lambda^c, \bu^c=\bu(\lambda^c)$ is a bifurcation 
 
 ## Linear buckling analysis
 
-When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain $\be(\bu^c)$ can be replaced by the linearized strain $\beps(\bu^c)$ in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter $\lambda$, the small displacement solution also depends linearly on it. We therefore have $\bu^c= \lambda^c\bu_0$ and the bifurcation condition {cite:p}`bifurcation-equilibrium` becomes:
+When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain $\be(\bu^c)$ can be replaced by the linearized strain $\beps(\bu^c)$ in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter $\lambda$, the small displacement solution also depends linearly on it. We therefore have $\bu^c= \lambda^c\bu_0$ and the bifurcation condition {eq}`bifurcation-equilibrium` becomes:
 
 $$
 \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
@@ -380,7 +380,7 @@ u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry)
 # Plot the first 3 eigenmodes
 pl = pyvista.Plotter(shape=(2, 3))
 for i in range(6):
-    pl.subplot(i//3, i%3)
+    pl.subplot(i // 3, i % 3)
     eigenmode = f"eigenmode_{i:02}"
     pl.add_text(
         f"Eigenmode {i+1}",
