@@ -12,7 +12,11 @@ execute:
 
   # Set timeout for any example to 20 minutes
   timeout: 1800
-  
+
+# Google analytics
+html: 
+  google_analytics_id: G-2WWYPZ9TLF
+
 # Define the name of the latex output file for PDF builds
 latex:
   latex_documents:
