@@ -465,7 +465,7 @@ document.write(`
 <p>where <span class="math notranslate nohighlight">\(h\)</span> is the shell thickness</p>
 <p>The shell kinematics will be described by its mid-surface displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the infinitesimal rotation vector <span class="math notranslate nohighlight">\(\btheta\)</span> of its director. The new normal director is <span class="math notranslate nohighlight">\(\ba_3 = \bR(\btheta)\be_3 = \be_3+\btheta\times\be_3\)</span> with <span class="math notranslate nohighlight">\(\bR\)</span> the infinitesimal rotation matrix associated with <span class="math notranslate nohighlight">\(\btheta\)</span>. Neglecting any thickness change in the shell kinematics, the material point <span class="math notranslate nohighlight">\(\bx\)</span> in the deformed configuration associated with <span class="math notranslate nohighlight">\(\bX\)</span> will then be given by:</p>
 <div class="math notranslate nohighlight" id="equation-kinematics">
-<span class="eqno">(29)<a class="headerlink" href="#equation-kinematics" title="Link to this equation">#</a></span>\[\bx = \bxi + \bu(\bxi) + \zeta\ba_3 = \bxi + \bu(\bxi) + \zeta(\be_3+\btheta(\bxi)\times\be_3)\]</div>
+<span class="eqno">(30)<a class="headerlink" href="#equation-kinematics" title="Link to this equation">#</a></span>\[\bx = \bxi + \bu(\bxi) + \zeta\ba_3 = \bxi + \bu(\bxi) + \zeta(\be_3+\btheta(\bxi)\times\be_3)\]</div>
 <p>Differentiating with respect to <span class="math notranslate nohighlight">\(\bX\)</span>, we get:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -476,7 +476,7 @@ d\bx &amp;= d\bxi + \nabla\bu\cdot d\bxi + \zeta(\nabla\btheta\cdot d\bxi)\times
 \end{split}\]</div>
 <p>where we retained only up to first order terms in <span class="math notranslate nohighlight">\(\bu,\btheta\)</span>. The 3D deformation gradient is then given by:</p>
 <div class="math notranslate nohighlight" id="equation-defo-gradient">
-<span class="eqno">(30)<a class="headerlink" href="#equation-defo-gradient" title="Link to this equation">#</a></span>\[\bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3\]</div>
+<span class="eqno">(31)<a class="headerlink" href="#equation-defo-gradient" title="Link to this equation">#</a></span>\[\bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3\]</div>
 <p>where we introduced the in-plane gradient  (i.e. the gradient with respect to the shell local tangent plane <span class="math notranslate nohighlight">\((\be_1,\be_2)\)</span>) as follows <span class="math notranslate nohighlight">\(\tgrad\bv = \partial_1\bv \otimes \be_1+ \partial_2\bv \otimes \be_2\)</span>. More generally, we will use the following notation <span class="math notranslate nohighlight">\(\utilde{\bv} = v_1\be_1+v_2\be_2\)</span> to denote the in-plane part of <span class="math notranslate nohighlight">\(\bv\)</span>.</p>
 <p>The linearized strain tensor is then given by:</p>
 <div class="math notranslate nohighlight">
@@ -485,7 +485,7 @@ d\bx &amp;= d\bxi + \nabla\bu\cdot d\bxi + \zeta(\nabla\btheta\cdot d\bxi)\times
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(\sym\)</span> denotes the symmetrized part of a tensor and where we added an incompatible out-of-plane strain <span class="math notranslate nohighlight">\(\epsilon(\zeta)\)</span> which will enable to enforce a plane-stress constraint. The 3D strain can be split into its in-plane components <span class="math notranslate nohighlight">\(\utilde{\utilde{\bvarepsilon}}\)</span>, out-of-plane shear components <span class="math notranslate nohighlight">\(\bgamma = 2\utilde{\bvarepsilon}_3\)</span> and out-of-plane transverse components <span class="math notranslate nohighlight">\(\varepsilon_{33}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-strains">
-<span class="eqno">(31)<a class="headerlink" href="#equation-strains" title="Link to this equation">#</a></span>\[\begin{split}\uttilde{\bvarepsilon} &amp;= \sym\left(\tgrad\utilde{\bu} - \zeta \be_3\times \tgrad\btheta \right)= \boldsymbol{\epsilon} - \zeta \bchi \\
+<span class="eqno">(32)<a class="headerlink" href="#equation-strains" title="Link to this equation">#</a></span>\[\begin{split}\uttilde{\bvarepsilon} &amp;= \sym\left(\tgrad\utilde{\bu} - \zeta \be_3\times \tgrad\btheta \right)= \boldsymbol{\epsilon} - \zeta \bchi \\
 \bgamma &amp;= \tgrad u_3 - \be_3\times\btheta\\
 \varepsilon_{33} &amp;= \epsilon(\zeta)\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\bepsilon=\sym(\tgrad\utilde{\bu})\)</span> is the membrane strain and <span class="math notranslate nohighlight">\(\bchi = \sym(\be_3\times \tgrad\btheta)\)</span> the bending curvature. We see that we recover the definition of the curvature and shear strain of the Reissner-Mindlin plate model, see <a class="reference internal" href="../../../intro/plates/plates.html"><span class="std std-doc">Reissner-Mindlin plates</span></a> for more details.</p>
@@ -519,13 +519,13 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\psi_\text{ps}\)</span> is the elastic strain energy density for a 2D plane-stress material:</p>
 <div class="math notranslate nohighlight" id="equation-strain-energy">
-<span class="eqno">(32)<a class="headerlink" href="#equation-strain-energy" title="Link to this equation">#</a></span>\[\psi_\text{ps}(\uttilde{\bvarepsilon}) = \frac{1}{2}\left(\lambda_\text{ps} (\tr\uttilde{\bvarepsilon})^2 + 2\mu \uttilde{\bvarepsilon}:\uttilde{\bvarepsilon}\right)\]</div>
+<span class="eqno">(33)<a class="headerlink" href="#equation-strain-energy" title="Link to this equation">#</a></span>\[\psi_\text{ps}(\uttilde{\bvarepsilon}) = \frac{1}{2}\left(\lambda_\text{ps} (\tr\uttilde{\bvarepsilon})^2 + 2\mu \uttilde{\bvarepsilon}:\uttilde{\bvarepsilon}\right)\]</div>
 <p>with the plane-stress pseudo Lamé coefficient (see the <a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="std std-doc">Isotropic and orthotropic plane stress elasticity </span></a> tour):</p>
 <div class="math notranslate nohighlight">
 \[
 \lambda_\text{ps} = \dfrac{2\lambda\mu}{\lambda+2\mu}
 \]</div>
-<p>Taking the derivative of the strain energy <a class="reference internal" href="#equation-strain-energy">(32)</a> with respect to the 3D strain components gives the local 3D stress-strain constitutive relation:</p>
+<p>Taking the derivative of the strain energy <a class="reference internal" href="#equation-strain-energy">(33)</a> with respect to the 3D strain components gives the local 3D stress-strain constitutive relation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
@@ -538,9 +538,9 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 </section>
 <section id="stress-resultant-constitutive-equations">
 <h3>Stress-resultant constitutive equations<a class="headerlink" href="#stress-resultant-constitutive-equations" title="Link to this heading">#</a></h3>
-<p>Plugging relations <a class="reference internal" href="#equation-strains">(31)</a> into the previous 3D constitutive relation yields the following stress-resultant equations, assuming a homogeneous shell across the thickness:</p>
+<p>Plugging relations <a class="reference internal" href="#equation-strains">(32)</a> into the previous 3D constitutive relation yields the following stress-resultant equations, assuming a homogeneous shell across the thickness:</p>
 <div class="math notranslate nohighlight" id="equation-shells-constitutive-equations">
-<span class="eqno">(33)<a class="headerlink" href="#equation-shells-constitutive-equations" title="Link to this equation">#</a></span>\[\begin{split}\bN &amp;= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
+<span class="eqno">(34)<a class="headerlink" href="#equation-shells-constitutive-equations" title="Link to this equation">#</a></span>\[\begin{split}\bN &amp;= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
 \bM &amp;= \int_{-h/2}^{h/2} (-\zeta)\uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} (-\zeta)\mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = \dfrac{h^3}{12}\mathbb{C}_\text{ps}:\boldsymbol{\bchi}\\
 \bQ &amp;= \int_{-h/2}^{h/2} \utilde{\bsig}_3 d \zeta = \mu h \bgamma\end{split}\]</div>
 <div class="admonition note">
@@ -716,7 +716,7 @@ Topological dimension = 2
 </div>
 </div>
 </div>
-<p>We then extract gradient of the in-plane displacement <span class="math notranslate nohighlight">\(\tilde\nabla\tilde\bu\)</span> and define the membrane strain <span class="math notranslate nohighlight">\(\bepsilon\)</span> as its symmetric part. We similarly define the bending curvature <span class="math notranslate nohighlight">\(\bchi\)</span> and shear strain <span class="math notranslate nohighlight">\(\bgamma\)</span> as defined in <a class="reference internal" href="#equation-strains">(31)</a>. We also define directional derivatives in a <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> for later use.</p>
+<p>We then extract gradient of the in-plane displacement <span class="math notranslate nohighlight">\(\tilde\nabla\tilde\bu\)</span> and define the membrane strain <span class="math notranslate nohighlight">\(\bepsilon\)</span> as its symmetric part. We similarly define the bending curvature <span class="math notranslate nohighlight">\(\bchi\)</span> and shear strain <span class="math notranslate nohighlight">\(\bgamma\)</span> as defined in <a class="reference internal" href="#equation-strains">(32)</a>. We also define directional derivatives in a <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> for later use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_gu</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">P_plane</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">t_grad</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>
@@ -735,7 +735,7 @@ Topological dimension = 2
 </section>
 <section id="stress-measures">
 <h3>Stress measures<a class="headerlink" href="#stress-measures" title="Link to this heading">#</a></h3>
-<p>We now define the corresponding stress measure using the plane stress linear elastic constitutive laws <a class="reference internal" href="#equation-shells-constitutive-equations">(33)</a>.</p>
+<p>We now define the corresponding stress measure using the plane stress linear elastic constitutive laws <a class="reference internal" href="#equation-shells-constitutive-equations">(34)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plane_stress_elasticity</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
@@ -761,7 +761,7 @@ between planar shell facets which have a different normal vector. In our impleme
 \]</div>
 <p>We consider an additional drilling contribution to the work of deformation given by:</p>
 <div class="math notranslate nohighlight" id="equation-drilling-stabilization">
-<span class="eqno">(34)<a class="headerlink" href="#equation-drilling-stabilization" title="Link to this equation">#</a></span>\[w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2\]</div>
+<span class="eqno">(35)<a class="headerlink" href="#equation-drilling-stabilization" title="Link to this equation">#</a></span>\[w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2\]</div>
 <p>where the drilling stiffness <span class="math notranslate nohighlight">\(\dfrac{E h^3}{h_\text{cell}^2}\)</span> is the usually recommended value in the literature with <span class="math notranslate nohighlight">\(h_\text{cell}\)</span> being the local mesh size which we can obtain from <code class="docutils literal notranslate"><span class="pre">ufl.CellDiameter</span></code>. We can observe that the drilling stiffness is equal to the typical membrane stiffness <span class="math notranslate nohighlight">\(Eh\)</span> times the non-dimensional factor <span class="math notranslate nohighlight">\(\left(\dfrac{h}{h_\text{cell}}\right)^2\)</span>. As the mesh size goes to zero, the drilling stiffness becomes increasingly larger.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

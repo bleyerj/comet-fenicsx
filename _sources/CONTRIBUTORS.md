@@ -1,0 +1,3 @@
+- Andrey Latyshev (University of Luxembourg, Sorbonne Université, andrey.latyshev@uni.lu)
+- Corrado Maurini (Sorbonne Université, corrado.maurini@sorbonne-universite.fr)
+- Maxime Pierre (Ecole des Ponts ParisTech, maxime.pierre@enpc.fr)

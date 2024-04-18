@@ -424,7 +424,7 @@ document.write(`
 </div>
 <section id="geometrically-nonlinear-elasticity">
 <h2>Geometrically Nonlinear Elasticity<a class="headerlink" href="#geometrically-nonlinear-elasticity" title="Link to this heading">#</a></h2>
-<p>To formulate the buckling problem, we must consider a general geometrically nonlinear framework. More precisely, we will consider the case of small-strain/large displacements that are expected in typical buckling analysis. For more details on the theoretical formulation, the reader can refer to <span id="id1">[<a class="reference internal" href="#id15" title="Quoc Son Nguyen. Stability and nonlinear solid mechanics. Wiley, 2000.">Nguyen, 2000</a>]</span>.</p>
+<p>To formulate the buckling problem, we must consider a general geometrically nonlinear framework. More precisely, we will consider the case of small-strain/large displacements that are expected in typical buckling analysis. For more details on the theoretical formulation, the reader can refer to <span id="id1">[<a class="reference internal" href="#id14" title="Quoc Son Nguyen. Stability and nonlinear solid mechanics. Wiley, 2000.">Nguyen, 2000</a>]</span>.</p>
 <p>We consider the Green-Lagrange strain tensor <span class="math notranslate nohighlight">\(\be\)</span> defined as:</p>
 <div class="math notranslate nohighlight">
 \[e_{ij}  = \frac{1}{2} (u_{i,j} + u_{j,i}) + \frac{1}{2} u_{k,i}u_{k,j}\]</div>
@@ -464,18 +464,18 @@ document.write(`
 <h2>Bifurcation point<a class="headerlink" href="#bifurcation-point" title="Link to this heading">#</a></h2>
 <p>A given equilibrium solution <span class="math notranslate nohighlight">\(\lambda^c, \bu^c=\bu(\lambda^c)\)</span> is a bifurcation point if the second variation vanishes for some <span class="math notranslate nohighlight">\(\delta\bu\)</span>. <span class="math notranslate nohighlight">\(\lambda^c\)</span> defines the bifurcation load and <span class="math notranslate nohighlight">\(\delta\bu\)</span> the bifurcation mode. Hence, we have:</p>
 <div class="math notranslate nohighlight" id="equation-bifurcation-equilibrium">
-<span class="eqno">()<a class="headerlink" href="#equation-bifurcation-equilibrium" title="Link to this equation">#</a></span>\[\int_\Omega ((\beps(\delta\bv) + \bq(\bu^c,\delta\bv)):\mathbb{C}:(\beps(\delta\bu) + \bq(\bu^c,\delta\bu)) + \be(\bu^c):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0\]</div>
+<span class="eqno">(28)<a class="headerlink" href="#equation-bifurcation-equilibrium" title="Link to this equation">#</a></span>\[\int_\Omega ((\beps(\delta\bv) + \bq(\bu^c,\delta\bv)):\mathbb{C}:(\beps(\delta\bu) + \bq(\bu^c,\delta\bu)) + \be(\bu^c):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0\]</div>
 </section>
 <section id="linear-buckling-analysis">
 <h2>Linear buckling analysis<a class="headerlink" href="#linear-buckling-analysis" title="Link to this heading">#</a></h2>
-<p>When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain <span class="math notranslate nohighlight">\(\be(\bu^c)\)</span> can be replaced by the linearized strain <span class="math notranslate nohighlight">\(\beps(\bu^c)\)</span> in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, the small displacement solution also depends linearly on it. We therefore have <span class="math notranslate nohighlight">\(\bu^c= \lambda^c\bu_0\)</span> and the bifurcation condition <span id="id2">[]</span> becomes:</p>
+<p>When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain <span class="math notranslate nohighlight">\(\be(\bu^c)\)</span> can be replaced by the linearized strain <span class="math notranslate nohighlight">\(\beps(\bu^c)\)</span> in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, the small displacement solution also depends linearly on it. We therefore have <span class="math notranslate nohighlight">\(\bu^c= \lambda^c\bu_0\)</span> and the bifurcation condition <a class="reference internal" href="#equation-bifurcation-equilibrium">(28)</a> becomes:</p>
 <div class="math notranslate nohighlight">
 \[
 \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
 \]</div>
 <p>After, introducing the initial pre-stress <span class="math notranslate nohighlight">\(\bsig_0 = \mathbb{C}:\beps(\bu_0)\)</span>, the last term can be rewritten as <span class="math notranslate nohighlight">\(\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T\)</span> so that :</p>
 <div class="math notranslate nohighlight" id="equation-buckling-weak-form">
-<span class="eqno">(28)<a class="headerlink" href="#equation-buckling-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T)d\Omega = 0\]</div>
+<span class="eqno">(29)<a class="headerlink" href="#equation-buckling-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T)d\Omega = 0\]</div>
 <p>We recognize here a linear eigenvalue problem where the first term corresponds to the classical linear elasticity bilinear form and the second term is an additional contribution depending on the pre-stressed state <span class="math notranslate nohighlight">\(\bu_0\)</span>. Transforming this variational problem into matrix notations yields:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -484,7 +484,7 @@ document.write(`
 <p>where <span class="math notranslate nohighlight">\([\mathbf{K}]\)</span> is the classical linear elastic stiffness matrix and <span class="math notranslate nohighlight">\([\mathbf{K}_G(\bu_0)]\)</span> the so-called <em>geometrical stiffness</em> matrix.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>In the present case, the geometric stiffness matrix is associated with a symmetric form. It is however indefinite, as the pre-stress can be positive or negative. In the case of follower forces i.e. forces for which the direction and/or intensity depends on the geometric configuration of the solid, typically pressure forces, such forces contribute to the geometric through an additional term which must be accounted for, see for instance <span id="id3">[<a class="reference internal" href="#id16" title="HD Hibbit. Some follower forces and load stiffness. International Journal for Numerical Methods in Engineering, 14(6):937–941, 1979.">Hibbit, 1979</a>]</span>. In some particular cases, it may turn out that the resulting geometric stiffness matrix ends up being unsymmetric.</p>
+<p>In the present case, the geometric stiffness matrix is associated with a symmetric form. It is however indefinite, as the pre-stress can be positive or negative. In the case of follower forces i.e. forces for which the direction and/or intensity depends on the geometric configuration of the solid, typically pressure forces, such forces contribute to the geometric through an additional term which must be accounted for, see for instance <span id="id2">[<a class="reference internal" href="#id15" title="HD Hibbit. Some follower forces and load stiffness. International Journal for Numerical Methods in Engineering, 14(6):937–941, 1979.">Hibbit, 1979</a>]</span>. In some particular cases, it may turn out that the resulting geometric stiffness matrix ends up being unsymmetric.</p>
 </div>
 </section>
 <section id="fenicsx-implementation">
@@ -784,7 +784,7 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
 <span class="c1"># Plot the first 3 eigenmodes</span>
 <span class="n">pl</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
-    <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="mi">3</span><span class="p">,</span> <span class="n">i</span><span class="o">%</span><span class="k">3</span>)
+    <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">eigenmode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;eigenmode_</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;Eigenmode </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -795,29 +795,27 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
         <span class="n">u_geometry</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">V</span><span class="o">.</span><span class="n">dofmap</span><span class="o">.</span><span class="n">index_map_bs</span>
     <span class="p">)</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">mesh_grid</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;wireframe&quot;</span><span class="p">)</span>
-    <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">u_grid</span><span class="o">.</span><span class="n">warp_by_vector</span><span class="p">(</span><span class="n">eigenmode</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.02</span><span class="p">),</span> <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
-    <span class="n">specular</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-    <span class="n">specular_power</span><span class="o">=</span><span class="mi">30</span><span class="p">,)</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">u_grid</span><span class="o">.</span><span class="n">warp_by_vector</span><span class="p">(</span><span class="n">eigenmode</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.02</span><span class="p">),</span> <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">view_isometric</span><span class="p">()</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/7bc5e125559573f655e93c7e40f2fc6410423a016ef404bb82828608fa7a0e99.png" src="../../../_images/7bc5e125559573f655e93c7e40f2fc6410423a016ef404bb82828608fa7a0e99.png" />
+<img alt="../../../_images/2aea5c4fc186ebe53bd8215b7fefea53082682203bd6471d81521580a208a1e3.png" src="../../../_images/2aea5c4fc186ebe53bd8215b7fefea53082682203bd6471d81521580a208a1e3.png" />
 </div>
 </div>
 </section>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id4">
+<div class="docutils container" id="id3">
 <div role="list" class="citation-list">
-<div class="citation" id="id16" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">Hib79</a><span class="fn-bracket">]</span></span>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">Hib79</a><span class="fn-bracket">]</span></span>
 <p>HD Hibbit. Some follower forces and load stiffness. <em>International Journal for Numerical Methods in Engineering</em>, 14(6):937–941, 1979.</p>
 </div>
-<div class="citation" id="id15" role="doc-biblioentry">
+<div class="citation" id="id14" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">Ngu00</a><span class="fn-bracket">]</span></span>
 <p>Quoc Son Nguyen. <em>Stability and nonlinear solid mechanics</em>. Wiley, 2000.</p>
 </div>
