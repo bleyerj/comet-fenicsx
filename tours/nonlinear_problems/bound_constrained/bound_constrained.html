@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/bound_constrained/bound_constrained';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Marking facets with geometrical functions" href="../../../tips/mark_facets/mark_facets.html" />
+    <link rel="next" title="Eigenvalue problems" href="../../eigenvalue_problems/contents.html" />
     <link rel="prev" title="Linear viscoelasticity with JAX" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -196,19 +196,23 @@
 <li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
-</ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
-</ul>
-</li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><input checked class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input checked class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input checked class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
 </li>
 </ul>
@@ -417,19 +421,19 @@ document.write(`
 <h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
 <p>We consider a simple 1D bound constrained problem which arise from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span id="id1">[<a class="reference internal" href="#id8" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000. doi:10.1016/S0022-5096(99)00028-9.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id9" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra">
-<span class="eqno">(31)<a class="headerlink" href="#equation-at1-efra" title="Link to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
+<span class="eqno">(25)<a class="headerlink" href="#equation-at1-efra" title="Link to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
 <p>where <span class="math notranslate nohighlight">\(d\)</span> is a damage-like variable (with values in <span class="math notranslate nohighlight">\([0;1]\)</span>) which smears the discrete crack representation (corresponding to <span class="math notranslate nohighlight">\(d=1\)</span>) over a regularization length <span class="math notranslate nohighlight">\(\ell_0\)</span>. <span class="math notranslate nohighlight">\(G_\text{c}\)</span> represents the material fracture energy.</p>
 <p>During the solution process, the damage field is found by minimizing the total energy for a fixed displacement field and subject to bound constraints <span class="math notranslate nohighlight">\(d_n \leq d \leq 1\)</span> where <span class="math notranslate nohighlight">\(d_n\)</span> denotes the damage field at the previous time step which is used to enforce the irreversible evolution of damage.</p>
-<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(31)</a>.</p>
+<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(25)</a>.</p>
 </section>
 <section id="localized-1d-solutions">
 <h2>Localized 1D solutions<a class="headerlink" href="#localized-1d-solutions" title="Link to this heading">#</a></h2>
 <p>More precisely, we consider a 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span> of length <span class="math notranslate nohighlight">\(2L\)</span> and we look for a minimizer <span class="math notranslate nohighlight">\(d(x)\)</span> of:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra-1d">
-<span class="eqno">(32)<a class="headerlink" href="#equation-at1-efra-1d" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
+<span class="eqno">(26)<a class="headerlink" href="#equation-at1-efra-1d" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
 \text{s.t.} &amp; 0 \leq d(x) \leq 1 \quad \forall x \in \Omega
 \end{array}\end{split}\]</div>
-<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(32)</a>.</p>
+<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(26)</a>.</p>
 <p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span id="id2">[<a class="reference internal" href="#id9" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id10" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013. doi:10.1007/s00161-011-0228-3.">Pham and Marigo, 2013</a>]</span>.</p>
 <p>In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective is null, that is:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -449,7 +453,7 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 \]</div>
 <p>we easily show that the localization region size is <span class="math notranslate nohighlight">\(D=2\ell_0\sqrt{d_0}\)</span> and that the solution is given by:</p>
 <div class="math notranslate nohighlight" id="equation-at1-1d-solution">
-<span class="eqno">(33)<a class="headerlink" href="#equation-at1-1d-solution" title="Link to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
+<span class="eqno">(27)<a class="headerlink" href="#equation-at1-1d-solution" title="Link to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
 \left(\sqrt{d_0} - \dfrac{|x|}{2\ell_0}\right)^2 &amp; \text{if } |x| \leq D \\
 0 &amp; \text{otherwise}
 \end{cases}\end{split}\]</div>
@@ -600,7 +604,7 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 </div>
 <div class="cell_output docutils container">
 <img alt="../../../_images/c2bf6df95d1fd7be35dcb1d7d3aa837d0b7a3b79ea46d46e8d479604562dd4a8.png" src="../../../_images/c2bf6df95d1fd7be35dcb1d7d3aa837d0b7a3b79ea46d46e8d479604562dd4a8.png" />
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;petsc4py.PETSc.TAO at 0x7a1c8c99b290&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;petsc4py.PETSc.TAO at 0x76b8984aa430&gt;
 </pre></div>
 </div>
 </div>
@@ -665,11 +669,11 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
       </div>
     </a>
     <a class="right-next"
-       href="../../../tips/mark_facets/mark_facets.html"
+       href="../../eigenvalue_problems/contents.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Marking facets with geometrical functions</p>
+        <p class="prev-next-title">Eigenvalue problems</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
