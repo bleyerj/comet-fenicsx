@@ -3,6 +3,7 @@ import yaml
 import subprocess
 import zipfile
 import fileinput
+import shutil
 
 
 def check_source(directory):
@@ -47,8 +48,6 @@ def convert_and_zip(directory, source_zip=None):
             [
                 "jupytext",
                 "--sync",
-                # "--to",
-                # "myst",
                 "--pipe",
                 "black",
                 os.path.join(directory, nb_file_name),
@@ -62,13 +61,20 @@ def convert_and_zip(directory, source_zip=None):
             zip_file.write(os.path.join(directory, nb_file_name), nb_file_name)
             zip_file.write(os.path.join(directory, py_file_name), py_file_name)
             if source_zip is not None:
-                if isinstance(source_zip, list):
-                    for source in source_zip:
-                        print("File to zip:", source)
-                        zip_file.write(os.path.join(directory, source), source)
-                else:
-                    print("File to zip:", source_zip)
-                    zip_file.write(os.path.join(directory, source_zip), source_zip)
+                if not isinstance(source_zip, list):
+                    source_zip = [source_zip]
+                for source in source_zip:
+                    print("File to zip:", source)
+                    source_path = os.path.abspath(os.path.join(directory, source))
+                    destination_path = os.path.abspath(
+                        os.path.join(directory, os.path.basename(source))
+                    )
+                    if not os.path.exists(destination_path):
+                        shutil.copy(source_path, destination_path)
+                    zip_file.write(
+                        destination_path,
+                        os.path.basename(source),
+                    )
             else:
                 print("No other file to zip.")
 
