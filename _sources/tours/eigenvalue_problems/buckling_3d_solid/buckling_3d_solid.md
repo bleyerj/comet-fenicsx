@@ -28,6 +28,11 @@ In this numerical tour, we will demonstrate how to compute the buckling modes of
 \newcommand{\T}{^{\text{T}}}$
 ```
 
+```{image} eigenmodes_cross.gif
+:width: 600px
+:align: center
+```
+
 ```{admonition} Coauthors
 :class: coauthors
 
@@ -51,7 +56,7 @@ We consider the Green-Lagrange strain tensor $\be$ defined as:
 
 $$e_{ij}  = \frac{1}{2} (u_{i,j} + u_{j,i}) + \frac{1}{2} u_{k,i}u_{k,j}$$
 
-which can also be written in tensor format as
+which can also be written in tensor format as:
 
 $$ \be = \beps(\bu) + \dfrac{1}{2}\bq(\bu, \bu) $$
 
@@ -108,7 +113,7 @@ $$
 \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
 $$
 
-After, introducing the initial pre-stress $\bsig_0 = \mathbb{C}:\beps(\bu_0)$, the last term can be rewritten as $\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T$ so that :
+After, introducing the initial pre-stress $\bsig_0 = \mathbb{C}:\beps(\bu_0)$, the last term can be rewritten as $\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T$ so that:
 
 ```{math}
 :label: buckling-weak-form
@@ -289,7 +294,7 @@ eigensolver = solve_GEP_shiftinvert(
 
 ### Validation against beam theory solution
 
-Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model. Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.
+Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.
 
 ```{admonition} Beam theory buckling loads
 :class: tip, dropdown

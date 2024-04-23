@@ -407,6 +407,7 @@ document.write(`
 \newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\T}{^{\text{T}}}\)</span></p>
 </div>
+<a class="reference internal image-reference" href="../../../_images/eigenmodes_cross.gif"><img alt="../../../_images/eigenmodes_cross.gif" class="align-center" src="../../../_images/eigenmodes_cross.gif" style="width: 600px;" /></a>
 <div class="coauthors admonition">
 <p class="admonition-title">Coauthors</p>
 <p>This tour has been written with the help of:</p>
@@ -428,7 +429,7 @@ document.write(`
 <p>We consider the Green-Lagrange strain tensor <span class="math notranslate nohighlight">\(\be\)</span> defined as:</p>
 <div class="math notranslate nohighlight">
 \[e_{ij}  = \frac{1}{2} (u_{i,j} + u_{j,i}) + \frac{1}{2} u_{k,i}u_{k,j}\]</div>
-<p>which can also be written in tensor format as</p>
+<p>which can also be written in tensor format as:</p>
 <div class="math notranslate nohighlight">
 \[ \be = \beps(\bu) + \dfrac{1}{2}\bq(\bu, \bu) \]</div>
 <p>where we isolate the linearized strain <span class="math notranslate nohighlight">\(\beps(\bu)=\frac{1}{2} (\nabla\bu+\nabla\bu\T)\)</span> and nonlinear quadratic part <span class="math notranslate nohighlight">\(\bq(\bu, \bu)=\nabla\bu\T\nabla\bu\)</span>.</p>
@@ -473,7 +474,7 @@ document.write(`
 \[
 \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
 \]</div>
-<p>After, introducing the initial pre-stress <span class="math notranslate nohighlight">\(\bsig_0 = \mathbb{C}:\beps(\bu_0)\)</span>, the last term can be rewritten as <span class="math notranslate nohighlight">\(\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T\)</span> so that :</p>
+<p>After, introducing the initial pre-stress <span class="math notranslate nohighlight">\(\bsig_0 = \mathbb{C}:\beps(\bu_0)\)</span>, the last term can be rewritten as <span class="math notranslate nohighlight">\(\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T\)</span> so that:</p>
 <div class="math notranslate nohighlight" id="equation-buckling-weak-form">
 <span class="eqno">(29)<a class="headerlink" href="#equation-buckling-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T)d\Omega = 0\]</div>
 <p>We recognize here a linear eigenvalue problem where the first term corresponds to the classical linear elasticity bilinear form and the second term is an additional contribution depending on the pre-stressed state <span class="math notranslate nohighlight">\(\bu_0\)</span>. Transforming this variational problem into matrix notations yields:</p>
@@ -688,7 +689,7 @@ Converged eigval.  Error
 </section>
 <section id="validation-against-beam-theory-solution">
 <h3>Validation against beam theory solution<a class="headerlink" href="#validation-against-beam-theory-solution" title="Link to this heading">#</a></h3>
-<p>Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model. Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.</p>
+<p>Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title">Beam theory buckling loads</p>
 <p>For a straight beam under uniform compression force <span class="math notranslate nohighlight">\(F_0\)</span>, the linearized bending equilibrium equation around the pre-stressed state reads:</p>
