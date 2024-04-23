@@ -36,6 +36,11 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\argmin}{\operatorname*{arg\,min}}$
 ```
 
+```{image} hyperelasticity.gif
+:width: 600px
+:align: center
+```
+
 ```{admonition} Download sources
 :class: download
 
