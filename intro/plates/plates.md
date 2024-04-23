@@ -26,6 +26,12 @@ $\newcommand{\bM}{\boldsymbol{M}}
 \renewcommand{\div}{\operatorname{div}}$
 ```
 
+
+```{image} plate.svg
+:width: 500px
+:align: center
+```
+
 ```{admonition} Download sources
 :class: download
 
