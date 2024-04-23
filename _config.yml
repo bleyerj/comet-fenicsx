@@ -58,7 +58,7 @@ sphinx:
     html_css_files: ["custom.css"]
     html_theme_options:
       pygment_light_style: "friendly"
-      show_navbar_depth: 2
+      show_navbar_depth: 1
       home_page_in_toc: true
       show_toc_level: 2
       repository_url: https://github.com/bleyerj/comet-fenicsx
@@ -78,4 +78,5 @@ parse:
     - "replacements"
     - "smartquotes"
     - "substitution"
+    - "attrs_inline"
 
