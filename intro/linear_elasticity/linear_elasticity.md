@@ -215,7 +215,7 @@ vtk = io.VTKFile(domain.comm, "linear_elasticity.pvd", "w")
 vtk.write_function(u_sol)
 ```
 
-### Exercise : thermal strains
+### Exercise: thermal strains
 
 We consider the presence of thermal strains $\beps^\text{th} = \alpha \Delta T(\boldsymbol{x}) \boldsymbol{I}$ where $\Delta T(\boldsymbol{x})$ varies linearly from 0 to +20° between the bottom and top face of the beam. The stress-strain constitutive relation is now:
 \begin{equation*}
