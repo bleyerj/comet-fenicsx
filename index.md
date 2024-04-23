@@ -97,7 +97,7 @@ Other topics will also be more advanced and exploratory and will reflect current
       ```{grid-item-card} [**Plates**]{.pst-color-primary}
       :link: tours/plates/contents.html
       
-      <img src="images/plate.svg" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      <img src="intro/plates/plate.svg" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
       ```{grid-item-card} [**Shells**]{.pst-color-primary}
