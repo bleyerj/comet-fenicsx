@@ -29,6 +29,11 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}$
 ```
 
+```{image} linear_elasticity.png
+:width: 600px
+:align: center
+```
+
 ```{admonition} Download sources
 :class: download
 
@@ -189,6 +194,7 @@ problem.solve()
 
 vtk = io.VTKFile(domain.comm, "linear_elasticity.pvd", "w")
 vtk.write_function(u_sol)
+vtk.close()
 ```
 
 ### Changing boundary conditions
@@ -213,6 +219,7 @@ problem.solve()
 
 vtk = io.VTKFile(domain.comm, "linear_elasticity.pvd", "w")
 vtk.write_function(u_sol)
+vtk.close()
 ```
 
 ### Exercise: thermal strains
