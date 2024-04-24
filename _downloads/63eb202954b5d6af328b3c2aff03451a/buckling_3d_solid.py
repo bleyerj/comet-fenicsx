@@ -28,6 +28,11 @@
 # \newcommand{\T}{^{\text{T}}}$
 # ```
 #
+# ```{image} eigenmodes_cross.gif
+# :width: 600px
+# :align: center
+# ```
+#
 # ```{admonition} Coauthors
 # :class: coauthors
 #
@@ -51,7 +56,7 @@
 #
 # $$e_{ij}  = \frac{1}{2} (u_{i,j} + u_{j,i}) + \frac{1}{2} u_{k,i}u_{k,j}$$
 #
-# which can also be written in tensor format as
+# which can also be written in tensor format as:
 #
 # $$ \be = \beps(\bu) + \dfrac{1}{2}\bq(\bu, \bu) $$
 #
@@ -102,7 +107,7 @@
 #
 # ## Linear buckling analysis
 #
-# When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain $\be(\bu^c)$ can be replaced by the linearized strain $\beps(\bu^c)$ in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter $\lambda$, the small displacement solution also depends linearly on it. We therefore have $\bu^c= \lambda^c\bu_0$ and the bifurcation condition {eqref}`bifurcation-equilibrium` becomes:
+# When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain $\be(\bu^c)$ can be replaced by the linearized strain $\beps(\bu^c)$ in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter $\lambda$, the small displacement solution also depends linearly on it. We therefore have $\bu^c= \lambda^c\bu_0$ and the bifurcation condition {eq}`bifurcation-equilibrium` becomes:
 #
 # $$
 # \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
@@ -289,7 +294,7 @@ eigensolver = solve_GEP_shiftinvert(
 
 # ### Validation against beam theory solution
 #
-# Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model. Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.
+# Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.
 #
 # ```{admonition} Beam theory buckling loads
 # :class: tip, dropdown
