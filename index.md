@@ -80,6 +80,7 @@ Other topics will also be more advanced and exploratory and will reflect current
       ```{grid-item-card} [**Dynamics problems**]{.pst-color-primary}
       :link: tours/dynamics/contents.html
       
+      <img src="images/dynamics.gif" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
       ```{grid-item-card} [**Nonlinear problems**]{.pst-color-primary}
@@ -91,7 +92,7 @@ Other topics will also be more advanced and exploratory and will reflect current
       ```{grid-item-card} [**Eigenvalue problems**]{.pst-color-primary}
       :link: tours/eigenvalue_problems/contents.html
       
-      
+      <img src="images/eigenvalue_problems.svg" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
       ```{grid-item-card} [**Plates**]{.pst-color-primary}
