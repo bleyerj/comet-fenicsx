@@ -29,6 +29,9 @@ parts:
   - file: tours/eigenvalue_problems/contents
     sections:
     - file: tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.md
+  - file: tours/beams/contents
+    sections:
+    - file: tours/beams/linear_truss/linear_truss.md
   - file: tours/plates/contents
     sections:
     - file: tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.md

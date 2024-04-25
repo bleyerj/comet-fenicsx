@@ -95,6 +95,12 @@ Other topics will also be more advanced and exploratory and will reflect current
       <img src="images/eigenvalue_problems.svg" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
+      ```{grid-item-card} [**Beams**]{.pst-color-primary}
+      :link: tours/beams/contents.html
+      
+      <img src="images/truss.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      ```
+
       ```{grid-item-card} [**Plates**]{.pst-color-primary}
       :link: tours/plates/contents.html
       
