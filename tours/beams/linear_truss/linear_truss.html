@@ -1,0 +1,856 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Linear elastic 2D truss &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b76e3c8a" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/beams/linear_truss/linear_truss';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Plates" href="../../plates/contents.html" />
+    <link rel="prev" title="Beams" href="../contents.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/beams/linear_truss/linear_truss.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Linear elastic 2D truss </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#governing-equations">Governing equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry">Geometry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-variational-problem">Define variational problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concentrated-loadings">Concentrated loadings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-problem">Solving the problem</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="linear-elastic-2d-truss">
+<h1>Linear elastic 2D truss <span class="far fa-star"></span><a class="headerlink" href="#linear-elastic-2d-truss" title="Link to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This tour shows how to implement a 2D linear elastic truss model. The key point is the definition of the local tangent vector of each truss member.<span class="math notranslate nohighlight">\(\newcommand{\bu}{\boldsymbol{u}}\newcommand{\bt}{\boldsymbol{t}}\newcommand{\bx}{\boldsymbol{x}}\newcommand{\bv}{\boldsymbol{v}}\newcommand{\eps}{\varepsilon}\newcommand{\ds}{\text{d}s}\)</span></p>
+</div>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/728fbf7fda9a9c54ea04114d051d412b/linear_truss.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/16927f229f2d519c6957691ff6218a29/linear_truss.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
+<section id="governing-equations">
+<h2>Governing equations<a class="headerlink" href="#governing-equations" title="Link to this heading">#</a></h2>
+<p>We consider a truss <span class="math notranslate nohighlight">\(\Omega\)</span> consisting of straight members, pinned at their extremities. The normal force <span class="math notranslate nohighlight">\(N\)</span> in each member is related to the corresponding member axial strain <span class="math notranslate nohighlight">\(\eps\)</span> via a linear elastic relation:</p>
+<div class="math notranslate nohighlight" id="equation-truss-constitutive-elastic">
+<span class="eqno">(30)<a class="headerlink" href="#equation-truss-constitutive-elastic" title="Link to this equation">#</a></span>\[N = ES\eps\]</div>
+<p>where <span class="math notranslate nohighlight">\(E\)</span> is the material Young modulus, <span class="math notranslate nohighlight">\(S\)</span> the member cross-section area and where the axial strain is given by the tangential displacement gradient along the member direction:</p>
+<div class="math notranslate nohighlight">
+\[
+\eps = \bt\cdot\dfrac{d\bu}{ds} = \bt\cdot\dfrac{d\bu}{d\bx}\cdot\bt
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bu\)</span> is the truss displacement and <span class="math notranslate nohighlight">\(\bt = \dfrac{d\bx}{ds}\)</span> is the member unit vector, <span class="math notranslate nohighlight">\(s\)</span> being the curvilinear coordinate.</p>
+<p>The weak form of equilibrium for the truss model is simply given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\int_{\Omega} N\eps[\bv]\ds = \sum_i \boldsymbol{F}_i\cdot\bv_i \quad \forall\bv\in V
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bv\)</span> is a test function and <span class="math notranslate nohighlight">\(\boldsymbol{F}_i\)</span> are concentrated external forces applied at nodes <span class="math notranslate nohighlight">\(i\)</span>.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<section id="geometry">
+<h3>Geometry<a class="headerlink" href="#geometry" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pyvista</span>
+<span class="kn">import</span> <span class="nn">gmsh</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">from</span> <span class="nn">petsc4py</span> <span class="kn">import</span> <span class="n">PETSc</span>
+<span class="kn">import</span> <span class="nn">ufl</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">plot</span>
+<span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We create the truss domain with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API. Importantly, we generate a 1D mesh and add physical groups for nodes: <code class="docutils literal notranslate"><span class="pre">tag=1</span></code> for the left and right supports and <code class="docutils literal notranslate"><span class="pre">tag=2</span></code> for the bottom nodes for applied loading.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">l</span> <span class="o">=</span> <span class="mf">5.0</span>
+<span class="n">h1</span> <span class="o">=</span> <span class="mf">3.33</span>
+<span class="n">h2</span> <span class="o">=</span> <span class="mf">5.33</span>
+<span class="n">h3</span> <span class="o">=</span> <span class="mf">6.0</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.Terminal&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># to disable meshing info</span>
+<span class="n">geom</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">geo</span>
+
+<span class="n">left</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">right</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="n">bottom_points</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">top_points</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="n">h2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="n">h3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="n">h2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">l</span><span class="p">,</span> <span class="n">h1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">ext_bottom_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">+</span> <span class="n">bottom_points</span> <span class="o">+</span> <span class="p">[</span><span class="n">right</span><span class="p">]</span>
+<span class="n">ext_top_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">+</span> <span class="n">top_points</span> <span class="o">+</span> <span class="p">[</span><span class="n">right</span><span class="p">]</span>
+
+<span class="n">bottom_lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">ext_bottom_points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ext_bottom_points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ext_bottom_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">top_lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">ext_top_points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">ext_top_points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ext_top_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">vertical_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span> <span class="k">for</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">,</span> <span class="n">top_points</span><span class="p">)]</span>
+
+<span class="n">left_diagonal_lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">top_points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">bottom_points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">right_diagonal_lines</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">top_points</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bottom_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">bottom_lines</span>
+    <span class="o">+</span> <span class="n">top_lines</span>
+    <span class="o">+</span> <span class="n">vertical_lines</span>
+    <span class="o">+</span> <span class="n">right_diagonal_lines</span>
+    <span class="o">+</span> <span class="n">left_diagonal_lines</span>
+<span class="p">)</span>
+<span class="n">geom</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">set_transfinite_curve</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_physical_group</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bottom_points</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_physical_group</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">left</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">right</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_physical_group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">bottom_lines</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_physical_group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">top_lines</span>
+    <span class="o">+</span> <span class="n">vertical_lines</span>
+    <span class="o">+</span> <span class="n">right_diagonal_lines</span>
+    <span class="o">+</span> <span class="n">left_diagonal_lines</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;truss.msh&quot;</span><span class="p">)</span>
+
+<span class="n">domain</span><span class="p">,</span> <span class="n">markers</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span>
+<span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Geometrical dimension = </span><span class="si">{</span><span class="n">gdim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Topological dimension = </span><span class="si">{</span><span class="n">tdim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;CG&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>
+<span class="n">Vv</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Geometrical dimension = 2
+Topological dimension = 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define the local tangent vector of the domain using <code class="docutils literal notranslate"><span class="pre">ufl.Jacobian</span></code> which returns the Jacobian <span class="math notranslate nohighlight">\(J=\dfrac{d\boldsymbol{x}}{dX}\)</span> where <span class="math notranslate nohighlight">\(X\)</span> denotes the 1D-coordinate of the reference unit interval. This vector aligns with the local truss element orientation. We then normalize the vector to obtain the unit tangent vector:</p>
+<div class="math notranslate nohighlight">
+\[
+\boldsymbol{t} = \dfrac{d\boldsymbol{x}}{ds} = \dfrac{1}{\left\|\frac{d\boldsymbol{x}}{dX}\right\|}\dfrac{d\boldsymbol{x}}{dX}
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dx_dX</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">domain</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">t_ufl</span> <span class="o">=</span> <span class="n">dx_dX</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">dx_dX</span><span class="p">,</span> <span class="n">dx_dX</span><span class="p">))</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vv</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Tangent_vector&quot;</span><span class="p">)</span>
+<span class="n">t</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">t_ufl</span><span class="p">,</span> <span class="n">Vv</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To apply point loads on the truss nodes, it will be more convenient to define a piecewise linear function <code class="docutils literal notranslate"><span class="pre">F</span></code> and set the corresponding degrees of freedom with the corresponding nodal forces. In this case, we apply vertical downwards concentrated forces of intensity 1 on the bottom nodes which we retrieve from the facet tag <code class="docutils literal notranslate"><span class="pre">1</span></code>. We also retrieve the left and right dofs for applying Dirichlet boundary conditions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">fdim</span> <span class="o">=</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">load_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">F</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">load_dofs</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="n">bc_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gdim</span><span class="p">,)),</span> <span class="n">bc_dofs</span><span class="p">,</span> <span class="n">V</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We plot the mesh, the loading (in black) and the unit tangent vectors in red using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+
+<span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span><span class="p">)</span>
+<span class="n">F_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">u_geometry</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">F_3D</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">u_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">F_3D</span>
+<span class="n">glyphs</span> <span class="o">=</span> <span class="n">u_grid</span><span class="o">.</span><span class="n">glyph</span><span class="p">(</span>
+    <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">,</span>
+    <span class="n">factor</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">glyphs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;royalblue&quot;</span><span class="p">)</span>
+<span class="n">t_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">grid</span><span class="o">.</span><span class="n">n_cells</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">t_3D</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">cell_data</span><span class="p">[</span><span class="s2">&quot;t&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_3D</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">set_active_vectors</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="n">arrow</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Arrow</span><span class="p">(</span>
+    <span class="n">start</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">glyphs</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">glyph</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">geom</span><span class="o">=</span><span class="n">arrow</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">glyphs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkred&quot;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show_axes</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">zoom_camera</span><span class="p">(</span><span class="mf">1.3</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/f3f36f70d6dea019eb0f24d26ffb7923837b5ab73b44f5eb2ace4fafddc2859c.png" src="../../../_images/f3f36f70d6dea019eb0f24d26ffb7923837b5ab73b44f5eb2ace4fafddc2859c.png" />
+</div>
+</div>
+</section>
+<section id="define-variational-problem">
+<h3>Define variational problem<a class="headerlink" href="#define-variational-problem" title="Link to this heading">#</a></h3>
+<p>We define the variational problem</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">du</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Displacement&quot;</span><span class="p">)</span>
+
+<span class="n">E</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">200e3</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">strain</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">t_ufl</span><span class="p">),</span> <span class="n">t_ufl</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">normal_force</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">E</span> <span class="o">*</span> <span class="n">S</span> <span class="o">*</span> <span class="n">strain</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">markers</span><span class="p">)</span>
+<span class="n">a_form</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">normal_force</span><span class="p">(</span><span class="n">du</span><span class="p">),</span> <span class="n">strain</span><span class="p">(</span><span class="n">u_</span><span class="p">))</span> <span class="o">*</span><span class="n">dx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="concentrated-loadings">
+<h3>Concentrated loadings<a class="headerlink" href="#concentrated-loadings" title="Link to this heading">#</a></h3>
+<p>To define concentrated loadings, several (undirect) approaches can be used, considering the fact that point measures are not available. A first possibility is to define a distributed loading which when assembled into a global nodal forces vectors approximates the corresponding concentrated loading. A second approach is to assemble an empty nodal force vector and set the corresponding entries to the wanted concentrated loading. Below, we follow this approach. However, it prevents us from using the <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> class and we must instead write the assembly and solve steps manually using <code class="docutils literal notranslate"><span class="pre">petsc4py</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gdim</span><span class="p">,)))</span>
+<span class="n">L_form</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">F0</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix</span><span class="p">(</span><span class="n">a_form</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">)</span>
+<span class="n">A</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">create_vector</span><span class="p">(</span><span class="n">L_form</span><span class="p">)</span>
+
+<span class="n">b</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="solving-the-problem">
+<h3>Solving the problem<a class="headerlink" href="#solving-the-problem" title="Link to this heading">#</a></h3>
+<p>We finally setup the linear solver and solve the problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">KSP</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">setOperators</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="n">PETSc</span><span class="o">.</span><span class="n">KSP</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PREONLY</span><span class="p">)</span>
+<span class="n">solver</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="n">PETSc</span><span class="o">.</span><span class="n">PC</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">LU</span><span class="p">)</span>
+
+<span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+<span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The normal force obtained from the elastic behavior <a class="reference internal" href="#equation-truss-constitutive-elastic">(30)</a> is then interpolated onto a piecewise-constant function space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">FunctionSpace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">()))</span>
+<span class="n">N_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">normal_force</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+<span class="n">N</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Normal_force&quot;</span><span class="p">)</span>
+<span class="n">N</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">N_exp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>AWe plot the resulting normal force on the (scaled) deformed configuration using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span><span class="p">)</span>
+<span class="n">u_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">u_geometry</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">u_3D</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">u_3D</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mf">1e-3</span>  <span class="c1"># slightly offset to avoid overlap in xy view with underlying undeformed mesh</span>
+<span class="p">)</span>
+<span class="n">u_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Deflection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_3D</span>
+<span class="n">u_grid</span><span class="o">.</span><span class="n">set_active_vectors</span><span class="p">(</span><span class="s2">&quot;Deflection&quot;</span><span class="p">)</span>
+<span class="n">warped</span> <span class="o">=</span> <span class="n">u_grid</span><span class="o">.</span><span class="n">warp_by_vector</span><span class="p">(</span><span class="s2">&quot;Deflection&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">2000.0</span><span class="p">)</span>
+<span class="n">warped</span><span class="o">.</span><span class="n">cell_data</span><span class="p">[</span><span class="s2">&quot;Normal force&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">u_grid</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;royalblue&quot;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.25</span>
+<span class="p">)</span>
+
+<span class="n">Nmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">warped</span><span class="p">,</span>
+    <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">scalars</span><span class="o">=</span><span class="s2">&quot;Normal force&quot;</span><span class="p">,</span>
+    <span class="n">render_lines_as_tubes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">style</span><span class="o">=</span><span class="s2">&quot;wireframe&quot;</span><span class="p">,</span>
+    <span class="n">line_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
+    <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">Nmax</span><span class="p">,</span> <span class="n">Nmax</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">zoom_camera</span><span class="p">(</span><span class="mf">1.3</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/608e17e7da75ef3a9b35012d3803e9b1122532c6c858ce4ca493c57223f8d8bc.png" src="../../../_images/608e17e7da75ef3a9b35012d3803e9b1122532c6c858ce4ca493c57223f8d8bc.png" />
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/beams/linear_truss"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../contents.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Beams</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../plates/contents.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Plates</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#governing-equations">Governing equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry">Geometry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-variational-problem">Define variational problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concentrated-loadings">Concentrated loadings</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-problem">Solving the problem</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

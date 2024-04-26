@@ -206,11 +206,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
@@ -896,23 +900,26 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[MPI_MAX] Summary of timings                                                |  reps  wall avg  wall tot
 -------------------------------------------------------------------------------------------------------
-Build dofmap data                                                           |     5  0.000154  0.000772
-Build sparsity                                                              |     1  0.000321  0.000321
-Compute dof reordering map                                                  |     5  0.000009  0.000045
-Compute entities of dim = 1                                                 |     1  0.000653  0.000653
-Compute local part of mesh dual graph                                       |     1  0.000338  0.000338
-Compute local-to-local map                                                  |     1  0.000048  0.000048
-Compute-local-to-global links for global/local adjacency list               |     1  0.000007  0.000007
-Constitutive update                                                         |   149  0.001358  0.202404
-Distribute row-wise data (scalable)                                         |     1  0.000049  0.000049
-GPS: create_level_structure                                                 |     2  0.000008  0.000016
-Gibbs-Poole-Stockmeyer ordering                                             |     1  0.000075  0.000075
-Init dofmap from element dofmap                                             |     5  0.000034  0.000168
-Nonlinear solve                                                             |    50  0.045763  2.288152
-SparsityPattern::finalize                                                   |     1  0.000431  0.000431
-Topology: create                                                            |     1  0.001241  0.001241
-Topology: determine shared index ownership                                  |     1  0.000700  0.000700
-Topology: determine vertex ownership groups (owned, undetermined, unowned)  |     1  0.000033  0.000033
+Build dofmap data                                                           |     5  0.000165  0.000825
+Build sparsity                                                              |     1  0.000219  0.000219
+Compute dof reordering map                                                  |     5  0.000009  0.000047
+Compute entities of dim = 1                                                 |     1  0.000647  0.000647
+Compute local part of mesh dual graph                                       |     1  0.000485  0.000485
+Compute local-to-local map                                                  |     1  0.000061  0.000061
+Compute-local-to-global links for global/local adjacency list               |     1  0.000010  0.000010
+Constitutive update                                            
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             |   149  0.001793  0.267115
+Distribute row-wise data (scalable)                                         |     1  0.000065  0.000065
+GPS: create_level_structure                                                 |     2  0.000014  0.000028
+Gibbs-Poole-Stockmeyer ordering                                             |     1  0.000109  0.000109
+Init dofmap from element dofmap                                             |     5  0.000040  0.000199
+Nonlinear solve                                                             |    50  0.046199  2.309946
+SparsityPattern::finalize                                                   |     1  0.000296  0.000296
+Topology: create                                                            |     1  0.001691  0.001691
+Topology: determine shared index ownership                                  |     1  0.000944  0.000944
+Topology: determine vertex ownership groups (owned, undetermined, unowned)  |     1  0.000054  0.000054
 </pre></div>
 </div>
 </div>

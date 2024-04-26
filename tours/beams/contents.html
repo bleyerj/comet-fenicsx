@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Plates &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Beams &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
   
   
   
@@ -58,11 +58,11 @@
     <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/plates/contents';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/beams/contents';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Shear-locking in thick plate models with quadrilateral elements" href="reissner_mindlin_quads/reissner_mindlin_quads.html" />
-    <link rel="prev" title="Linear elastic 2D truss" href="../beams/linear_truss/linear_truss.html" />
+    <link rel="next" title="Linear elastic 2D truss" href="linear_truss/linear_truss.html" />
+    <link rel="prev" title="Linear Buckling Analysis of a 3D solid" href="../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -204,12 +204,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../beams/contents.html">Beams</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Plates</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -297,7 +297,7 @@
       
       
       
-      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/plates/contents.md" target="_blank"
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/beams/contents.md" target="_blank"
    class="btn btn-sm btn-source-edit-button dropdown-item"
    title="Suggest edit"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -361,7 +361,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Plates</h1>
+    <h1>Beams</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -375,11 +375,11 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="plates">
-<h1>Plates<a class="headerlink" href="#plates" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="beams">
+<h1>Beams<a class="headerlink" href="#beams" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
 </ul>
 </div>
 </section>
@@ -397,7 +397,7 @@ document.write(`
         },
         kernelOptions: {
             name: "python3",
-            path: "./tours/plates"
+            path: "./tours/beams"
         },
         predefinedOutput: true
     }
@@ -415,20 +415,20 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../beams/linear_truss/linear_truss.html"
+       href="../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Linear elastic 2D truss <span class="far fa-star"></span></p>
+        <p class="prev-next-title">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
     </a>
     <a class="right-next"
-       href="reissner_mindlin_quads/reissner_mindlin_quads.html"
+       href="linear_truss/linear_truss.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></p>
+        <p class="prev-next-title">Linear elastic 2D truss <span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

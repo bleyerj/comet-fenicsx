@@ -206,11 +206,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
@@ -781,7 +785,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <p>where <span class="math notranslate nohighlight">\(\mathbf{R}\)</span> is the current value of the nonlinear residual, <span class="math notranslate nohighlight">\(\mathbf{du}\)</span> the iteration correction to the unknown field <span class="math notranslate nohighlight">\(\mathbf{u}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{A}_\text{tang}\)</span> the tangent operator of the nonlinear residual. To simplify the implementation, we rely on the <code class="docutils literal notranslate"><span class="pre">fem.petsc.LinearProblem</span></code> utility class to define and solve linear problems. In the following, we need to explicitly separate the steps where we assemble the linear system right-hand side from when we assemble the matrix left-hand side and solve the linear system. We therefore define a new class inheriting from <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> and splitting these different steps.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>We will use the <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> class within a custom implementation of the Newton method. During the course of the Newton iterations, we need to account for possible non-zero Dirichlet boundary conditions (although all Dirichlet boundary conditions are zero in the present case). We use the implementation provided in <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/chapter4/newton-solver.html#newtons-method-with-dirichletbc"></a> for lifting the right-hand side of the Newton system with non-zero Dirichlet boundary conditions.</p>
+<p>We will use the <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> class within a custom implementation of the Newton method. During the course of the Newton iterations, we need to account for possible non-zero Dirichlet boundary conditions (although all Dirichlet boundary conditions are zero in the present case). We use the implementation provided in <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/chapter4/newton-solver.html#newtons-method-with-dirichletbc">the FEniCSx Tutorial - Newton’s method with DirichletBC</a> for lifting the right-hand side of the Newton system with non-zero Dirichlet boundary conditions.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
