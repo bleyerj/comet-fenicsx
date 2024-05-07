@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -329,7 +329,7 @@ from dolfinx import fem, io
 import dolfinx.fem.petsc
 
 # Define function space
-V = fem.FunctionSpace(domain, ("P", 2, (gdim,)))
+V = fem.functionspace(domain, ("P", 2, (gdim,)))
 
 # Define variational problem
 du = ufl.TrialFunction(V)
@@ -359,7 +359,7 @@ problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
 problem.solve()
 
 
-V0 = fem.FunctionSpace(domain, ("DG", 0, (3,)))
+V0 = fem.functionspace(domain, ("DG", 0, (3,)))
 sig_exp = fem.Expression(stress(u), V0.element.interpolation_points())
 sig = fem.Function(V0, name="Stress")
 sig.interpolate(sig_exp)

@@ -243,25 +243,14 @@ Similarly to the [](/tours/nonlinear_problems/plasticity/plasticity.md) tour, we
 ```{code-cell} ipython3
 deg_quad = 2  # quadrature degree for internal state variable representation
 vdim = 3  # dimension of the vectorial representation of tensors
-W0e = ufl.FiniteElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    quad_scheme="default",
+W0e = basix.ufl.quadrature_element(
+    domain.basix_cell(), value_shape=(), scheme="default", degree=deg_quad
 )
-We = ufl.VectorElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    dim=vdim,
-    quad_scheme="default",
+We = basix.ufl.quadrature_element(
+    domain.basix_cell(), value_shape=(vdim,), scheme="default", degree=deg_quad
 )
-WTe = ufl.TensorElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    shape=(vdim, vdim),
-    quad_scheme="default",
+WTe = basix.ufl.quadrature_element(
+    domain.basix_cell(), value_shape=(vdim,vdim), scheme="default", degree=deg_quad
 )
 W = fem.functionspace(domain, We)
 WT = fem.functionspace(domain, WTe)
@@ -300,7 +289,7 @@ tangent_form = ufl.dot(eps_Mandel(v), ufl.dot(Ct, eps_Mandel(u_))) * dx
 Now, we extract the total number of quadrature points and define the `fem.Expression` corresponding to the total strain `esp_Mandel(u)` to perform the evaluation at all quadrature points.
 
 ```{code-cell} ipython3
-basix_celltype = getattr(basix.CellType, domain.topology.cell_types[0].name)
+basix_celltype = getattr(basix.CellType, domain.topology.cell_type.name)
 quadrature_points, weights = basix.make_quadrature(basix_celltype, deg_quad)
 
 map_c = domain.topology.index_map(domain.topology.dim)

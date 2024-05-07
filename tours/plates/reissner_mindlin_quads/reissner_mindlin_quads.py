@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.1
 # ---
 
 # # Shear-locking in thick plate models with quadrilateral elements  {far}`star`
@@ -45,6 +45,7 @@
 import numpy as np
 from mpi4py import MPI
 import ufl
+import basix
 from dolfinx import fem, mesh
 import dolfinx.fem.petsc
 
@@ -96,9 +97,9 @@ f = -D / 1.265319087e-3  # with this we have w_Love-Kirchhoff = 1.0
 
 deg = 2
 el_type = "S"  # or "Q"
-We = ufl.FiniteElement(el_type, domain.ufl_cell(), deg)
-Te = ufl.VectorElement(el_type, domain.ufl_cell(), deg)
-V = fem.functionspace(domain, ufl.MixedElement([We, Te]))
+We = basix.ufl.element(el_type, domain.basix_cell(), deg)
+Te = basix.ufl.element(el_type, domain.basix_cell(), deg, shape=(2,))
+V = fem.functionspace(domain, basix.ufl.mixed_element([We, Te]))
 
 
 # Clamped boundary conditions on the lateral boundary are defined as::

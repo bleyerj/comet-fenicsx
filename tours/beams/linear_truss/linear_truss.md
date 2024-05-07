@@ -274,7 +274,7 @@ u.x.scatter_forward()
 The normal force obtained from the elastic behavior {eq}`truss-constitutive-elastic` is then interpolated onto a piecewise-constant function space.
 
 ```{code-cell} ipython3
-V0 = fem.FunctionSpace(domain, ("DG", 0, ()))
+V0 = fem.functionspace(domain, ("DG", 0, ()))
 N_exp = fem.Expression(normal_force(u), V0.element.interpolation_points())
 N = fem.Function(V0, name="Normal_force")
 N.interpolate(N_exp)

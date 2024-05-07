@@ -48,6 +48,7 @@ We first create a unit square mesh divided in $N\times N$ quadrilaterals:
 import numpy as np
 from mpi4py import MPI
 import ufl
+import basix
 from dolfinx import fem, mesh
 import dolfinx.fem.petsc
 
@@ -106,9 +107,9 @@ see [details here](https://defelement.com/elements/examples/quadrilateral-lagran
 ```{code-cell} ipython3
 deg = 2
 el_type = "S"  # or "Q"
-We = ufl.FiniteElement(el_type, domain.ufl_cell(), deg)
-Te = ufl.VectorElement(el_type, domain.ufl_cell(), deg)
-V = fem.functionspace(domain, ufl.MixedElement([We, Te]))
+We = basix.ufl.element(el_type, domain.basix_cell(), deg)
+Te = basix.ufl.element(el_type, domain.basix_cell(), deg, shape=(2,))
+V = fem.functionspace(domain, basix.ufl.mixed_element([We, Te]))
 ```
 
 Clamped boundary conditions on the lateral boundary are defined as::

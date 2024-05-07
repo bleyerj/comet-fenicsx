@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3.8.10 64-bit
   language: python
@@ -267,22 +267,13 @@ When dealing with nonlinear constitutive models, internal state variables such a
 We point out that, although the problem is 2D, plastic strain still occur in the transverse $zz$ direction. This will require us to keep track of the out-of-plane $zz$ components of stress/strain states.
 ```
 
-% TODO: Change to Basix elements
-
 ```{code-cell} ipython3
 deg_quad = 2  # quadrature degree for internal state variable representation
-W0e = ufl.FiniteElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    quad_scheme="default",
+W0e = basix.ufl.quadrature_element(
+    domain.basix_cell(), value_shape=(), scheme="default", degree=deg_quad
 )
-We = ufl.VectorElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    dim=4,
-    quad_scheme="default",
+We = basix.ufl.quadrature_element(
+    domain.basix_cell(), value_shape=(4,), scheme="default", degree=deg_quad
 )
 W = fem.functionspace(domain, We)
 W0 = fem.functionspace(domain, W0e)
@@ -389,7 +380,7 @@ tangent_form = ufl.inner(eps(v), sigma_tang(eps(u_))) * dx
 During the Newton-Raphson iterations, we will have to interpolate some `ufl` expressions at quadrature points to update the corresponding functions. We define the `interpolate_quadrature` function to do so. We first get the quadrature points location in the reference element and then use the `fem.Expression.eval` to evaluate the expression on all cells.
 
 ```{code-cell} ipython3
-basix_celltype = getattr(basix.CellType, domain.topology.cell_types[0].name)
+basix_celltype = getattr(basix.CellType, domain.topology.cell_type.name)
 quadrature_points, weights = basix.make_quadrature(basix_celltype, deg_quad)
 
 map_c = domain.topology.index_map(domain.topology.dim)

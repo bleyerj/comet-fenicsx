@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -84,6 +84,7 @@
 # +
 import numpy as np
 import ufl
+import basix
 
 from mpi4py import MPI
 from dolfinx import fem, io
@@ -147,9 +148,9 @@ def shear_force(u):
 
 # +
 # Definition of function space for U:displacement, T:rotation
-Ue = ufl.FiniteElement("P", domain.ufl_cell(), 2)
-Te = ufl.VectorElement("P", domain.ufl_cell(), 1)
-V = fem.functionspace(domain, ufl.MixedElement([Ue, Te]))
+Ue = basix.ufl.element("P", domain.basix_cell(), 2)
+Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(2,))
+V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 # Functions
 u = fem.Function(V, name="Unknown")

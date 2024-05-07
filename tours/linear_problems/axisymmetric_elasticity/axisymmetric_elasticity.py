@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -209,7 +209,7 @@ dx = ufl.Measure("dx", domain=domain)
 n = ufl.FacetNormal(domain)
 p = fem.Constant(domain, 10.0)
 
-V = fem.FunctionSpace(domain, ("P", 2, (gdim,)))
+V = fem.functionspace(domain, ("P", 2, (gdim,)))
 du = ufl.TrialFunction(V)
 u_ = ufl.TestFunction(V)
 a_form = ufl.inner(sigma(du), eps(u_)) * x[0] * dx

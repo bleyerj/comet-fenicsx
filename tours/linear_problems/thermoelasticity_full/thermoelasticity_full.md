@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -55,11 +55,12 @@ The problem consists of a quarter of a square plate perforated by a circular hol
 
 We first import the relevant modules.
 
-```{code-cell}
+```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from mpi4py import MPI
 import gmsh
+from mpi4py import MPI
+import basix
 import ufl
 from dolfinx import fem, mesh, io, nls
 from dolfinx.io.gmshio import model_to_mesh
@@ -70,7 +71,7 @@ import dolfinx.nls.petsc
 
 The mesh is then defined using the `gmsh` Python API.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-input]
 
 # Create mesh using gmsh
@@ -117,11 +118,13 @@ We now define the relevant function space for the considered problem. Since we w
 For an introduction on the use of mixed function spaces, check out the tutorials on the [mixed Poisson equation](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_mixed-poisson.html) or the [Stokes problem](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html) of the official documentation or the [](/intro/plates/plates.md) tour in this book.
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 # Define elements spaces
-Vue = ufl.VectorElement("CG", domain.ufl_cell(), 2)  # displacement finite element
-Vte = ufl.FiniteElement("CG", domain.ufl_cell(), 1)  # temperature finite element
-V = fem.FunctionSpace(domain, ufl.MixedElement([Vue, Vte]))
+Vue = basix.ufl.element(
+    "P", domain.basix_cell(), 2, shape=(2,)
+)  # displacement finite element
+Vte = basix.ufl.element("P", domain.basix_cell(), 1)  # temperature finite element
+V = fem.functionspace(domain, basix.ufl.mixed_element([Vue, Vte]))
 
 V_ux, _ = V.sub(0).sub(0).collapse()  # used for Dirichlet BC
 V_uy, _ = V.sub(0).sub(1).collapse()  # used for Dirichlet BC
@@ -142,7 +145,7 @@ Tref.vector.set(Tref_value)
 
 Dirichlet boundary conditions must be defined from the full FunctionSpace `V` using the appropriate subspaces that is `V.sub(0)` for the displacement (and `.sub(0)` or `.sub(1)` for the corresponding x/y component) and `V.sub(1)` for the temperature. Note also that in the following, we will in fact work with the temperature variation $\Theta = T-T_0$ as a field unkwown instead of the total temperature. Hence, the boundary condition on the hole boundary reads indeed as $\Delta T=+10^{\circ}\text{C}$ .
 
-```{code-cell}
+```{code-cell} ipython3
 inner_T_dofs = fem.locate_dofs_topological((V.sub(1), V_t), facets.dim, facets.find(1))
 bottom_uy_dofs = fem.locate_dofs_topological(
     (V.sub(0).sub(1), V_uy), facets.dim, facets.find(2)
@@ -225,7 +228,7 @@ where $V_U$ is the displacement FunctionSpace and $W_{ext}$ the linear functiona
 
 The solution of the coupled problem at $t=t_{n+1}$ is now $(\boldsymbol{u}_{n+1},T_{n+1})=(\boldsymbol{u},T)\in V_U\times V_T$ verifying {eq}`thermoelastic-thermal` and {eq}`thermoelastic-mechanical`. These two forms are implemented below with zero right-hand sides (zero Neumann BCs for both problems here). One slight modification is that the temperature unknown $T$ is replaced by the temperature variation $\Theta=T-T_0$ which appears naturally in the stress constitutive relation. Note that we use here a `NonlinearProblem` to be more general.
 
-```{code-cell}
+```{code-cell} ipython3
 v = fem.Function(V)
 (u, Theta) = ufl.split(v)
 v_ = ufl.TestFunction(V)
@@ -284,7 +287,7 @@ ksp = newton.krylov_solver
 
 The problem is now solved by looping over time increments. Because of the typical exponential time variation of temperature evolution of the heat equation, time steps are discretized on a non-uniform (logarithmic) scale. $\Delta t$ is therefore updated at each time step. Note that since we work in terms of temperature variation and not absolute temperature all fields can be initialized to zero, otherwise $T$ would have needed to be initialized to the reference temperature $T_0$.
 
-```{code-cell}
+```{code-cell} ipython3
 Nincr = 50
 t = np.logspace(1, 4, Nincr + 1)
 x = V_t.tabulate_dof_coordinates()[bottom_T_dofs, 0]  # x position of dofs
@@ -317,7 +320,7 @@ vtk_T.close()
 
 At each time increment, the variation of the temperature increase $\Theta$ along a line $(x, y=0)$ is saved in the `T_res` array. This evolution is plotted below. As expected, the temperature gradually increases over time, reaching eventually a uniform value of $+10^{\circ}\text{C}$ over infinitely long waiting time.
 
-```{code-cell}
+```{code-cell} ipython3
 t_plot = t[:: Nincr // 10]
 plt.gca().set_prop_cycle(color=plt.cm.bwr(np.linspace(0, 1, len(t_plot))))
 plt.plot(x, T_res[:, :: Nincr // 10], label=[rf"$t={ti:.1f}$" for ti in t_plot])
