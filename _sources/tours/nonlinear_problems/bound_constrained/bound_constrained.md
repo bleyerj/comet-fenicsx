@@ -187,7 +187,7 @@ We use the utility functions provided by the `TAOProblem` class to set the objec
 
 ```{code-cell} ipython3
 tao.setObjective(problem.f)
-tao.setGradient(problem.F)
+tao.setGradient(problem.F, problem.b)
 tao.setHessian(problem.J, problem.A)
 ```
 

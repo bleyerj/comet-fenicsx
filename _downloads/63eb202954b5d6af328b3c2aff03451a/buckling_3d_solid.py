@@ -154,6 +154,7 @@ Nx, Ny, Nz = 50, 5, 5
 domain = mesh.create_box(
     MPI.COMM_WORLD, [[0, 0, 0], [L, b, h]], [Nx, Ny, Nz], mesh.CellType.hexahedron
 )
+gdim = domain.geometry.dim
 # -
 
 # ### Solving for the pre-stressed state $\bu_0$
@@ -172,13 +173,13 @@ def eps(v):
 
 
 def sigma(v):
-    return lmbda * ufl.tr(eps(v)) * ufl.Identity(3) + 2 * mu * eps(v)
+    return lmbda * ufl.tr(eps(v)) * ufl.Identity(gdim) + 2 * mu * eps(v)
 
 
 # Compute the linearized unit preload
 N0 = 1
 T = fem.Constant(domain, default_scalar_type((-N0, 0, 0)))
-V = fem.functionspace(domain, ufl.VectorElement("Lagrange", domain.ufl_cell(), 2))
+V = fem.functionspace(domain, ("P", 2, (gdim,)))
 v = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 

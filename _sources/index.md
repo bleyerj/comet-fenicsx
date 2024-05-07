@@ -17,6 +17,10 @@ $\,$
 
 These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software `FEniCSx`, http://fenicsproject.org.
 
+```{important}
+These tours comply with `dolfinx` v.8.0.0.
+```
+
 This book is organized in the following different parts:
 
 ### Introduction

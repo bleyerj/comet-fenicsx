@@ -635,44 +635,14 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">deg_quad</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># quadrature degree for internal state variable representation</span>
-<span class="n">W0e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FiniteElement</span><span class="p">(</span>
-    <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
-    <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
-    <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span><span class="p">,</span>
-    <span class="n">quad_scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="n">W0e</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">quadrature_element</span><span class="p">(</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">value_shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span>
 <span class="p">)</span>
-<span class="n">We</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span>
-    <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
-    <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
-    <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span><span class="p">,</span>
-    <span class="n">dim</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">quad_scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
+<span class="n">We</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">quadrature_element</span><span class="p">(</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">value_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span>
 <span class="p">)</span>
 <span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">We</span><span class="p">)</span>
 <span class="n">W0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">W0e</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">deg_quad</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># quadrature degree for internal state variable representation</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">W0e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FiniteElement</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">quad_scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">We</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="s2">&quot;Quadrature&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">quad_scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">We</span><span class="p">)</span>
-
-<span class="ne">AttributeError</span>: module &#39;ufl&#39; has no attribute &#39;FiniteElement&#39;
 </pre></div>
 </div>
 </div>
@@ -786,7 +756,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <p>During the Newton-Raphson iterations, we will have to interpolate some <code class="docutils literal notranslate"><span class="pre">ufl</span></code> expressions at quadrature points to update the corresponding functions. We define the <code class="docutils literal notranslate"><span class="pre">interpolate_quadrature</span></code> function to do so. We first get the quadrature points location in the reference element and then use the <code class="docutils literal notranslate"><span class="pre">fem.Expression.eval</span></code> to evaluate the expression on all cells.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basix_celltype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">CellType</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">cell_types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basix_celltype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">CellType</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">cell_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="n">quadrature_points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">make_quadrature</span><span class="p">(</span><span class="n">basix_celltype</span><span class="p">,</span> <span class="n">deg_quad</span><span class="p">)</span>
 
 <span class="n">map_c</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
@@ -942,6 +912,9 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ed9dd603aad9777691824e55760a91bb1335ba003b952f528f2bd601cbf7d31a.png" src="../../../_images/ed9dd603aad9777691824e55760a91bb1335ba003b952f528f2bd601cbf7d31a.png" />
+</div>
 </div>
 <p>Finally, we also report the evolution of the number of Newton iterations as a function of the loading increments:</p>
 <div class="cell docutils container">
@@ -954,6 +927,9 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/1d101a4542ee5a038fb9aa5cc027662893950f709e070ac69e0f19c219ed557e.png" src="../../../_images/1d101a4542ee5a038fb9aa5cc027662893950f709e070ac69e0f19c219ed557e.png" />
 </div>
 </div>
 </section>

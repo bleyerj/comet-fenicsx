@@ -451,20 +451,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">7</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">plot</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
-<span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">import</span> <span class="nn">pyvista</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.3</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;pyvista&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <p>Because of the weak coupling discussed before, the thermal and mechanical problem can be solved separately. As a result, we don’t need to resort to mixed function spaces but can just define separately both problems.</p>
 </section>
@@ -499,6 +485,11 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient(FunctionSpace(Mesh(blocked element (Basix element (P, quadrilateral, 1, gll_warped, unset, False, float64, []), (2,)), 0), Basix element (P, quadrilateral, 1, gll_warped, unset, False, float64, [])), 0)
+</pre></div>
+</div>
+</div>
 </div>
 <p>We use <code class="docutils literal notranslate"><span class="pre">pyvista</span></code> to plot the corresponding temperature field:</p>
 <div class="cell docutils container">
@@ -523,6 +514,9 @@ document.write(`
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/d5afeb1f2b12912e6db2a4850a490c13a01ec19112e96343df74a5aa412a4b5a.png" src="../../../_images/d5afeb1f2b12912e6db2a4850a490c13a01ec19112e96343df74a5aa412a4b5a.png" />
 </div>
 </div>
 </section>
@@ -582,6 +576,11 @@ The main difference lies in the presence of the temperature term in the constitu
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient(FunctionSpace(Mesh(blocked element (Basix element (P, quadrilateral, 1, gll_warped, unset, False, float64, []), (2,)), 0), blocked element (Basix element (P, quadrilateral, 2, gll_warped, unset, False, float64, []), (2,))), 1)
+</pre></div>
+</div>
+</div>
 </div>
 <p>The deformed shape under thermal expansion is plotted using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>:</p>
 <div class="cell tag_hide-input docutils container">
@@ -611,6 +610,9 @@ The main difference lies in the presence of the temperature term in the constitu
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<img alt="../../../_images/91c114313dbd7e8a7b0f56a9dd1a80e9408d93f0398410051201b77c29c6993c.png" src="../../../_images/91c114313dbd7e8a7b0f56a9dd1a80e9408d93f0398410051201b77c29c6993c.png" />
+</div>
 </div>
 <p>We now take into account the self-weight.</p>
 <div class="cell docutils container">
@@ -618,6 +620,11 @@ The main difference lies in the presence of the temperature term in the constitu
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rho_g</span> <span class="o">=</span> <span class="mi">2400</span> <span class="o">*</span> <span class="mf">9.81e-6</span>
 <span class="n">f</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">rho_g</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient(FunctionSpace(Mesh(blocked element (Basix element (P, quadrilateral, 1, gll_warped, unset, False, float64, []), (2,)), 0), blocked element (Basix element (P, quadrilateral, 2, gll_warped, unset, False, float64, []), (2,))), 1)
 </pre></div>
 </div>
 </div>
@@ -647,6 +654,9 @@ The main difference lies in the presence of the temperature term in the constitu
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<img alt="../../../_images/e4b7f26bb1717d128c0d3e4b15be5f073f58cc6abb35fc840f33634f15cb282b.png" src="../../../_images/e4b7f26bb1717d128c0d3e4b15be5f073f58cc6abb35fc840f33634f15cb282b.png" />
+</div>
 </div>
 </section>
 </section>

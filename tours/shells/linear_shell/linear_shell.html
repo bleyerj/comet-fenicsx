@@ -568,6 +568,7 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 <span class="kn">import</span> <span class="nn">pyvista</span>
 <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">import</span> <span class="nn">ufl</span>
+<span class="kn">import</span> <span class="nn">basix</span>
 <span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">plot</span>
 <span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
 
@@ -589,18 +590,16 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">pyvista</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">ufl</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;pyvista&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : Reading &#39;I_beam.msh&#39;...
+Info    : 38 entities
+Info    : 612 nodes
+Info    : 1122 elements
+Info    : Done reading &#39;I_beam.msh&#39;
+Geometrical dimension = 3
+Topological dimension = 2
 </pre></div>
 </div>
+<img alt="../../../_images/cd82b6e203ea342364ad715fd8232cd736fc134244ba021ea2a0b13fba43454b.png" src="../../../_images/cd82b6e203ea342364ad715fd8232cd736fc134244ba021ea2a0b13fba43454b.png" />
 </div>
 </div>
 <p>We then define the corresponding physical parameters. In particular, we consider here a uniformly distributed loading of unit intensity along the downward global <span class="math notranslate nohighlight">\(Z\)</span> direction and of intensity 0.2 along the <span class="math notranslate nohighlight">\(Y\)</span> direction perpendicular to the arch plane in order to induce a combined bending and twisting deflection mode.</p>
@@ -682,12 +681,12 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 </section>
 <section id="function-space-choice-and-strain-measures">
 <h3>Function space choice and strain measures<a class="headerlink" href="#function-space-choice-and-strain-measures" title="Link to this heading">#</a></h3>
-<p>We now use the afore-mentioned <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code>interpolation for the displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the rotation <span class="math notranslate nohighlight">\(\btheta\)</span> variables using a <code class="docutils literal notranslate"><span class="pre">MixedElement</span></code>.</p>
+<p>We now use the afore-mentioned <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code>interpolation for the displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the rotation <span class="math notranslate nohighlight">\(\btheta\)</span> variables using a mixed element.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ue</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">gdim</span><span class="p">)</span>
-<span class="n">Te</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">VectorElement</span><span class="p">(</span><span class="s2">&quot;CR&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">ufl_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">gdim</span><span class="p">)</span>
-<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">ufl</span><span class="o">.</span><span class="n">MixedElement</span><span class="p">([</span><span class="n">Ue</span><span class="p">,</span> <span class="n">Te</span><span class="p">]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ue</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,))</span>  <span class="c1"># displacement finite element</span>
+<span class="n">Te</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;CR&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,))</span> <span class="c1"># rotation finite element</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">mixed_element</span><span class="p">([</span><span class="n">Ue</span><span class="p">,</span> <span class="n">Te</span><span class="p">]))</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">u</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -812,6 +811,11 @@ between planar shell facets which have a different normal vector. In our impleme
     <span class="n">a</span><span class="p">,</span> <span class="n">Wext</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">}</span>
 <span class="p">)</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient(FunctionSpace(Mesh(blocked element (Basix element (P, triangle, 1, equispaced, unset, False, float64, []), (3,)), 0), mixed element (blocked element (Basix element (P, triangle, 2, gll_warped, unset, False, float64, []), (3,)), blocked element (Basix element (CR, triangle, 1, unset, unset, False, float64, []), (3,)))), 3)
 </pre></div>
 </div>
 </div>

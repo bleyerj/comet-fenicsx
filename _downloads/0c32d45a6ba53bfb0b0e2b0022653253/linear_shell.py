@@ -222,6 +222,7 @@ from pathlib import Path
 import pyvista
 from mpi4py import MPI
 import ufl
+import basix
 from dolfinx import mesh, fem, io, plot
 import dolfinx.fem.petsc
 
@@ -322,12 +323,12 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
 #
 # ### Function space choice and strain measures
 #
-# We now use the afore-mentioned `P2/CR`interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a `MixedElement`.
+# We now use the afore-mentioned `P2/CR`interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
 # +
-Ue = ufl.VectorElement("P", domain.ufl_cell(), 2, dim=gdim)
-Te = ufl.VectorElement("CR", domain.ufl_cell(), 1, dim=gdim)
-V = fem.functionspace(domain, ufl.MixedElement([Ue, Te]))
+Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))  # displacement finite element
+Te = basix.ufl.element("CR", domain.basix_cell(), 1, shape=(gdim,)) # rotation finite element
+V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 v = fem.Function(V)
 u, theta = ufl.split(v)

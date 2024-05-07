@@ -179,7 +179,7 @@ tao.getKSP().getPC().setType("lu")
 # We use the utility functions provided by the `TAOProblem` class to set the objective, the gradient and the Hessian.
 
 tao.setObjective(problem.f)
-tao.setGradient(problem.F)
+tao.setGradient(problem.F, problem.b)
 tao.setHessian(problem.J, problem.A)
 
 # Finally, we set the corresponding variable bounds and we also prescribe some stopping tolerances where:

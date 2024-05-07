@@ -81,9 +81,10 @@ $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat
 
 We first load relevant modules and functions and generate a unit square mesh of triangles.
 
-```{code-cell}
+```{code-cell} ipython3
 import numpy as np
 import ufl
+import basix
 
 from mpi4py import MPI
 from dolfinx import fem, io
@@ -104,7 +105,7 @@ domain = create_unit_square(
 
 Next we define material properties and functions which will be used for defining the variational formulation.
 
-```{code-cell}
+```{code-cell} ipython3
 # material parameters
 thick = 0.05
 E = 210.0e3
@@ -143,11 +144,11 @@ def shear_force(u):
 
 Now we define the corresponding function space. Our dofs are $w$ and $\btheta$, so the full function space $V$ will be a **mixed** function space consisting of a scalar subspace related to $w$ and a vectorial subspace related to $\btheta$. We first use a continuous $P^2$ interpolation for $w$ and a continuous $P^1$ interpolation for $\btheta$. We then define the corresponding linear and bilinear forms.
 
-```{code-cell}
+```{code-cell} ipython3
 # Definition of function space for U:displacement, T:rotation
-Ue = ufl.FiniteElement("P", domain.ufl_cell(), 2)
-Te = ufl.VectorElement("P", domain.ufl_cell(), 1)
-V = fem.functionspace(domain, ufl.MixedElement([Ue, Te]))
+Ue = basix.ufl.element("P", domain.basix_cell(), 2)
+Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(2,))
+V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 # Functions
 u = fem.Function(V, name="Unknown")
@@ -166,7 +167,7 @@ a = (
 
 Boundary conditions are now defined. We consider a fully clamped boundary. Note that since we are using a mixed function space, we cannnot use the `locate_dofs_geometrical` function. Instead, we locate the facets on the boundary using `dolfinx.mesh.locate_entities_boundary`. Then we locate the dofs on such facets using `locate_dofs_topological`.
 
-```{code-cell}
+```{code-cell} ipython3
 # Boundary of the plate
 def border(x):
     return np.logical_or(
@@ -189,7 +190,7 @@ $$
 w_\text{LK} = 1.265319087.10^{-3} \dfrac{f}{\mathsf{D}}
 $$
 
-```{code-cell}
+```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
     a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
 )
@@ -211,7 +212,7 @@ This simple formulation may suffer from **shear locking** issues in the thin pla
 
 We can plot the plate deflection $w$ and the rotation vector $\boldsymbol{\beta} = \boldsymbol{e}_z\times \btheta$ using `pyvista`. $\boldsymbol{\beta}$ represents the axis vector around which the plate is rotating.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-input]
 
 import pyvista
@@ -257,7 +258,7 @@ plotter.show()
 
 Now we define the form corresponding to the definition of the mass matrix and we assemble the stiffness and mass forms into corresponding PETSc matrix objects. We use a value of 1 on the diagonal for K and 0 for M for the rows corresponding to the boundary conditions. Doing so, eigenvalues associated to boundary conditions are equal to infinity and will not pollute the low-frequency spectrum.
 
-```{code-cell}
+```{code-cell} ipython3
 rho = fem.Constant(domain, 2700.0)
 m_form = rho * thick * ufl.dot(du, u_) * dx
 
@@ -270,7 +271,7 @@ M.assemble()
 We now use `slepc4py` to define a eigenvalue solver (EPS -- *Eigenvalue Problem Solver* -- in SLEPc vocable) and solve the corresponding generalized eigenvalue problem. Functions defined in {Download}`eigenvalue_solver.py<./eigenvalue_solver.py>`
 enable to define the corresponding objects, set up the parameters, monitor the resolution and extract the corresponding eigenpairs. Here the problem is of type `GHEP` (Generalized Hermitian eigenproblem) and we use a shift-invert transform to compute the smallest eigenvalues.
 
-```{code-cell}
+```{code-cell} ipython3
 from slepc4py import SLEPc
 from eigenvalue_solver import solve_GEP_shiftinvert, EPS_get_spectrum
 
@@ -294,7 +295,7 @@ with io.VTKFile(domain.comm, "plates_eigenvalues.xdmf", "w") as vtk:
 
 The eigenmodes look as follows using `pyvista`:
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-input]
 
 w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)

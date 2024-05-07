@@ -84,6 +84,7 @@
 # +
 import numpy as np
 import ufl
+import basix
 
 from mpi4py import MPI
 from dolfinx import fem, io
@@ -147,9 +148,9 @@ def shear_force(u):
 
 # +
 # Definition of function space for U:displacement, T:rotation
-Ue = ufl.FiniteElement("P", domain.ufl_cell(), 2)
-Te = ufl.VectorElement("P", domain.ufl_cell(), 1)
-V = fem.functionspace(domain, ufl.MixedElement([Ue, Te]))
+Ue = basix.ufl.element("P", domain.basix_cell(), 2)
+Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(2,))
+V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 # Functions
 u = fem.Function(V, name="Unknown")

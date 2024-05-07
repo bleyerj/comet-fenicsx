@@ -58,8 +58,9 @@
 # +
 import matplotlib.pyplot as plt
 import numpy as np
-from mpi4py import MPI
 import gmsh
+from mpi4py import MPI
+import basix
 import ufl
 from dolfinx import fem, mesh, io, nls
 from dolfinx.io.gmshio import model_to_mesh
@@ -117,9 +118,11 @@ gmsh.finalize()
 
 # +
 # Define elements spaces
-Vue = ufl.VectorElement("CG", domain.ufl_cell(), 2)  # displacement finite element
-Vte = ufl.FiniteElement("CG", domain.ufl_cell(), 1)  # temperature finite element
-V = fem.functionspace(domain, ufl.MixedElement([Vue, Vte]))
+Vue = basix.ufl.element(
+    "P", domain.basix_cell(), 2, shape=(2,)
+)  # displacement finite element
+Vte = basix.ufl.element("P", domain.basix_cell(), 1)  # temperature finite element
+V = fem.functionspace(domain, basix.ufl.mixed_element([Vue, Vte]))
 
 V_ux, _ = V.sub(0).sub(0).collapse()  # used for Dirichlet BC
 V_uy, _ = V.sub(0).sub(1).collapse()  # used for Dirichlet BC
