@@ -1,0 +1,269 @@
+Traceback (most recent call last):
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+import matplotlib.pyplot as plt
+
+from mpi4py import MPI
+import ufl
+import basix
+from dolfinx import mesh, fem, io
+from dolfinx.common import Timer
+from solvers import CustomLinearProblem, CustomNewtonSolver
+import jax
+import jax.numpy as jnp
+
+jax.config.update("jax_enable_x64", True)  # use double-precision
+
+length, height = 0.1, 0.2
+N = 20
+domain = mesh.create_rectangle(
+    MPI.COMM_WORLD,
+    ((0.0, 0.0), (length, height)),
+    (N, N),
+    ghost_mode=mesh.GhostMode.none,
+)
+gdim = domain.geometry.dim
+
+deg_u = 2
+shape = (gdim,)
+V = fem.functionspace(domain, ("P", deg_u, shape))
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+File [0;32m~/.local/lib/python3.12/site-packages/jax/_src/lib/__init__.py:26[0m
+[1;32m     25[0m [38;5;28;01mtry[39;00m:
+[0;32m---> 26[0m   [38;5;28;01mimport[39;00m [38;5;21;01mjaxlib[39;00m [38;5;28;01mas[39;00m [38;5;21;01mjaxlib[39;00m
+[1;32m     27[0m [38;5;28;01mexcept[39;00m [38;5;167;01mModuleNotFoundError[39;00m [38;5;28;01mas[39;00m err:
+
+[0;31mModuleNotFoundError[0m: No module named 'jaxlib'
+
+The above exception was the direct cause of the following exception:
+
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [0;32mIn[1], line 10[0m
+[1;32m      8[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdolfinx[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcommon[39;00m [38;5;28;01mimport[39;00m Timer
+[1;32m      9[0m [38;5;28;01mfrom[39;00m [38;5;21;01msolvers[39;00m [38;5;28;01mimport[39;00m CustomLinearProblem, CustomNewtonSolver
+[0;32m---> 10[0m [38;5;28;01mimport[39;00m [38;5;21;01mjax[39;00m
+[1;32m     11[0m [38;5;28;01mimport[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mjnp[39;00m
+[1;32m     13[0m jax[38;5;241m.[39mconfig[38;5;241m.[39mupdate([38;5;124m"[39m[38;5;124mjax_enable_x64[39m[38;5;124m"[39m, [38;5;28;01mTrue[39;00m)  [38;5;66;03m# use double-precision[39;00m
+
+File [0;32m~/.local/lib/python3.12/site-packages/jax/__init__.py:37[0m
+[1;32m     34[0m [38;5;28;01mdel[39;00m _cloud_tpu_init
+[1;32m     36[0m [38;5;66;03m# Force early import, allowing use of `jax.core` after importing `jax`.[39;00m
+[0;32m---> 37[0m [38;5;28;01mimport[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcore[39;00m [38;5;28;01mas[39;00m [38;5;21;01m_core[39;00m
+[1;32m     38[0m [38;5;28;01mdel[39;00m _core
+[1;32m     40[0m [38;5;66;03m# Note: import <name> as <name> is required for names to be exported.[39;00m
+[1;32m     41[0m [38;5;66;03m# See PEP 484 & https://github.com/google/jax/issues/7570[39;00m
+
+File [0;32m~/.local/lib/python3.12/site-packages/jax/core.py:18[0m
+[1;32m      1[0m [38;5;66;03m# Copyright 2022 The JAX Authors.[39;00m
+[1;32m      2[0m [38;5;66;03m#[39;00m
+[1;32m      3[0m [38;5;66;03m# Licensed under the Apache License, Version 2.0 (the "License");[39;00m
+[0;32m   (...)[0m
+[1;32m     15[0m [38;5;66;03m# Note: import <name> as <name> is required for names to be exported.[39;00m
+[1;32m     16[0m [38;5;66;03m# See PEP 484 & https://github.com/google/jax/issues/7570[39;00m
+[0;32m---> 18[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcore[39;00m [38;5;28;01mimport[39;00m (
+[1;32m     19[0m   AbstractToken [38;5;28;01mas[39;00m AbstractToken,
+[1;32m     20[0m   AbstractValue [38;5;28;01mas[39;00m AbstractValue,
+[1;32m     21[0m   Atom [38;5;28;01mas[39;00m Atom,
+[1;32m     22[0m   AxisSize [38;5;28;01mas[39;00m AxisSize,
+[1;32m     23[0m   CallPrimitive [38;5;28;01mas[39;00m CallPrimitive,
+[1;32m     24[0m   ClosedJaxpr [38;5;28;01mas[39;00m ClosedJaxpr,
+[1;32m     25[0m   ConcreteArray [38;5;28;01mas[39;00m ConcreteArray,
+[1;32m     26[0m   ConcretizationTypeError [38;5;28;01mas[39;00m ConcretizationTypeError,
+[1;32m     27[0m   DShapedArray [38;5;28;01mas[39;00m DShapedArray,
+[1;32m     28[0m   DropVar [38;5;28;01mas[39;00m DropVar,
+[1;32m     29[0m   Effect [38;5;28;01mas[39;00m Effect,
+[1;32m     30[0m   Effects [38;5;28;01mas[39;00m Effects,
+[1;32m     31[0m   EvalTrace [38;5;28;01mas[39;00m EvalTrace,
+[1;32m     32[0m   InDBIdx [38;5;28;01mas[39;00m InDBIdx,
+[1;32m     33[0m   InconclusiveDimensionOperation [38;5;28;01mas[39;00m InconclusiveDimensionOperation,
+[1;32m     34[0m   InputType [38;5;28;01mas[39;00m InputType,
+[1;32m     35[0m   Jaxpr [38;5;28;01mas[39;00m Jaxpr,
+[1;32m     36[0m   JaxprDebugInfo [38;5;28;01mas[39;00m JaxprDebugInfo,
+[1;32m     37[0m   JaxprEqn [38;5;28;01mas[39;00m JaxprEqn,
+[1;32m     38[0m   JaxprPpContext [38;5;28;01mas[39;00m JaxprPpContext,
+[1;32m     39[0m   JaxprPpSettings [38;5;28;01mas[39;00m JaxprPpSettings,
+[1;32m     40[0m   JaxprTypeError [38;5;28;01mas[39;00m JaxprTypeError,
+[1;32m     41[0m   Literal [38;5;28;01mas[39;00m Literal,
+[1;32m     42[0m   MainTrace [38;5;28;01mas[39;00m MainTrace,
+[1;32m     43[0m   MapPrimitive [38;5;28;01mas[39;00m MapPrimitive,
+[1;32m     44[0m   NameGatheringSubst [38;5;28;01mas[39;00m NameGatheringSubst,
+[1;32m     45[0m   NamedShape [38;5;28;01mas[39;00m NamedShape,
+[1;32m     46[0m   OutDBIdx [38;5;28;01mas[39;00m OutDBIdx,
+[1;32m     47[0m   OutputType [38;5;28;01mas[39;00m OutputType,
+[1;32m     48[0m   ParamDict [38;5;28;01mas[39;00m ParamDict,
+[1;32m     49[0m   Primitive [38;5;28;01mas[39;00m Primitive,
+[1;32m     50[0m   ShapedArray [38;5;28;01mas[39;00m ShapedArray,
+[1;32m     51[0m   Sublevel [38;5;28;01mas[39;00m Sublevel,
+[1;32m     52[0m   TRACER_LEAK_DEBUGGER_WARNING [38;5;28;01mas[39;00m TRACER_LEAK_DEBUGGER_WARNING,
+[1;32m     53[0m   ThreadLocalState [38;5;28;01mas[39;00m ThreadLocalState,
+[1;32m     54[0m   Token [38;5;28;01mas[39;00m Token,
+[1;32m     55[0m   Trace [38;5;28;01mas[39;00m Trace,
+[1;32m     56[0m   TraceStack [38;5;28;01mas[39;00m TraceStack,
+[1;32m     57[0m   TraceState [38;5;28;01mas[39;00m TraceState,
+[1;32m     58[0m   Tracer [38;5;28;01mas[39;00m Tracer,
+[1;32m     59[0m   UnshapedArray [38;5;28;01mas[39;00m UnshapedArray,
+[1;32m     60[0m   Value [38;5;28;01mas[39;00m Value,
+[1;32m     61[0m   Var [38;5;28;01mas[39;00m Var,
+[1;32m     62[0m   abstract_token [38;5;28;01mas[39;00m abstract_token,
+[1;32m     63[0m   apply_todos [38;5;28;01mas[39;00m apply_todos,
+[1;32m     64[0m   as_named_shape [38;5;28;01mas[39;00m as_named_shape,
+[1;32m     65[0m   aval_mapping_handlers [38;5;28;01mas[39;00m aval_mapping_handlers,
+[1;32m     66[0m   axis_frame [38;5;28;01mas[39;00m axis_frame,
+[1;32m     67[0m   call [38;5;28;01mas[39;00m call,
+[1;32m     68[0m   call_bind_with_continuation [38;5;28;01mas[39;00m call_bind_with_continuation,
+[1;32m     69[0m   call_impl [38;5;28;01mas[39;00m call_impl,
+[1;32m     70[0m   call_p [38;5;28;01mas[39;00m call_p,
+[1;32m     71[0m   canonicalize_shape [38;5;28;01mas[39;00m _deprecated_canonicalize_shape,
+[1;32m     72[0m   check_eqn [38;5;28;01mas[39;00m check_eqn,
+[1;32m     73[0m   check_jaxpr [38;5;28;01mas[39;00m check_jaxpr,
+[1;32m     74[0m   check_type [38;5;28;01mas[39;00m check_type,
+[1;32m     75[0m   check_valid_jaxtype [38;5;28;01mas[39;00m check_valid_jaxtype,
+[1;32m     76[0m   closed_call_p [38;5;28;01mas[39;00m closed_call_p,
+[1;32m     77[0m   concrete_aval [38;5;28;01mas[39;00m concrete_aval,
+[1;32m     78[0m   concrete_or_error [38;5;28;01mas[39;00m concrete_or_error,
+[1;32m     79[0m   concretization_function_error [38;5;28;01mas[39;00m concretization_function_error,
+[1;32m     80[0m   cur_sublevel [38;5;28;01mas[39;00m cur_sublevel,
+[1;32m     81[0m   custom_typechecks [38;5;28;01mas[39;00m custom_typechecks,
+[1;32m     82[0m   dedup_referents [38;5;28;01mas[39;00m dedup_referents,
+[1;32m     83[0m   definitely_equal [38;5;28;01mas[39;00m _deprecated_definitely_equal,
+[1;32m     84[0m   dimension_as_value [38;5;28;01mas[39;00m _deprecated_dimension_as_value,
+[1;32m     85[0m   do_subst_axis_names_jaxpr [38;5;28;01mas[39;00m do_subst_axis_names_jaxpr,
+[1;32m     86[0m   ensure_compile_time_eval [38;5;28;01mas[39;00m ensure_compile_time_eval,
+[1;32m     87[0m   escaped_tracer_error [38;5;28;01mas[39;00m escaped_tracer_error,
+[1;32m     88[0m   eval_context [38;5;28;01mas[39;00m eval_context,
+[1;32m     89[0m   eval_jaxpr [38;5;28;01mas[39;00m eval_jaxpr,
+[1;32m     90[0m   extend_axis_env [38;5;28;01mas[39;00m extend_axis_env,
+[1;32m     91[0m   extend_axis_env_nd [38;5;28;01mas[39;00m extend_axis_env_nd,
+[1;32m     92[0m   find_top_trace [38;5;28;01mas[39;00m find_top_trace,
+[1;32m     93[0m   full_lower [38;5;28;01mas[39;00m full_lower,
+[1;32m     94[0m   gensym [38;5;28;01mas[39;00m gensym,
+[1;32m     95[0m   get_aval [38;5;28;01mas[39;00m get_aval,
+[1;32m     96[0m   get_referent [38;5;28;01mas[39;00m get_referent,
+[1;32m     97[0m   is_constant_dim [38;5;28;01mas[39;00m is_constant_dim,
+[1;32m     98[0m   is_constant_shape [38;5;28;01mas[39;00m is_constant_shape,
+[1;32m     99[0m   jaxpr_as_fun [38;5;28;01mas[39;00m jaxpr_as_fun,
+[1;32m    100[0m   jaxpr_uses_outfeed [38;5;28;01mas[39;00m jaxpr_uses_outfeed,
+[1;32m    101[0m   jaxprs_in_params [38;5;28;01mas[39;00m jaxprs_in_params,
+[1;32m    102[0m   join_effects [38;5;28;01mas[39;00m join_effects,
+[1;32m    103[0m   join_named_shapes [38;5;28;01mas[39;00m join_named_shapes,
+[1;32m    104[0m   lattice_join [38;5;28;01mas[39;00m lattice_join,
+[1;32m    105[0m   leaked_tracer_error [38;5;28;01mas[39;00m leaked_tracer_error,
+[1;32m    106[0m   literalable_types [38;5;28;01mas[39;00m literalable_types,
+[1;32m    107[0m   map_bind [38;5;28;01mas[39;00m map_bind,
+[1;32m    108[0m   map_bind_with_continuation [38;5;28;01mas[39;00m map_bind_with_continuation,
+[1;32m    109[0m   mapped_aval [38;5;28;01mas[39;00m mapped_aval,
+[1;32m    110[0m   maybe_find_leaked_tracers [38;5;28;01mas[39;00m maybe_find_leaked_tracers,
+[1;32m    111[0m   max_dim [38;5;28;01mas[39;00m max_dim,
+[1;32m    112[0m   min_dim [38;5;28;01mas[39;00m min_dim,
+[1;32m    113[0m   new_base_main [38;5;28;01mas[39;00m new_base_main,
+[1;32m    114[0m   new_jaxpr_eqn [38;5;28;01mas[39;00m new_jaxpr_eqn,
+[1;32m    115[0m   new_main [38;5;28;01mas[39;00m new_main,
+[1;32m    116[0m   new_sublevel [38;5;28;01mas[39;00m new_sublevel,
+[1;32m    117[0m   no_axis_name [38;5;28;01mas[39;00m no_axis_name,
+[1;32m    118[0m   no_effects [38;5;28;01mas[39;00m no_effects,
+[1;32m    119[0m   non_negative_dim [38;5;28;01mas[39;00m _deprecated_non_negative_dim,
+[1;32m    120[0m   outfeed_primitives [38;5;28;01mas[39;00m outfeed_primitives,
+[1;32m    121[0m   pp_aval [38;5;28;01mas[39;00m pp_aval,
+[1;32m    122[0m   pp_eqn [38;5;28;01mas[39;00m pp_eqn,
+[1;32m    123[0m   pp_eqn_rules [38;5;28;01mas[39;00m pp_eqn_rules,
+[1;32m    124[0m   pp_eqns [38;5;28;01mas[39;00m pp_eqns,
+[1;32m    125[0m   pp_jaxpr [38;5;28;01mas[39;00m pp_jaxpr,
+[1;32m    126[0m   pp_jaxpr_eqn_range [38;5;28;01mas[39;00m pp_jaxpr_eqn_range,
+[1;32m    127[0m   pp_jaxpr_skeleton [38;5;28;01mas[39;00m pp_jaxpr_skeleton,
+[1;32m    128[0m   pp_jaxprs [38;5;28;01mas[39;00m pp_jaxprs,
+[1;32m    129[0m   pp_kv_pair [38;5;28;01mas[39;00m pp_kv_pair,
+[1;32m    130[0m   pp_kv_pairs [38;5;28;01mas[39;00m pp_kv_pairs,
+[1;32m    131[0m   pp_var [38;5;28;01mas[39;00m pp_var,
+[1;32m    132[0m   pp_vars [38;5;28;01mas[39;00m pp_vars,
+[1;32m    133[0m   primal_dtype_to_tangent_dtype [38;5;28;01mas[39;00m primal_dtype_to_tangent_dtype,
+[1;32m    134[0m   primitive_uses_outfeed [38;5;28;01mas[39;00m primitive_uses_outfeed,
+[1;32m    135[0m   process_env_traces_call [38;5;28;01mas[39;00m process_env_traces_call,
+[1;32m    136[0m   process_env_traces_map [38;5;28;01mas[39;00m process_env_traces_map,
+[1;32m    137[0m   pytype_aval_mappings [38;5;28;01mas[39;00m pytype_aval_mappings,
+[1;32m    138[0m   raise_as_much_as_possible [38;5;28;01mas[39;00m raise_as_much_as_possible,
+[1;32m    139[0m   raise_to_shaped [38;5;28;01mas[39;00m raise_to_shaped,
+[1;32m    140[0m   raise_to_shaped_mappings [38;5;28;01mas[39;00m raise_to_shaped_mappings,
+[1;32m    141[0m   reset_trace_state [38;5;28;01mas[39;00m reset_trace_state,
+[1;32m    142[0m   stash_axis_env [38;5;28;01mas[39;00m stash_axis_env,
+[1;32m    143[0m   str_eqn_compact [38;5;28;01mas[39;00m str_eqn_compact,
+[1;32m    144[0m   subjaxprs [38;5;28;01mas[39;00m subjaxprs,
+[1;32m    145[0m   subst_axis_names [38;5;28;01mas[39;00m subst_axis_names,
+[1;32m    146[0m   subst_axis_names_eqn [38;5;28;01mas[39;00m subst_axis_names_eqn,
+[1;32m    147[0m   subst_axis_names_jaxpr [38;5;28;01mas[39;00m subst_axis_names_jaxpr,
+[1;32m    148[0m   subst_axis_names_var [38;5;28;01mas[39;00m subst_axis_names_var,
+[1;32m    149[0m   substitute_vars_in_output_ty [38;5;28;01mas[39;00m substitute_vars_in_output_ty,
+[1;32m    150[0m   thread_local_state [38;5;28;01mas[39;00m thread_local_state,
+[1;32m    151[0m   token [38;5;28;01mas[39;00m token,
+[1;32m    152[0m   trace_state_clean [38;5;28;01mas[39;00m trace_state_clean,
+[1;32m    153[0m   traverse_jaxpr_params [38;5;28;01mas[39;00m traverse_jaxpr_params,
+[1;32m    154[0m   typecheck [38;5;28;01mas[39;00m typecheck,
+[1;32m    155[0m   typecompat [38;5;28;01mas[39;00m typecompat,
+[1;32m    156[0m   typematch [38;5;28;01mas[39;00m typematch,
+[1;32m    157[0m   unmapped_aval [38;5;28;01mas[39;00m unmapped_aval,
+[1;32m    158[0m   used_axis_names [38;5;28;01mas[39;00m used_axis_names,
+[1;32m    159[0m   used_axis_names_jaxpr [38;5;28;01mas[39;00m used_axis_names_jaxpr,
+[1;32m    160[0m   valid_jaxtype [38;5;28;01mas[39;00m valid_jaxtype,
+[1;32m    161[0m )
+[1;32m    164[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m [38;5;28;01mimport[39;00m core [38;5;28;01mas[39;00m _src_core
+[1;32m    165[0m _deprecations [38;5;241m=[39m {
+[1;32m    166[0m     [38;5;66;03m# Added Oct 11, 2023:[39;00m
+[1;32m    167[0m     [38;5;124m"[39m[38;5;124mDimSize[39m[38;5;124m"[39m: (
+[0;32m   (...)[0m
+[1;32m    191[0m     ),
+[1;32m    192[0m }
+
+File [0;32m~/.local/lib/python3.12/site-packages/jax/_src/core.py:39[0m
+[1;32m     35[0m [38;5;28;01mfrom[39;00m [38;5;21;01mweakref[39;00m [38;5;28;01mimport[39;00m ref
+[1;32m     37[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[0;32m---> 39[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m [38;5;28;01mimport[39;00m dtypes
+[1;32m     40[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m [38;5;28;01mimport[39;00m config
+[1;32m     41[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m [38;5;28;01mimport[39;00m effects
+
+File [0;32m~/.local/lib/python3.12/site-packages/jax/_src/dtypes.py:33[0m
+[1;32m     30[0m [38;5;28;01mimport[39;00m [38;5;21;01mml_dtypes[39;00m
+[1;32m     31[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
+[0;32m---> 33[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m [38;5;28;01mimport[39;00m config
+[1;32m     34[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m[38;5;21;01m.[39;00m[38;5;21;01mtyping[39;00m [38;5;28;01mimport[39;00m DType, DTypeLike
+[1;32m     35[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m[38;5;21;01m.[39;00m[38;5;21;01mutil[39;00m [38;5;28;01mimport[39;00m set_module, StrictABC
+
+File [0;32m~/.local/lib/python3.12/site-packages/jax/_src/config.py:27[0m
+[1;32m     24[0m [38;5;28;01mimport[39;00m [38;5;21;01mthreading[39;00m
+[1;32m     25[0m [38;5;28;01mfrom[39;00m [38;5;21;01mtyping[39;00m [38;5;28;01mimport[39;00m Any, Callable, Generic, NamedTuple, NoReturn, TypeVar, cast
+[0;32m---> 27[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m [38;5;28;01mimport[39;00m lib
+[1;32m     28[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlib[39;00m [38;5;28;01mimport[39;00m jax_jit
+[1;32m     29[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01m_src[39;00m[38;5;21;01m.[39;00m[38;5;21;01mlib[39;00m [38;5;28;01mimport[39;00m transfer_guard_lib
+
+File [0;32m~/.local/lib/python3.12/site-packages/jax/_src/lib/__init__.py:28[0m
+[1;32m     26[0m   [38;5;28;01mimport[39;00m [38;5;21;01mjaxlib[39;00m [38;5;28;01mas[39;00m [38;5;21;01mjaxlib[39;00m
+[1;32m     27[0m [38;5;28;01mexcept[39;00m [38;5;167;01mModuleNotFoundError[39;00m [38;5;28;01mas[39;00m err:
+[0;32m---> 28[0m   [38;5;28;01mraise[39;00m [38;5;167;01mModuleNotFoundError[39;00m(
+[1;32m     29[0m     [38;5;124m'[39m[38;5;124mjax requires jaxlib to be installed. See [39m[38;5;124m'[39m
+[1;32m     30[0m     [38;5;124m'[39m[38;5;124mhttps://github.com/google/jax#installation for installation instructions.[39m[38;5;124m'[39m
+[1;32m     31[0m     ) [38;5;28;01mfrom[39;00m [38;5;21;01merr[39;00m
+[1;32m     33[0m [38;5;28;01mimport[39;00m jax[38;5;241m.[39mversion
+[1;32m     34[0m [38;5;28;01mfrom[39;00m [38;5;21;01mjax[39;00m[38;5;21;01m.[39;00m[38;5;21;01mversion[39;00m [38;5;28;01mimport[39;00m _minimum_jaxlib_version [38;5;28;01mas[39;00m _minimum_jaxlib_version_str
+
+[0;31mModuleNotFoundError[0m: jax requires jaxlib to be installed. See https://github.com/google/jax#installation for installation instructions.
+

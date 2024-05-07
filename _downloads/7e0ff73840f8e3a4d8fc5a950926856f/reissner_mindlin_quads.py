@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.1
 # ---
 
 # # Shear-locking in thick plate models with quadrilateral elements  {far}`star`

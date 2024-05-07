@@ -1,0 +1,53 @@
+Traceback (most recent call last):
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# Define elements spaces
+Vue = ufl.VectorElement("CG", domain.ufl_cell(), 2)  # displacement finite element
+Vte = ufl.FiniteElement("CG", domain.ufl_cell(), 1)  # temperature finite element
+V = fem.functionspace(domain, ufl.MixedElement([Vue, Vte]))
+
+V_ux, _ = V.sub(0).sub(0).collapse()  # used for Dirichlet BC
+V_uy, _ = V.sub(0).sub(1).collapse()  # used for Dirichlet BC
+V_t, _ = V.sub(1).collapse()  # used for Dirichlet BC
+
+
+# Define problem constants
+Tref_value = fem.Constant(domain, 293.15)
+DThole_value = 10.0
+dt = fem.Constant(domain, 0.0)  # time step
+
+DThole = fem.Function(V_t)
+DThole.vector.set(DThole_value)
+
+Tref = fem.Function(V_t)
+Tref.vector.set(Tref_value)
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[3], line 2[0m
+[1;32m      1[0m [38;5;66;03m# Define elements spaces[39;00m
+[0;32m----> 2[0m Vue [38;5;241m=[39m [43mufl[49m[38;5;241;43m.[39;49m[43mVectorElement[49m([38;5;124m"[39m[38;5;124mCG[39m[38;5;124m"[39m, domain[38;5;241m.[39mufl_cell(), [38;5;241m2[39m)  [38;5;66;03m# displacement finite element[39;00m
+[1;32m      3[0m Vte [38;5;241m=[39m ufl[38;5;241m.[39mFiniteElement([38;5;124m"[39m[38;5;124mCG[39m[38;5;124m"[39m, domain[38;5;241m.[39mufl_cell(), [38;5;241m1[39m)  [38;5;66;03m# temperature finite element[39;00m
+[1;32m      4[0m V [38;5;241m=[39m fem[38;5;241m.[39mfunctionspace(domain, ufl[38;5;241m.[39mMixedElement([Vue, Vte]))
+
+[0;31mAttributeError[0m: module 'ufl' has no attribute 'VectorElement'
+

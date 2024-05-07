@@ -1,0 +1,54 @@
+Traceback (most recent call last):
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import numpy as np
+from ufl import sym, grad, Identity, tr, inner, Measure, TestFunction, TrialFunction
+
+from mpi4py import MPI
+
+from dolfinx import fem, io
+import dolfinx.fem.petsc
+from dolfinx.mesh import create_rectangle, CellType
+
+length, height = 10, 1.0
+Nx, Ny = 50, 5
+domain = create_rectangle(
+    MPI.COMM_WORLD,
+    [np.array([0, 0]), np.array([length, height])],
+    [Nx, Ny],
+    cell_type=CellType.quadrilateral,
+)
+
+dim = domain.topology.dim
+print(f"Mesh topology dimension d={dim}.")
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+Cell [0;32mIn[1], line 6[0m
+[1;32m      2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mufl[39;00m [38;5;28;01mimport[39;00m sym, grad, Identity, tr, inner, Measure, TestFunction, TrialFunction
+[1;32m      4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mmpi4py[39;00m [38;5;28;01mimport[39;00m MPI
+[0;32m----> 6[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdolfinx[39;00m [38;5;28;01mimport[39;00m fem, io
+[1;32m      7[0m [38;5;28;01mimport[39;00m [38;5;21;01mdolfinx[39;00m[38;5;21;01m.[39;00m[38;5;21;01mfem[39;00m[38;5;21;01m.[39;00m[38;5;21;01mpetsc[39;00m
+[1;32m      8[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdolfinx[39;00m[38;5;21;01m.[39;00m[38;5;21;01mmesh[39;00m [38;5;28;01mimport[39;00m create_rectangle, CellType
+
+[0;31mModuleNotFoundError[0m: No module named 'dolfinx'
+

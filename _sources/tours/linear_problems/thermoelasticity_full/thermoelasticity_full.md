@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -121,7 +121,7 @@ For an introduction on the use of mixed function spaces, check out the tutorials
 # Define elements spaces
 Vue = ufl.VectorElement("CG", domain.ufl_cell(), 2)  # displacement finite element
 Vte = ufl.FiniteElement("CG", domain.ufl_cell(), 1)  # temperature finite element
-V = fem.FunctionSpace(domain, ufl.MixedElement([Vue, Vte]))
+V = fem.functionspace(domain, ufl.MixedElement([Vue, Vte]))
 
 V_ux, _ = V.sub(0).sub(0).collapse()  # used for Dirichlet BC
 V_uy, _ = V.sub(0).sub(1).collapse()  # used for Dirichlet BC

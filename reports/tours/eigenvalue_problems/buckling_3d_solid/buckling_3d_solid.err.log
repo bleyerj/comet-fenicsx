@@ -1,0 +1,94 @@
+Traceback (most recent call last):
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+E, nu = 1e3, 0.3
+
+mu = fem.Constant(domain, default_scalar_type(E / 2 / (1 + nu)))
+lmbda = fem.Constant(domain, default_scalar_type(E * nu / (1 + nu) / (1 - 2 * nu)))
+
+
+def eps(v):
+    return ufl.sym(ufl.grad(v))
+
+
+def sigma(v):
+    return lmbda * ufl.tr(eps(v)) * ufl.Identity(3) + 2 * mu * eps(v)
+
+
+# Compute the linearized unit preload
+N0 = 1
+T = fem.Constant(domain, default_scalar_type((-N0, 0, 0)))
+V = fem.functionspace(domain, ufl.VectorElement("Lagrange", domain.ufl_cell(), 2))
+v = ufl.TestFunction(V)
+du = ufl.TrialFunction(V)
+
+
+# Left and right ends of the beam
+def left(x):
+    return np.isclose(x[0], 0)
+
+
+def right(x):
+    return np.isclose(x[0], L)
+
+
+# Dirichlet boundary conditions: Clamped and simply supported
+fdim = domain.topology.dim - 1
+left_facets = mesh.locate_entities_boundary(domain, fdim, left)
+right_facets = mesh.locate_entities_boundary(domain, fdim, right)
+
+u_L = np.array([0, 0, 0], dtype=default_scalar_type)
+bcs = [
+    fem.dirichletbc(u_L, fem.locate_dofs_topological(V, fdim, left_facets), V),
+    fem.dirichletbc(
+        default_scalar_type(0),
+        fem.locate_dofs_topological(V.sub(1), fdim, right_facets),
+        V.sub(1),
+    ),
+    fem.dirichletbc(
+        default_scalar_type(0),
+        fem.locate_dofs_topological(V.sub(2), fdim, right_facets),
+        V.sub(2),
+    ),
+]
+
+# Mark right facets for Neumann boundary condition application
+facet_tag = mesh.meshtags(domain, fdim, right_facets, np.full_like(right_facets, 1))
+ds = ufl.Measure("ds", domain=domain, subdomain_data=facet_tag)
+
+# Linear Elasticity Bilinear Form
+a = ufl.inner(sigma(du), eps(v)) * ufl.dx
+
+# External loading on the right end
+l = ufl.dot(T, v) * ds(1)
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Cell [0;32mIn[2], line 18[0m
+[1;32m     16[0m N0 [38;5;241m=[39m [38;5;241m1[39m
+[1;32m     17[0m T [38;5;241m=[39m fem[38;5;241m.[39mConstant(domain, default_scalar_type(([38;5;241m-[39mN0, [38;5;241m0[39m, [38;5;241m0[39m)))
+[0;32m---> 18[0m V [38;5;241m=[39m fem[38;5;241m.[39mfunctionspace(domain, [43mufl[49m[38;5;241;43m.[39;49m[43mVectorElement[49m([38;5;124m"[39m[38;5;124mLagrange[39m[38;5;124m"[39m, domain[38;5;241m.[39mufl_cell(), [38;5;241m2[39m))
+[1;32m     19[0m v [38;5;241m=[39m ufl[38;5;241m.[39mTestFunction(V)
+[1;32m     20[0m du [38;5;241m=[39m ufl[38;5;241m.[39mTrialFunction(V)
+
+[0;31mAttributeError[0m: module 'ufl' has no attribute 'VectorElement'
+

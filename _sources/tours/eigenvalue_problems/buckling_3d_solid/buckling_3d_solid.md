@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -178,7 +178,7 @@ def sigma(v):
 # Compute the linearized unit preload
 N0 = 1
 T = fem.Constant(domain, default_scalar_type((-N0, 0, 0)))
-V = fem.FunctionSpace(domain, ufl.VectorElement("Lagrange", domain.ufl_cell(), 2))
+V = fem.functionspace(domain, ufl.VectorElement("Lagrange", domain.ufl_cell(), 2))
 v = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 

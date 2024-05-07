@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3
   language: python
@@ -58,7 +58,7 @@ We will investigate here the case of a hollow hemisphere of inner (resp. outer) 
 
 We first import the relevant modules.
 
-```{code-cell}
+```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -76,7 +76,7 @@ Ri = 9.0
 
 The domain is created and meshed using the `Gmsh` Python API.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-input]
 
 gmsh.initialize()
@@ -141,7 +141,7 @@ The previous relation involves explicitly the radial variable $r$, which can be 
 We could also express the strain components in the form of a vector of size 4 in alternative of the 3D tensor representation implemented below.
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 x = ufl.SpatialCoordinate(domain)
 
 
@@ -159,7 +159,7 @@ def eps(v):
 
 The linear elastic constitutive equation giving the stress `sigma` is written using 3D tensors:
 
-```{code-cell}
+```{code-cell} ipython3
 E = fem.Constant(domain, 1e5)
 nu = fem.Constant(domain, 0.3)
 mu = E / 2 / (1 + nu)
@@ -200,14 +200,14 @@ Some terms in the integrand, e.g. the strain $\beps$, contain terms exhibiting a
 
 The final formulation is therefore pretty straightforward. Since a uniform pressure loading is applied on the outer boundary, we will also need the exterior normal vector to define the work of external forces form.
 
-```{code-cell}
+```{code-cell} ipython3
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 dx = ufl.Measure("dx", domain=domain)
 
 n = ufl.FacetNormal(domain)
 p = fem.Constant(domain, 10.0)
 
-V = fem.FunctionSpace(domain, ("P", 2, (gdim,)))
+V = fem.functionspace(domain, ("P", 2, (gdim,)))
 du = ufl.TrialFunction(V)
 u_ = ufl.TestFunction(V)
 a_form = ufl.inner(sigma(du), eps(u_)) * x[0] * dx
@@ -218,7 +218,7 @@ u = fem.Function(V, name="Displacement")
 
 We apply smooth contact conditions on the vertical $r=0$ (facet tag `2`) and the horizontal $z=0$ (facet tag `1`) boundaries.
 
-```{code-cell}
+```{code-cell} ipython3
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
@@ -248,7 +248,7 @@ $$
 
 We extract the radial displacement dofs on the bottom boundary and compare with the analytical solution.
 
-```{code-cell}
+```{code-cell} ipython3
 ur = u.sub(0).collapse()
 ur_FEM = ur.vector.array[bottom_dofsx]
 

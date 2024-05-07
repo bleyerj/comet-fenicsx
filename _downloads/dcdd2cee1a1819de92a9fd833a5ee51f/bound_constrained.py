@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.0
+#       jupytext_version: 1.16.1
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -131,7 +131,7 @@ domain = mesh.create_interval(MPI.COMM_WORLD, 2 * N, [-L, L])
 
 # We now create a scalar $\mathbb{P}_1$ Lagrange function space and defines functions to store the lower and upper bound values.
 
-V = fem.FunctionSpace(domain, ("P", 1))
+V = fem.functionspace(domain, ("P", 1))
 d = fem.Function(V)
 d_ = ufl.TestFunction(V)
 dd = ufl.TrialFunction(V)
