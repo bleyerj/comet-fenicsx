@@ -18,10 +18,10 @@ $\,$
 These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software `FEniCSx`, http://fenicsproject.org.
 
 ```{important}
-These tours comply with `dolfinx` v.8.0.0.
+These tours comply with `dolfinx` v.0.8.0.
 ```
 
-This book is organized in the following different parts:
+The book is organized in the following different parts:
 
 ### Introduction
 
@@ -62,7 +62,7 @@ For another general introduction to `FEniCSx`, we heavily recommend to follow th
 
 ### Tours
 
-This part is the main body of this book. These numerical tours are intended to complement the existing `FEniCSx` tutorials in the official documentation by focusing on specific applications within the field of computational solid and structural mechanics. The purpose of these tours is to offer users with a background in mechanics a starting point for utilizing `FEniCSx`, using examples familiar to them.
+This part is the main body of the book. These numerical tours are intended to complement the existing `FEniCSx` tutorials in the official documentation by focusing on specific applications within the field of computational solid and structural mechanics. The purpose of these tours is to offer users with a background in mechanics a starting point for utilizing `FEniCSx`, using examples familiar to them.
 
 While many of the covered topics are standard and relatively easy to implement, others, such as structural elements (beams, plates, and shells) or nonlinear constitutive models, present more complexity.
 Other topics will also be more advanced and exploratory and will reflect currently investigated research topics, illustrating the versatility of `FEniCSx` for handling advanced models. The difficulty of each tour will be indicated by the star symbols: {far}`star` = easy, {far}`star`{far}`star`{far}`star` = difficult.
