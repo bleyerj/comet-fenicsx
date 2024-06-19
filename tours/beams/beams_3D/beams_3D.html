@@ -1,0 +1,1665 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Elastic 3D beam structures &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/beams/beams_3D/beams_3D';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Plates" href="../../plates/contents.html" />
+    <link rel="prev" title="Linear elastic 2D truss" href="../linear_truss/linear_truss.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/beams/beams_3D/beams_3D.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Elastic 3D beam structures </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-kinematics">Beam kinematics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constitutive-equations">Constitutive equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention">Attention</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="elastic-3d-beam-structures">
+<h1>Elastic 3D beam structures <span class="far fa-star"></span><a class="headerlink" href="#elastic-3d-beam-structures" title="Link to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This tour explores the formulation of 3D beam-like elastic structures. One particularity of this tour is that the mesh topology is 1D (beams) but is embedded in a 3D ambient space. We will also show how to define a local frame containing the beam axis direction and two perpendicular directions for the definition of the cross-section geometrical properties.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>This tour bears similarities with the <a class="reference internal" href="../linear_truss/linear_truss.html"><span class="std std-doc">Linear elastic 2D truss </span></a> and <a class="reference internal" href="../../shells/linear_shell/linear_shell.html"><span class="std std-doc">Linear shell model </span></a> tours.</p>
+</div>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/1b2a9dd55ab97bb3b9cad5228d25c388/beams_3D.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/62af692720bef79efab08f01661e0b0c/beams_3D.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
+<section id="beam-kinematics">
+<h2>Beam kinematics<a class="headerlink" href="#beam-kinematics" title="Link to this heading">#</a></h2>
+<p>The variational formulation for 3D beams requires to distinguish between motion along the beam direction and along both perpendicular directions. These two directions often correspond to principal directions of inertia and distinguish between strong and weak bending directions. The user must therefore specify this local orientation frame throughout the whole structure. In this example, we will first compute the vector <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span> tangent to the beam direction, and two perpendicular directions <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span>. <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> will always be perpendicular to <span class="math notranslate nohighlight">\(t\)</span> and the vertical direction, while <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span> will be such that <span class="math notranslate nohighlight">\((\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)\)</span> is a direct orthonormal frame.</p>
+<p>Classical Euler-Bernoulli beam theory would typically require <span class="math notranslate nohighlight">\(C^1\)</span>-continuous interpolation of the displacement field, using Hermite polynomials for instance. Such discretization scheme is unfortunately not available natively in <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code>. Instead, we will consider a Timoshenko beam model with St-Venant uniform torsion theory for the torsional part. The beam kinematics will then be described by a 3D displacement field <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> and an independent 3D rotation field <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>, that is 6 degrees of freedom at each point. <span class="math notranslate nohighlight">\((u_t,u_1,u_2)\)</span> will respectively denote the displacement components in the section local frame <span class="math notranslate nohighlight">\((\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)\)</span>. Similarly, <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> will denote the section rotations about the two section axis whereas <span class="math notranslate nohighlight">\(\theta_t\)</span> is the twist angle.</p>
+<p>The beam strains are given by (straight beam with constant local frame):</p>
+<ul class="simple">
+<li><p>the <strong>normal strain</strong>: <span class="math notranslate nohighlight">\(\delta = \dfrac{d u_t}{ds}\)</span></p></li>
+<li><p>the <strong>bending curvatures</strong>: <span class="math notranslate nohighlight">\(\chi_1 = \dfrac{d\theta_1}{ds}\)</span> and <span class="math notranslate nohighlight">\(\chi_2 = \dfrac{d\theta_2}{ds}\)</span></p></li>
+<li><p>the <strong>shear strains</strong>: <span class="math notranslate nohighlight">\(\gamma_1 = \dfrac{du_1}{ds}-\theta_2\)</span> and
+<span class="math notranslate nohighlight">\(\gamma_2 = \dfrac{du_2}{ds}+\theta_1\)</span>.</p></li>
+<li><p>the <strong>torsional strain</strong>: <span class="math notranslate nohighlight">\(\omega = \dfrac{d\theta_t}{ds}\)</span>.</p></li>
+</ul>
+<p>where <span class="math notranslate nohighlight">\(\dfrac{dv}{ds} = \nabla v \cdot t\)</span> is the tangential gradient. Associated with these generalized strains are the corresponding generalized stresses:</p>
+<ul class="simple">
+<li><p>the <strong>normal force</strong> <span class="math notranslate nohighlight">\(N\)</span></p></li>
+<li><p>the <strong>bending moments</strong> <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span></p></li>
+<li><p>the <strong>shear forces</strong> <span class="math notranslate nohighlight">\(Q_1\)</span> and <span class="math notranslate nohighlight">\(Q_2\)</span></p></li>
+<li><p>the <strong>torsional moment</strong> <span class="math notranslate nohighlight">\(M_T\)</span></p></li>
+</ul>
+</section>
+<section id="constitutive-equations">
+<h2>Constitutive equations<a class="headerlink" href="#constitutive-equations" title="Link to this heading">#</a></h2>
+<p>The beam constitutive equations (assuming no normal force/bending moment coupling and that <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span> are the principle axis of inertia) read as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{Bmatrix}
+N \\ Q_1 \\ Q_2 \\ M_T \\ M_1 \\ M_2 
+\end{Bmatrix} = \begin{bmatrix}
+ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; GS_1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; GS_2 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; GJ &amp; 0 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; EI_1 &amp; 0\\
+0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; EI_2
+\end{bmatrix}\begin{Bmatrix}
+\delta \\ \gamma_1 \\ \gamma_2 \\ \omega \\ \chi_1 \\ \chi_2 
+\end{Bmatrix}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(S\)</span> is the cross-section area, <span class="math notranslate nohighlight">\(E\)</span> the material Young modulus and <span class="math notranslate nohighlight">\(G\)</span> the shear modulus, <span class="math notranslate nohighlight">\(I_1=\int_S x_2^2 dS\)</span> (resp. <span class="math notranslate nohighlight">\(I_2=\int_S x_1^2 dS\)</span>) are the bending second moment of inertia about axis <span class="math notranslate nohighlight">\(a_1\)</span> (resp. <span class="math notranslate nohighlight">\(a_2\)</span>), <span class="math notranslate nohighlight">\(J\)</span> is the torsion inertia, <span class="math notranslate nohighlight">\(S_1\)</span> (resp. <span class="math notranslate nohighlight">\(S_2\)</span>) is the shear area in direction <span class="math notranslate nohighlight">\(a_1\)</span> (resp. <span class="math notranslate nohighlight">\(a_2\)</span>).</p>
+</section>
+<section id="variational-formulation">
+<h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Link to this heading">#</a></h2>
+<p>The 3D beam variational formulation finally reads as: Find <span class="math notranslate nohighlight">\((\boldsymbol{u},\boldsymbol{\theta})\in V\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[\int_S (N\widehat{\delta}+Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2+M_T\widehat{\omega}+M_1\widehat{\chi}_1+M_2\widehat{\chi}_2)dS = \int \boldsymbol{f}\cdot\widehat{\boldsymbol{u}}dS \quad \forall (\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\in V\]</div>
+<p>where we considered only a distributed loading <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> and where <span class="math notranslate nohighlight">\(\widehat{\delta},\ldots,\widehat{\chi}_2\)</span> are the generalized strains associated with test functions <span class="math notranslate nohighlight">\((\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\)</span>.</p>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<p>We start by loading the relevant modules.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">gmsh</span>
+<span class="kn">import</span> <span class="nn">ufl</span>
+<span class="kn">import</span> <span class="nn">basix</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
+<span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We generate the mesh (<code class="docutils literal notranslate"><span class="pre">domain</span></code>) using the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API.</p>
+<div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize gmsh</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+<span class="c1"># Parameters</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">M</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Creating points and lines</span>
+<span class="n">p0</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span>
+        <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.99</span><span class="o">*</span><span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="n">h</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">d</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">ll</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">p1</span>
+<span class="n">in_lines</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>
+<span class="c1"># Extruding lines</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">M</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">revolve</span><span class="p">(</span>
+        <span class="n">in_lines</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">0</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">,</span>
+        <span class="n">angle</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">M</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">in_lines</span> <span class="o">=</span> <span class="n">out</span><span class="p">[::</span><span class="mi">4</span><span class="p">]</span>
+
+<span class="c1"># Coherence (remove duplicate entities and ensure topological consistency)</span>
+<span class="c1"># gmsh.model.occ.dilate(entities, 0.0, 0.0, 0.0, 1, 0.1, 1)</span>
+<span class="c1"># gmsh.model.occ.synchronize()</span>
+<span class="c1"># Save the mesh</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">remove_all_duplicates</span><span class="p">()</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+<span class="n">lines</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_physical_group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span><span class="o">/</span><span class="mf">3.</span>
+
+<span class="c1"># Finalize gmsh</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : Meshing 1D...
+Info    : [  0%] Meshing curve 23 (Line)
+Info    : [ 10%] Meshing curve 25 (Line)
+Info    : [ 10%] Meshing curve 27 (Line)
+Info    : [ 10%] Meshing curve 29 (Line)
+Info    : [ 10%] Meshing curve 31 (Line)
+Info    : [ 10%] Meshing curve 33 (Line)
+Info    : [ 10%] Meshing curve 35 (Line)
+Info    : [ 10%] Meshing curve 37 (Line)
+Info    : [ 10%] Meshing curve 39 (Line)
+Info    : [ 10%] Meshing curve 41 (Line)
+Info    : [ 10%] Meshing curve 43 (Line)
+Info    : [ 10%] Meshing curve 45 (Line)
+Info    : [ 10%] Meshing curve 47 (Line)
+Info    : [ 10%] Meshing curve 49 (Line)
+Info    : [ 10%] Meshing curve 51 (Line)
+Info    : [ 10%] Meshing curve 53 (Line)
+Info    : [ 10%] Meshing curve 55 (Line)
+Info    : [ 10%] Meshing curve 57 (Line)
+Info    : [ 10%] Meshing curve 59 (Line)
+Info    : [ 10%] Meshing curve 61 (Line)
+Info    : [ 10%] Meshing curve 62 (Circle)
+Info    : [ 10%] Meshing curve 63 (Circle)
+Info    : [ 10%] Meshing curve 64 (Line)
+Info    : [ 10%] Meshing curve 65 (Circle)
+Info    : [ 10%] Meshing curve 66 (Line)
+Info    : [ 10%] Meshing curve 67 (Circle)
+Info    : [ 10%] Meshing curve 68 (Line)
+Info    : [ 10%] Meshing curve 69 (Circle)
+Info    : [ 10%] Meshing curve 70 (Line)
+Info    : [ 10%] Meshing curve 71 (Circle)
+Info    : [ 10%] Meshing curve 72 (Line)
+Info    : [ 10%] Meshing curve 73 (Circle)
+Info    : [ 10%] Meshing curve 74 (Line)
+Info    : [ 10%] Meshing curve 75 (Circle)
+Info    : [ 10%] Meshing curve 76 (Line)
+Info    : [ 10%] Meshing curve 77 (Circle)
+Info    : [ 10%] Meshing curve 78 (Line)
+Info    : [ 10%] Meshing curve 79 (Circle)
+Info    : [ 10%] Meshing curve 80 (Line)
+Info    : [ 10%] Meshing curve 81 (Circle)
+Info    : [ 10%] Meshing curve 82 (Line)
+Info    : [ 10%] Meshing curve 83 (Circle)
+Info    : [ 10%] Meshing curve 84 (Line)
+Info    : [ 10%] Meshing curve 85 (Circle)
+Info    : [ 10%] Meshing curve 86 (Line)
+Info    : [ 10%] Meshing curve 87 (Circle)
+Info    : [ 10%] Meshing curve 88 (Line)
+Info    : [ 10%] Meshing curve 89 (Circle)
+Info    : [ 10%] Meshing curve 90 (Line)
+Info    : [ 10%] Meshing curve 91 (Circle)
+Info    : [ 10%] Meshing curve 92 (Line)
+Info    : [ 10%] Meshing curve 93 (Circle)
+Info    : [ 10%] Meshing curve 94 (Line)
+Info    : [ 10%] Meshing curve 95 (Circle)
+Info    : [ 10%] Meshing curve 96 (Line)
+Info    : [ 10%] Meshing curve 97 (Circle)
+Info    : [ 10%] Meshing curve 98 (Line)
+Info    : [ 10%] Meshing curve 99 (Circle)
+Info    : [ 10%] Meshing curve 100 (Line)
+Info    : [ 10%] Meshing curve 101 (Circle)
+Info    : [ 10%] Meshing curve 102 (Line)
+Info    : [ 10%] Meshing curve 103 (Circle)
+Info    : [ 10%] Meshing curve 104 (Circle)
+Info    : [ 10%] Meshing curve 105 (Line)
+Info    : [ 10%] Meshing curve 106 (Circle)
+Info    : [ 10%] Meshing curve 107 (Line)
+Info    : [ 10%] Meshing curve 108 (Circle)
+Info    : [ 10%] Meshing curve 109 (Line)
+Info    : [ 10%] Meshing curve 110 (Circle)
+Info    : [ 10%] Meshing curve 111 (Line)
+Info    : [ 10%] Meshing curve 112 (Circle)
+Info    : [ 10%] Meshing curve 113 (Line)
+Info    : [ 10%] Meshing curve 114 (Circle)
+Info    : [ 10%] Meshing curve 115 (Line)
+Info    : [ 10%] Meshing curve 116 (Circle)
+Info    : [ 10%] Meshing curve 117 (Line)
+Info    : [ 10%] Meshing curve 118 (Circle)
+Info    : [ 10%] Meshing curve 119 (Line)
+Info    : [ 10%] Meshing curve 120 (Circle)
+Info    : [ 10%] Meshing curve 121 (Line)
+Info    : [ 10%] Meshing curve 122 (Circle)
+Info    : [ 10%] Meshing curve 123 (Line)
+Info    : [ 10%] Meshing curve 124 (Circle)
+Info    : [ 20%] Meshing curve 125 (Line)
+Info    : [ 20%] Meshing curve 126 (Circle)
+Info    : [ 20%] Meshing curve 127 (Line)
+Info    : [ 20%] Meshing curve 128 (Circle)
+Info    : [ 20%] Meshing curve 129 (Line)
+Info    : [ 20%] Meshing curve 130 (Circle)
+Info    : [ 20%] Meshing curve 131 (Line)
+Info    : [ 20%] Meshing curve 132 (Circle)
+Info    : [ 20%] Meshing curve 133 (Line)
+Info    : [ 20%] Meshing curve 134 (Circle)
+Info    : [ 20%] Meshing curve 135 (Line)
+Info    : [ 20%] Meshing curve 136 (Circle)
+Info    : [ 20%] Meshing curve 137 (Line)
+Info    : [ 20%] Meshing curve 138 (Circle)
+Info    : [ 20%] Meshing curve 139 (Line)
+Info    : [ 20%] Meshing curve 140 (Circle)
+Info    : [ 20%] Meshing curve 141 (Line)
+Info    : [ 20%] Meshing curve 142 (Circle)
+Info    : [ 20%] Meshing curve 143 (Line)
+Info    : [ 20%] Meshing curve 144 (Circle)
+Info    : [ 20%] Meshing curve 145 (Circle)
+Info    : [ 20%] Meshing curve 146 (Line)
+Info    : [ 20%] Meshing curve 147 (Circle)
+Info    : [ 20%] Meshing curve 148 (Line)
+Info    : [ 20%] Meshing curve 149 (Circle)
+Info    : [ 20%] Meshing curve 150 (Line)
+Info    : [ 20%] Meshing curve 151 (Circle)
+Info    : [ 20%] Meshing curve 152 (Line)
+Info    : [ 20%] Meshing curve 153 (Circle)
+Info    : [ 20%] Meshing curve 154 (Line)
+Info    : [ 20%] Meshing curve 155 (Circle)
+Info    : [ 20%] Meshing curve 156 (Line)
+Info    : [ 20%] Meshing curve 157 (Circle)
+Info    : [ 20%] Meshing curve 158 (Line)
+Info    : [ 20%] Meshing curve 159 (Circle)
+Info    : [ 20%] Meshing curve 160 (Line)
+Info    : [ 20%] Meshing curve 161 (Circle)
+Info    : [ 20%] Meshing curve 162 (Line)
+Info    : [ 20%] Meshing curve 163 (Circle)
+Info    : [ 20%] Meshing curve 164 (Line)
+Info    : [ 20%] Meshing curve 165 (Circle)
+Info    : [ 20%] Meshing curve 166 (Line)
+Info    : [ 20%] Meshing curve 167 (Circle)
+Info    : [ 20%] Meshing curve 168 (Line)
+Info    : [ 20%] Meshing curve 169 (Circle)
+Info    : [ 20%] Meshing curve 170 (Line)
+Info    : [ 20%] Meshing curve 171 (Circle)
+Info    : [ 20%] Meshing curve 172 (Line)
+Info    : [ 20%] Meshing curve 173 (Circle)
+Info    : [ 20%] Meshing curve 174 (Line)
+Info    : [ 20%] Meshing curve 175 (Circle)
+Info    : [ 20%] Meshing curve 176 (Line)
+Info    : [ 20%] Meshing curve 177 (Circle)
+Info    : [ 20%] Meshing curve 178 (Line)
+Info    : [ 20%] Meshing curve 179 (Circle)
+Info    : [ 20%] Meshing curve 180 (Line)
+Info    : [ 20%] Meshing curve 181 (Circle)
+Info    : [ 20%] Meshing curve 182 (Line)
+Info    : [ 20%] Meshing curve 183 (Circle)
+Info    : [ 20%] Meshing curve 184 (Line)
+Info    : [ 20%] Meshing curve 185 (Circle)
+Info    : [ 20%] Meshing curve 186 (Circle)
+Info    : [ 20%] Meshing curve 187 (Line)
+Info    : [ 20%] Meshing curve 188 (Circle)
+Info    : [ 20%] Meshing curve 189 (Line)
+Info    : [ 20%] Meshing curve 190 (Circle)
+Info    : [ 20%] Meshing curve 191 (Line)
+Info    : [ 20%] Meshing curve 192 (Circle)
+Info    : [ 20%] Meshing curve 193 (Line)
+Info    : [ 20%] Meshing curve 194 (Circle)
+Info    : [ 20%] Meshing curve 195 (Line)
+Info    : [ 20%] Meshing curve 196 (Circle)
+Info    : [ 20%] Meshing curve 197 (Line)
+Info    : [ 20%] Meshing curve 198 (Circle)
+Info    : [ 20%] Meshing curve 199 (Line)
+Info    : [ 20%] Meshing curve 200 (Circle)
+Info    : [ 20%] Meshing curve 201 (Line)
+Info    : [ 20%] Meshing curve 202 (Circle)
+Info    : [ 20%] Meshing curve 203 (Line)
+Info    : [ 20%] Meshing curve 204 (Circle)
+Info    : [ 20%] Meshing curve 205 (Line)
+Info    : [ 20%] Meshing curve 206 (Circle)
+Info    : [ 30%] Meshing curve 207 (Line)
+Info    : [ 30%] Meshing curve 208 (Circle)
+Info    : [ 30%] Meshing curve 209 (Line)
+Info    : [ 30%] Meshing curve 210 (Circle)
+Info    : [ 30%] Meshing curve 211 (Line)
+Info    : [ 30%] Meshing curve 212 (Circle)
+Info    : [ 30%] Meshing curve 213 (Line)
+Info    : [ 30%] Meshing curve 214 (Circle)
+Info    : [ 30%] Meshing curve 215 (Line)
+Info    : [ 30%] Meshing curve 216 (Circle)
+Info    : [ 30%] Meshing curve 217 (Line)
+Info    : [ 30%] Meshing curve 218 (Circle)
+Info    : [ 30%] Meshing curve 219 (Line)
+Info    : [ 30%] Meshing curve 220 (Circle)
+Info    : [ 30%] Meshing curve 221 (Line)
+Info    : [ 30%] Meshing curve 222 (Circle)
+Info    : [ 30%] Meshing curve 223 (Line)
+Info    : [ 30%] Meshing curve 224 (Circle)
+Info    : [ 30%] Meshing curve 225 (Line)
+Info    : [ 30%] Meshing curve 226 (Circle)
+Info    : [ 30%] Meshing curve 227 (Circle)
+Info    : [ 30%] Meshing curve 228 (Line)
+Info    : [ 30%] Meshing curve 229 (Circle)
+Info    : [ 30%] Meshing curve 230 (Line)
+Info    : [ 30%] Meshing curve 231 (Circle)
+Info    : [ 30%] Meshing curve 232 (Line)
+Info    : [ 30%] Meshing curve 233 (Circle)
+Info    : [ 30%] Meshing curve 234 (Line)
+Info    : [ 30%] Meshing curve 235 (Circle)
+Info    : [ 30%] Meshing curve 236 (Line)
+Info    : [ 30%] Meshing curve 237 (Circle)
+Info    : [ 30%] Meshing curve 238 (Line)
+Info    : [ 30%] Meshing curve 239 (Circle)
+Info    : [ 30%] Meshing curve 240 (Line)
+Info    : [ 30%] Meshing curve 241 (Circle)
+Info    : [ 30%] Meshing curve 242 (Line)
+Info    : [ 30%] Meshing curve 243 (Circle)
+Info    : [ 30%] Meshing curve 244 (Line)
+Info    : [ 30%] Meshing curve 245 (Circle)
+Info    : [ 30%] Meshing curve 246 (Line)
+Info    : [ 30%] Meshing curve 247 (Circle)
+Info    : [ 30%] Meshing curve 248 (Line)
+Info    : [ 30%] Meshing curve 249 (Circle)
+Info    : [ 30%] Meshing curve 250 (Line)
+Info    : [ 30%] Meshing curve 251 (Circle)
+Info    : [ 30%] Meshing curve 252 (Line)
+Info    : [ 30%] Meshing curve 253 (Circle)
+Info    : [ 30%] Meshing curve 254 (Line)
+Info    : [ 30%] Meshing curve 255 (Circle)
+Info    : [ 30%] Meshing curve 256 (Line)
+Info    : [ 30%] Meshing curve 257 (Circle)
+Info    : [ 30%] Meshing curve 258 (Line)
+Info    : [ 30%] Meshing curve 259 (Circle)
+Info    : [ 30%] Meshing curve 260 (Line)
+Info    : [ 30%] Meshing curve 261 (Circle)
+Info    : [ 30%] Meshing curve 262 (Line)
+Info    : [ 30%] Meshing curve 263 (Circle)
+Info    : [ 30%] Meshing curve 264 (Line)
+Info    : [ 30%] Meshing curve 265 (Circle)
+Info    : [ 30%] Meshing curve 266 (Line)
+Info    : [ 30%] Meshing curve 267 (Circle)
+Info    : [ 30%] Meshing curve 268 (Circle)
+Info    : [ 30%] Meshing curve 269 (Line)
+Info    : [ 30%] Meshing curve 270 (Circle)
+Info    : [ 30%] Meshing curve 271 (Line)
+Info    : [ 30%] Meshing curve 272 (Circle)
+Info    : [ 30%] Meshing curve 273 (Line)
+Info    : [ 30%] Meshing curve 274 (Circle)
+Info    : [ 30%] Meshing curve 275 (Line)
+Info    : [ 30%] Meshing curve 276 (Circle)
+Info    : [ 30%] Meshing curve 277 (Line)
+Info    : [ 30%] Meshing curve 278 (Circle)
+Info    : [ 30%] Meshing curve 279 (Line)
+Info    : [ 30%] Meshing curve 280 (Circle)
+Info    : [ 30%] Meshing curve 281 (Line)
+Info    : [ 30%] Meshing curve 282 (Circle)
+Info    : [ 30%] Meshing curve 283 (Line)
+Info    : [ 30%] Meshing curve 284 (Circle)
+Info    : [ 30%] Meshing curve 285 (Line)
+Info    : [ 30%] Meshing curve 286 (Circle)
+Info    : [ 30%] Meshing curve 287 (Line)
+Info    : [ 30%] Meshing curve 288 (Circle)
+Info    : [ 40%] Meshing curve 289 (Line)
+Info    : [ 40%] Meshing curve 290 (Circle)
+Info    : [ 40%] Meshing curve 291 (Line)
+Info    : [ 40%] Meshing curve 292 (Circle)
+Info    : [ 40%] Meshing curve 293 (Line)
+Info    : [ 40%] Meshing curve 294 (Circle)
+Info    : [ 40%] Meshing curve 295 (Line)
+Info    : [ 40%] Meshing curve 296 (Circle)
+Info    : [ 40%] Meshing curve 297 (Line)
+Info    : [ 40%] Meshing curve 298 (Circle)
+Info    : [ 40%] Meshing curve 299 (Line)
+Info    : [ 40%] Meshing curve 300 (Circle)
+Info    : [ 40%] Meshing curve 301 (Line)
+Info    : [ 40%] Meshing curve 302 (Circle)
+Info    : [ 40%] Meshing curve 303 (Line)
+Info    : [ 40%] Meshing curve 304 (Circle)
+Info    : [ 40%] Meshing curve 305 (Line)
+Info    : [ 40%] Meshing curve 306 (Circle)
+Info    : [ 40%] Meshing curve 307 (Line)
+Info    : [ 40%] Meshing curve 308 (Circle)
+Info    : [ 40%] Meshing curve 309 (Circle)
+Info    : [ 40%] Meshing curve 310 (Line)
+Info    : [ 40%] Meshing curve 311 (Circle)
+Info    : [ 40%] Meshing curve 312 (Line)
+Info    : [ 40%] Meshing curve 313 (Circle)
+Info    : [ 40%] Meshing curve 314 (Line)
+Info    : [ 40%] Meshing curve 315 (Circle)
+Info    : [ 40%] Meshing curve 316 (Line)
+Info    : [ 40%] Meshing curve 317 (Circle)
+Info    : [ 40%] Meshing curve 318 (Line)
+Info    : [ 40%] Meshing curve 319 (Circle)
+Info    : [ 40%] Meshing curve 320 (Line)
+Info    : [ 40%] Meshing curve 321 (Circle)
+Info    : [ 40%] Meshing curve 322 (Line)
+Info    : [ 40%] Meshing curve 323 (Circle)
+Info    : [ 40%] Meshing curve 324 (Line)
+Info    : [ 40%] Meshing curve 325 (Circle)
+Info    : [ 40%] Meshing curve 326 (Line)
+Info    : [ 40%] Meshing curve 327 (Circle)
+Info    : [ 40%] Meshing curve 328 (Line)
+Info    : [ 40%] Meshing curve 329 (Circle)
+Info    : [ 40%] Meshing curve 330 (Line)
+Info    : [ 40%] Meshing curve 331 (Circle)
+Info    : [ 40%] Meshing curve 332 (Line)
+Info    : [ 40%] Meshing curve 333 (Circle)
+Info    : [ 40%] Meshing curve 334 (Line)
+Info    : [ 40%] Meshing curve 335 (Circle)
+Info    : [ 40%] Meshing curve 336 (Line)
+Info    : [ 40%] Meshing curve 337 (Circle)
+Info    : [ 40%] Meshing curve 338 (Line)
+Info    : [ 40%] Meshing curve 339 (Circle)
+Info    : [ 40%] Meshing curve 340 (Line)
+Info    : [ 40%] Meshing curve 341 (Circle)
+Info    : [ 40%] Meshing curve 342 (Line)
+Info    : [ 40%] Meshing curve 343 (Circle)
+Info    : [ 40%] Meshing curve 344 (Line)
+Info    : [ 40%] Meshing curve 345 (Circle)
+Info    : [ 40%] Meshing curve 346 (Line)
+Info    : [ 40%] Meshing curve 347 (Circle)
+Info    : [ 40%] Meshing curve 348 (Line)
+Info    : [ 40%] Meshing curve 349 (Circle)
+Info    : [ 40%] Meshing curve 350 (Circle)
+Info    : [ 40%] Meshing curve 351 (Line)
+Info    : [ 40%] Meshing curve 352 (Circle)
+Info    : [ 40%] Meshing curve 353 (Line)
+Info    : [ 40%] Meshing curve 354 (Circle)
+Info    : [ 40%] Meshing curve 355 (Line)
+Info    : [ 40%] Meshing curve 356 (Circle)
+Info    : [ 40%] Meshing curve 357 (Line)
+Info    : [ 40%] Meshing curve 358 (Circle)
+Info    : [ 40%] Meshing curve 359 (Line)
+Info    : [ 40%] Meshing curve 360 (Circle)
+Info    : [ 40%] Meshing curve 361 (Line)
+Info    : [ 40%] Meshing curve 362 (Circle)
+Info    : [ 40%] Meshing curve 363 (Line)
+Info    : [ 40%] Meshing curve 364 (Circle)
+Info    : [ 40%] Meshing curve 365 (Line)
+Info    : [ 40%] Meshing curve 366 (Circle)
+Info    : [ 40%] Meshing curve 367 (Line)
+Info    : [ 40%] Meshing curve 368 (Circle)
+Info    : [ 40%] Meshing curve 369 (Line)
+Info    : [ 40%] Meshing curve 370 (Circle)
+Info    : [ 50%] Meshing curve 371 (Line)
+Info    : [ 50%] Meshing curve 372 (Circle)
+Info    : [ 50%] Meshing curve 373 (Line)
+Info    : [ 50%] Meshing curve 374 (Circle)
+Info    : [ 50%] Meshing curve 375 (Line)
+Info    : [ 50%] Meshing curve 376 (Circle)
+Info    : [ 50%] Meshing curve 377 (Line)
+Info    : [ 50%] Meshing curve 378 (Circle)
+Info    : [ 50%] Meshing curve 379 (Line)
+Info    : [ 50%] Meshing curve 380 (Circle)
+Info    : [ 50%] Meshing curve 381 (Line)
+Info    : [ 50%] Meshing curve 382 (Circle)
+Info    : [ 50%] Meshing curve 383 (Line)
+Info    : [ 50%] Meshing curve 384 (Circle)
+Info    : [ 50%] Meshing curve 385 (Line)
+Info    : [ 50%] Meshing curve 386 (Circle)
+Info    : [ 50%] Meshing curve 387 (Line)
+Info    : [ 50%] Meshing curve 388 (Circle)
+Info    : [ 50%] Meshing curve 389 (Line)
+Info    : [ 50%] Meshing curve 390 (Circle)
+Info    : [ 50%] Meshing curve 391 (Circle)
+Info    : [ 50%] Meshing curve 392 (Line)
+Info    : [ 50%] Meshing curve 393 (Circle)
+Info    : [ 50%] Meshing curve 394 (Line)
+Info    : [ 50%] Meshing curve 395 (Circle)
+Info    : [ 50%] Meshing curve 396 (Line)
+Info    : [ 50%] Meshing curve 397 (Circle)
+Info    : [ 50%] Meshing curve 398 (Line)
+Info    : [ 50%] Meshing curve 399 (Circle)
+Info    : [ 50%] Meshing curve 400 (Line)
+Info    : [ 50%] Meshing curve 401 (Circle)
+Info    : [ 50%] Meshing curve 402 (Line)
+Info    : [ 50%] Meshing curve 403 (Circle)
+Info    : [ 50%] Meshing curve 404 (Line)
+Info    : [ 50%] Meshing curve 405 (Circle)
+Info    : [ 50%] Meshing curve 406 (Line)
+Info    : [ 50%] Meshing curve 407 (Circle)
+Info    : [ 50%] Meshing curve 408 (Line)
+Info    : [ 50%] Meshing curve 409 (Circle)
+Info    : [ 50%] Meshing curve 410 (Line)
+Info    : [ 50%] Meshing curve 411 (Circle)
+Info    : [ 50%] Meshing curve 412 (Line)
+Info    : [ 50%] Meshing curve 413 (Circle)
+Info    : [ 50%] Meshing curve 414 (Line)
+Info    : [ 50%] Meshing curve 415 (Circle)
+Info    : [ 50%] Meshing curve 416 (Line)
+Info    : [ 50%] Meshing curve 417 (Circle)
+Info    : [ 50%] Meshing curve 418 (Line)
+Info    : [ 50%] Meshing curve 419 (Circle)
+Info    : [ 50%] Meshing curve 420 (Line)
+Info    : [ 50%] Meshing curve 421 (Circle)
+Info    : [ 50%] Meshing curve 422 (Line)
+Info    : [ 50%] Meshing curve 423 (Circle)
+Info    : [ 50%] Meshing curve 424 (Line)
+Info    : [ 50%] Meshing curve 425 (Circle)
+Info    : [ 50%] Meshing curve 426 (Line)
+Info    : [ 50%] Meshing curve 427 (Circle)
+Info    : [ 50%] Meshing curve 428 (Line)
+Info    : [ 50%] Meshing curve 429 (Circle)
+Info    : [ 50%] Meshing curve 430 (Line)
+Info    : [ 50%] Meshing curve 431 (Circle)
+Info    : [ 50%] Meshing curve 432 (Circle)
+Info    : [ 50%] Meshing curve 433 (Line)
+Info    : [ 50%] Meshing curve 434 (Circle)
+Info    : [ 50%] Meshing curve 435 (Line)
+Info    : [ 50%] Meshing curve 436 (Circle)
+Info    : [ 50%] Meshing curve 437 (Line)
+Info    : [ 50%] Meshing curve 438 (Circle)
+Info    : [ 50%] Meshing curve 439 (Line)
+Info    : [ 50%] Meshing curve 440 (Circle)
+Info    : [ 50%] Meshing curve 441 (Line)
+Info    : [ 50%] Meshing curve 442 (Circle)
+Info    : [ 50%] Meshing curve 443 (Line)
+Info    : [ 50%] Meshing curve 444 (Circle)
+Info    : [ 50%] Meshing curve 445 (Line)
+Info    : [ 50%] Meshing curve 446 (Circle)
+Info    : [ 50%] Meshing curve 447 (Line)
+Info    : [ 50%] Meshing curve 448 (Circle)
+Info    : [ 50%] Meshing curve 449 (Line)
+Info    : [ 50%] Meshing curve 450 (Circle)
+Info    : [ 50%] Meshing curve 451 (Line)
+Info    : [ 50%] Meshing curve 452 (Circle)
+Info    : [ 60%] Meshing curve 453 (Line)
+Info    : [ 60%] Meshing curve 454 (Circle)
+Info    : [ 60%] Meshing curve 455 (Line)
+Info    : [ 60%] Meshing curve 456 (Circle)
+Info    : [ 60%] Meshing curve 457 (Line)
+Info    : [ 60%] Meshing curve 458 (Circle)
+Info    : [ 60%] Meshing curve 459 (Line)
+Info    : [ 60%] Meshing curve 460 (Circle)
+Info    : [ 60%] Meshing curve 461 (Line)
+Info    : [ 60%] Meshing curve 462 (Circle)
+Info    : [ 60%] Meshing curve 463 (Line)
+Info    : [ 60%] Meshing curve 464 (Circle)
+Info    : [ 60%] Meshing curve 465 (Line)
+Info    : [ 60%] Meshing curve 466 (Circle)
+Info    : [ 60%] Meshing curve 467 (Line)
+Info    : [ 60%] Meshing curve 468 (Circle)
+Info    : [ 60%] Meshing curve 469 (Line)
+Info    : [ 60%] Meshing curve 470 (Circle)
+Info    : [ 60%] Meshing curve 471 (Line)
+Info    : [ 60%] Meshing curve 472 (Circle)
+Info    : [ 60%] Meshing curve 473 (Circle)
+Info    : [ 60%] Meshing curve 474 (Line)
+Info    : [ 60%] Meshing curve 475 (Circle)
+Info    : [ 60%] Meshing curve 476 (Line)
+Info    : [ 60%] Meshing curve 477 (Circle)
+Info    : [ 60%] Meshing curve 478 (Line)
+Info    : [ 60%] Meshing curve 479 (Circle)
+Info    : [ 60%] Meshing curve 480 (Line)
+Info    : [ 60%] Meshing curve 481 (Circle)
+Info    : [ 60%] Meshing curve 482 (Line)
+Info    : [ 60%] Meshing curve 483 (Circle)
+Info    : [ 60%] Meshing curve 484 (Line)
+Info    : [ 60%] Meshing curve 485 (Circle)
+Info    : [ 60%] Meshing curve 486 (Line)
+Info    : [ 60%] Meshing curve 487 (Circle)
+Info    : [ 60%] Meshing curve 488 (Line)
+Info    : [ 60%] Meshing curve 489 (Circle)
+Info    : [ 60%] Meshing curve 490 (Line)
+Info    : [ 60%] Meshing curve 491 (Circle)
+Info    : [ 60%] Meshing curve 492 (Line)
+Info    : [ 60%] Meshing curve 493 (Circle)
+Info    : [ 60%] Meshing curve 494 (Line)
+Info    : [ 60%] Meshing curve 495 (Circle)
+Info    : [ 60%] Meshing curve 496 (Line)
+Info    : [ 60%] Meshing curve 497 (Circle)
+Info    : [ 60%] Meshing curve 498 (Line)
+Info    : [ 60%] Meshing curve 499 (Circle)
+Info    : [ 60%] Meshing curve 500 (Line)
+Info    : [ 60%] Meshing curve 501 (Circle)
+Info    : [ 60%] Meshing curve 502 (Line)
+Info    : [ 60%] Meshing curve 503 (Circle)
+Info    : [ 60%] Meshing curve 504 (Line)
+Info    : [ 60%] Meshing curve 505 (Circle)
+Info    : [ 60%] Meshing curve 506 (Line)
+Info    : [ 60%] Meshing curve 507 (Circle)
+Info    : [ 60%] Meshing curve 508 (Line)
+Info    : [ 60%] Meshing curve 509 (Circle)
+Info    : [ 60%] Meshing curve 510 (Line)
+Info    : [ 60%] Meshing curve 511 (Circle)
+Info    : [ 60%] Meshing curve 512 (Line)
+Info    : [ 60%] Meshing curve 513 (Circle)
+Info    : [ 60%] Meshing curve 514 (Circle)
+Info    : [ 60%] Meshing curve 515 (Line)
+Info    : [ 60%] Meshing curve 516 (Circle)
+Info    : [ 60%] Meshing curve 517 (Line)
+Info    : [ 60%] Meshing curve 518 (Circle)
+Info    : [ 60%] Meshing curve 519 (Line)
+Info    : [ 60%] Meshing curve 520 (Circle)
+Info    : [ 60%] Meshing curve 521 (Line)
+Info    : [ 60%] Meshing curve 522 (Circle)
+Info    : [ 60%] Meshing curve 523 (Line)
+Info    : [ 60%] Meshing curve 524 (Circle)
+Info    : [ 60%] Meshing curve 525 (Line)
+Info    : [ 60%] Meshing curve 526 (Circle)
+Info    : [ 60%] Meshing curve 527 (Line)
+Info    : [ 60%] Meshing curve 528 (Circle)
+Info    : [ 60%] Meshing curve 529 (Line)
+Info    : [ 60%] Meshing curve 530 (Circle)
+Info    : [ 60%] Meshing curve 531 (Line)
+Info    : [ 60%] Meshing curve 532 (Circle)
+Info    : [ 60%] Meshing curve 533 (Line)
+Info    : [ 60%] Meshing curve 534 (Circle)
+Info    : [ 70%] Meshing curve 535 (Line)
+Info    : [ 70%] Meshing curve 536 (Circle)
+Info    : [ 70%] Meshing curve 537 (Line)
+Info    : [ 70%] Meshing curve 538 (Circle)
+Info    : [ 70%] Meshing curve 539 (Line)
+Info    : [ 70%] Meshing curve 540 (Circle)
+Info    : [ 70%] Meshing curve 541 (Line)
+Info    : [ 70%] Meshing curve 542 (Circle)
+Info    : [ 70%] Meshing curve 543 (Line)
+Info    : [ 70%] Meshing curve 544 (Circle)
+Info    : [ 70%] Meshing curve 545 (Line)
+Info    : [ 70%] Meshing curve 546 (Circle)
+Info    : [ 70%] Meshing curve 547 (Line)
+Info    : [ 70%] Meshing curve 548 (Circle)
+Info    : [ 70%] Meshing curve 549 (Line)
+Info    : [ 70%] Meshing curve 550 (Circle)
+Info    : [ 70%] Meshing curve 551 (Line)
+Info    : [ 70%] Meshing curve 552 (Circle)
+Info    : [ 70%] Meshing curve 553 (Line)
+Info    : [ 70%] Meshing curve 554 (Circle)
+Info    : [ 70%] Meshing curve 555 (Circle)
+Info    : [ 70%] Meshing curve 556 (Line)
+Info    : [ 70%] Meshing curve 557 (Circle)
+Info    : [ 70%] Meshing curve 558 (Line)
+Info    : [ 70%] Meshing curve 559 (Circle)
+Info    : [ 70%] Meshing curve 560 (Line)
+Info    : [ 70%] Meshing curve 561 (Circle)
+Info    : [ 70%] Meshing curve 562 (Line)
+Info    : [ 70%] Meshing curve 563 (Circle)
+Info    : [ 70%] Meshing curve 564 (Line)
+Info    : [ 70%] Meshing curve 565 (Circle)
+Info    : [ 70%] Meshing curve 566 (Line)
+Info    : [ 70%] Meshing curve 567 (Circle)
+Info    : [ 70%] Meshing curve 568 (Line)
+Info    : [ 70%] Meshing curve 569 (Circle)
+Info    : [ 70%] Meshing curve 570 (Line)
+Info    : [ 70%] Meshing curve 571 (Circle)
+Info    : [ 70%] Meshing curve 572 (Line)
+Info    : [ 70%] Meshing curve 573 (Circle)
+Info    : [ 70%] Meshing curve 574 (Line)
+Info    : [ 70%] Meshing curve 575 (Circle)
+Info    : [ 70%] Meshing curve 576 (Line)
+Info    : [ 70%] Meshing curve 577 (Circle)
+Info    : [ 70%] Meshing curve 578 (Line)
+Info    : [ 70%] Meshing curve 579 (Circle)
+Info    : [ 70%] Meshing curve 580 (Line)
+Info    : [ 70%] Meshing curve 581 (Circle)
+Info    : [ 70%] Meshing curve 582 (Line)
+Info    : [ 70%] Meshing curve 583 (Circle)
+Info    : [ 70%] Meshing curve 584 (Line)
+Info    : [ 70%] Meshing curve 585 (Circle)
+Info    : [ 70%] Meshing curve 586 (Line)
+Info    : [ 70%] Meshing curve 587 (Circle)
+Info    : [ 70%] Meshing curve 588 (Line)
+Info    : [ 70%] Meshing curve 589 (Circle)
+Info    : [ 70%] Meshing curve 590 (Line)
+Info    : [ 70%] Meshing curve 591 (Circle)
+Info    : [ 70%] Meshing curve 592 (Line)
+Info    : [ 70%] Meshing curve 593 (Circle)
+Info    : [ 70%] Meshing curve 594 (Line)
+Info    : [ 70%] Meshing curve 595 (Circle)
+Info    : [ 70%] Meshing curve 596 (Circle)
+Info    : [ 70%] Meshing curve 597 (Line)
+Info    : [ 70%] Meshing curve 598 (Circle)
+Info    : [ 70%] Meshing curve 599 (Line)
+Info    : [ 70%] Meshing curve 600 (Circle)
+Info    : [ 70%] Meshing curve 601 (Line)
+Info    : [ 70%] Meshing curve 602 (Circle)
+Info    : [ 70%] Meshing curve 603 (Line)
+Info    : [ 70%] Meshing curve 604 (Circle)
+Info    : [ 70%] Meshing curve 605 (Line)
+Info    : [ 70%] Meshing curve 606 (Circle)
+Info    : [ 70%] Meshing curve 607 (Line)
+Info    : [ 70%] Meshing curve 608 (Circle)
+Info    : [ 70%] Meshing curve 609 (Line)
+Info    : [ 70%] Meshing curve 610 (Circle)
+Info    : [ 70%] Meshing curve 611 (Line)
+Info    : [ 70%] Meshing curve 612 (Circle)
+Info    : [ 70%] Meshing curve 613 (Line)
+Info    : [ 70%] Meshing curve 614 (Circle)
+Info    : [ 70%] Meshing curve 615 (Line)
+Info    : [ 70%] Meshing curve 616 (Circle)
+Info    : [ 80%] Meshing curve 617 (Line)
+Info    : [ 80%] Meshing curve 618 (Circle)
+Info    : [ 80%] Meshing curve 619 (Line)
+Info    : [ 80%] Meshing curve 620 (Circle)
+Info    : [ 80%] Meshing curve 621 (Line)
+Info    : [ 80%] Meshing curve 622 (Circle)
+Info    : [ 80%] Meshing curve 623 (Line)
+Info    : [ 80%] Meshing curve 624 (Circle)
+Info    : [ 80%] Meshing curve 625 (Line)
+Info    : [ 80%] Meshing curve 626 (Circle)
+Info    : [ 80%] Meshing curve 627 (Line)
+Info    : [ 80%] Meshing curve 628 (Circle)
+Info    : [ 80%] Meshing curve 629 (Line)
+Info    : [ 80%] Meshing curve 630 (Circle)
+Info    : [ 80%] Meshing curve 631 (Line)
+Info    : [ 80%] Meshing curve 632 (Circle)
+Info    : [ 80%] Meshing curve 633 (Line)
+Info    : [ 80%] Meshing curve 634 (Circle)
+Info    : [ 80%] Meshing curve 635 (Line)
+Info    : [ 80%] Meshing curve 636 (Circle)
+Info    : [ 80%] Meshing curve 637 (Circle)
+Info    : [ 80%] Meshing curve 638 (Line)
+Info    : [ 80%] Meshing curve 639 (Circle)
+Info    : [ 80%] Meshing curve 640 (Line)
+Info    : [ 80%] Meshing curve 641 (Circle)
+Info    : [ 80%] Meshing curve 642 (Line)
+Info    : [ 80%] Meshing curve 643 (Circle)
+Info    : [ 80%] Meshing curve 644 (Line)
+Info    : [ 80%] Meshing curve 645 (Circle)
+Info    : [ 80%] Meshing curve 646 (Line)
+Info    : [ 80%] Meshing curve 647 (Circle)
+Info    : [ 80%] Meshing curve 648 (Line)
+Info    : [ 80%] Meshing curve 649 (Circle)
+Info    : [ 80%] Meshing curve 650 (Line)
+Info    : [ 80%] Meshing curve 651 (Circle)
+Info    : [ 80%] Meshing curve 652 (Line)
+Info    : [ 80%] Meshing curve 653 (Circle)
+Info    : [ 80%] Meshing curve 654 (Line)
+Info    : [ 80%] Meshing curve 655 (Circle)
+Info    : [ 80%] Meshing curve 656 (Line)
+Info    : [ 80%] Meshing curve 657 (Circle)
+Info    : [ 80%] Meshing curve 658 (Line)
+Info    : [ 80%] Meshing curve 659 (Circle)
+Info    : [ 80%] Meshing curve 660 (Line)
+Info    : [ 80%] Meshing curve 661 (Circle)
+Info    : [ 80%] Meshing curve 662 (Line)
+Info    : [ 80%] Meshing curve 663 (Circle)
+Info    : [ 80%] Meshing curve 664 (Line)
+Info    : [ 80%] Meshing curve 665 (Circle)
+Info    : [ 80%] Meshing curve 666 (Line)
+Info    : [ 80%] Meshing curve 667 (Circle)
+Info    : [ 80%] Meshing curve 668 (Line)
+Info    : [ 80%] Meshing curve 669 (Circle)
+Info    : [ 80%] Meshing curve 670 (Line)
+Info    : [ 80%] Meshing curve 671 (Circle)
+Info    : [ 80%] Meshing curve 672 (Line)
+Info    : [ 80%] Meshing curve 673 (Circle)
+Info    : [ 80%] Meshing curve 674 (Line)
+Info    : [ 80%] Meshing curve 675 (Circle)
+Info    : [ 80%] Meshing curve 676 (Line)
+Info    : [ 80%] Meshing curve 677 (Circle)
+Info    : [ 80%] Meshing curve 678 (Circle)
+Info    : [ 80%] Meshing curve 679 (Line)
+Info    : [ 80%] Meshing curve 680 (Circle)
+Info    : [ 80%] Meshing curve 681 (Line)
+Info    : [ 80%] Meshing curve 682 (Circle)
+Info    : [ 80%] Meshing curve 683 (Line)
+Info    : [ 80%] Meshing curve 684 (Circle)
+Info    : [ 80%] Meshing curve 685 (Line)
+Info    : [ 80%] Meshing curve 686 (Circle)
+Info    : [ 80%] Meshing curve 687 (Line)
+Info    : [ 80%] Meshing curve 688 (Circle)
+Info    : [ 80%] Meshing curve 689 (Line)
+Info    : [ 80%] Meshing curve 690 (Circle)
+Info    : [ 80%] Meshing curve 691 (Line)
+Info    : [ 80%] Meshing curve 692 (Circle)
+Info    : [ 80%] Meshing curve 693 (Line)
+Info    : [ 80%] Meshing curve 694 (Circle)
+Info    : [ 80%] Meshing curve 695 (Line)
+Info    : [ 80%] Meshing curve 696 (Circle)
+Info    : [ 80%] Meshing curve 697 (Line)
+Info    : [ 80%] Meshing curve 698 (Circle)
+Info    : [ 90%] Meshing curve 699 (Line)
+Info    : [ 90%] Meshing curve 700 (Circle)
+Info    : [ 90%] Meshing curve 701 (Line)
+Info    : [ 90%] Meshing curve 702 (Circle)
+Info    : [ 90%] Meshing curve 703 (Line)
+Info    : [ 90%] Meshing curve 704 (Circle)
+Info    : [ 90%] Meshing curve 705 (Line)
+Info    : [ 90%] Meshing curve 706 (Circle)
+Info    : [ 90%] Meshing curve 707 (Line)
+Info    : [ 90%] Meshing curve 708 (Circle)
+Info    : [ 90%] Meshing curve 709 (Line)
+Info    : [ 90%] Meshing curve 710 (Circle)
+Info    : [ 90%] Meshing curve 711 (Line)
+Info    : [ 90%] Meshing curve 712 (Circle)
+Info    : [ 90%] Meshing curve 713 (Line)
+Info    : [ 90%] Meshing curve 714 (Circle)
+Info    : [ 90%] Meshing curve 715 (Line)
+Info    : [ 90%] Meshing curve 716 (Circle)
+Info    : [ 90%] Meshing curve 717 (Line)
+Info    : [ 90%] Meshing curve 718 (Circle)
+Info    : [ 90%] Meshing curve 719 (Circle)
+Info    : [ 90%] Meshing curve 720 (Line)
+Info    : [ 90%] Meshing curve 721 (Circle)
+Info    : [ 90%] Meshing curve 722 (Line)
+Info    : [ 90%] Meshing curve 723 (Circle)
+Info    : [ 90%] Meshing curve 724 (Line)
+Info    : [ 90%] Meshing curve 725 (Circle)
+Info    : [ 90%] Meshing curve 726 (Line)
+Info    : [ 90%] Meshing curve 727 (Circle)
+Info    : [ 90%] Meshing curve 728 (Line)
+Info    : [ 90%] Meshing curve 729 (Circle)
+Info    : [ 90%] Meshing curve 730 (Line)
+Info    : [ 90%] Meshing curve 731 (Circle)
+Info    : [ 90%] Meshing curve 732 (Line)
+Info    : [ 90%] Meshing curve 733 (Circle)
+Info    : [ 90%] Meshing curve 734 (Line)
+Info    : [ 90%] Meshing curve 735 (Circle)
+Info    : [ 90%] Meshing curve 736 (Line)
+Info    : [ 90%] Meshing curve 737 (Circle)
+Info    : [ 90%] Meshing curve 738 (Line)
+Info    : [ 90%] Meshing curve 739 (Circle)
+Info    : [ 90%] Meshing curve 740 (Line)
+Info    : [ 90%] Meshing curve 741 (Circle)
+Info    : [ 90%] Meshing curve 742 (Line)
+Info    : [ 90%] Meshing curve 743 (Circle)
+Info    : [ 90%] Meshing curve 744 (Line)
+Info    : [ 90%] Meshing curve 745 (Circle)
+Info    : [ 90%] Meshing curve 746 (Line)
+Info    : [ 90%] Meshing curve 747 (Circle)
+Info    : [ 90%] Meshing curve 748 (Line)
+Info    : [ 90%] Meshing curve 749 (Circle)
+Info    : [ 90%] Meshing curve 750 (Line)
+Info    : [ 90%] Meshing curve 751 (Circle)
+Info    : [ 90%] Meshing curve 752 (Line)
+Info    : [ 90%] Meshing curve 753 (Circle)
+Info    : [ 90%] Meshing curve 754 (Line)
+Info    : [ 90%] Meshing curve 755 (Circle)
+Info    : [ 90%] Meshing curve 756 (Line)
+Info    : [ 90%] Meshing curve 757 (Circle)
+Info    : [ 90%] Meshing curve 758 (Line)
+Info    : [ 90%] Meshing curve 759 (Circle)
+Info    : [ 90%] Meshing curve 760 (Circle)
+Info    : [ 90%] Meshing curve 761 (Line)
+Info    : [ 90%] Meshing curve 762 (Circle)
+Info    : [ 90%] Meshing curve 763 (Line)
+Info    : [ 90%] Meshing curve 764 (Circle)
+Info    : [ 90%] Meshing curve 765 (Line)
+Info    : [ 90%] Meshing curve 766 (Circle)
+Info    : [ 90%] Meshing curve 767 (Line)
+Info    : [ 90%] Meshing curve 768 (Circle)
+Info    : [ 90%] Meshing curve 769 (Line)
+Info    : [ 90%] Meshing curve 770 (Circle)
+Info    : [ 90%] Meshing curve 771 (Line)
+Info    : [ 90%] Meshing curve 772 (Circle)
+Info    : [ 90%] Meshing curve 773 (Line)
+Info    : [ 90%] Meshing curve 774 (Circle)
+Info    : [ 90%] Meshing curve 775 (Line)
+Info    : [ 90%] Meshing curve 776 (Circle)
+Info    : [ 90%] Meshing curve 777 (Line)
+Info    : [ 90%] Meshing curve 778 (Circle)
+Info    : [ 90%] Meshing curve 779 (Line)
+Info    : [ 90%] Meshing curve 780 (Circle)
+Info    : [100%] Meshing curve 781 (Line)
+Info    : [100%] Meshing curve 782 (Circle)
+Info    : [100%] Meshing curve 783 (Line)
+Info    : [100%] Meshing curve 784 (Circle)
+Info    : [100%] Meshing curve 785 (Line)
+Info    : [100%] Meshing curve 786 (Circle)
+Info    : [100%] Meshing curve 787 (Line)
+Info    : [100%] Meshing curve 788 (Circle)
+Info    : [100%] Meshing curve 789 (Line)
+Info    : [100%] Meshing curve 790 (Circle)
+Info    : [100%] Meshing curve 791 (Line)
+Info    : [100%] Meshing curve 792 (Circle)
+Info    : [100%] Meshing curve 793 (Line)
+Info    : [100%] Meshing curve 794 (Circle)
+Info    : [100%] Meshing curve 795 (Line)
+Info    : [100%] Meshing curve 796 (Circle)
+Info    : [100%] Meshing curve 797 (Line)
+Info    : [100%] Meshing curve 798 (Circle)
+Info    : [100%] Meshing curve 799 (Line)
+Info    : [100%] Meshing curve 800 (Circle)
+Info    : [100%] Meshing curve 801 (Circle)
+Info    : [100%] Meshing curve 802 (Line)
+Info    : [100%] Meshing curve 803 (Circle)
+Info    : [100%] Meshing curve 804 (Line)
+Info    : [100%] Meshing curve 805 (Circle)
+Info    : [100%] Meshing curve 806 (Line)
+Info    : [100%] Meshing curve 807 (Circle)
+Info    : [100%] Meshing curve 808 (Line)
+Info    : [100%] Meshing curve 809 (Circle)
+Info    : [100%] Meshing curve 810 (Line)
+Info    : [100%] Meshing curve 811 (Circle)
+Info    : [100%] Meshing curve 812 (Line)
+Info    : [100%] Meshing curve 813 (Circle)
+Info    : [100%] Meshing curve 814 (Line)
+Info    : [100%] Meshing curve 815 (Circle)
+Info    : [100%] Meshing curve 816 (Line)
+Info    : [100%] Meshing curve 817 (Circle)
+Info    : [100%] Meshing curve 818 (Line)
+Info    : [100%] Meshing curve 819 (Circle)
+Info    : [100%] Meshing curve 820 (Line)
+Info    : [100%] Meshing curve 821 (Circle)
+Info    : [100%] Meshing curve 822 (Line)
+Info    : [100%] Meshing curve 823 (Circle)
+Info    : [100%] Meshing curve 824 (Line)
+Info    : [100%] Meshing curve 825 (Circle)
+Info    : [100%] Meshing curve 826 (Line)
+Info    : [100%] Meshing curve 827 (Circle)
+Info    : [100%] Meshing curve 828 (Line)
+Info    : [100%] Meshing curve 829 (Circle)
+Info    : [100%] Meshing curve 830 (Line)
+Info    : [100%] Meshing curve 831 (Circle)
+Info    : [100%] Meshing curve 832 (Line)
+Info    : [100%] Meshing curve 833 (Circle)
+Info    : [100%] Meshing curve 834 (Line)
+Info    : [100%] Meshing curve 835 (Circle)
+Info    : [100%] Meshing curve 836 (Line)
+Info    : [100%] Meshing curve 837 (Circle)
+Info    : [100%] Meshing curve 838 (Line)
+Info    : [100%] Meshing curve 839 (Circle)
+Info    : [100%] Meshing curve 840 (Line)
+Info    : [100%] Meshing curve 841 (Circle)
+Info    : [100%] Meshing curve 842 (Circle)
+Info    : [100%] Meshing curve 843 (Circle)
+Info    : [100%] Meshing curve 844 (Circle)
+Info    : [100%] Meshing curve 845 (Circle)
+Info    : [100%] Meshing curve 846 (Circle)
+Info    : [100%] Meshing curve 847 (Circle)
+Info    : [100%] Meshing curve 848 (Circle)
+Info    : [100%] Meshing curve 849 (Circle)
+Info    : [100%] Meshing curve 850 (Circle)
+Info    : [100%] Meshing curve 851 (Circle)
+Info    : [100%] Meshing curve 852 (Circle)
+Info    : [100%] Meshing curve 853 (Circle)
+Info    : [100%] Meshing curve 854 (Circle)
+Info    : [100%] Meshing curve 855 (Circle)
+Info    : [100%] Meshing curve 856 (Circle)
+Info    : [100%] Meshing curve 857 (Circle)
+Info    : [100%] Meshing curve 858 (Circle)
+Info    : [100%] Meshing curve 859 (Circle)
+Info    : [100%] Meshing curve 860 (Circle)
+Info    : [100%] Meshing curve 861 (Circle)
+Info    : Done meshing 1D (Wall 0.0726813s, CPU 0.081163s)
+Info    : 2200 nodes 3020 elements
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>We can check that the mesh is embedded in a 3D geometrical space while being of 1D topology.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span>
+<span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Geometrical dimension = </span><span class="si">{</span><span class="n">gdim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Topological dimension = </span><span class="si">{</span><span class="n">tdim</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Geometrical dimension = 3
+Topological dimension = 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">ufl.Jacobian</span></code> function to compute the transformation Jacobian between a reference element (interval here) and the current element. In our case, the Jacobian is of shape (3,1). Transforming it into a vector of unit length will give us the local tangent vector <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dx_dX</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Jacobian</span><span class="p">(</span><span class="n">domain</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">dx_dX</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">dx_dX</span><span class="p">,</span> <span class="n">dx_dX</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now compute the section local axis. As mentioned earlier, <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> will be perpendicular to <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span> and the vertical direction <span class="math notranslate nohighlight">\(\boldsymbol{e}_z=(0,0,1)\)</span>. After normalization, <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span> is built by taking the cross product between <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span>, <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span> will therefore belong to the plane made by <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span> and the vertical direction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ez</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">ez</span><span class="p">)</span>
+<span class="n">a1</span> <span class="o">/=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a1</span><span class="p">,</span> <span class="n">a1</span><span class="p">))</span>
+<span class="n">a2</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">a1</span><span class="p">)</span>
+<span class="n">a2</span> <span class="o">/=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span> <span class="n">a2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define the material and geometrical constants which will be used in the constitutive relation. We consider the case of a rectangular cross-section of width <span class="math notranslate nohighlight">\(b\)</span> and height <span class="math notranslate nohighlight">\(h\)</span> in directions <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span>. The bending inertia will therefore be <span class="math notranslate nohighlight">\(I_1 = bh^3/12\)</span> and <span class="math notranslate nohighlight">\(I_2=hb^3/12\)</span>. The torsional inertia is <span class="math notranslate nohighlight">\(J=\beta hb^3\)</span> with <span class="math notranslate nohighlight">\(\beta\approx 0.26\)</span> for <span class="math notranslate nohighlight">\(h=3b\)</span>. Finally, the shear areas are approximated by <span class="math notranslate nohighlight">\(S_1=S_2=\kappa S\)</span> with <span class="math notranslate nohighlight">\(\kappa=5/6\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">thick</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">width</span> <span class="o">=</span> <span class="n">thick</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">70e3</span><span class="p">)</span>
+<span class="n">nu</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">E</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">nu</span><span class="p">)</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">2.7e-3</span><span class="p">)</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">9.81</span><span class="p">)</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">thick</span><span class="o">*</span><span class="n">width</span>
+<span class="n">ES</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">S</span>
+<span class="n">EI1</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">width</span><span class="o">*</span><span class="n">thick</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="mi">12</span>
+<span class="n">EI2</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">width</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">thick</span><span class="o">/</span><span class="mi">12</span>
+<span class="n">GJ</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="mf">0.26</span><span class="o">*</span><span class="n">thick</span><span class="o">*</span><span class="n">width</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">kappa</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">5.</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span>
+<span class="n">GS1</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="n">S</span>
+<span class="n">GS2</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="n">S</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now consider a mixed <span class="math notranslate nohighlight">\(\mathbb{P}_1/\mathbb{P}_1\)</span>-Lagrange interpolation for the displacement and rotation fields. The variational form is built using a function <code class="docutils literal notranslate"><span class="pre">generalized_strains</span></code> giving the vector of six generalized strains as well as a function <code class="docutils literal notranslate"><span class="pre">generalized_stresses</span></code> which computes the dot product of the strains with the above-mentioned constitutive matrix (diagonal here). Note that since the 1D beams are embedded in an ambient 3D space, the gradient operator has shape (3,), we therefore define a tangential gradient operator <code class="docutils literal notranslate"><span class="pre">tgrad</span></code> by taking the dot product with the local tangent vector <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Finally, similarly to Reissner-Mindlin plates, shear-locking issues might arise in the thin beam limit. To avoid this, reduced integration is performed on the shear part <span class="math notranslate nohighlight">\(Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2\)</span> of the variational form using a one-point rule.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ue</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,))</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">mixed_element</span><span class="p">([</span><span class="n">Ue</span><span class="p">,</span> <span class="n">Ue</span><span class="p">]))</span>
+
+
+<span class="n">u_</span><span class="p">,</span> <span class="n">theta_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunctions</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="n">du</span><span class="p">,</span> <span class="n">dtheta</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunctions</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">generalized_strains</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span>
+                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">a1</span><span class="p">)</span><span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">a2</span><span class="p">),</span>
+                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">a2</span><span class="p">)</span><span class="o">+</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">a1</span><span class="p">),</span>
+                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span>
+                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">a1</span><span class="p">),</span>
+                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">a2</span><span class="p">)])</span>
+<span class="k">def</span> <span class="nf">generalized_stresses</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">ES</span><span class="p">,</span> <span class="n">GS1</span><span class="p">,</span> <span class="n">GS2</span><span class="p">,</span> <span class="n">GJ</span><span class="p">,</span> <span class="n">EI1</span><span class="p">,</span> <span class="n">EI2</span><span class="p">])),</span> <span class="n">generalized_strains</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+
+<span class="n">Sig</span> <span class="o">=</span> <span class="n">generalized_stresses</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">dtheta</span><span class="p">)</span>
+<span class="n">Eps_</span> <span class="o">=</span>  <span class="n">generalized_strains</span><span class="p">(</span><span class="n">u_</span><span class="p">,</span> <span class="n">theta_</span><span class="p">)</span>
+
+<span class="n">dx_shear</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span><span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">k_form</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">Sig</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Eps_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">dx</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span> <span class="o">+</span> <span class="p">(</span><span class="n">Sig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Eps_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">Sig</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Eps_</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">dx_shear</span>
+<span class="n">l_form</span> <span class="o">=</span> <span class="o">-</span><span class="n">rho</span><span class="o">*</span><span class="n">S</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">u_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Clamped boundary conditions are considered at the bottom <span class="math notranslate nohighlight">\(z=0\)</span> level and the linear problem is finally solved.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bottom</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
+
+<span class="n">Vu</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">Vt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">u_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">((</span><span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vu</span><span class="p">),</span> <span class="n">bottom</span><span class="p">)</span>
+<span class="n">theta_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">((</span><span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Vt</span><span class="p">),</span> <span class="n">bottom</span><span class="p">)</span>
+<span class="n">u0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vu</span><span class="p">)</span>
+<span class="n">theta0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vt</span><span class="p">)</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">u_dofs</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span> <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="n">theta_dofs</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">))]</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Generalized_displacement&quot;</span><span class="p">)</span>
+
+<span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">(</span>
+    <span class="n">k_form</span><span class="p">,</span> <span class="n">l_form</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We finally plot the deflected shape and the bending moment distribution using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvista</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">plot</span>
+
+<span class="n">u</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">topology</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">Vu</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">topology</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Deflection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">warped</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">warp_by_vector</span><span class="p">(</span><span class="s2">&quot;Deflection&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">500.0</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">warped</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vu</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bending moments (M1,M2)&quot;</span><span class="p">)</span>
+<span class="n">Sig</span> <span class="o">=</span> <span class="n">generalized_stresses</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">w</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">M_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">Sig</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">Sig</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">Vu</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+<span class="n">M</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">M_exp</span><span class="p">)</span>
+
+<span class="n">grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Bending_moments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="s2">&quot;Bending_moments&quot;</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../../_images/d443abc81964f598c0afdf67c56606584fbf30a3a313e8ac2c42f3d311f808c6.png" src="../../../_images/d443abc81964f598c0afdf67c56606584fbf30a3a313e8ac2c42f3d311f808c6.png" />
+<img alt="../../../_images/b323373370a1421ac67d2b1c135b166fb10ff30d3d2b1db2ed423de841f76ad9.png" src="../../../_images/b323373370a1421ac67d2b1c135b166fb10ff30d3d2b1db2ed423de841f76ad9.png" />
+</div>
+</div>
+</section>
+<section id="attention">
+<h2>Attention<a class="headerlink" href="#attention" title="Link to this heading">#</a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<ul class="simple">
+<li><p>The <span class="math notranslate nohighlight">\(\mathbb{P}_1-\mathbb{P}_1\)</span> discretization choice made here might be too poor for achieving a decent error with a moderate mesh size. Increasing the order of interpolation, e.g. for the displacement <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> is obviously possible but the integration degree for the reduced integration measure <code class="docutils literal notranslate"><span class="pre">dx_shear</span></code> must be adapted to this case.</p></li>
+<li><p>To add concentrated forces, one can use the <code class="docutils literal notranslate"><span class="pre">dS</span></code> measure with appropriate tags or follow the strategy hinted in <a class="reference internal" href="../linear_truss/linear_truss.html"><span class="std std-doc">Linear elastic 2D truss </span></a>.</p></li>
+</ul>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/beams/beams_3D"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../linear_truss/linear_truss.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Linear elastic 2D truss <span class="far fa-star"></span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../plates/contents.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Plates</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-kinematics">Beam kinematics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constitutive-equations">Constitutive equations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention">Attention</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

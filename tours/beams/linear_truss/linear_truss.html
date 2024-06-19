@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/beams/linear_truss/linear_truss';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Plates" href="../../plates/contents.html" />
+    <link rel="next" title="Elastic 3D beam structures" href="../beams_3D/beams_3D.html" />
     <link rel="prev" title="Beams" href="../contents.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -210,6 +210,7 @@
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -580,7 +581,12 @@ Topological dimension = 1
 </div>
 </div>
 <p>We plot the mesh, the loading (in black) and the unit tangent vectors in red using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
@@ -615,6 +621,7 @@ Topological dimension = 1
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <img alt="../../../_images/e4a854211740246c9754f4488110d9c1b6c7a411158f08026a9e64d9768de126.png" src="../../../_images/e4a854211740246c9754f4488110d9c1b6c7a411158f08026a9e64d9768de126.png" />
 </div>
@@ -693,7 +700,12 @@ Topological dimension = 1
 </div>
 </div>
 <p>AWe plot the resulting normal force on the (scaled) deformed configuration using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
 <span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
@@ -729,6 +741,7 @@ Topological dimension = 1
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <img alt="../../../_images/550f07d3842cf3c29c064d73f6ce468fe307297df18b4d4481f38d0f5ea1bc08.png" src="../../../_images/550f07d3842cf3c29c064d73f6ce468fe307297df18b4d4481f38d0f5ea1bc08.png" />
 </div>
@@ -777,11 +790,11 @@ Topological dimension = 1
       </div>
     </a>
     <a class="right-next"
-       href="../../plates/contents.html"
+       href="../beams_3D/beams_3D.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Plates</p>
+        <p class="prev-next-title">Elastic 3D beam structures <span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
