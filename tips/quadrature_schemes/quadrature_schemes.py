@@ -107,7 +107,6 @@ deg = 2
 
 from dolfinx import cpp, mesh
 import pyvista as pv
-import numpy as np
 from matplotlib.colors import to_hex
 
 pv.set_jupyter_backend("static")

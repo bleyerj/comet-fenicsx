@@ -177,7 +177,7 @@ bcs = [fem.dirichletbc(np.zeros((gdim,)), bc_dofs, V)]
 
 # We plot the mesh, the loading (in black) and the unit tangent vectors in red using `pyvista`.
 
-# + tag=["hide-input"]
+# + tags=["hide-input"]
 pyvista.set_jupyter_backend("static")
 plotter = pyvista.Plotter()
 
@@ -272,7 +272,7 @@ N.interpolate(N_exp)
 
 # AWe plot the resulting normal force on the (scaled) deformed configuration using `pyvista`.
 
-# + tag=["hide-input"]
+# + tags=["hide-input"]
 plotter = pyvista.Plotter()
 u_topology, u_cell_types, u_geometry = plot.vtk_mesh(V)
 u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry)
