@@ -228,6 +228,7 @@ C = ufl.inv(S)
 #
 # Finally, we can define the stress function `stress`, again using either a vectorial or a tensorial representation, as:
 
+
 def stress(u, repr="vectorial"):
     sigv = ufl.dot(C, strain(u))
     if repr == "vectorial":
@@ -335,9 +336,10 @@ u = fem.Function(V, name="Displacement")
 a_form = ufl.inner(stress(du), strain(u_)) * ufl.dx
 
 # uniform traction on top boundary
+ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 T = fem.Constant(domain, 10.0)
 n = ufl.FacetNormal(domain)
-L_form = ufl.dot(T * n, u_) * ufl.ds((2, 3))
+L_form = ufl.dot(T * n, u_) * ds((2, 3))
 
 V_ux, _ = V.sub(0).collapse()
 V_uy, _ = V.sub(1).collapse()

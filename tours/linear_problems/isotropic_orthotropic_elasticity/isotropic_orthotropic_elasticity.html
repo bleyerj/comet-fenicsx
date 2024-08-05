@@ -683,10 +683,10 @@ Info    : [ 20%] Meshing curve 2 (Line)
 Info    : [ 40%] Meshing curve 3 (Line)
 Info    : [ 60%] Meshing curve 4 (Line)
 Info    : [ 80%] Meshing curve 5 (Line)
-Info    : Done meshing 1D (Wall 0.000470399s, CPU 0.000386s)
+Info    : Done meshing 1D (Wall 0.000252123s, CPU 0.000196s)
 Info    : Meshing 2D...
 Info    : Meshing surface 1 (Plane, Frontal-Delaunay)
-Info    : Done meshing 2D (Wall 0.0918469s, CPU 0.092059s)
+Info    : Done meshing 2D (Wall 0.0478119s, CPU 0.046207s)
 Info    : 3010 nodes 6023 elements
 </pre></div>
 </div>
@@ -738,9 +738,10 @@ the linear form now contains a Neumann term corresponding to a uniform vertical 
 <span class="n">a_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">stress</span><span class="p">(</span><span class="n">du</span><span class="p">),</span> <span class="n">strain</span><span class="p">(</span><span class="n">u_</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
 
 <span class="c1"># uniform traction on top boundary</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facets</span><span class="p">)</span>
 <span class="n">T</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
 <span class="n">n</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetNormal</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
-<span class="n">L_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">ds</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">L_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">ds</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
 <span class="n">V_ux</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
 <span class="n">V_uy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
