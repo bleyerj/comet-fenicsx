@@ -99,7 +99,7 @@ In practice for a concrete implementation, the formal stress/strain relation  $\
 in 3D and 2D plane strain conditions. The relation can also be inverted as follows:
 ```{math}
 :label: isotropic-compliance
-\beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1}{E}\bsig
+\beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1+\nu}{E}\bsig
 ```
 
 
