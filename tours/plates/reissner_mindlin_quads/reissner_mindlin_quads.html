@@ -435,7 +435,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Material parameters for isotropic linear elastic behavior are first defined::</p>
+<p>Material parameters for isotropic linear elastic behavior are first defined:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">210e3</span><span class="p">)</span>
@@ -541,7 +541,7 @@ defined:</p>
 
 <span class="k">def</span> <span class="nf">shear_strain</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
     <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="n">theta</span>
 
 
 <span class="k">def</span> <span class="nf">bending_moment</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>

@@ -445,7 +445,7 @@ document.write(`
 </ul>
 <p>In weak form:</p>
 <div class="math notranslate nohighlight">
-\[\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f w \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}\]</div>
+\[\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f \widehat{w} \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}\]</div>
 </section>
 <section id="isotropic-linear-elastic-constitutive-relation">
 <h3>Isotropic linear elastic constitutive relation<a class="headerlink" href="#isotropic-linear-elastic-constitutive-relation" title="Link to this heading">#</a></h3>
@@ -522,7 +522,7 @@ document.write(`
 
 <span class="k">def</span> <span class="nf">shear_strain</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
     <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">theta</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">-</span> <span class="n">theta</span>
 
 
 <span class="k">def</span> <span class="nf">bending_moment</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>

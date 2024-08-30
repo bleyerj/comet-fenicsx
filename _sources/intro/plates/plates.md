@@ -61,7 +61,7 @@ For a distributed transverse surface loading $f$,
 
 In weak form:
 
-$$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f w \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}$$
+$$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f \widehat{w} \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}$$
 
 ### Isotropic linear elastic constitutive relation
 * Bending/curvature relation:
@@ -130,7 +130,7 @@ def curvature(u):
 
 def shear_strain(u):
     (w, theta) = ufl.split(u)
-    return theta - ufl.grad(w)
+    return ufl.grad(w) - theta
 
 
 def bending_moment(u):
