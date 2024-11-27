@@ -199,8 +199,8 @@
 # ```{math}
 # :label: shells-constitutive-equations
 #
-# \bN &= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
-# \bM &= \int_{-h/2}^{h/2} (-\zeta)\uttilde{\bsig} d\zeta = h \int_{-h/2}^{h/2} (-\zeta)\mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = \dfrac{h^3}{12}\mathbb{C}_\text{ps}:\boldsymbol{\bchi}\\
+# \bN &= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
+# \bM &= \int_{-h/2}^{h/2} (-\zeta)\uttilde{\bsig} d\zeta = \int_{-h/2}^{h/2} (-\zeta)\mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = \dfrac{h^3}{12}\mathbb{C}_\text{ps}:\boldsymbol{\bchi}\\
 # \bQ &= \int_{-h/2}^{h/2} \utilde{\bsig}_3 d \zeta = \mu h \bgamma
 # ```
 #

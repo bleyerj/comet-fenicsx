@@ -1,0 +1,994 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Periodic homogenization of linear elasticity &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/homogenization/periodic_elasticity/periodic_elasticity';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Beams" href="../../beams/contents.html" />
+    <link rel="prev" title="Homogenization" href="../contents.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Homogenization</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/homogenization/periodic_elasticity/periodic_elasticity.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Periodic homogenization of linear elasticity </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-homogenization-framework">Periodic homogenization framework</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-displacement-as-the-main-unknown">Total displacement as the main unknown</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-fluctuation-as-the-main-unknown">Periodic fluctuation as the main unknown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation">Mesh generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation-with-heterogeneous-material-properties">Variational formulation with heterogeneous material properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-boundary-conditions-enforcement-using-dolfinx-mpc">Periodic boundary conditions enforcement using <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-resolution">Problem resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effective-stiffness">Effective stiffness</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="periodic-homogenization-of-linear-elasticity">
+<h1>Periodic homogenization of linear elasticity <span class="far fa-star"></span><a class="headerlink" href="#periodic-homogenization-of-linear-elasticity" title="Link to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This tour will show how to perform periodic homogenization of linear elastic heterogeneous materials. In particular, we show how to define periodic boundary conditions and compute the effective stiffness tensor.
+<span class="math notranslate nohighlight">\(\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bt}{\boldsymbol{t}}
+\newcommand{\be}{\boldsymbol{e}}
+\newcommand{\ba}{\boldsymbol{a}}
+\newcommand{\by}{\boldsymbol{y}}
+\newcommand{\bE}{\boldsymbol{E}}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\bsig}{\boldsymbol{\sigma}}
+\newcommand{\T}{^{\text{T}}}\)</span></p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This tour requires the <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code> add-on package to enforce periodic boundary conditions. More details and installation instructions are to be found here <a class="github reference external" href="https://github.com/jorgensd/dolfinx_mpc">jorgensd/dolfinx_mpc</a>.</p>
+</div>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/439fd34539d121eeafa58593460ece48/periodic_elasticity.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/65f65e104dd9af210bbe97668ab1bb76/periodic_elasticity.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
+<p>The considered 2D plane strain problem deals with a skewed unit cell of dimensions <span class="math notranslate nohighlight">\(1\times \sqrt{3}/2\)</span> consisting of circular inclusions (numbered <span class="math notranslate nohighlight">\(1\)</span>) of radius <span class="math notranslate nohighlight">\(R\)</span> with elastic properties <span class="math notranslate nohighlight">\((E_r, \nu_r)\)</span> and embedded in a matrix material (numbered <span class="math notranslate nohighlight">\(0\)</span>) of properties <span class="math notranslate nohighlight">\((E_m, \nu_m)\)</span> following an hexagonal pattern. A classical result of homogenization theory ensures that the resulting overall behavior will be isotropic, a property that will be numerically verified later.</p>
+<a class="reference internal image-reference" href="../../../_images/unit_cell.png"><img alt="../../../_images/unit_cell.png" class="align-center" src="../../../_images/unit_cell.png" style="width: 600px;" /></a>
+<section id="periodic-homogenization-framework">
+<h2>Periodic homogenization framework<a class="headerlink" href="#periodic-homogenization-framework" title="Link to this heading">#</a></h2>
+<p>The goal of homogenization theory consists in computing the apparent elastic moduli of the homogenized medium associated with a given microstructure. In a linear elastic setting, this amounts to solving the following auxiliary problem defined on the unit cell <span class="math notranslate nohighlight">\(\mathcal{A}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}\begin{cases}\operatorname{div} \boldsymbol{\sigma} = \boldsymbol{0} &amp; \text{in } \mathcal{A} \\
+\boldsymbol{\sigma} = \mathbb{C}(\boldsymbol{y}):\boldsymbol{\varepsilon} &amp; \text{for }\boldsymbol{y}\in\mathcal{A} \\
+\boldsymbol{\varepsilon} = \boldsymbol{E} + \nabla^s \boldsymbol{v} &amp; \text{in } \mathcal{A} \\
+\boldsymbol{v} &amp; \text{is } \mathcal{A}\text{-periodic} \\
+\boldsymbol{T}=\boldsymbol{\sigma}\cdot\boldsymbol{n} &amp; \text{is } \mathcal{A}\text{-antiperiodic}
+\end{cases} \label{auxiliary-problem}
+\end{equation}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span> is the <strong>given</strong> macroscopic strain, <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> a periodic fluctuation and <span class="math notranslate nohighlight">\(\mathbb{C}(\boldsymbol{y})\)</span> is the heterogeneous elasticity tensor depending on the microscopic space variable <span class="math notranslate nohighlight">\(\boldsymbol{y}\in\mathcal{A}\)</span>. By construction, the local microscopic strain is equal on average to the macroscopic strain: <span class="math notranslate nohighlight">\(\langle \boldsymbol{\varepsilon} \rangle = \boldsymbol{E}\)</span>. Upon defining the macroscopic stress <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> as the microscopic stress average: <span class="math notranslate nohighlight">\(\langle \boldsymbol{\sigma} \rangle = \boldsymbol{\Sigma}\)</span>, there will be a linear relationship between the auxiliary problem loading parameters <span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span> and the resulting average stress:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\Sigma}  = \mathbb{C}^\text{hom}:\boldsymbol{E}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{C}^\text{hom}\)</span> represents the apparent elastic moduli of the homogenized medium. Hence, its components can be computed by solving elementary load cases corresponding to the different components of <span class="math notranslate nohighlight">\(\boldsymbol{E}\)</span> and performing a unit cell average of the resulting microscopic stress components.</p>
+<section id="total-displacement-as-the-main-unknown">
+<h3>Total displacement as the main unknown<a class="headerlink" href="#total-displacement-as-the-main-unknown" title="Link to this heading">#</a></h3>
+<p>The previous problem can also be reformulated by using the total displacement <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{E}\cdot\boldsymbol{y} + \boldsymbol{v}\)</span> as the main unknown with now <span class="math notranslate nohighlight">\(\boldsymbol{\varepsilon} = \nabla^s \boldsymbol{u}\)</span>. The periodicity condition is therefore equivalent to the following constraint:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{u}(\boldsymbol{y}^+)-\boldsymbol{u}(\boldsymbol{y}^-) = \boldsymbol{E}\cdot(\boldsymbol{y}^+-\boldsymbol{y}^-)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\boldsymbol{y}^{\pm}\)</span> are opposite points on the unit cell boundary related by the periodicity condition. This formulation is widely used in solid mechanics FE software as it does not require specific change of the problem formulation but just adding tying constraints between some degrees of freedom.</p>
+<p>This formulation is however not the easiest to deal with in <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code>.</p>
+</section>
+<section id="periodic-fluctuation-as-the-main-unknown">
+<h3>Periodic fluctuation as the main unknown<a class="headerlink" href="#periodic-fluctuation-as-the-main-unknown" title="Link to this heading">#</a></h3>
+<p>Instead, we will keep the initial formulation and consider the periodic fluctuation <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> as the main unknown. The periodicity constraint on <span class="math notranslate nohighlight">\(\boldsymbol{v}\)</span> will be imposed using the <code class="docutils literal notranslate"><span class="pre">create_periodic_constraint</span></code> functions of <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code>. To do so, one must define the periodic map linking the different unit cell boundaries i.e. the right part is mapped onto the left part, the top part onto the bottom part.</p>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<section id="mesh-generation">
+<h3>Mesh generation<a class="headerlink" href="#mesh-generation" title="Link to this heading">#</a></h3>
+<p>Here the unit cell is 2D and its boundary is represented by a parallelogram of vertices <code class="docutils literal notranslate"><span class="pre">corners</span></code> and the corresponding base vectors <code class="docutils literal notranslate"><span class="pre">a1</span></code> and <code class="docutils literal notranslate"><span class="pre">a2</span></code> are computed. The right part is then mapped onto the left part, the top part onto the bottom part and the top-right corner onto the bottom-left one.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">import</span> <span class="nn">gmsh</span>
+<span class="kn">import</span> <span class="nn">ufl</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
+<span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
+<span class="kn">from</span> <span class="nn">dolfinx.io.gmshio</span> <span class="kn">import</span> <span class="n">model_to_mesh</span>
+<span class="kn">import</span> <span class="nn">dolfinx_mpc.utils</span>
+<span class="kn">from</span> <span class="nn">dolfinx_mpc</span> <span class="kn">import</span> <span class="n">LinearProblem</span>
+
+<span class="n">Lx</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">Ly</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">Lx</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">Lx</span>
+<span class="n">R</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">Lx</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">Lx</span>
+
+<span class="n">corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="n">Lx</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="n">Lx</span> <span class="o">+</span> <span class="n">c</span><span class="p">,</span> <span class="n">Ly</span><span class="p">],</span> <span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="n">Ly</span><span class="p">]])</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">corners</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># first vector generating periodicity</span>
+<span class="n">a2</span> <span class="o">=</span> <span class="n">corners</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">corners</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># second vector generating periodicity</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The geometry is then generated using <code class="docutils literal notranslate"><span class="pre">gmsh</span></code> Python API and the Open Cascade kernel. We tag the matrix with tag <code class="docutils literal notranslate"><span class="pre">1</span></code> and the inclusions with tag <code class="docutils literal notranslate"><span class="pre">2</span></code>. The bottom, right, top and left boundaries are respectively tagged <code class="docutils literal notranslate"><span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4</span></code>.</p>
+<div class="cell tag_hide-input tag_hide-output docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdim</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># domain geometry dimension</span>
+<span class="n">fdim</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># facets dimension</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+
+<span class="n">occ</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span>
+<span class="n">mesh_comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+<span class="n">model_rank</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="n">model_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="n">occ</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="o">*</span><span class="n">corner</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">]</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">occ</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">points</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">4</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">add_curve_loop</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+    <span class="n">unit_cell</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">add_plane_surface</span><span class="p">([</span><span class="n">loop</span><span class="p">])</span>
+    <span class="n">inclusions</span> <span class="o">=</span> <span class="p">[</span><span class="n">occ</span><span class="o">.</span><span class="n">add_disk</span><span class="p">(</span><span class="o">*</span><span class="n">corner</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span> <span class="k">for</span> <span class="n">corner</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">]</span>
+    <span class="n">vol_dimTag</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="n">unit_cell</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">occ</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">vol_dimTag</span><span class="p">],</span> <span class="p">[(</span><span class="n">gdim</span><span class="p">,</span> <span class="n">incl</span><span class="p">)</span> <span class="k">for</span> <span class="n">incl</span> <span class="ow">in</span> <span class="n">inclusions</span><span class="p">],</span> <span class="n">removeObject</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">incl_dimTags</span> <span class="o">=</span> <span class="n">out</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+    <span class="n">occ</span><span class="o">.</span><span class="n">cut</span><span class="p">([</span><span class="n">vol_dimTag</span><span class="p">],</span> <span class="n">incl_dimTags</span><span class="p">,</span> <span class="n">removeTool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+
+    <span class="c1"># tag physical domains and facets</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="p">[</span><span class="n">vol_dimTag</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Matrix&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span>
+        <span class="n">gdim</span><span class="p">,</span>
+        <span class="p">[</span><span class="n">tag</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">incl_dimTags</span><span class="p">],</span>
+        <span class="mi">2</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Inclusions&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">16</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="p">[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMin&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMax&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
+
+<span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">mesh_comm</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : Meshing 1D...
+Info    : [  0%] Meshing curve 5 (Line)
+Info    : [ 10%] Meshing curve 6 (Ellipse)
+Info    : [ 20%] Meshing curve 7 (Line)
+Info    : [ 20%] Meshing curve 8 (Ellipse)
+Info    : [ 30%] Meshing curve 9 (Line)
+Info    : [ 40%] Meshing curve 10 (Line)
+Info    : [ 40%] Meshing curve 11 (Line)
+Info    : [ 50%] Meshing curve 12 (Line)
+Info    : [ 50%] Meshing curve 13 (Ellipse)
+Info    : [ 60%] Meshing curve 14 (Ellipse)
+Info    : [ 70%] Meshing curve 15 (Line)
+Info    : [ 70%] Meshing curve 16 (Line)
+Info    : [ 80%] Meshing curve 17 (Line)
+Info    : [ 90%] Meshing curve 18 (Line)
+Info    : [ 90%] Meshing curve 19 (Line)
+Info    : [100%] Meshing curve 20 (Line)
+Info    : Done meshing 1D (Wall 0.00214555s, CPU 0.003264s)
+Info    : Meshing 2D...
+Info    : [  0%] Meshing surface 1 (Plane, Frontal-Delaunay)
+Info    : [ 20%] Meshing surface 2 (Plane, Frontal-Delaunay)
+Info    : [ 40%] Meshing surface 3 (Plane, Frontal-Delaunay)
+Info    : [ 60%] Meshing surface 4 (Plane, Frontal-Delaunay)
+Info    : [ 80%] Meshing surface 5 (Plane, Frontal-Delaunay)
+Info    : Done meshing 2D (Wall 0.0873901s, CPU 0.084905s)
+Info    : 2679 nodes 5432 elements
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>We compute the unit cell volume from the mesh for verification:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vol</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Volume:&quot;</span><span class="p">,</span> <span class="n">vol</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Volume: 0.8660254037844402
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="variational-formulation-with-heterogeneous-material-properties">
+<h3>Variational formulation with heterogeneous material properties<a class="headerlink" href="#variational-formulation-with-heterogeneous-material-properties" title="Link to this heading">#</a></h3>
+<p>In the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/periodic_homog_elas/periodic_homog_elas.html">legacy demo</a>, the variational formulation made use of two different terms in the bilinear form using <code class="docutils literal notranslate"><span class="pre">dx(1)</span></code> and <code class="docutils literal notranslate"><span class="pre">dx(2)</span></code> cell measures representing the contribution of both phases to the global weak form. This approach is not necessarily well adapted to more complex types of heterogeneities such as the case with a large number of phases with different properties or phases with spatially-dependent properties. As an alternative, we thus consider a single constitutive law expression for all phases but with material properties (Young modulus and Poisson ratio) being represented as functions defined on the mesh. In this case, we use piecewise constant (<code class="docutils literal notranslate"><span class="pre">DG0</span></code>) functions with constant value on the matrix and on the inclusion phases. To easily set up such fields we define the function <code class="docutils literal notranslate"><span class="pre">create_piecewise_constant_field</span></code> to generate scalar <code class="docutils literal notranslate"><span class="pre">DG0</span></code> functions using a dictionary mapping phase labels to values, see <a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html"><span class="std std-doc">Create a piecewise constant field for spatially varying properties</span></a>.  If needed, such a helper function could be generalized to vector or tensor-valued functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_piecewise_constant_field</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cell_markers</span><span class="p">,</span> <span class="n">property_dict</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a piecewise constant field with different values per subdomain.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    domain : Mesh</span>
+<span class="sd">        `dolfinx` mesh object</span>
+<span class="sd">    cell_markers : MeshTag</span>
+<span class="sd">        cell marker MeshTag</span>
+<span class="sd">    property_dict : dict</span>
+<span class="sd">        A dictionary mapping region tags to physical values {tag: value}</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A DG-0 function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">property_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="n">cell_markers</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">k</span>
+
+
+<span class="n">E</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mf">50e3</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mf">210e3</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;YoungModulus&quot;</span>
+<span class="p">)</span>
+<span class="n">nu</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;PoissonRatio&quot;</span>
+<span class="p">)</span>
+
+<span class="n">lmbda</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nu</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">E</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As discussed before, our main unknown is the periodic fluctuation <span class="math notranslate nohighlight">\(\bv\)</span>. The loading will be imposed by the macroscopic strain <span class="math notranslate nohighlight">\(\bE\)</span> which we define as a <code class="docutils literal notranslate"><span class="pre">fem.Constant</span></code>. We will then be able to rebuild the total displacement <span class="math notranslate nohighlight">\(\bu = \bE\cdot\by + \bv\)</span> using the <code class="docutils literal notranslate"><span class="pre">ufl.SpatialCoordinate</span></code>. Below we define the variational form. Note that <code class="docutils literal notranslate"><span class="pre">ufl.inner(sigma(du),</span> <span class="pre">epsilon(u_))</span> <span class="pre">*</span> <span class="pre">ufl.dx</span></code> contains both bilinear and linear terms, the latter being due to the presence of the macroscopic strain <span class="math notranslate nohighlight">\(\bE\)</span> acting as an external loading. We make use of <code class="docutils literal notranslate"><span class="pre">ufl.system</span></code> to split the form into a bilinear and linear form.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Eps</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">Eps_</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">SpatialCoordinate</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">sigma</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">Eps</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lmbda</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">eps</span><span class="p">)</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">eps</span>
+
+
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>
+<span class="n">du</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">a_form</span><span class="p">,</span> <span class="n">L_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">du</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">u_</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="periodic-boundary-conditions-enforcement-using-dolfinx-mpc">
+<h3>Periodic boundary conditions enforcement using <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code><a class="headerlink" href="#periodic-boundary-conditions-enforcement-using-dolfinx-mpc" title="Link to this heading">#</a></h3>
+<p>We must now define the periodic boundary conditions for the fluctuation field. For that, we make use of <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code> providing a <code class="docutils literal notranslate"><span class="pre">MultiPointConstraint</span></code> object which can account for periodicity conditions. Note that periodic conditions do not fix rigid body translations. To remove them we choose here, for simplicity, to fix the displacement of the single point of coordinate <code class="docutils literal notranslate"><span class="pre">(0,</span> <span class="pre">0)</span></code>. An alternative can consist of introducing constant Lagrange multipliers as discussed in the legacy demo. This solution requires however to use <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements which require special care and are currently available in the <code class="docutils literal notranslate"><span class="pre">scifem</span></code> package <a class="github reference external" href="https://github.com/scientificcomputing/scifem">scientificcomputing/scifem</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">point_dof</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">(</span>
+    <span class="n">V</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">gdim</span><span class="p">,)),</span> <span class="n">point_dof</span><span class="p">,</span> <span class="n">V</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We first instantiate the <code class="docutils literal notranslate"><span class="pre">MultiPointConstraint</span></code> object <code class="docutils literal notranslate"><span class="pre">mpc</span></code> defined with respect to our function space <code class="docutils literal notranslate"><span class="pre">V</span></code>. The function <code class="docutils literal notranslate"><span class="pre">create_periodic_constraint_topological</span></code> enables to link dofs on corresponding surfaces. We must first define a mapping between points on corresponding surfaces. For instance, we apply the first condition to the right surface, tagged <code class="docutils literal notranslate"><span class="pre">2</span></code>. The <code class="docutils literal notranslate"><span class="pre">periodic_relation_left_right</span></code> transforms input coordinates on the right surface to points on the left surface as follows: <span class="math notranslate nohighlight">\((x, y) \mapsto (x-L_x, y)\)</span>. More generally, the mapping is <span class="math notranslate nohighlight">\((x, y) \mapsto (x-a_{1x}, y-a_{1y})\)</span> for the first periodicity-generating base vector <span class="math notranslate nohighlight">\(\ba_1\)</span>. We do the same for the top surface, tagged <code class="docutils literal notranslate"><span class="pre">3</span></code>, which is mapped to th
+e bottom one using the second periodicity-generating base vector <span class="math notranslate nohighlight">\(\ba_2.\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">periodic_relation_left_right</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">out_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">out_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out_x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">out_x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out_x</span>
+
+
+<span class="k">def</span> <span class="nf">periodic_relation_bottom_top</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">out_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">out_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">a2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out_x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">a2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">out_x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out_x</span>
+
+
+<span class="n">mpc</span> <span class="o">=</span> <span class="n">dolfinx_mpc</span><span class="o">.</span><span class="n">MultiPointConstraint</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">mpc</span><span class="o">.</span><span class="n">create_periodic_constraint_topological</span><span class="p">(</span>
+    <span class="n">V</span><span class="p">,</span> <span class="n">facets</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">periodic_relation_left_right</span><span class="p">,</span> <span class="n">bcs</span>
+<span class="p">)</span>
+<span class="n">mpc</span><span class="o">.</span><span class="n">create_periodic_constraint_topological</span><span class="p">(</span>
+    <span class="n">V</span><span class="p">,</span> <span class="n">facets</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">periodic_relation_bottom_top</span><span class="p">,</span> <span class="n">bcs</span>
+<span class="p">)</span>
+<span class="n">mpc</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="problem-resolution">
+<h3>Problem resolution<a class="headerlink" href="#problem-resolution" title="Link to this heading">#</a></h3>
+<p>We are now in position of defining the problem instance. Note that we must use here the <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> provided by <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code> and not that of <code class="docutils literal notranslate"><span class="pre">dolfinx.fem.petsc</span></code>. The former expands upon the latter by including the <code class="docutils literal notranslate"><span class="pre">MultiPointConstraint</span></code> object in its arguments. Note also that the solution function field <span class="math notranslate nohighlight">\(\bv\)</span>, and the related total displacement <span class="math notranslate nohighlight">\(\bu\)</span>, must be built from the reduced function space object provided by <code class="docutils literal notranslate"><span class="pre">mpc.function_space</span></code> and not <code class="docutils literal notranslate"><span class="pre">V</span></code> in order to properly account for the imposed kinematic constraint.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">mpc</span><span class="o">.</span><span class="n">function_space</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Displacement&quot;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">mpc</span><span class="o">.</span><span class="n">function_space</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Periodic_fluctuation&quot;</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span>
+    <span class="n">a_form</span><span class="p">,</span>
+    <span class="n">L_form</span><span class="p">,</span>
+    <span class="n">mpc</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To solve the homogenization problem, we define a list of elementary load cases representing macroscopic uniaxial tension in both <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> directions and uniform macroscopic shear in the <span class="math notranslate nohighlight">\(xy\)</span> direction. For each of such elementary load case, we update the value of the macroscopic strain constant <span class="math notranslate nohighlight">\(\bE\)</span> and solve the corresponding problem. The microscopic total displacement <span class="math notranslate nohighlight">\(\bu(\by)\)</span> is then built from the periodic fluctuation. For each load case, we compute the different components of the macroscopic average stress <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span>. Since we considered unit load cases, the latter directly provide the components of the macroscopic effective stiffness tensor <span class="math notranslate nohighlight">\(\mathbb{C}^\text{hom}\)</span>.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvista</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">plot</span>
+
+<span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">plot_warped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">plot_mesh</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">user_callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">Vu</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">function_space</span>
+    <span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">Vu</span><span class="p">)</span>
+    <span class="n">u_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span><span class="p">)</span>
+    <span class="n">u_3D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">u_geometry</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">3</span><span class="p">))</span>
+    <span class="n">u_3D</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">u_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">u_3D</span>
+    <span class="n">u_grid</span><span class="o">.</span><span class="n">set_active_vectors</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">warped</span> <span class="o">=</span> <span class="n">u_grid</span><span class="o">.</span><span class="n">warp_by_vector</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">warped</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plot_mesh</span><span class="p">:</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">warped</span><span class="o">.</span><span class="n">extract_all_edges</span><span class="p">()</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">elementary_load</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]]),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]),</span>
+<span class="p">]</span>
+<span class="n">load_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Exx&quot;</span><span class="p">,</span> <span class="s2">&quot;Eyy&quot;</span><span class="p">,</span> <span class="s2">&quot;Exy&quot;</span><span class="p">]</span>
+<span class="n">dim_load</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">elementary_load</span><span class="p">)</span>
+
+<span class="n">C_hom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">dim_load</span><span class="p">,</span> <span class="n">dim_load</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">nload</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim_load</span><span class="p">):</span>
+    <span class="n">Eps</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">elementary_load</span><span class="p">[</span><span class="n">nload</span><span class="p">]</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Eps</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">mpc</span><span class="o">.</span><span class="n">function_space</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
+
+    <span class="n">plot_warped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">plot_mesh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">load_labels</span><span class="p">[</span><span class="n">nload</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">nload_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dim_load</span><span class="p">):</span>
+        <span class="n">Eps_</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">elementary_load</span><span class="p">[</span><span class="n">nload_</span><span class="p">]</span>
+
+        <span class="n">C_hom</span><span class="p">[</span><span class="n">nload</span><span class="p">,</span> <span class="n">nload_</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">Eps_</span><span class="p">)</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">))</span> <span class="o">/</span> <span class="n">vol</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/4ff195de3958e164318a69a3722e4ff3e1ac4577344c6e8085718d6a13bfe957.png" src="../../../_images/4ff195de3958e164318a69a3722e4ff3e1ac4577344c6e8085718d6a13bfe957.png" />
+<img alt="../../../_images/2a35e43aeffa0a1d5d169094613411545d33f8c9220cfd0df2f25e12ac4ca4e4.png" src="../../../_images/2a35e43aeffa0a1d5d169094613411545d33f8c9220cfd0df2f25e12ac4ca4e4.png" />
+<img alt="../../../_images/9e506441bb8d102999fbc1356d46f6bf35fada64737bd7540fe5bc26d214afbd.png" src="../../../_images/9e506441bb8d102999fbc1356d46f6bf35fada64737bd7540fe5bc26d214afbd.png" />
+</div>
+</div>
+</section>
+<section id="effective-stiffness">
+<h3>Effective stiffness<a class="headerlink" href="#effective-stiffness" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">printoptions</span><span class="p">(</span><span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">C_hom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[65551. 17441.     1.]
+ [17434. 65562.     2.]
+ [   -1.    -5. 24062.]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>It can first be verified that the obtained macroscopic stiffness is indeed symmetric and that the corresponding behavior is quasi-isotropic (up to the finite element discretization error). Indeed, if <span class="math notranslate nohighlight">\(\lambda^{hom} = \mathbb{C}_{xxyy}\)</span> and <span class="math notranslate nohighlight">\(\mu^{hom} = \mathbb{C}_{xyxy}\)</span> we have that <span class="math notranslate nohighlight">\(\mathbb{C}_{xxxx}\approx\mathbb{C}_{yyyy}\approx \mathbb{C}_{xxyy}+2\mathbb{C}_{xyxy} = \lambda^{hom}+2\mu^{hom}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lmbda_hom</span> <span class="o">=</span> <span class="n">C_hom</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">mu_hom</span> <span class="o">=</span> <span class="n">C_hom</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Isotropy check:&quot;</span><span class="p">,</span> <span class="n">C_hom</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lmbda_hom</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mu_hom</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Isotropy check: 65551.35006965545 65564.61814401529
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The macroscopic stiffness is not exactly symmetric because we computed it from the average stress which is not strictly verifying local equilibrium on the unit cell due to the FE discretization. A truly symmetric version can be obtained from the computation of the bilinear form for a pair of solutions to the elementary load cases.</p>
+</div>
+<p>We then deduce that <span class="math notranslate nohighlight">\(E^{hom} = \mu^{hom}\dfrac{3\lambda^{hom}+2\mu^{hom}}{\lambda^{hom}+\mu^{hom}}\)</span> and <span class="math notranslate nohighlight">\(\nu^{hom} = \dfrac{\lambda^{hom}}{2(\lambda^{hom}+\mu^{hom})}\)</span> that is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E_hom</span> <span class="o">=</span> <span class="n">mu_hom</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">lmbda_hom</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mu_hom</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">lmbda_hom</span> <span class="o">+</span> <span class="n">mu_hom</span><span class="p">)</span>
+<span class="n">nu_hom</span> <span class="o">=</span> <span class="n">lmbda_hom</span> <span class="o">/</span> <span class="p">(</span><span class="n">lmbda_hom</span> <span class="o">+</span> <span class="n">mu_hom</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Apparent Young modulus: </span><span class="si">{</span><span class="n">E_hom</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Apparent Poisson ratio: </span><span class="si">{</span><span class="n">nu_hom</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Apparent Young modulus: 58235
+Apparent Poisson ratio: 0.210
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/homogenization/periodic_elasticity"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../contents.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Homogenization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../beams/contents.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beams</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-homogenization-framework">Periodic homogenization framework</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#total-displacement-as-the-main-unknown">Total displacement as the main unknown</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-fluctuation-as-the-main-unknown">Periodic fluctuation as the main unknown</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-generation">Mesh generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation-with-heterogeneous-material-properties">Variational formulation with heterogeneous material properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-boundary-conditions-enforcement-using-dolfinx-mpc">Periodic boundary conditions enforcement using <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-resolution">Problem resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effective-stiffness">Effective stiffness</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

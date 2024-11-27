@@ -36,9 +36,11 @@
 # ## Introduction
 #
 # This program solves the Reissner-Mindlin plate equations on the unit square with uniform transverse loading and fully clamped boundary conditions. We will test the use of quadrilateral cells and selective reduced integration (SRI) to remove shear-locking issues in the thin plate limit. Both linear and quadratic interpolation are considered for the transverse deflection $w$ and rotation $\boldsymbol{\theta}$.
-
+#
+#
 # ## Implementation
-
+#
+#
 # We first create a unit square mesh divided in $N\times N$ quadrilaterals:
 
 # +
@@ -53,7 +55,7 @@ N = 50
 domain = mesh.create_unit_square(MPI.COMM_WORLD, N, N, mesh.CellType.quadrilateral)
 # -
 
-# Material parameters for isotropic linear elastic behavior are first defined::
+# Material parameters for isotropic linear elastic behavior are first defined:
 
 E = fem.Constant(domain, 210e3)
 nu = fem.Constant(domain, 0.3)
@@ -142,7 +144,7 @@ def curv(u):
 
 def shear_strain(u):
     (w, theta) = ufl.split(u)
-    return theta - ufl.grad(w)
+    return ufl.grad(w) - theta
 
 
 def bending_moment(u):
