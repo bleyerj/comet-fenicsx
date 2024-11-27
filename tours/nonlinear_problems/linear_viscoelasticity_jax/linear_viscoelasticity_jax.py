@@ -49,7 +49,11 @@
 #
 # ```{seealso}
 #
-# For more details about JAX-based implementation of constitutive equations, we refer to Andrey's Latyshev work at https://github.com/a-latyshev/dolfinx-external-operator.
+# For more details about JAX-based implementation of constitutive equations, we refer to:
+# - the `dolfinx_materials` library: 
+#     * [Online documentation](https://bleyerj.github.io/dolfinx_materials) 
+#     * Repository https://github.com/bleyerj/dolfinx_materials
+# - Andrey's Latyshev work at https://github.com/a-latyshev/dolfinx-external-operator.
 # ```
 #
 # ## Nonlinear constitutive models in FEniCS

@@ -115,7 +115,7 @@ or the Mandel (or Kelvin) convention:
 \end{align*}
 In both cases, the $2$ or $\sqrt{2}$ in front of the shear components is introduced so that, in both cases, the vectorial dot product equals to the tensorial inner product:
 \begin{equation*}
-{\sigma}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
+\{\sigma\}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
 \end{equation*}
 
 ```{tip}

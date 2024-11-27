@@ -99,7 +99,7 @@
 # in 3D and 2D plane strain conditions. The relation can also be inverted as follows:
 # ```{math}
 # :label: isotropic-compliance
-# \beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1}{E}\bsig
+# \beps = -\dfrac{\nu}{E} \tr(\bsig)\bI + \dfrac{1+\nu}{E}\bsig
 # ```
 #
 #
@@ -115,7 +115,7 @@
 # \end{align*}
 # In both cases, the $2$ or $\sqrt{2}$ in front of the shear components is introduced so that, in both cases, the vectorial dot product equals to the tensorial inner product:
 # \begin{equation*}
-# {\sigma}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
+# \{\sigma\}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
 # \end{equation*}
 #
 # ```{tip}
@@ -227,7 +227,6 @@ C = ufl.inv(S)
 # ```
 #
 # Finally, we can define the stress function `stress`, again using either a vectorial or a tensorial representation, as:
-
 
 def stress(u, repr="vectorial"):
     sigv = ufl.dot(C, strain(u))
