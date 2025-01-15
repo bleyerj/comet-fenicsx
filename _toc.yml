@@ -36,6 +36,7 @@ parts:
     sections:
     - file: tours/beams/linear_truss/linear_truss.md
     - file: tours/beams/beams_3D/beams_3D.md
+    - file: tours/beams/nonlinear_beams/finite_rotation_nonlinear_beam.md
   - file: tours/plates/contents
     sections:
     - file: tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.md
