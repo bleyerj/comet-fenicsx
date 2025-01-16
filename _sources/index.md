@@ -102,7 +102,7 @@ Other topics will also be more advanced and exploratory and will reflect current
       ```{grid-item-card} [**Homogenization**]{.pst-color-primary}
       :link: tours/homogenization/contents.html
       
-      <img src="images/inclusions.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      <img src="images/inclusions .png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
       ```{grid-item-card} [**Beams**]{.pst-color-primary}

@@ -41,7 +41,7 @@ This tour requires the `dolfinx_mpc` add-on package to enforce periodic boundary
 * {Download}`Jupyter notebook<./periodic_elasticity.ipynb>`
 ```
 
-The considered 2D plane strain problem deals with a skewed unit cell of dimensions $1\times \sqrt{3}/2$ consisting of circular inclusions (numbered $1$) of radius $R$ with elastic properties $(E_r, \nu_r)$ and embedded in a matrix material (numbered $0$) of properties $(E_m, \nu_m)$ following an hexagonal pattern. A classical result of homogenization theory ensures that the resulting overall behavior will be isotropic, a property that will be numerically verified later.
+The considered 2D plane strain problem deals with a skewed unit cell of dimensions $1\times \sqrt{3}/2$ consisting of circular inclusions (numbered `2`) of radius $R$ with elastic properties $(E_r, \nu_r)$ and embedded in a matrix material (numbered `1`) of properties $(E_m, \nu_m)$ following an hexagonal pattern. A classical result of homogenization theory ensures that the resulting overall behavior will be isotropic, a property that will be numerically verified later.
 
 ```{image} unit_cell.png
 :align: center
