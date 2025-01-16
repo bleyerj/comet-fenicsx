@@ -10,7 +10,7 @@ jupytext:
     jupytext_version: 1.16.1
 ---
 
-# Nonlinear beam model in finite rotations
+# Nonlinear beam model in finite rotations {far}`star`{far}`star`{far}`star`
 
 ```{admonition} Objectives
 :class: objectives
@@ -231,8 +231,6 @@ from rotation_parametrization import ExponentialMap
 We explicitly build the mesh using the `ufl.Mesh` object with shape=`(3,)` and a list of cells. Doing so we obtain a mesh of topology dimension 1 and geometrical dimension 3, instead of 1 if we were using the `create_interval_mesh` built-in function. With this precaution, the following implementation will be completely generic without making any a priori assumption on the geometry, for instance when defining tangent vectors etc. We also define the `left_end` and `right_end` boundary markers for applying loading and boundary conditions. We use the `mark_facets` function from [](/tips/mark_facets/mark_facets.md) to tag the left and right ends for later applying boundary conditions.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def mark_facets(domain, surfaces_dict):
     """Mark facets of the domain according to a geometrical marker
 
@@ -478,8 +476,6 @@ vtk.close()
 ```
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 fig = plt.figure()
 ax = fig.gca()
 ax.set_xlim(-length / 2, length)

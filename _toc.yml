@@ -16,6 +16,7 @@ parts:
     sections:
     - file: tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md
     - file: tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md
+    - file: tours/linear_problems/generalized_plane_strain/generalized_plane_strain.md
     - file: tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md
     - file: tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md
   - file: tours/dynamics/contents
