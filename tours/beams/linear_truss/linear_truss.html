@@ -190,6 +190,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -215,7 +216,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../finite_rotation_nonlinear_beam/rotation_parametrization_description.html">A module for rotation parametrization</a></li>
 </ul>
 </li>
@@ -420,7 +421,7 @@ document.write(`
 <h2>Governing equations<a class="headerlink" href="#governing-equations" title="Link to this heading">#</a></h2>
 <p>We consider a truss <span class="math notranslate nohighlight">\(\Omega\)</span> consisting of straight members, pinned at their extremities. The normal force <span class="math notranslate nohighlight">\(N\)</span> in each member is related to the corresponding member axial strain <span class="math notranslate nohighlight">\(\eps\)</span> via a linear elastic relation:</p>
 <div class="math notranslate nohighlight" id="equation-truss-constitutive-elastic">
-<span class="eqno">(30)<a class="headerlink" href="#equation-truss-constitutive-elastic" title="Link to this equation">#</a></span>\[N = ES\eps\]</div>
+<span class="eqno">(33)<a class="headerlink" href="#equation-truss-constitutive-elastic" title="Link to this equation">#</a></span>\[N = ES\eps\]</div>
 <p>where <span class="math notranslate nohighlight">\(E\)</span> is the material Young modulus, <span class="math notranslate nohighlight">\(S\)</span> the member cross-section area and where the axial strain is given by the tangential displacement gradient along the member direction:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -694,7 +695,7 @@ Topological dimension = 1
 </div>
 </div>
 </div>
-<p>The normal force obtained from the elastic behavior <a class="reference internal" href="#equation-truss-constitutive-elastic">(30)</a> is then interpolated onto a piecewise-constant function space.</p>
+<p>The normal force obtained from the elastic behavior <a class="reference internal" href="#equation-truss-constitutive-elastic">(33)</a> is then interpolated onto a piecewise-constant function space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">()))</span>

@@ -190,6 +190,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -215,9 +216,8 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Nonlinear beam model in finite rotations</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="rotation_parametrization_description.html">A module for rotation parametrization</a></li>
-
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -375,7 +375,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Nonlinear beam model in finite rotations</h1>
+    <h1>Nonlinear beam model in finite rotations </h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -412,7 +412,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="nonlinear-beam-model-in-finite-rotations">
-<h1>Nonlinear beam model in finite rotations<a class="headerlink" href="#nonlinear-beam-model-in-finite-rotations" title="Link to this heading">#</a></h1>
+<h1>Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#nonlinear-beam-model-in-finite-rotations" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>We show how to formulate and solve a 3D nonlinear beam model in large displacements and rotations. We however consider here slender structures for which local strains will remain small. We therefore adopt an infinitesimal strain linear elastic model. The main difficulty here is related to the fact that finite rotations cannot be described using a simple rotation vector as in the infinitesimal rotation case but must be handled through <strong>rotation matrices</strong>.</p>
@@ -629,12 +629,7 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 </div>
 </div>
 <p>We explicitly build the mesh using the <code class="docutils literal notranslate"><span class="pre">ufl.Mesh</span></code> object with shape=<code class="docutils literal notranslate"><span class="pre">(3,)</span></code> and a list of cells. Doing so we obtain a mesh of topology dimension 1 and geometrical dimension 3, instead of 1 if we were using the <code class="docutils literal notranslate"><span class="pre">create_interval_mesh</span></code> built-in function. With this precaution, the following implementation will be completely generic without making any a priori assumption on the geometry, for instance when defining tangent vectors etc. We also define the <code class="docutils literal notranslate"><span class="pre">left_end</span></code> and <code class="docutils literal notranslate"><span class="pre">right_end</span></code> boundary markers for applying loading and boundary conditions. We use the <code class="docutils literal notranslate"><span class="pre">mark_facets</span></code> function from <a class="reference internal" href="../../../tips/mark_facets/mark_facets.html"><span class="std std-doc">Marking facets with geometrical functions</span></a> to tag the left and right ends for later applying boundary conditions.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mark_facets</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">surfaces_dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Mark facets of the domain according to a geometrical marker</span>
@@ -668,7 +663,6 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -926,12 +920,7 @@ We are now in position to define the beam elastic energy as well as the nonlinea
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
@@ -965,7 +954,6 @@ We are now in position to define the beam elastic energy as well as the nonlinea
 </pre></div>
 </div>
 </div>
-</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><video width="640" height="480" controls autoplay loop>
   <source type="video/mp4" src="data:video/mp4;base64,AAAAIGZ0eXBNNFYgAAACAE00ViBpc29taXNvMmF2YzEAAAAIZnJlZQAAnvFtZGF0AAACrwYF//+r

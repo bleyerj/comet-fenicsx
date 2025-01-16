@@ -190,6 +190,7 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
@@ -215,7 +216,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">A module for rotation parametrization</a></li>
 </ul>
 </li>
@@ -409,34 +410,34 @@ document.write(`
 <h1>A module for rotation parametrization<a class="headerlink" href="#a-module-for-rotation-parametrization" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
-<p>This document describes the implementation of generic vectorial parametrization of rotation matrices,  essentially following  <span id="id1">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span>. This module is used in the <a class="reference internal" href="finite_rotation_nonlinear_beam.html"><span class="std std-doc">Nonlinear beam model in finite rotations</span></a> tour.</p>
+<p>This document describes the implementation of generic vectorial parametrization of rotation matrices,  essentially following  <span id="id1">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span>. This module is used in the <a class="reference internal" href="finite_rotation_nonlinear_beam.html"><span class="std std-doc">Nonlinear beam model in finite rotations </span></a> tour.</p>
 </div>
 <section id="implementation-aspects">
 <h2>Implementation aspects<a class="headerlink" href="#implementation-aspects" title="Link to this heading">#</a></h2>
 <p>The module provides the <code class="docutils literal notranslate"><span class="pre">Skew</span></code> function, mapping a 3D vector to the corresponding skew-symmetric matrix.</p>
 <p>An abstract class handles the generic implementation of rotation parametrization based on the corresponding parametrization of the rotation angle <span class="math notranslate nohighlight">\(p(\varphi)\)</span>. Considering a generic rotation vector which we denote by <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>,  <span id="id2">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> works with <span class="math notranslate nohighlight">\(\varphi = \|\boldsymbol{\theta}\|\)</span> and the unit-norm vector <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{\theta}/\varphi\)</span>. Note that the involved expressions are usually ill-defined when <span class="math notranslate nohighlight">\(\varphi \to 0\)</span>. For this reason, the numerical implementation makes use of a regularized expression for the norm:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dd7995d7-e45e-42b7-9398-539f0721e24d">
-<span class="eqno">(31)<a class="headerlink" href="#equation-dd7995d7-e45e-42b7-9398-539f0721e24d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a64873da-8c98-47ff-bac5-6747cdc9194b">
+<span class="eqno">(34)<a class="headerlink" href="#equation-a64873da-8c98-47ff-bac5-6747cdc9194b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \varphi = \sqrt{\boldsymbol{\theta}^2 + \varepsilon}
 \end{equation}\]</div>
 <p>with <span class="math notranslate nohighlight">\({\varepsilon}\)</span> being a very small number in practice.</p>
 <p>The rotation parameter vector <span class="math notranslate nohighlight">\(\boldsymbol{p}\)</span> from <span id="id3">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> is given by the <code class="docutils literal notranslate"><span class="pre">rotation_parameter</span></code> attribute.</p>
 <p>The class then implements the following functions:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-16e2ffa1-3693-41da-b2c7-9eb9b93bb012">
-<span class="eqno">(32)<a class="headerlink" href="#equation-16e2ffa1-3693-41da-b2c7-9eb9b93bb012" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-83c8e978-ee81-4540-a6c0-df29f01bcb50">
+<span class="eqno">(35)<a class="headerlink" href="#equation-83c8e978-ee81-4540-a6c0-df29f01bcb50" title="Permalink to this equation">#</a></span>\[\begin{align}
 h_1(\varphi) &amp;= \dfrac{\nu(\varphi)^2}{\epsilon(\varphi)}\\
 h_2(\varphi) &amp;= \dfrac{\nu(\varphi)^2}{2}\\
 h_3(\varphi) &amp;= \dfrac{\mu(\varphi)-h_1(\varphi)}{p(\varphi)^2}\\
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\nu(\varphi),\epsilon(\varphi)\)</span> and <span class="math notranslate nohighlight">\(\mu(\varphi)\)</span> are defined in <span id="id4">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span>.</p>
 <p>It then provides the expression for the corresponding rotation matrix <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ccc10d12-d401-47ca-824d-f5b1af068d5b">
-<span class="eqno">(33)<a class="headerlink" href="#equation-ccc10d12-d401-47ca-824d-f5b1af068d5b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0d8e7557-d778-4e22-94b3-65a902240e92">
+<span class="eqno">(36)<a class="headerlink" href="#equation-0d8e7557-d778-4e22-94b3-65a902240e92" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{R} = \boldsymbol{I} + h_1(\varphi)\boldsymbol{P} + h_2(\varphi)\boldsymbol{P}^2
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{P} = \operatorname{skew}(\boldsymbol{p})\)</span>, as well as the associated rotation curvature matrix <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span> involved in the computation of the rotation rate:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-73d7cfd4-ff92-404a-bc86-f0bfb41891b3">
-<span class="eqno">(34)<a class="headerlink" href="#equation-73d7cfd4-ff92-404a-bc86-f0bfb41891b3" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0ee42acd-6068-4cf8-a77e-136cfcd40295">
+<span class="eqno">(37)<a class="headerlink" href="#equation-0ee42acd-6068-4cf8-a77e-136cfcd40295" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{H} = \mu(\varphi)\boldsymbol{I} + h_2(\varphi)\boldsymbol{P} + h_3(\varphi)\boldsymbol{P}^2
 \end{equation}\]</div>
 </section>
@@ -445,8 +446,8 @@ h_3(\varphi) &amp;= \dfrac{\mu(\varphi)-h_1(\varphi)}{p(\varphi)^2}\\
 <section id="exponentialmap-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">ExponentialMap</span></code> parametrization<a class="headerlink" href="#exponentialmap-parametrization" title="Link to this heading">#</a></h3>
 <p>This parametrization corresponds to the simple choice:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-89ac03a1-1bfd-4cdf-86fb-5fd94dd5cab8">
-<span class="eqno">(35)<a class="headerlink" href="#equation-89ac03a1-1bfd-4cdf-86fb-5fd94dd5cab8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5d1e521f-0fad-4a9a-9bbb-e4429028c1ba">
+<span class="eqno">(38)<a class="headerlink" href="#equation-5d1e521f-0fad-4a9a-9bbb-e4429028c1ba" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi)=\varphi
 \end{equation}\]</div>
 <p>The corresponding expression for the rotation matrix is the famous Euler-Rodrigues formula.</p>
@@ -454,24 +455,24 @@ p(\varphi)=\varphi
 <section id="eulerrodrigues-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">EulerRodrigues</span></code> parametrization<a class="headerlink" href="#eulerrodrigues-parametrization" title="Link to this heading">#</a></h3>
 <p>This parametrization corresponds to the simple choice:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-07d9ae0b-52fe-4237-8f19-0f0b9d16e3ff">
-<span class="eqno">(36)<a class="headerlink" href="#equation-07d9ae0b-52fe-4237-8f19-0f0b9d16e3ff" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-090f01b6-4eeb-4c16-aacd-f72f580d07b7">
+<span class="eqno">(39)<a class="headerlink" href="#equation-090f01b6-4eeb-4c16-aacd-f72f580d07b7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi)=2 sin(\varphi/2)
 \end{equation}\]</div>
 </section>
 <section id="sinefamily-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">SineFamily</span></code> parametrization<a class="headerlink" href="#sinefamily-parametrization" title="Link to this heading">#</a></h3>
 <p>This generic family for any integer <span class="math notranslate nohighlight">\(m\)</span> corresponds to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fcaed272-caf2-48cf-b9f3-4cc6d7f084cb">
-<span class="eqno">(37)<a class="headerlink" href="#equation-fcaed272-caf2-48cf-b9f3-4cc6d7f084cb" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a9209090-d831-433e-9a54-c358a3208d06">
+<span class="eqno">(40)<a class="headerlink" href="#equation-a9209090-d831-433e-9a54-c358a3208d06" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi) = m \sin\left(\frac{\varphi}{m}\right)
 \end{equation}\]</div>
 </section>
 <section id="tangentfamily-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">TangentFamily</span></code> parametrization<a class="headerlink" href="#tangentfamily-parametrization" title="Link to this heading">#</a></h3>
 <p>This generic family for any integer <span class="math notranslate nohighlight">\(m\)</span> corresponds to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-318781ba-6e4a-4d82-9809-72eeab99ffb1">
-<span class="eqno">(38)<a class="headerlink" href="#equation-318781ba-6e4a-4d82-9809-72eeab99ffb1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ac40a13d-004b-4b5e-971b-78c9b60215b2">
+<span class="eqno">(41)<a class="headerlink" href="#equation-ac40a13d-004b-4b5e-971b-78c9b60215b2" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
 \end{equation}\]</div>
 </section>
@@ -658,7 +659,7 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Nonlinear beam model in finite rotations</p>
+        <p class="prev-next-title">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
     </a>
     <a class="right-next"

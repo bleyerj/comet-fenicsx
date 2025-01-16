@@ -1,0 +1,870 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generalized plane strain computations using Real elements &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/linear_problems/generalized_plane_strain/generalized_plane_strain';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Linear thermoelasticity (weak coupling)" href="../thermoelasticity_weak/thermoelasticity_weak.html" />
+    <link rel="prev" title="Axisymmetric formulation for elastic structures of revolution" href="../axisymmetric_elasticity/axisymmetric_elasticity.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Linear problems</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/finite_rotation_nonlinear_beam/rotation_parametrization_description.html">A module for rotation parametrization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/linear_problems/generalized_plane_strain/generalized_plane_strain.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Generalized plane strain computations using Real elements </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-plane-strain-conditions">Generalized plane strain conditions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#governing-equations">Governing equations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-formulation">Weak formulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="generalized-plane-strain-computations-using-real-elements">
+<h1>Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#generalized-plane-strain-computations-using-real-elements" title="Link to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>In this tour, we show how to perform 2D simulations in generalized plane strain conditions. As such computations involve degrees of freedom which are constants over the whole mesh, we will use so-called <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements.<span class="math notranslate nohighlight">\(\newcommand{\bsig}{\boldsymbol{\sigma}}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\be}{\boldsymbol{e}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bT}{\boldsymbol{T}}
+\newcommand{\bI}{\boldsymbol{I}}
+\newcommand{\T}{^\text{T}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\dOm}{\,\text{d}\Omega}
+\newcommand{\dS}{\,\text{d}S}
+\newcommand{\Neumann}{{\partial \Omega_\text{N}}}
+\newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\utilde}[1]{\tilde{#1}}
+\newcommand{\uttilde}[1]{\tilde{\tilde{#1}}}\)</span></p>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This tour requires <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code> v.0.9.0 and <code class="docutils literal notranslate"><span class="pre">Real</span></code> function space support, which has been implemented in the <code class="docutils literal notranslate"><span class="pre">scifem</span></code> package and aims at providing missing functionalities to <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> users. More details and installation instructions are to be found here <a class="github reference external" href="https://github.com/scientificcomputing/scifem">scientificcomputing/scifem</a>.</p>
+</div>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/34c16da445a55b8eadae9546e4ab33c9/generalized_plane_strain.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/761ec165118ca2c7ace668224e578b24/generalized_plane_strain.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
+<section id="generalized-plane-strain-conditions">
+<h2>Generalized plane strain conditions<a class="headerlink" href="#generalized-plane-strain-conditions" title="Link to this heading">#</a></h2>
+<p>We focus here on small strain elastic computations on a 2D domain <span class="math notranslate nohighlight">\(\Omega\)</span>. Common types of modeling hypotheses in 2D involve plane strain, plane stress conditions (see <a class="reference internal" href="../isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="std std-doc">Isotropic and orthotropic plane stress elasticity </span></a>) or axisymmetric conditions (see <a class="reference internal" href="../axisymmetric_elasticity/axisymmetric_elasticity.html"><span class="std std-doc">Axisymmetric formulation for elastic structures of revolution </span></a>). While plane strain (resp. plane stress) hypothesis refers to a situation with zero transverse and out-of-plane shear strains (resp. stresses), <strong>generalized plane strain</strong> (GPS) conditions refer to the case where the transverse strain <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span> is supposed to be a constant throughout the domain (out-of-plane shear strains are typically zero). The value of this constant must be fixed by prescribing an additional information, typically by enforcing a specific value of the resultant vertical force. Such conditions indeed generalize plane strain conditions since the latter are recovered if <span class="math notranslate nohighlight">\(\varepsilon_{zz}=0\)</span>, while being simpler than a fully 3D strain state. GPS are typically useful for translationally-invariant geometries along <span class="math notranslate nohighlight">\(z\)</span>, in presence of a known vertical loading (pipes, tunnels, beams).</p>
+<section id="governing-equations">
+<h3>Governing equations<a class="headerlink" href="#governing-equations" title="Link to this heading">#</a></h3>
+<p>The 3D displacement field in generalized plane strain conditions is searched in the following form:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+u_x(x,y,z) &amp;= u(x,y) \\
+u_y(x,y,z) &amp;= v(x,y) \\
+u_z(x,y,z) &amp;= \varepsilon_{zz} z +  w_0
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(u\)</span> and <span class="math notranslate nohighlight">\(v\)</span> are functions on the 2D domain <span class="math notranslate nohighlight">\(\Omega\)</span> and <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span> and <span class="math notranslate nohighlight">\(w_0\)</span> are constants (<span class="math notranslate nohighlight">\(w_0\)</span> does not play any role in the following, it simply sets the global translation along <span class="math notranslate nohighlight">\(z\)</span>).</p>
+<p>The resulting 3D strain field is thus of the form:</p>
+<div class="math notranslate nohighlight" id="equation-gps-strain">
+<span class="eqno">(9)<a class="headerlink" href="#equation-gps-strain" title="Link to this equation">#</a></span>\[\begin{split}\beps(x,y,z) = \begin{bmatrix} \partial_x u &amp; \frac{1}{2}(\partial_x v + \partial_y u) &amp; 0 \\ \frac{1}{2}(\partial_x v + \partial_y u) &amp; \partial_y v &amp; 0 \\ 0 &amp; 0 &amp; \varepsilon_{zz}\end{bmatrix}\end{split}\]</div>
+<p>where the in-plane part depends on <span class="math notranslate nohighlight">\((x,y)\)</span> and the out-of-plane strain is indeed the constant <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span>.</p>
+<p>The stress field <span class="math notranslate nohighlight">\(\bsig\)</span> is related to <span class="math notranslate nohighlight">\(\beps\)</span> via the usual 3D linear elastic behavior <span class="math notranslate nohighlight">\(\bsig = \CC:\beps\)</span>. Owing to <a class="reference internal" href="#equation-gps-strain">(9)</a>, the 3D stress field depends on <span class="math notranslate nohighlight">\((x,y)\)</span> only. For isotropic elasticity, the out-of-plane stress also depends on <span class="math notranslate nohighlight">\((x,y)\)</span> since <span class="math notranslate nohighlight">\(\sigma_{zz}(x,y) = \lambda\tr(\beps)+2\mu\varepsilon_{zz} = \lambda(\varepsilon_{xx}(x,y)+\varepsilon_{yy}(x,y)) + (\lambda+2\mu)\varepsilon_{zz}\)</span>.</p>
+<p>The stress field must satisfy the local balance equations:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+\div_\text{3D}\bsig + \boldsymbol{f} = 0
+\end{equation*}\]</div>
+<p>in presence of a body force <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span>. We assume that the latter possesses in-plane components only to comply with the GPS conditions. In this case, local balance reduces to the in-plane part only since <span class="math notranslate nohighlight">\((\div_\text{3D}\bsig)\cdot\be_z = 0\)</span>:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+\div_\text{2D}\uttilde{\bsig} + \boldsymbol{f} = 0
+\end{equation*}\]</div>
+<p>where the tilde notation refers to the in-plane part of the corresponding tensor/vector.</p>
+<p>However, to fix the out-of-plane strain an additional global balance condition in the <span class="math notranslate nohighlight">\(z\)</span>-direction must be given. Typical use case are generally concerned with conditions of the form:</p>
+<div class="amsmath math notranslate nohighlight" id="equation-1ccc0a1d-faba-4aba-bf79-788c5f835af5">
+<span class="eqno">(10)<a class="headerlink" href="#equation-1ccc0a1d-faba-4aba-bf79-788c5f835af5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+F_z = \int_{\Omega}\sigma_{zz} \dOm
+\label{vert-equilibrium}
+\end{equation}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F_z\)</span> is the imposed vertical force.</p>
+</section>
+<section id="weak-formulation">
+<h3>Weak formulation<a class="headerlink" href="#weak-formulation" title="Link to this heading">#</a></h3>
+<p>In the following, we denote by <span class="math notranslate nohighlight">\(\bu(x,y) = u(x,y)\be_x+v(x,y)\be_y\)</span> the in-plane displacement and <span class="math notranslate nohighlight">\(V\)</span> its corresponding function space. The unknowns of the problem are then <span class="math notranslate nohighlight">\((\bu,\varepsilon_{zz})\in V \times \RR\)</span>, justifying the use <code class="docutils literal notranslate"><span class="pre">Real</span></code> function space for discretizing <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span>.</p>
+<p>Similarly to <a class="reference internal" href="../isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="std std-doc">Isotropic and orthotropic plane stress elasticity </span></a>, the variational form reads here:</p>
+<p>Find <span class="math notranslate nohighlight">\(\bu, \varepsilon_{zz} \in V\times \RR\)</span> such that:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int_\Omega \uttilde\bsig[u,\varepsilon_{zz}]:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0\\
+\text{and} \int_\Omega \bsig_{zz}[u,\varepsilon_{zz}] \dOm = F_z\\
+\end{align*}\]</div>
+<p>The last condition can also be written in a weak form using the real test constant <span class="math notranslate nohighlight">\(\widehat{\varepsilon}_{zz}\)</span> as:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{align*}
+\int_\Omega \bsig_{zz}[u,\varepsilon_{zz}]\widehat{\varepsilon}_{zz} \dOm &amp;= F_z\widehat{\varepsilon}_{zz} \quad \forall \widehat{\varepsilon}_{zz}\in\RR \\
+\Rightarrow \quad \int_\Omega \bsig_{zz}[u,\varepsilon_{zz}]\widehat{\varepsilon}_{zz} \dOm &amp;= \int_\Omega \dfrac{F_z}{S}\widehat{\varepsilon}_{zz} \dOm \quad \forall \widehat{\varepsilon}_{zz}\in\RR
+\end{align*}\]</div>
+<p>where <span class="math notranslate nohighlight">\(S=|\Omega|\)</span> is the area of the 2D domain.</p>
+<p>Both weak forms, respectively referring to the in-plane and out-of-plane equilibrium, can therefore be merged in the single mixed 3D variational form as follows:</p>
+<p>Find <span class="math notranslate nohighlight">\(\bu, \varepsilon_{zz} \in V\times \RR\)</span> such that:</p>
+<div class="math notranslate nohighlight" id="equation-gps-weak-form">
+<span class="eqno">(11)<a class="headerlink" href="#equation-gps-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega \bsig[u,\varepsilon_{zz}]:\beps[\bv,\widehat{\varepsilon}_{zz}] \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS + \int_\Omega \dfrac{F_z}{S}\widehat{\varepsilon}_{zz} \dOm \quad \forall (\bv,\widehat{\varepsilon}_{zz}) \in V_0\times\RR\]</div>
+<p>where the first term involves the fully 3D stress tensor and the 3D strain variation <span class="math notranslate nohighlight">\(\beps[\bv,\widehat{\varepsilon}_{zz}]\)</span> corresponding to <a class="reference internal" href="#equation-gps-strain">(9)</a> for the test fields <span class="math notranslate nohighlight">\((\bv,\widehat{\varepsilon}_{zz})\)</span>.</p>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<p>The problem consists in a quarter of the 2D cross-section of a hollow cylinder, as considered in <a class="reference internal" href="../axisymmetric_elasticity/axisymmetric_elasticity.html"><span class="std std-doc">Axisymmetric formulation for elastic structures of revolution </span></a>. When importing the modules, we will especially need the <code class="docutils literal notranslate"><span class="pre">create_real_functionspace</span></code> from <code class="docutils literal notranslate"><span class="pre">scifem</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">gmsh</span>
+<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">from</span> <span class="nn">petsc4py</span> <span class="kn">import</span> <span class="n">PETSc</span>
+<span class="kn">import</span> <span class="nn">ufl</span>
+<span class="kn">from</span> <span class="nn">dolfinx</span> <span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">plot</span>
+<span class="kn">import</span> <span class="nn">dolfinx.fem.petsc</span>
+<span class="kn">from</span> <span class="nn">dolfinx.cpp.la.petsc</span> <span class="kn">import</span> <span class="n">get_local_vectors</span>
+<span class="kn">from</span> <span class="nn">scifem</span> <span class="kn">import</span> <span class="n">create_real_functionspace</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hsize</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="n">Re</span> <span class="o">=</span> <span class="mf">11.0</span>
+<span class="n">Ri</span> <span class="o">=</span> <span class="mf">9.0</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.Terminal&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># to disable meshing info</span>
+<span class="n">gdim</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">model_rank</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">)</span>
+
+<span class="n">geom</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">geo</span>
+<span class="n">center</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Ri</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">p2</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="n">Re</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">p3</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Re</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">p4</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_point</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">Ri</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="n">x_radius</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">)</span>
+<span class="n">outer_circ</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_circle_arc</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">p3</span><span class="p">)</span>
+<span class="n">y_radius</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_line</span><span class="p">(</span><span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">)</span>
+<span class="n">inner_circ</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_circle_arc</span><span class="p">(</span><span class="n">p4</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">p1</span><span class="p">)</span>
+
+<span class="n">boundary</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_curve_loop</span><span class="p">([</span><span class="n">x_radius</span><span class="p">,</span> <span class="n">outer_circ</span><span class="p">,</span> <span class="n">y_radius</span><span class="p">,</span> <span class="n">inner_circ</span><span class="p">])</span>
+<span class="n">surf</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">add_plane_surface</span><span class="p">([</span><span class="n">boundary</span><span class="p">])</span>
+
+<span class="n">geom</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMin&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMax&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="p">[</span><span class="n">surf</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">x_radius</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">y_radius</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">outer_circ</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span>
+
+
+<span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
+
+<span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span>
+<span class="p">)</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<p>The 3D strain expression <a class="reference internal" href="#equation-gps-strain">(9)</a> is defined as a function of both the in-plane displacement and the out-of-plane strain. The same is done for
+the 3D stress obtained from 3D linear elasticity.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">eps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ezz</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span>
+        <span class="n">ufl</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ezz</span><span class="p">],</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">E</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">1e5</span><span class="p">)</span>
+<span class="n">nu</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">E</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span>
+<span class="n">lmbda</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nu</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">sigma</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ezz</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lmbda</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">eps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ezz</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">eps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ezz</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A mixed function space involving a standard <span class="math notranslate nohighlight">\(P_2\)</span>-Lagrange space for the displacement and a <code class="docutils literal notranslate"><span class="pre">Real</span></code> function space is defined.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">create_real_functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">MixedFunctionSpace</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+<span class="n">du</span><span class="p">,</span> <span class="n">dezz</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunctions</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="n">u_</span><span class="p">,</span> <span class="n">ezz_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunctions</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The weak form <a class="reference internal" href="#equation-gps-weak-form">(11)</a> is now defined. Loading consists of a spatially varying in-plane body force <span class="math notranslate nohighlight">\(\boldsymbol{f} = f \boldsymbol{x}\)</span> and of an imposed resultant vertical force <span class="math notranslate nohighlight">\(F_z\)</span>. Mixed bilinear and linear weak forms are written and corresponding blocks of the mixed formulation are extracted using <code class="docutils literal notranslate"><span class="pre">ufl.extract_blocks</span></code>. The forms are then both compiled using <code class="docutils literal notranslate"><span class="pre">fem.form</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Fz</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">SpatialCoordinate</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dx</span><span class="p">))</span>
+
+
+<span class="n">a_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">dezz</span><span class="p">),</span> <span class="n">eps</span><span class="p">(</span><span class="n">u_</span><span class="p">,</span> <span class="n">ezz_</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="n">L_form</span> <span class="o">=</span> <span class="n">Fz</span> <span class="o">/</span> <span class="n">S</span> <span class="o">*</span> <span class="n">ezz_</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">f</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="n">a_blocked_compiled</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">extract_blocks</span><span class="p">(</span><span class="n">a_form</span><span class="p">))</span>
+<span class="n">L_blocked_compiled</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">extract_blocks</span><span class="p">(</span><span class="n">L_form</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We apply smooth contact conditions on the vertical <span class="math notranslate nohighlight">\(y=0\)</span> (facet tag <code class="docutils literal notranslate"><span class="pre">2</span></code>) and the horizontal <span class="math notranslate nohighlight">\(x=0\)</span> (facet tag <code class="docutils literal notranslate"><span class="pre">1</span></code>) boundaries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Vx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">Vy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
+<span class="n">bottom_dofsy</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Vy</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">top_dofsx</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vx</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># used for post-processing</span>
+<span class="n">bottom_dofsx</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vx</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">u0x</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vx</span><span class="p">)</span>
+<span class="n">u0y</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vy</span><span class="p">)</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0x</span><span class="p">,</span> <span class="n">top_dofsx</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0y</span><span class="p">,</span> <span class="n">bottom_dofsy</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The block linear system is then explicitly constructed using PETSc. Mappings are used</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix_block</span><span class="p">(</span><span class="n">a_blocked_compiled</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">)</span>
+<span class="n">A</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector_block</span><span class="p">(</span>
+    <span class="n">L_blocked_compiled</span><span class="p">,</span> <span class="n">a_blocked_compiled</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span>
+<span class="p">)</span>
+
+<span class="n">ksp</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">KSP</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">)</span>
+<span class="n">ksp</span><span class="o">.</span><span class="n">setOperators</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+<span class="n">ksp</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;preonly&quot;</span><span class="p">)</span>
+<span class="n">pc</span> <span class="o">=</span> <span class="n">ksp</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;lu&quot;</span><span class="p">)</span>
+<span class="n">pc</span><span class="o">.</span><span class="n">setFactorSolverType</span><span class="p">(</span><span class="s2">&quot;mumps&quot;</span><span class="p">)</span>
+
+<span class="c1"># solve system</span>
+<span class="n">xh</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">create_vector_block</span><span class="p">(</span><span class="n">L_blocked_compiled</span><span class="p">)</span>
+<span class="n">ksp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">xh</span><span class="p">)</span>
+<span class="n">xh</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">INSERT</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">FORWARD</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Mappings are then used to retrieve the corresponding local vector values of both unknowns.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">maps</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Wi</span><span class="o">.</span><span class="n">dofmap</span><span class="o">.</span><span class="n">index_map</span><span class="p">,</span> <span class="n">Wi</span><span class="o">.</span><span class="n">dofmap</span><span class="o">.</span><span class="n">index_map_bs</span><span class="p">)</span> <span class="k">for</span> <span class="n">Wi</span> <span class="ow">in</span> <span class="n">W</span><span class="o">.</span><span class="n">ufl_sub_spaces</span><span class="p">()]</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Displacement&quot;</span><span class="p">)</span>
+<span class="n">x_local</span> <span class="o">=</span> <span class="n">get_local_vectors</span><span class="p">(</span><span class="n">xh</span><span class="p">,</span> <span class="n">maps</span><span class="p">)</span>
+<span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_local</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span> <span class="o">=</span> <span class="n">x_local</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+<span class="n">ezz</span> <span class="o">=</span> <span class="n">x_local</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We check that the computed resultant force indeed corresponds to the applied value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Vertical strain&quot;</span><span class="p">,</span> <span class="n">ezz</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Computed resultant force&quot;</span><span class="p">,</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">ezz</span><span class="p">)[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)),</span>
+<span class="p">)</span>
+
+<span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)))</span>
+<span class="n">sig_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">ezz</span><span class="p">),</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+<span class="n">sig</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Stress&quot;</span><span class="p">)</span>
+<span class="n">sig</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">sig_exp</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vertical strain 0.00030616332375614394
+Computed resultant force 9.999999999996628
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, the different components of the stress field can be visualized using Pyvista. We can check that the vertical stress is indeed a spatially varying field with a non-zero imposed vertical force.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyvista</span>
+
+<span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+
+
+<span class="n">topology</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">gdim</span><span class="p">)</span>
+<span class="n">sig_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">topology</span><span class="p">,</span> <span class="n">cell_types</span><span class="p">,</span> <span class="n">geometry</span><span class="p">)</span>
+
+<span class="n">components</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;xx&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;yy&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;zz&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;xx&quot;</span><span class="p">,</span> <span class="s2">&quot;yy&quot;</span><span class="p">,</span> <span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="s2">&quot;zz&quot;</span><span class="p">]):</span>
+    <span class="n">pl</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Stress-</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s2"> [MPa]&quot;</span>
+    <span class="n">sig_grid</span><span class="o">.</span><span class="n">cell_data</span><span class="p">[</span><span class="n">title</span><span class="p">]</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">components</span><span class="p">[</span><span class="n">comp</span><span class="p">])</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+        <span class="n">sig_grid</span><span class="p">,</span>
+        <span class="n">scalars</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ce74fcfb7660ec8bb7cd7de48e1c68892e1ed64ddd6b4aaae1409c839622ffc7.png" src="../../../_images/ce74fcfb7660ec8bb7cd7de48e1c68892e1ed64ddd6b4aaae1409c839622ffc7.png" />
+<img alt="../../../_images/3f91c6842eb7601aae68fa46624be7c9a6dc2c2569babd23fea9cf2b5b3322ef.png" src="../../../_images/3f91c6842eb7601aae68fa46624be7c9a6dc2c2569babd23fea9cf2b5b3322ef.png" />
+<img alt="../../../_images/c578744cee9f9a3b878d33c43d2dfec5e7f874b47fe9ab506fbd014769af09a7.png" src="../../../_images/c578744cee9f9a3b878d33c43d2dfec5e7f874b47fe9ab506fbd014769af09a7.png" />
+<img alt="../../../_images/8b986ce8ab3c10928f728bee60fa472c8eaa1aa822a948b9f0bc277725849c57.png" src="../../../_images/8b986ce8ab3c10928f728bee60fa472c8eaa1aa822a948b9f0bc277725849c57.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/linear_problems/generalized_plane_strain"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../axisymmetric_elasticity/axisymmetric_elasticity.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../thermoelasticity_weak/thermoelasticity_weak.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-plane-strain-conditions">Generalized plane strain conditions</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#governing-equations">Governing equations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-formulation">Weak formulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+Traceback (most recent call last):
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+V = fem.functionspace(domain, ("P", 2, (gdim,)))
+R = create_real_functionspace(domain)
+W = ufl.MixedFunctionSpace(V, R)
+du, dezz = ufl.TrialFunctions(W)
+u_, ezz_ = ufl.TestFunctions(W)
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[4], line 2[0m
+[1;32m      1[0m V [38;5;241m=[39m fem[38;5;241m.[39mfunctionspace(domain, ([38;5;124m"[39m[38;5;124mP[39m[38;5;124m"[39m, [38;5;241m2[39m, (gdim,)))
+[0;32m----> 2[0m R [38;5;241m=[39m [43mcreate_real_functionspace[49m[43m([49m[43mdomain[49m[43m)[49m
+[1;32m      3[0m W [38;5;241m=[39m ufl[38;5;241m.[39mMixedFunctionSpace(V, R)
+[1;32m      4[0m du, dezz [38;5;241m=[39m ufl[38;5;241m.[39mTrialFunctions(W)
+
+File [0;32m~/.local/lib/python3.12/site-packages/scifem/__init__.py:55[0m, in [0;36mcreate_real_functionspace[0;34m(mesh, value_shape)[0m
+[1;32m     50[0m ufl_e [38;5;241m=[39m basix[38;5;241m.[39mufl[38;5;241m.[39melement(
+[1;32m     51[0m     [38;5;124m"[39m[38;5;124mP[39m[38;5;124m"[39m, mesh[38;5;241m.[39mbasix_cell(), [38;5;241m0[39m, dtype[38;5;241m=[39mdtype, discontinuous[38;5;241m=[39m[38;5;28;01mTrue[39;00m, shape[38;5;241m=[39mvalue_shape
+[1;32m     52[0m )
+[1;32m     54[0m [38;5;28;01mif[39;00m (dtype [38;5;241m:=[39m mesh[38;5;241m.[39mgeometry[38;5;241m.[39mx[38;5;241m.[39mdtype) [38;5;241m==[39m np[38;5;241m.[39mfloat64:
+[0;32m---> 55[0m     cppV [38;5;241m=[39m [43m_scifem[49m[38;5;241;43m.[39;49m[43mcreate_real_functionspace_float64[49m[43m([49m[43mmesh[49m[38;5;241;43m.[39;49m[43m_cpp_object[49m[43m,[49m[43m [49m[43mvalue_shape[49m[43m)[49m
+[1;32m     56[0m [38;5;28;01melif[39;00m dtype [38;5;241m==[39m np[38;5;241m.[39mfloat32:
+[1;32m     57[0m     cppV [38;5;241m=[39m _scifem[38;5;241m.[39mcreate_real_functionspace_float32(mesh[38;5;241m.[39m_cpp_object, value_shape)
+
+[0;31mTypeError[0m: create_real_functionspace_float64(): incompatible function arguments. The following argument types are supported:
+    1. create_real_functionspace_float64(arg0: dolfinx::mesh::Mesh<double>, arg1: collections.abc.Sequence[int], /) -> dolfinx::fem::FunctionSpace<double>
+
+Invoked with types: dolfinx.cpp.mesh.Mesh_float64, tuple
+
