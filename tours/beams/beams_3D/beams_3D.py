@@ -14,7 +14,6 @@
 
 # # Elastic 3D beam structures {far}`star`
 #
-#
 # ```{admonition} Objectives
 # :class: objectives
 #
@@ -24,6 +23,7 @@
 # ```{seealso}
 # This tour bears similarities with the [](/tours/beams/linear_truss/linear_truss.md) and [](/tours/shells/linear_shell/linear_shell.md) tours.
 # ```
+#
 # ```{admonition} Download sources
 # :class: download
 #
