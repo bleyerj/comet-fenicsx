@@ -50,6 +50,11 @@ This tour requires `dolfinx` v.0.9.0 and `Real` function space support, which ha
 * {Download}`Jupyter notebook<./generalized_plane_strain.ipynb>`
 ```
 
+```{image} gps_drawing.svg
+:width: 300px
+:align: center
+```
+
 ## Generalized plane strain conditions
 
 We focus here on small strain elastic computations on a 2D domain $\Omega$. Common types of modeling hypotheses in 2D involve plane strain, plane stress conditions (see [](/tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md)) or axisymmetric conditions (see [](/tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md)). While plane strain (resp. plane stress) hypothesis refers to a situation with zero transverse and out-of-plane shear strains (resp. stresses), **generalized plane strain** (GPS) conditions refer to the case where the transverse strain $\varepsilon_{zz}$ is supposed to be a constant throughout the domain (out-of-plane shear strains are typically zero). The value of this constant must be fixed by prescribing an additional information, typically by enforcing a specific value of the resultant vertical force. Such conditions indeed generalize plane strain conditions since the latter are recovered if $\varepsilon_{zz}=0$, while being simpler than a fully 3D strain state. GPS are typically useful for translationally-invariant geometries along $z$, in presence of a known vertical loading (pipes, tunnels, beams).

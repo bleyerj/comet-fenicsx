@@ -436,6 +436,7 @@ document.write(`
 <li><p><a class="reference download internal" download="" href="../../../_downloads/761ec165118ca2c7ace668224e578b24/generalized_plane_strain.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
 </ul>
 </div>
+<a class="reference internal image-reference" href="../../../_images/gps_drawing.svg"><img alt="../../../_images/gps_drawing.svg" class="align-center" src="../../../_images/gps_drawing.svg" width="300px" /></a>
 <section id="generalized-plane-strain-conditions">
 <h2>Generalized plane strain conditions<a class="headerlink" href="#generalized-plane-strain-conditions" title="Link to this heading">#</a></h2>
 <p>We focus here on small strain elastic computations on a 2D domain <span class="math notranslate nohighlight">\(\Omega\)</span>. Common types of modeling hypotheses in 2D involve plane strain, plane stress conditions (see <a class="reference internal" href="../isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="std std-doc">Isotropic and orthotropic plane stress elasticity </span></a>) or axisymmetric conditions (see <a class="reference internal" href="../axisymmetric_elasticity/axisymmetric_elasticity.html"><span class="std std-doc">Axisymmetric formulation for elastic structures of revolution </span></a>). While plane strain (resp. plane stress) hypothesis refers to a situation with zero transverse and out-of-plane shear strains (resp. stresses), <strong>generalized plane strain</strong> (GPS) conditions refer to the case where the transverse strain <span class="math notranslate nohighlight">\(\varepsilon_{zz}\)</span> is supposed to be a constant throughout the domain (out-of-plane shear strains are typically zero). The value of this constant must be fixed by prescribing an additional information, typically by enforcing a specific value of the resultant vertical force. Such conditions indeed generalize plane strain conditions since the latter are recovered if <span class="math notranslate nohighlight">\(\varepsilon_{zz}=0\)</span>, while being simpler than a fully 3D strain state. GPS are typically useful for translationally-invariant geometries along <span class="math notranslate nohighlight">\(z\)</span>, in presence of a known vertical loading (pipes, tunnels, beams).</p>
@@ -466,8 +467,8 @@ u_z(x,y,z) &amp;= \varepsilon_{zz} z +  w_0
 \end{equation*}\]</div>
 <p>where the tilde notation refers to the in-plane part of the corresponding tensor/vector.</p>
 <p>However, to fix the out-of-plane strain an additional global balance condition in the <span class="math notranslate nohighlight">\(z\)</span>-direction must be given. Typical use case are generally concerned with conditions of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-1ccc0a1d-faba-4aba-bf79-788c5f835af5">
-<span class="eqno">(10)<a class="headerlink" href="#equation-1ccc0a1d-faba-4aba-bf79-788c5f835af5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f8e042bd-a9f5-4442-813f-8ab94366eaec">
+<span class="eqno">(10)<a class="headerlink" href="#equation-f8e042bd-a9f5-4442-813f-8ab94366eaec" title="Permalink to this equation">#</a></span>\[\begin{equation}
 F_z = \int_{\Omega}\sigma_{zz} \dOm
 \label{vert-equilibrium}
 \end{equation}\]</div>
