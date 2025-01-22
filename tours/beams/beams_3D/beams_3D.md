@@ -53,7 +53,7 @@ where $\dfrac{dv}{ds} = \nabla v \cdot t$ is the tangential gradient. Associated
 
 ## Constitutive equations
 
-The beam constitutive equations (assuming no normal force/bending moment coupling and that $a_1$ and $a_2$ are the principle axis of inertia) read as:
+The beam constitutive equations (assuming no normal force/bending moment coupling and that $a_1$ and $a_2$ are the principal axes of inertia) read as:
 
 $$\begin{Bmatrix}
 N \\ Q_1 \\ Q_2 \\ M_T \\ M_1 \\ M_2 
