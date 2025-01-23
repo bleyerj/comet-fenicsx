@@ -92,7 +92,7 @@ see [details here](https://defelement.com/elements/examples/quadrilateral-serend
 ````
 
 ````{grid-item-card} Lagrange
-`name="Q"`, it has 9dofs, spanning polynomials up to order 2, including $x^2y^2$
+`name="Q"`, it has 9 dofs, spanning polynomials up to order 2, including $x^2y^2$
 
 ```{image} https://defelement.com/img/element-Q-variant-equispaced-quadrilateral-2-dofs.png
 :width: 200px
