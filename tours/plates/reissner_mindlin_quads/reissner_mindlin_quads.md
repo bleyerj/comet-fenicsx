@@ -79,7 +79,6 @@ f = -D / 1.265319087e-3  # with this we have w_Love-Kirchhoff = 1.0
 
 Continuous interpolation using degree $d=\texttt{deg}$ is chosen for both deflection and rotation. Note that when using quadrilaterals, we have different choices of interpolation over the cell. We will not discuss here variants such as `equispaced` or `GLL` variants which mostly differ in the dof location up to $d=3$, see [here for more details](https://defelement.com/elements/lagrange.html). However, already for $d=2$, we may have the choice of using an 8 or a 9-dof quadrilateral.
 
-
 `````{grid}
 :gutter: 3
 
