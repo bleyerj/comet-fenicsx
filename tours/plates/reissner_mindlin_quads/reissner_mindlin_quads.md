@@ -110,7 +110,7 @@ Te = basix.ufl.element(el_type, domain.basix_cell(), deg, shape=(2,))
 V = fem.functionspace(domain, basix.ufl.mixed_element([We, Te]))
 ```
 
-Clamped boundary conditions on the lateral boundary are defined as::
+Clamped boundary conditions on the lateral boundary are defined as:
 
 ```{code-cell} ipython3
 # Boundary of the plate
