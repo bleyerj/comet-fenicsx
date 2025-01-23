@@ -76,7 +76,7 @@ constant value of 1 in the thin plate. This thin plate limit will be used to che
 f = -D / 1.265319087e-3  # with this we have w_Love-Kirchhoff = 1.0
 ```
 
-Continuous interpolation using of degree $d=\texttt{deg}$ is chosen for both deflection and rotation. Note that when using quadrilaterals, we have different choices of interpolation over the cell. We will not discuss here variants such as `equispaced` or `GLL` variants which mostly differ in the dof location up to $d=3$, see [here for more details](https://defelement.com/elements/lagrange.html). However, already for $d=2$, we may have the choice of using an 8 or a 9-dof quadrilateral.
+Continuous interpolation using of degree $d=\texttt{deg}$ is chosen for both deflection and rotation. Note that when using quadrilaterals, we have different choices of interpolation over the cell. We will not discuss here variants such as `equispaced` or `GLL` variants which mostly differ in the dof location up to $d=3$, see [here for more details](https://defelement.org/elements/lagrange.html). However, already for $d=2$, we may have the choice of using an 8 or a 9-dof quadrilateral.
 
 `````{grid}
 :gutter: 3
@@ -84,21 +84,21 @@ Continuous interpolation using of degree $d=\texttt{deg}$ is chosen for both def
 ````{grid-item-card} Serendipity
 `name="S"`, it has 8 dofs, spanning polynomials up to order 2, except for $x^2y^2$
 
-```{image} https://defelement.com/img/element-serendipity-variant-equispaced-quadrilateral-2-dofs.png
+```{image} https://defelement.org/img/element-serendipity-variant-equispaced-quadrilateral-2-dofs.png
 :width: 200px
 :align: center
 ```
-see [details here](https://defelement.com/elements/examples/quadrilateral-serendipity-2.html)
+see [details here](https://defelement.org/elements/examples/quadrilateral-serendipity-2.html)
 ````
 
 ````{grid-item-card} Lagrange
 `name="Q"`, it has 9dofs, spanning polynomials up to order 2, including $x^2y^2$
 
-```{image} https://defelement.com/img/element-Q-variant-equispaced-quadrilateral-2-dofs.png
+```{image} https://defelement.org/img/element-Q-variant-equispaced-quadrilateral-2-dofs.png
 :width: 200px
 :align: center
 ```
-see [details here](https://defelement.com/elements/examples/quadrilateral-lagrange-equispaced-2.html)
+see [details here](https://defelement.org/elements/examples/quadrilateral-lagrange-equispaced-2.html)
 ````
 `````
 
