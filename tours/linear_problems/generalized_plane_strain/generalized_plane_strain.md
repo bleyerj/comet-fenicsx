@@ -40,7 +40,7 @@ In this tour, we show how to perform 2D simulations in generalized plane strain 
 ```
 
 ```{attention}
-This tour requires `dolfinx` v.0.9.0 and `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
+This tour requires version `0.9.0` and `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
 ```
 
 ```{admonition} Download sources
