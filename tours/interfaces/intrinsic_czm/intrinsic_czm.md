@@ -14,7 +14,11 @@ jupytext:
 
 ```{admonition} Objectives
 :class: objectives
-This tutorial will show how to formulate a cohesive fracture model with `FEniCSx`. We adopt an *intrinsic* cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to {cite:p}`hansbo2015discontinuous` for a related work.$\newcommand{\bsig}{\boldsymbol{\sigma}}
+This tutorial demonstrates  the formulation of a cohesive fracture model with `FEniCSx`. We adopt an *intrinsic* cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to {cite:p}`hansbo2015discontinuous` for a related work. Other key aspects include:
+- Interface submeshes
+- Interpolation of expressions on facets
+- Fixed-point resolution strategy
+$\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\beps}{\boldsymbol{\varepsilon}}
 \newcommand{\be}{\boldsymbol{e}}
 \newcommand{\bu}{\boldsymbol{u}}
@@ -41,17 +45,18 @@ This tutorial will show how to formulate a cohesive fracture model with `FEniCSx
 This tour requires version `0.9.0` of FEniCSx.
 ```
 
-The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage induced by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.
+The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage caused by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.
 
 ```{image} intrinsic_czm.gif
 :align: center
 :width: 600px
 ```
 
+## Cohesive zone modeling
 
-## Cohesive zone modeling and traction-separation law
+### Traction-separation law
 
-Cohesive zone models are interface elements characterized by a discontinuous displacement and are able to transmit forces through the interface. The link between the interface opening (displacement jump) $\jump{\bu}$ and the traction $\bT$ is given by the choice of a specific constitutive law, usually referred to as a *traction-separation* law.
+Cohesive zone models are interface elements characterized by a discontinuous displacement and are able to transmit forces through the interface. The link between the interface opening (displacement jump) $\jump{\bu}$ and the traction $\bT$ is given by the choice of a specific constitutive law, usually known as a *traction-separation* law.
 
 Among the many models available in the literature, we choose here one of the simplest ones, namely an exponential traction separation law given by:
 
@@ -61,7 +66,7 @@ Among the many models available in the literature, we choose here one of the sim
 \bT(\jump{\bu}) = \dfrac{\Gc}{\delta_0^2}\exp(-\delta/\delta_0)\jump{\bu}
 ```
 
-where $\Gc$ is the interface fracture energy and $\delta_0$ is another material parameter related to a critical opening. Finally, 
+where $\Gc$ is the interface fracture energy and $\delta_0$ is another material parameter related to a critical opening. Finally,
 $\delta$ is an effective opening displacement given by:
 
 ```{math}
@@ -81,6 +86,8 @@ d = 1-\exp(-\delta/\delta_0)
 yielding:
 
 ```{math}
+:label: traction-separation-damage
+
 \bT(\jump{\bu}, d) = \dfrac{\Gc}{\delta_0^2}(1-d)\jump{\bu}
 ```
 
@@ -93,13 +100,13 @@ d(t) = \max_{t'\in[0;t]} 1-\exp(-\delta(t')/\delta_0)
 ```
 
 In a loading phase for which $\dot{\delta}>0$, we have $\dot{d}>0$ and the interface element behaves as a nonlinear softening elastic spring. For a purely normal opening $(\jump{u_t}=0)$ in a loading phase, we have:
-\begin{equation}
+\begin{equation*}
 T_n(\jump{u_n})=\dfrac{\Gc}{\delta_0^2}\exp(-\jump{u_n}/\delta_0)\jump{u_n}
-\end{equation}
+\end{equation*}
 which is maximum when $\jump{u_n}=\delta_0$ with a value $T_n(\delta_0) = \sigc = \dfrac{\Gc}{\delta_0}\exp(-1)$. $\delta_0$ therefore characterizes the critical opening for which the maximum strength $\sigc$ is reached. For $\jump{u_n}\gg \delta_0$, the stiffness tends to vanish and the cohesive element does no longer sustain any load. Finally, when integrating the traction-separation law for $\jump{u_n}$ from 0 to $+\infty$, we see that the total dissipated surface energy is:
-\begin{equation}
+\begin{equation*}
 \text{Dissipation} = \int_0^{+\infty} T_n(\jump{u})d\jump{u} = \Gc
-\end{equation}
+\end{equation*}
 which is then the fracture energy spent when completely opening the interface.
 
 The following script illustrates the pure normal opening behavior of the exponential cohesive law along a few loading/unloading cycles.
@@ -110,10 +117,10 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 import numpy as np
 
-delta_0 = 1.
-Gc = 1.
-sig_0 = Gc/delta_0*np.exp(-1)
-loading_cycles = [0, 2*delta_0, 0, 4*delta_0, 0, 8*delta_0, 0]
+delta_0 = 1.0
+Gc = 1.0
+sig_0 = Gc / delta_0 * np.exp(-1)
+loading_cycles = [0, 2 * delta_0, 0, 4 * delta_0, 0, 8 * delta_0, 0]
 loading_list = [np.array([0])]
 for start, end in zip(loading_cycles[:-1], loading_cycles[1:]):
     loading_list.append(np.linspace(start, end, 21)[1:])
@@ -121,13 +128,14 @@ loading = np.concatenate(loading_list)
 
 d = 0
 T = np.zeros_like(loading)
-for (i, u) in enumerate(loading):
-    d = max(1-np.exp(-abs(u)/delta_0),d)
-    T[i] = Gc/delta_0**2*(1-d)*u/sig_0
+for i, u in enumerate(loading):
+    d = max(1 - np.exp(-abs(u) / delta_0), d)
+    T[i] = Gc / delta_0**2 * (1 - d) * u / sig_0
 
 
 fig = plt.figure()
 ax = fig.gca()
+
 
 def draw_frame(i):
     ax.clear()
@@ -136,8 +144,9 @@ def draw_frame(i):
     ax.set_xlabel(r"Normalized opening $[\![u]\!]/\delta_0$")
     ax.set_ylabel(r"Normalized traction $T([\![u]\!])/\sigma_0$")
     lines = [
-    ax.plot(loading[:i+1], T[:i+1], '-k')[0],
-    ax.plot(loading[i], T[i], 'oC3')[0]]
+        ax.plot(loading[: i + 1], T[: i + 1], "-k")[0],
+        ax.plot(loading[i], T[i], "oC3")[0],
+    ]
     return lines
 
 
@@ -147,7 +156,6 @@ anim = animation.FuncAnimation(
 plt.close()
 HTML(anim.to_html5_video())
 ```
-
 
 ```{code-cell} ipython3
 import pyvista
@@ -166,15 +174,62 @@ Note that we do not distinguish here the tensile from the compressive regime. In
 
 ### Variational formulation
 
+Now we consider a domain $\Omega$ subject to imposed displacements on its Dirichlet boundary $\Dirichlet$ and under given body forces $\boldsymbol{f}$ In addition, the domain $\Omega$ contains a set of interfaces $\Gamma$ over which the displacement is discontinuous (jump $\jump{\bu}$) and for which the traction vector is given by the previous traction-separation law {eq}`traction-separation-damage`.
+
+The weak form of equilibrium (virtual work principle) in presence of discontinuities reads:
+
+$$
+\int_\Omega \bsig:\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0
+$$
+where $\bT = \bsig\bn$ is the traction across $\Gamma$ of unit normal $\bn$ and $V_0$ is the test function space (kinematically admissible perturbations).
+
+```{attention}
+For the above expression to be consistent, the definition of the jump $\jump{\bu}$ should be:
+
+$$
+\jump{\bu} = \bu^\oplus - \bu^\ominus
+$$
+where $\bn$ is oriented from side $\ominus$ to side $\oplus$. Note that in UFL with `n = FacetNormal(domain)`, this definition of the normal vector $\bn$ therefore corresponds to the restriction on the $\ominus$ side i.e. `n("-")` since `n` points outwards a given cell.
+```
+
+Injecting the elastic constitutive relation and traction separation law, the resulting nonlinear problem is given by:
+Find $\bu\in V$ such that:
+
+```{math}
+:label: czm-problem
+\int_\Omega \bsig(\nabla^s\bu):\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT(\jump{\bu},d)\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0
+```
+where $\bsig(\nabla^s \bu)$ is the linear elastic constitutive relation and where $d$ is given by {eq}`damage-irr` as a nonlinear function of $\jump{\bu}$.
+
+### Fixed-point resolution strategy
+
+The previous variational problem {eq}`czm-problem` is highly nonlinear. The Newton-Raphson method is not necessarily extremely robust in such softening situations, especially in the presence of unstable crack propagation phases. For this reason, we prefer here to resort to a fixed-point iteration scheme. For a given load step, we *iterate* between solving an elastic displacement problem with $d$ being fixed to a previously known value $d_i$, yielding the following linear problem:
+
+Find $\bu^{(i+1)}\in V$ such that:
+
+```{math}
+\int_\Omega \bsig(\nabla^s\bu^{(i+1)}):\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT(\jump{\bu}^{(i+1)},d^{(i)})\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0
+```
+
+The newly computed displacement $\bu^{(i+1)}$ is then used to update the value of the interfacial damage field from {eq}`damage-irr` as follows:
+
+```{math}
+\begin{align*}
+d^{(i+1)} &= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
+\text{where } \delta^{(i+1)} &= \sqrt{\jump{u_n^{(i+1)}}^2+\beta\jump{u_t^{(i+1)}}^2}
+\end{align*}
+```
+with $d_\text{prev}$ denotes the previous damage level reached before this time step in order to enforce an irreversible damage evolution.
+
+These fixed point iterations are then stopped until $\|d^{(i+1)}-d^{(i)}\|\leq \epsilon$.
+
 ## Implementation
 
 ### Mesh and markers
 
-We define the function to create the mesh and other utility functions.
+We define a function to create the mesh and other utility functions.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
@@ -298,7 +353,7 @@ annotations = {
     2: "Right",
     INT_TAG: "Interface",
     INNER_FACET_TAG: "Inner facets",
-    4: "Sides"
+    4: "Sides",
 }
 plot_mesh(domain, facets, annotations=annotations, line_width=2, cmap="plasma_r")
 ```
@@ -355,7 +410,7 @@ print(f"Total interface measure = {Gamma:.3f} vs {Gamma_int+Gamma_bulk:.3f}")
 
 ### Weak form formulation
 
-We first define linear elastic material properties by creating two field for the Young modulus and Poisson ratio, taking piecewise constant values in the matrix and inclusion phases. We refer to [](/tips/piecewise_constant_field/piecewise_constant_field.md) for more details. UFL functions for the strain and stress expressions are then defined.
+We first define linear elastic material properties by creating two fields for the Young modulus $E$ and Poisson ratio $\nu$, taking piecewise constant values in the matrix and inclusion phases. We refer to [](/tips/piecewise_constant_field/piecewise_constant_field.md) for more details. UFL functions for the strain and stress expressions are then defined.
 
 ```{code-cell} ipython3
 E = create_piecewise_constant_field(
@@ -373,10 +428,10 @@ def epsilon(v):
 
 
 def sigma(v):
-    return 2.0 * mu * epsilon(v) + lmbda * ufl.tr(ufl.grad(v)) * ufl.Identity(tdim)
+    return lmbda * ufl.tr(epsilon(v)) * ufl.Identity(tdim) + 2.0 * mu * epsilon(v)
 ```
 
-We define the two material parameters representing the fracture energy $\Gc$ and the critical stress $\sigc$. Both fields are piecewise constant functions (`"DG"-0`) defined on the interface mesh. Both parameters have smaller values on the interface, while facets in the bulk have stronger mechanical properties. We then define various functions which will serve for expressing the cohesive law.
+We define the two material parameters representing the fracture energy $\Gc$ and the critical stress $\sigc$. Both fields are piecewise constant functions (`"DG"-0`) defined on the interface mesh. Both parameters have smaller values on the interface, while facets in the bulk have stronger mechanical properties. We then define various functions such as {eq}`effective-opening`, {eq}`damage` and {eq}`traction-separation-damage` which will serve for expressing the cohesive law.
 
 ```{code-cell} ipython3
 Gc = create_piecewise_constant_field(
@@ -453,7 +508,7 @@ Suppose that we want to evaluate an expression `e` at certain points on facets. 
 $$
 \int_{F} e^* q \dS = \sum_{g=1}^{n} |F|\omega_g e(x_g)q(x_g) \quad \forall q\in Q
 $$
-where $F$ is a facet, $|F|$ its area measure, $e^*$ is a given expression and $q$ is a test function in $Q$. 
+where $F$ is a facet, $|F|$ its area measure, $e^*$ is a given expression and $q$ is a test function in $Q$.
 Generalizing this expression over a set of facets, the resulting assembled vector will therefore contains the value $|F|\omega_g e^*(x_g)$ at the corresponding dof. As a result, if we choose $e^* = e/|F|$ and $\omega_g=1$, the resulting assembled vector will exactly contains the wanted values $e(x_g)$.
 
 This strategy is implemented below. The damage expression `d_expr` to interpolate is first defined. Note that it is defined as the maximum between expression {eq}`damage` and `d_prev` to ensure irreversibility. A custom `basix` quadrature element using unitary weights and interpolation points of `V_int` as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, `facet_interp` contains the compiled form discussed previously.
@@ -489,7 +544,7 @@ facet_interp = dolfinx.fem.form(
 
 ### Dirichlet boundary conditions
 
-Here, we define the Dirichlet boundary conditions consisting of fixed displacement on the left part and and an imposed displacement $(t, 0)$ on the right boundary.Note that since we use DG discretization of the displacement field, 
+Here, we define the Dirichlet boundary conditions consisting of fixed displacement on the left part and and an imposed displacement $(t, 0)$ on the right boundary.Note that since we use DG discretization of the displacement field,
 DG dofs do not live on the facets but are associated with cell interior. As a result, they cannot be found using `locate_dofs_topological` and the facet marker. We must use a geometrical approach to locating the dofs instead.
 
 Note that an alternative could have been to employ a weak Nitsche imposition of the Dirichlet BCs which is very similar to a cohesive traction law at the boundary.
@@ -505,7 +560,7 @@ bcs = [
     dolfinx.fem.dirichletbc(Uimp, right_dofs, V),
 ]
 
-v_reac = fem.Function(V) 
+v_reac = fem.Function(V)
 fem.set_bc(v_reac.x.array, bcs)
 virtual_work_form = fem.form(
     ufl.action(ufl.action(a, u) - Fext, v_reac), entity_maps=entity_maps
@@ -557,12 +612,13 @@ for i, t in enumerate(loading[1:]):
     nRes = 1.0
     j = 0
     while j < Niter_max:
-        problem.solve()  # displacement problem
+        # displacement problem resolution
+        problem.solve()
+        # interpolation of damage on facets
         d.x.array[:] = fem.assemble_vector(facet_interp).array
-
+        # normalized residual for convergence check
         nRes = (
-            np.sqrt((fem.assemble_scalar(fem.form((d - d_old) ** 2 * dx_int))))
-            / Gamma
+            np.sqrt((fem.assemble_scalar(fem.form((d - d_old) ** 2 * dx_int)))) / Gamma
         )
         d_old.x.array[:] = d.x.array[:]
         j += 1
@@ -590,7 +646,7 @@ for i, t in enumerate(loading[1:]):
 out_file.close()
 ```
 
-### Force-displacement and damage evolutions
+### Force-displacement and damage evolution
 
 As showcased in the initial GIF animation, the matrix/inclusion interface first starts to open almost elastically, then a sudden drop in the force-displacement curve corresponds to the unstable debonding of a large portion of both interfaces. The remaining load-carrying part of the structure then continues to stretch until a sudden final fracture of the central region.
 
@@ -615,7 +671,6 @@ plt.xlabel("Imposed displacement")
 plt.ylabel("Normalized total damage")
 plt.show()
 ```
-
 
 ## References
 
