@@ -33,6 +33,9 @@ parts:
   - file: tours/homogenization/contents
     sections:
     - file: tours/homogenization/periodic_elasticity/periodic_elasticity.md
+  - file: tours/interfaces/contents
+    sections:
+    - file: tours/interfaces/intrinsic_czm/intrinsic_czm.md
   - file: tours/beams/contents
     sections:
     - file: tours/beams/linear_truss/linear_truss.md
