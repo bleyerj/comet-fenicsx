@@ -14,8 +14,19 @@ execute:
   timeout: 1800
 
 # Google analytics
-html: 
-  google_analytics_id: G-2WWYPZ9TLF
+html:
+  analytics:
+    google_analytics_id: G-2WWYPZ9TLF
+  extra_head:
+    - "<!-- Google tag (gtag.js) -->"
+    - "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-2WWYPZ9TLF\"></script>"
+    - "<script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+  
+        gtag('config', 'G-2WWYPZ9TLF');
+        </script>"
 
 # Define the name of the latex output file for PDF builds
 latex:
