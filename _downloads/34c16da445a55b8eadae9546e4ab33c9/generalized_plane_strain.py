@@ -13,7 +13,7 @@
 #     name: python3
 # ---
 
-# # Generalized plane strain computations using `Real` elements
+# # Generalized plane strain computations using `Real` elements {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
 # :class: objectives
@@ -39,7 +39,7 @@
 # ```
 #
 # ```{attention}
-# This tour requires `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
+# This tour requires version `0.9.0` and `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
 # ```
 #
 # ```{admonition} Download sources
@@ -47,6 +47,11 @@
 #
 # * {Download}`Python script<./generalized_plane_strain.py>`
 # * {Download}`Jupyter notebook<./generalized_plane_strain.ipynb>`
+# ```
+#
+# ```{image} gps_drawing.svg
+# :width: 300px
+# :align: center
 # ```
 #
 # ## Generalized plane strain conditions
@@ -84,7 +89,7 @@
 # \begin{equation*}
 # \div_\text{2D}\uttilde{\bsig} + \boldsymbol{f} = 0
 # \end{equation*}
-# where the undertilde notation refers to the in-plane part of the corresponding tensor/vector.
+# where the tilde notation refers to the in-plane part of the corresponding tensor/vector.
 #
 # However, to fix the out-of-plane strain an additional global balance condition in the $z$-direction must be given. Typical use case are generally concerned with conditions of the form:
 # \begin{equation}
@@ -128,9 +133,8 @@
 #
 # ## Implementation
 #
-# The problem consists in a quarter of the 2D cross-section of a hollow cylinder, as considered in [](/tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md). When importing the modules, we will especially need the `create_real_functionspace` from`scifem`.
+# The problem consists in a quarter of the 2D cross-section of a hollow cylinder, as considered in [](/tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md). When importing the modules, we will especially need the `create_real_functionspace` from `scifem`.
 
-# +
 import gmsh
 from mpi4py import MPI
 from petsc4py import PETSc
@@ -140,12 +144,12 @@ import dolfinx.fem.petsc
 from dolfinx.cpp.la.petsc import get_local_vectors
 from scifem import create_real_functionspace
 
+# +
 hsize = 0.2
 
 Re = 11.0
 Ri = 9.0
 
-# +
 gmsh.initialize()
 gmsh.option.setNumber("General.Terminal", 0)  # to disable meshing info
 gdim = 2

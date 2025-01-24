@@ -1,0 +1,1884 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Cohesive zone modeling of debonding and bulk fracture &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/interfaces/intrinsic_czm/intrinsic_czm';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Beams" href="../../beams/contents.html" />
+    <link rel="prev" title="Interfaces" href="../contents.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Interfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/finite_rotation_nonlinear_beam/rotation_parametrization_description.html">A module for rotation parametrization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/interfaces/intrinsic_czm/intrinsic_czm.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Cohesive zone modeling of debonding and bulk fracture </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohesive-zone-modeling">Cohesive zone modeling</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#traction-separation-law">Traction-separation law</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-resolution-strategy">Fixed-point resolution strategy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-and-markers">Mesh and markers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submesh-creation">Submesh creation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-form-formulation">Weak form formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#facet-expressions-interpolation">Facet expressions interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dirichlet-boundary-conditions">Dirichlet boundary conditions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-stepping">Load-stepping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#force-displacement-and-damage-evolution">Force-displacement and damage evolution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cohesive-zone-modeling-of-debonding-and-bulk-fracture">
+<h1>Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#cohesive-zone-modeling-of-debonding-and-bulk-fracture" title="Link to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This tutorial demonstrates  the formulation of a cohesive fracture model with <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>. We adopt an <em>intrinsic</em> cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to <span id="id1">[<a class="reference internal" href="#id20" title="Peter Hansbo and Kent Salomonsson. A discontinuous galerkin method for cohesive zone modelling. Finite Elements in Analysis and Design, 102:1–6, 2015. doi:10.1016/j.finel.2015.04.008.">Hansbo and Salomonsson, 2015</a>]</span> for a related work. Other key aspects include:</p>
+<ul class="simple">
+<li><p>Interface submeshes</p></li>
+<li><p>Interpolation of expressions on facets</p></li>
+<li><p>Fixed-point resolution strategy
+<span class="math notranslate nohighlight">\(\newcommand{\bsig}{\boldsymbol{\sigma}}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\be}{\boldsymbol{e}}
+\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bT}{\boldsymbol{T}}
+\newcommand{\bI}{\boldsymbol{I}}
+\newcommand{\T}{^\text{T}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\dOm}{\,\text{d}\Omega}
+\newcommand{\dS}{\,\text{d}S}
+\newcommand{\Neumann}{{\partial \Omega_\text{N}}}
+\newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}
+\renewcommand{\div}{\operatorname{div}}
+\newcommand{\bn}{\boldsymbol{n}}
+\newcommand{\bt}{\boldsymbol{t}}
+\newcommand{\jump}[1]{[\![#1]\!]}
+\newcommand{\Gc}{G_{\text{c}}}
+\newcommand{\sigc}{\sigma_{\text{c}}}\)</span></p></li>
+</ul>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>This tour requires version <code class="docutils literal notranslate"><span class="pre">0.9.0</span></code> of FEniCSx.</p>
+</div>
+<p>The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage caused by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.</p>
+<a class="reference internal image-reference" href="../../../_images/intrinsic_czm.gif"><img alt="../../../_images/intrinsic_czm.gif" class="align-center" src="../../../_images/intrinsic_czm.gif" style="width: 600px;" /></a>
+<section id="cohesive-zone-modeling">
+<h2>Cohesive zone modeling<a class="headerlink" href="#cohesive-zone-modeling" title="Link to this heading">#</a></h2>
+<section id="traction-separation-law">
+<h3>Traction-separation law<a class="headerlink" href="#traction-separation-law" title="Link to this heading">#</a></h3>
+<p>Cohesive zone models are interface elements characterized by a discontinuous displacement and are able to transmit forces through the interface. The link between the interface opening (displacement jump) <span class="math notranslate nohighlight">\(\jump{\bu}\)</span> and the traction <span class="math notranslate nohighlight">\(\bT\)</span> is given by the choice of a specific constitutive law, usually known as a <em>traction-separation</em> law.</p>
+<p>Among the many models available in the literature, we choose here one of the simplest ones, namely an exponential traction separation law given by:</p>
+<div class="math notranslate nohighlight" id="equation-traction-separation">
+<span class="eqno">(33)<a class="headerlink" href="#equation-traction-separation" title="Link to this equation">#</a></span>\[\bT(\jump{\bu}) = \dfrac{\Gc}{\delta_0^2}\exp(-\delta/\delta_0)\jump{\bu}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Gc\)</span> is the interface fracture energy and <span class="math notranslate nohighlight">\(\delta_0\)</span> is another material parameter related to a critical opening. Finally,
+<span class="math notranslate nohighlight">\(\delta\)</span> is an effective opening displacement given by:</p>
+<div class="math notranslate nohighlight" id="equation-effective-opening">
+<span class="eqno">(34)<a class="headerlink" href="#equation-effective-opening" title="Link to this equation">#</a></span>\[\delta(t) := \sqrt{\jump{u_n(t)}^2+\beta\jump{u_t(t)}^2}\]</div>
+<p>and where <span class="math notranslate nohighlight">\(\beta\)</span> is a coupling coefficient which enables to link the normal opening <span class="math notranslate nohighlight">\(\jump{u_n} = \jump{\bu}\cdot\bn\)</span> and the tangential opening <span class="math notranslate nohighlight">\(\jump{u_t}=\jump{\bu}\cdot\bt\)</span> with <span class="math notranslate nohighlight">\(\bn\)</span> (resp. <span class="math notranslate nohighlight">\(\bt\)</span>) being the unit normal (resp. tangential vector) of the considered interface.</p>
+<p>Alternatively, the traction-separation can be written as a function of a <em>damage variable</em> d given by:</p>
+<div class="math notranslate nohighlight" id="equation-damage">
+<span class="eqno">(35)<a class="headerlink" href="#equation-damage" title="Link to this equation">#</a></span>\[d = 1-\exp(-\delta/\delta_0)\]</div>
+<p>yielding:</p>
+<div class="math notranslate nohighlight" id="equation-traction-separation-damage">
+<span class="eqno">(36)<a class="headerlink" href="#equation-traction-separation-damage" title="Link to this equation">#</a></span>\[\bT(\jump{\bu}, d) = \dfrac{\Gc}{\delta_0^2}(1-d)\jump{\bu}\]</div>
+<p>The above law works as a nonlinear “spring” model with a secant stiffness given by <span class="math notranslate nohighlight">\(\dfrac{\Gc}{\delta_0^2}(1-d)\)</span>. In addition, we should also account for irreversibility of damage evolution. As a result, in an unloading phase (i.e. <span class="math notranslate nohighlight">\(\dot{\delta} &lt; 0\)</span>), damage and thus stiffness should not decrease and the interface acts as a linear elastic spring. As a result, expression <a class="reference internal" href="#equation-damage">(35)</a> is modified to account for irreversibility as follows:</p>
+<div class="math notranslate nohighlight" id="equation-damage-irr">
+<span class="eqno">(37)<a class="headerlink" href="#equation-damage-irr" title="Link to this equation">#</a></span>\[d(t) = \max_{t'\in[0;t]} 1-\exp(-\delta(t')/\delta_0)\]</div>
+<p>In a loading phase for which <span class="math notranslate nohighlight">\(\dot{\delta}&gt;0\)</span>, we have <span class="math notranslate nohighlight">\(\dot{d}&gt;0\)</span> and the interface element behaves as a nonlinear softening elastic spring. For a purely normal opening <span class="math notranslate nohighlight">\((\jump{u_t}=0)\)</span> in a loading phase, we have:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+T_n(\jump{u_n})=\dfrac{\Gc}{\delta_0^2}\exp(-\jump{u_n}/\delta_0)\jump{u_n}
+\end{equation*}\]</div>
+<p>which is maximum when <span class="math notranslate nohighlight">\(\jump{u_n}=\delta_0\)</span> with a value <span class="math notranslate nohighlight">\(T_n(\delta_0) = \sigc = \dfrac{\Gc}{\delta_0}\exp(-1)\)</span>. <span class="math notranslate nohighlight">\(\delta_0\)</span> therefore characterizes the critical opening for which the maximum strength <span class="math notranslate nohighlight">\(\sigc\)</span> is reached. For <span class="math notranslate nohighlight">\(\jump{u_n}\gg \delta_0\)</span>, the stiffness tends to vanish and the cohesive element does no longer sustain any load. Finally, when integrating the traction-separation law for <span class="math notranslate nohighlight">\(\jump{u_n}\)</span> from 0 to <span class="math notranslate nohighlight">\(+\infty\)</span>, we see that the total dissipated surface energy is:</p>
+<div class="amsmath math notranslate nohighlight">
+\[\begin{equation*}
+\text{Dissipation} = \int_0^{+\infty} T_n(\jump{u})d\jump{u} = \Gc
+\end{equation*}\]</div>
+<p>which is then the fracture energy spent when completely opening the interface.</p>
+<p>The following script illustrates the pure normal opening behavior of the exponential cohesive law along a few loading/unloading cycles.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">HTML</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">animation</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">delta_0</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">Gc</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">sig_0</span> <span class="o">=</span> <span class="n">Gc</span> <span class="o">/</span> <span class="n">delta_0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">loading_cycles</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">delta_0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">delta_0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">delta_0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">loading_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">])]</span>
+<span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">loading_cycles</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">loading_cycles</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="n">loading_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="mi">21</span><span class="p">)[</span><span class="mi">1</span><span class="p">:])</span>
+<span class="n">loading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">loading_list</span><span class="p">)</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">loading</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loading</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">u</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta_0</span><span class="p">),</span> <span class="n">d</span><span class="p">)</span>
+    <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">Gc</span> <span class="o">/</span> <span class="n">delta_0</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span> <span class="o">/</span> <span class="n">sig_0</span>
+
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_frame</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">loading_cycles</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">loading_cycles</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Normalized opening $[\![u]\!]/\delta_0$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Normalized traction $T([\![u]\!])/\sigma_0$&quot;</span><span class="p">)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loading</span><span class="p">[:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">T</span><span class="p">[:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;-k&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loading</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;oC3&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">lines</span>
+
+
+<span class="n">anim</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">draw_frame</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">loading</span><span class="p">),</span> <span class="n">interval</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repeat_delay</span><span class="o">=</span><span class="mi">5000</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">HTML</span><span class="p">(</span><span class="n">anim</span><span class="o">.</span><span class="n">to_html5_video</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><video width="640" height="480" controls autoplay loop>
+  <source type="video/mp4" src="data:video/mp4;base64,AAAAIGZ0eXBNNFYgAAACAE00ViBpc29taXNvMmF2YzEAAAAIZnJlZQAAhSRtZGF0AAACrwYF//+r
+3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE2NCByMzA5NSBiYWVlNDAwIC0gSC4yNjQvTVBF
+Ry00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAyMiAtIGh0dHA6Ly93d3cudmlkZW9sYW4u
+b3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOjA6MCBhbmFs
+eXNlPTB4MzoweDExMyBtZT1oZXggc3VibWU9NyBwc3k9MSBwc3lfcmQ9MS4wMDowLjAwIG1peGVk
+X3JlZj0xIG1lX3JhbmdlPTE2IGNocm9tYV9tZT0xIHRyZWxsaXM9MSA4eDhkY3Q9MSBjcW09MCBk
+ZWFkem9uZT0yMSwxMSBmYXN0X3Bza2lwPTEgY2hyb21hX3FwX29mZnNldD0tMiB0aHJlYWRzPTE1
+IGxvb2thaGVhZF90aHJlYWRzPTIgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50
+ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBi
+X3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29w
+PTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0yMCBzY2VuZWN1dD00MCBpbnRyYV9y
+ZWZyZXNoPTAgcmNfbG9va2FoZWFkPTQwIHJjPWNyZiBtYnRyZWU9MSBjcmY9MjMuMCBxY29tcD0w
+LjYwIHFwbWluPTAgcXBtYXg9NjkgcXBzdGVwPTQgaXBfcmF0aW89MS40MCBhcT0xOjEuMDAAgAAA
+OOdliIQAO//+906/AptFl2oDklcK9sqkJlm5UmsB8qYAAAMAAAMAAAMAkIRx7muVyT1mgAAAL2AJ
+m2LgLc1C4AF4XBBWOPV7rpcLPe36R2ZT3/IxidvtxI/rIGJV6r+2XUcpKBnE9RG52EsI90lcZ5lr
+IBKvmBJodo0RuJz6+1wSaS54LMisHuLYbgyscNmhrgkrTjXMTSXfKXlhvExaIpMeIbLkQrUiq9z/
+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
+2UCgPaEAAAMAAQAAAwAoDxYtlgEABmjr48siwP34+AAAAAAcdXVpZGtoQPJfJE/FujmlG88DI/MA
+AAAAAAAAGHN0dHMAAAAAAAAAAQAAAHkAAAIAAAAAFHN0c3MAAAAAAAAAAQAAAAEAAAMYY3R0cwAA
+AAAAAABhAAAAAQAABAAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAMAAAQAAAAA
+AQAABgAAAAABAAACAAAAAAEAAAgAAAAAAgAAAgAAAAAHAAAEAAAAAAEAAAYAAAAAAQAAAgAAAAAB
+AAAGAAAAAAEAAAIAAAAAAQAABAAAAAABAAAGAAAAAAEAAAIAAAAAAgAABAAAAAABAAAGAAAAAAEA
+AAIAAAAABwAABAAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAA
+BAAAAAABAAAAAAAAAAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAI
+AAAAAAIAAAIAAAAAAgAABAAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoA
+AAAAAQAABAAAAAABAAAAAAAAAAEAAAIAAAAAAQAABgAAAAABAAACAAAAAAIAAAQAAAAAAQAABgAA
+AAABAAACAAAAAAEAAAgAAAAAAgAAAgAAAAAFAAAEAAAAAAEAAAoAAAAAAQAABAAAAAABAAAAAAAA
+AAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAKAAAAAAEAAAQAAAAA
+AQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAABAAAAAABAAAAAAAAAAEAAAIAAAAAAQAACgAAAAAB
+AAAEAAAAAAEAAAAAAAAAAQAAAgAAAAABAAAGAAAAAAEAAAIAAAAAAQAACgAAAAABAAAEAAAAAAEA
+AAAAAAAAAQAAAgAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAACAAAAAAEAAAoAAAAAAQAA
+BAAAAAABAAAAAAAAAAEAAAIAAAAAAQAABAAAAAABAAAKAAAAAAEAAAQAAAAAAQAAAAAAAAABAAAC
+AAAAAAEAAAQAAAAAAQAACgAAAAABAAAEAAAAAAEAAAAAAAAAAQAAAgAAAAAcc3RzYwAAAAAAAAAB
+AAAAAQAAAHkAAAABAAAB+HN0c3oAAAAAAAAAAAAAAHkAADueAAAEMAAAAL8AAACNAAAAfAAAAXAA
+AAECAAAAeQAAAKwAAABFAAABEwAAAGAAAABCAAAAugAAAGgAAACcAAAAiAAAAEMAAACCAAAAlQAA
+AOcAAABmAAABGQAAAFUAAABaAAAAmQAAADoAAAA3AAAAWwAAAHMAAABVAAAATwAAAEcAAABkAAAA
+VQAAAHEAAABfAAAAXQAAASAAAAB5AAAANgAAAEgAAAIhAAAAigAAAHwAAAB2AAACTwAAAIEAAAB1
+AAAAegAAAbAAAACJAAAAgAAAAOEAAADxAAAB2gAAAJYAAAB/AAAAawAAAa8AAACbAAAAUwAAAFIA
+AADgAAAAiQAAAFkAAABaAAAAVAAAAEoAAADyAAAARwAAAD4AAABQAAAASgAAAEcAAABDAAAAWQAA
+AJcAAABWAAAAMwAAAE8AAAHxAAAAVAAAAHMAAAB0AAAB7wAAAIkAAAB1AAAAhgAAAe4AAACFAAAA
+egAAAIUAAAH+AAAAhQAAAHEAAAA7AAAA4AAAAFIAAACWAAAAowAAAGsAAABlAAABGgAAAGsAAABi
+AAAAWQAAAGkAAAA9AAAALAAAACoAAAB2AAAAbwAAAE4AAAAzAAAAQQAAAGwAAAB4AAAAawAAACwA
+AABaAAAAFHN0Y28AAAAAAAAAAQAAADAAAABhdWR0YQAAAFltZXRhAAAAAAAAACFoZGxyAAAAAAAA
+AABtZGlyYXBwbAAAAAAAAAAAAAAAACxpbHN0AAAAJKl0b28AAAAcZGF0YQAAAAEAAAAATGF2ZjYx
+LjcuMTAw
+">
+  Your browser does not support the video tag.
+</video></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">basix.ufl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearProblem</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that we do not distinguish here the tensile from the compressive regime. In practice, an asymmetric formulation should be considered, for instance with a high stiffness in compression to approximate a unilateral contact behavior.</p>
+</div>
+</section>
+<section id="variational-formulation">
+<h3>Variational formulation<a class="headerlink" href="#variational-formulation" title="Link to this heading">#</a></h3>
+<p>Now we consider a domain <span class="math notranslate nohighlight">\(\Omega\)</span> subject to imposed displacements on its Dirichlet boundary <span class="math notranslate nohighlight">\(\Dirichlet\)</span> and under given body forces <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> In addition, the domain <span class="math notranslate nohighlight">\(\Omega\)</span> contains a set of interfaces <span class="math notranslate nohighlight">\(\Gamma\)</span> over which the displacement is discontinuous (jump <span class="math notranslate nohighlight">\(\jump{\bu}\)</span>) and for which the traction vector is given by the previous traction-separation law <a class="reference internal" href="#equation-traction-separation-damage">(36)</a>.</p>
+<p>The weak form of equilibrium (virtual work principle) in presence of discontinuities reads:</p>
+<div class="math notranslate nohighlight">
+\[
+\int_\Omega \bsig:\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bT = \bsig\bn\)</span> is the traction across <span class="math notranslate nohighlight">\(\Gamma\)</span> of unit normal <span class="math notranslate nohighlight">\(\bn\)</span> and <span class="math notranslate nohighlight">\(V_0\)</span> is the test function space (kinematically admissible perturbations).</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>For the above expression to be consistent, the definition of the jump <span class="math notranslate nohighlight">\(\jump{\bu}\)</span> should be:</p>
+<div class="math notranslate nohighlight">
+\[
+\jump{\bu} = \bu^\oplus - \bu^\ominus
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bn\)</span> is oriented from side <span class="math notranslate nohighlight">\(\ominus\)</span> to side <span class="math notranslate nohighlight">\(\oplus\)</span>. Note that in UFL with <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">FacetNormal(domain)</span></code>, this definition of the normal vector <span class="math notranslate nohighlight">\(\bn\)</span> therefore corresponds to the restriction on the <span class="math notranslate nohighlight">\(\ominus\)</span> side i.e. <code class="docutils literal notranslate"><span class="pre">n(&quot;-&quot;)</span></code> since <code class="docutils literal notranslate"><span class="pre">n</span></code> points outwards a given cell.</p>
+</div>
+<p>Injecting the elastic constitutive relation and traction separation law, the resulting nonlinear problem is given by:
+Find <span class="math notranslate nohighlight">\(\bu\in V\)</span> such that:</p>
+<div class="math notranslate nohighlight" id="equation-czm-problem">
+<span class="eqno">(38)<a class="headerlink" href="#equation-czm-problem" title="Link to this equation">#</a></span>\[\int_\Omega \bsig(\nabla^s\bu):\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT(\jump{\bu},d)\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0\]</div>
+<p>where <span class="math notranslate nohighlight">\(\bsig(\nabla^s \bu)\)</span> is the linear elastic constitutive relation and where <span class="math notranslate nohighlight">\(d\)</span> is given by <a class="reference internal" href="#equation-damage-irr">(37)</a> as a nonlinear function of <span class="math notranslate nohighlight">\(\jump{\bu}\)</span>.</p>
+</section>
+<section id="fixed-point-resolution-strategy">
+<h3>Fixed-point resolution strategy<a class="headerlink" href="#fixed-point-resolution-strategy" title="Link to this heading">#</a></h3>
+<p>The previous variational problem <a class="reference internal" href="#equation-czm-problem">(38)</a> is highly nonlinear. The Newton-Raphson method is not necessarily extremely robust in such softening situations, especially in the presence of unstable crack propagation phases. For this reason, we prefer here to resort to a fixed-point iteration scheme. For a given load step, we <em>iterate</em> between solving an elastic displacement problem with <span class="math notranslate nohighlight">\(d\)</span> being fixed to a previously known value <span class="math notranslate nohighlight">\(d_i\)</span>, yielding the following linear problem:</p>
+<p>Find <span class="math notranslate nohighlight">\(\bu^{(i+1)}\in V\)</span> such that:</p>
+<div class="math notranslate nohighlight">
+\[\int_\Omega \bsig(\nabla^s\bu^{(i+1)}):\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT(\jump{\bu}^{(i+1)},d^{(i)})\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0\]</div>
+<p>The newly computed displacement <span class="math notranslate nohighlight">\(\bu^{(i+1)}\)</span> is then used to update the value of the interfacial damage field from <a class="reference internal" href="#equation-damage-irr">(37)</a> as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align*}
+d^{(i+1)} &amp;= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
+\text{where } \delta^{(i+1)} &amp;= \sqrt{\jump{u_n^{(i+1)}}^2+\beta\jump{u_t^{(i+1)}}^2}
+\end{align*}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(d_\text{prev}\)</span> denotes the previous damage level reached before this time step in order to enforce an irreversible damage evolution.</p>
+<p>These fixed point iterations are then stopped until <span class="math notranslate nohighlight">\(\|d^{(i+1)}-d^{(i)}\|\leq \epsilon\)</span>.</p>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<section id="mesh-and-markers">
+<h3>Mesh and markers<a class="headerlink" href="#mesh-and-markers" title="Link to this heading">#</a></h3>
+<p>We define a function to create the mesh and other utility functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_matrix_inclusion_mesh</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">hsize</span><span class="p">):</span>
+    <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
+    <span class="n">gdim</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">model_rank</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">comm</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="n">model_rank</span><span class="p">:</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;General.Terminal&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># to disable meshing info</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">)</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addRectangle</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addDisk</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addDisk</span><span class="p">(</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">fragment</span><span class="p">([(</span><span class="n">gdim</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span> <span class="p">[(</span><span class="n">gdim</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="mi">3</span><span class="p">)],</span> <span class="n">removeObject</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">remove</span><span class="p">([(</span><span class="n">gdim</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="mi">4</span><span class="p">)],</span> <span class="n">recursive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMin&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">option</span><span class="o">.</span><span class="n">setNumber</span><span class="p">(</span><span class="s2">&quot;Mesh.CharacteristicLengthMax&quot;</span><span class="p">,</span> <span class="n">hsize</span><span class="p">)</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Matrix&quot;</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Inclusions&quot;</span><span class="p">)</span>
+
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;interface&quot;</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">addPhysicalGroup</span><span class="p">(</span><span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span> <span class="mi">4</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sides&quot;</span><span class="p">)</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
+
+    <span class="n">partitioner</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">cpp</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">create_cell_partitioner</span><span class="p">(</span>
+        <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">GhostMode</span><span class="o">.</span><span class="n">shared_facet</span>
+    <span class="p">)</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
+        <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span><span class="p">,</span> <span class="n">partitioner</span><span class="o">=</span><span class="n">partitioner</span>
+    <span class="p">)</span>
+    <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">facets</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cell_markers</span><span class="p">,</span> <span class="n">property_dict</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a piecewise constant field with different values per subdomain.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    domain : Mesh</span>
+<span class="sd">        `dolfinx` mesh object</span>
+<span class="sd">    cell_markers : MeshTag</span>
+<span class="sd">        cell marker MeshTag</span>
+<span class="sd">    property_dict : dict</span>
+<span class="sd">        A dictionary mapping region tags to physical values {tag: value}</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A DG-0 function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">V0</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">k</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">default_value</span>
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">property_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="n">cell_markers</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">k</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">marker</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+    <span class="n">ugrid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span>
+        <span class="o">*</span><span class="n">dolfinx</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">marker</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">marker</span><span class="o">.</span><span class="n">indices</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">ugrid</span><span class="o">.</span><span class="n">cell_data</span><span class="p">[</span><span class="s2">&quot;Marker&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">marker</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">ugrid</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show_axes</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We first create the mesh and define the different tags for identifying physical domains and interfaces.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="n">hsize</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">domain</span><span class="p">,</span> <span class="n">cell_marker</span><span class="p">,</span> <span class="n">facet_marker</span> <span class="o">=</span> <span class="n">create_matrix_inclusion_mesh</span><span class="p">(</span>
+    <span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">hsize</span>
+<span class="p">)</span>
+<span class="n">INNER_FACET_TAG</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># tag of inner facets except interface</span>
+<span class="n">MATRIX_TAG</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># tag of matrix phase</span>
+<span class="n">INCL_TAG</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># tag of inclusion phase</span>
+<span class="n">INT_TAG</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># tag of interface</span>
+
+<span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+<span class="n">fdim</span> <span class="o">=</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span>
+
+<span class="n">annotations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">MATRIX_TAG</span><span class="p">:</span> <span class="s2">&quot;Matrix&quot;</span><span class="p">,</span>
+    <span class="n">INCL_TAG</span><span class="p">:</span> <span class="s2">&quot;Inclusion&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">plot_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cell_marker</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="n">annotations</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma_r&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/ee3facceb57587281d7209e4fbd2c277036584f70eaa9d0c8725bd420cca15cd.png" src="../../../_images/ee3facceb57587281d7209e4fbd2c277036584f70eaa9d0c8725bd420cca15cd.png" />
+</div>
+</div>
+<p>We recreate a facet <code class="docutils literal notranslate"><span class="pre">MeshTag</span></code> object from the one produced by <code class="docutils literal notranslate"><span class="pre">gmsh</span></code> to mark inner facets as <code class="docutils literal notranslate"><span class="pre">INNER_FACET_TAG</span></code> and plot it.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
+<span class="n">facet_map</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">fdim</span><span class="p">)</span>
+<span class="n">num_facets_local</span> <span class="o">=</span> <span class="n">facet_map</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">facet_map</span><span class="o">.</span><span class="n">num_ghosts</span>
+<span class="n">facet_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_facets_local</span><span class="p">,</span> <span class="n">INNER_FACET_TAG</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">facet_values</span><span class="p">[</span><span class="n">facet_marker</span><span class="o">.</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="n">facet_marker</span><span class="o">.</span><span class="n">values</span>
+<span class="n">facets</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">meshtags</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_facets_local</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="n">facet_values</span>
+<span class="p">)</span>
+<span class="n">annotations</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Left&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Right&quot;</span><span class="p">,</span>
+    <span class="n">INT_TAG</span><span class="p">:</span> <span class="s2">&quot;Interface&quot;</span><span class="p">,</span>
+    <span class="n">INNER_FACET_TAG</span><span class="p">:</span> <span class="s2">&quot;Inner facets&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Sides&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">plot_mesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">facets</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="n">annotations</span><span class="p">,</span> <span class="n">line_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;plasma_r&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/dc10761e024f5ee595c1f6c4c33bb6ccc4d3ae02615f09ca0adaf9ce95855c3b.png" src="../../../_images/dc10761e024f5ee595c1f6c4c33bb6ccc4d3ae02615f09ca0adaf9ce95855c3b.png" />
+</div>
+</div>
+</section>
+<section id="submesh-creation">
+<h3>Submesh creation<a class="headerlink" href="#submesh-creation" title="Link to this heading">#</a></h3>
+<p>Here, we use the new functionalities offered by version <code class="docutils literal notranslate"><span class="pre">0.9.0</span></code> to create <strong>submeshes</strong> using <code class="docutils literal notranslate"><span class="pre">dolfinx.mesh.create_submesh</span></code>. The submesh will be of co-dimension<a class="footnote-reference brackets" href="#codim" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> 1 and consists of facets in <span class="math notranslate nohighlight">\(\Gamma\)</span> i.e. facets of the interface <span class="math notranslate nohighlight">\(\Gamma_\text{int}\)</span> and of inner facets in <span class="math notranslate nohighlight">\(\Gamma_\text{bulk}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">internal_facets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="n">INNER_FACET_TAG</span><span class="p">,</span> <span class="n">INT_TAG</span><span class="p">]])</span>
+<span class="n">interface_mesh</span><span class="p">,</span> <span class="n">interfaces_cell_map</span><span class="p">,</span> <span class="n">interfaces_vertex_map</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">create_submesh</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">internal_facets</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We must also recreate a <code class="docutils literal notranslate"><span class="pre">MeshTag</span></code> based on the new <code class="docutils literal notranslate"><span class="pre">interface_mesh</span></code> to correctly identify regions of the submesh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_sub_facets</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">interfaces_cell_map</span><span class="p">)</span>
+<span class="n">interfaces_facet_tags</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">meshtags</span><span class="p">(</span>
+    <span class="n">interface_mesh</span><span class="p">,</span>
+    <span class="n">fdim</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_sub_facets</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span>
+    <span class="n">facets</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">interfaces_cell_map</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, an important concept when dealing with integration of forms involving coefficients defined on a different mesh than the integration domain is that of an <em>entity map</em>. An entity map is a dictionary which links a mesh with a mapping relating entities in the integration domain mesh to the submesh, see also <a class="reference external" href="https://jsdokken.com/FEniCS-workshop/src/multiphysics/submeshes.html#integration-with-function-from-parent-and-sub-mesh">https://jsdokken.com/FEniCS-workshop/src/multiphysics/submeshes.html#integration-with-function-from-parent-and-sub-mesh</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">facet_imap</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">facets</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+<span class="n">num_facets</span> <span class="o">=</span> <span class="n">facet_imap</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">facet_imap</span><span class="o">.</span><span class="n">num_ghosts</span>
+<span class="n">domain_to_interfaces</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_facets</span><span class="p">,</span> <span class="n">INNER_FACET_TAG</span><span class="p">)</span>
+<span class="n">domain_to_interfaces</span><span class="p">[</span><span class="n">interfaces_cell_map</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interfaces_cell_map</span><span class="p">))</span>
+<span class="n">entity_maps</span> <span class="o">=</span> <span class="p">{</span><span class="n">interface_mesh</span><span class="p">:</span> <span class="n">domain_to_interfaces</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define the different integration measures. Note that we must choose a specific domain with which to associate the integration measure. We will use the full mesh <code class="docutils literal notranslate"><span class="pre">domain</span></code>, as it will be more convenient when dealing with multiple geometric dimensions. We check that the sum <span class="math notranslate nohighlight">\(|\Gamma_\text{int}|+|\Gamma_\text{bulk}|\)</span> is equal to the total interface measure <span class="math notranslate nohighlight">\(|\Gamma|\)</span> measured by integrating a cell measure over the submesh.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facets</span><span class="p">)</span>
+<span class="n">dS</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dS&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facets</span><span class="p">)</span>
+<span class="n">dx_int</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">interface_mesh</span><span class="p">)</span>
+<span class="n">Gamma_int</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dS</span><span class="p">(</span><span class="n">INT_TAG</span><span class="p">)))</span>
+<span class="n">Gamma_bulk</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dS</span><span class="p">(</span><span class="n">INNER_FACET_TAG</span><span class="p">)))</span>
+<span class="n">Gamma</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dx_int</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total interface area = </span><span class="si">{</span><span class="n">Gamma_int</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total inner facets area = </span><span class="si">{</span><span class="n">Gamma_bulk</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total interface measure = </span><span class="si">{</span><span class="n">Gamma</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">Gamma_int</span><span class="o">+</span><span class="n">Gamma_bulk</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total interface area = 1.570
+Total inner facets area = 86.602
+Total interface measure = 88.172 vs 88.172
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="weak-form-formulation">
+<h3>Weak form formulation<a class="headerlink" href="#weak-form-formulation" title="Link to this heading">#</a></h3>
+<p>We first define linear elastic material properties by creating two fields for the Young modulus <span class="math notranslate nohighlight">\(E\)</span> and Poisson ratio <span class="math notranslate nohighlight">\(\nu\)</span>, taking piecewise constant values in the matrix and inclusion phases. We refer to <a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html"><span class="std std-doc">Create a piecewise constant field for spatially varying properties</span></a> for more details. UFL functions for the strain and stress expressions are then defined.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cell_marker</span><span class="p">,</span> <span class="p">{</span><span class="n">MATRIX_TAG</span><span class="p">:</span> <span class="mf">3.09e3</span><span class="p">,</span> <span class="n">INCL_TAG</span><span class="p">:</span> <span class="mf">10e3</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">nu</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cell_marker</span><span class="p">,</span> <span class="p">{</span><span class="n">MATRIX_TAG</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">INCL_TAG</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">mu</span> <span class="o">=</span> <span class="n">E</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">nu</span><span class="p">))</span>
+<span class="n">lmbda</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">/</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">nu</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sigma</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">lmbda</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">tdim</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define the two material parameters representing the fracture energy <span class="math notranslate nohighlight">\(\Gc\)</span> and the critical stress <span class="math notranslate nohighlight">\(\sigc\)</span>. Both fields are piecewise constant functions (<code class="docutils literal notranslate"><span class="pre">&quot;DG&quot;-0</span></code>) defined on the interface mesh. Both parameters have smaller values on the interface, while facets in the bulk have stronger mechanical properties. We then define various functions such as <a class="reference internal" href="#equation-effective-opening">(34)</a>, <a class="reference internal" href="#equation-damage">(35)</a> and <a class="reference internal" href="#equation-traction-separation-damage">(36)</a> which will serve for expressing the cohesive law.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gc</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">interface_mesh</span><span class="p">,</span> <span class="n">interfaces_facet_tags</span><span class="p">,</span> <span class="p">{</span><span class="n">INT_TAG</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Gc&quot;</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="p">)</span>
+<span class="n">sig_max</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">interface_mesh</span><span class="p">,</span>
+    <span class="n">interfaces_facet_tags</span><span class="p">,</span>
+    <span class="p">{</span><span class="n">INT_TAG</span><span class="p">:</span> <span class="mf">50.0</span><span class="p">},</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sigmax&quot;</span><span class="p">,</span>
+    <span class="n">default_value</span><span class="o">=</span><span class="mf">400.0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">delta_0</span> <span class="o">=</span> <span class="n">Gc</span> <span class="o">/</span> <span class="n">sig_max</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normal_opening</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tangential_opening</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">v</span> <span class="o">-</span> <span class="n">normal_opening</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">effective_opening</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">normal_opening</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">beta</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">tangential_opening</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">opening</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="n">K_int</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">Gc</span> <span class="o">/</span> <span class="n">delta_0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">K_int</span> <span class="o">*</span> <span class="n">opening</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Two function spaces are now defined. <code class="docutils literal notranslate"><span class="pre">V</span></code> refers to the displacement function space using a <strong>Discontinuous Galerkin</strong> (<code class="docutils literal notranslate"><span class="pre">&quot;DG&quot;</span></code>) of degree 1.</p>
+<p>We will also need to compute quantities which live only on the facets of the mesh e.g. the internal variables of the cohesive law (the damage <code class="docutils literal notranslate"><span class="pre">d</span></code> in the present case). The space <code class="docutils literal notranslate"><span class="pre">V_int</span></code> consists of a <code class="docutils literal notranslate"><span class="pre">&quot;DG&quot;</span></code> interpolation of degree 1 (piecewise affine on the facet and discontinuous at the vertices). This choice is made to simplify the visualization of facet fields. To enforce irreversibility of damage evolution, <code class="docutils literal notranslate"><span class="pre">d_prev</span></code> will store the value of interfacial damage at the previous converged increment. Finally, to test convergence of the damage field during the fixed-point iteration scheme, <code class="docutils literal notranslate"><span class="pre">d_old</span></code> will store the value of interfacial damage of the previous iteration.</p>
+<p>Note that an alternative for V_int is to use a quadrature space on the facet mesh using the space <code class="docutils literal notranslate"><span class="pre">Q</span></code> defined later. However, functions on <code class="docutils literal notranslate"><span class="pre">Q</span></code> can then only be visualized as point clouds, see <a class="reference external" href="https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html">https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">tdim</span><span class="p">,)))</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Displacement&quot;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">du</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+
+<span class="n">V_int</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">interface_mesh</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_int</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Interfacial_damage&quot;</span><span class="p">)</span>
+<span class="n">d_prev</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_int</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Previous_interfacial_damage&quot;</span><span class="p">)</span>
+<span class="n">d_old</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_int</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Interfacial_damage_old&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The variational forms are now defined. The weak form contains the current value of damage <code class="docutils literal notranslate"><span class="pre">d</span></code> defined as a function on the facet mesh. This function being fixed, the resulting problem is therefore linear. The corresponding bilinear and linear (zero in the present example) forms are compiled using the previously defined entity map which allows to integrate forms containing functions defined on a submesh.</p>
+<p>The interface contribution <code class="docutils literal notranslate"><span class="pre">a_interface</span></code> to the bilinear form contains jump terms defined on all internal facets (bulk + interface) via the measure <code class="docutils literal notranslate"><span class="pre">dS</span></code>. Since we use an inner surface measure, all quantities must be restricted onto a facet. Although <code class="docutils literal notranslate"><span class="pre">d</span></code> lives on the facet mesh, we still need to restrict it in some way. We use here <code class="docutils literal notranslate"><span class="pre">ufl.avg</span></code>, although <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> would have also worked.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_bulk</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">du</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="n">a_interface</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">jump</span><span class="p">(</span><span class="n">du</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">jump</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">dS</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">a_bulk</span> <span class="o">+</span> <span class="n">a_interface</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="n">Fext</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
+
+<span class="n">a_compiled</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">)</span>
+<span class="n">Fext_compiled</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">Fext</span><span class="p">,</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="facet-expressions-interpolation">
+<h3>Facet expressions interpolation<a class="headerlink" href="#facet-expressions-interpolation" title="Link to this heading">#</a></h3>
+<p>In the load stepping process, the fixed-point procedure will iteratively update the damage field <code class="docutils literal notranslate"><span class="pre">d</span></code> with a new value computed from the current displacement estimate. To do so, we must compute the nonlinear expression <a class="reference internal" href="#equation-damage">(35)</a> at the interpolation points corresponding to the degrees of freedom of the <code class="docutils literal notranslate"><span class="pre">V_int</span></code> function space, namely the two vertices of a facet. To do so, we will build a linear form such that its assembled vector exactly corresponds to a vector of interpolated values using a custom quadrature trick.</p>
+<p>Suppose that we want to evaluate an expression <code class="docutils literal notranslate"><span class="pre">e</span></code> at certain points on facets. Assuming that <span class="math notranslate nohighlight">\(Q\)</span> is a quadrature function space defined on facets and <span class="math notranslate nohighlight">\(x_g\)</span>, <span class="math notranslate nohighlight">\(\omega_g\)</span> are <span class="math notranslate nohighlight">\(n\)</span> quadrature integration points and weights defined on the reference element, the facet quadrature rule can be expressed as follows:</p>
+<div class="math notranslate nohighlight">
+\[
+\int_{F} e^* q \dS = \sum_{g=1}^{n} |F|\omega_g e(x_g)q(x_g) \quad \forall q\in Q
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> is a facet, <span class="math notranslate nohighlight">\(|F|\)</span> its area measure, <span class="math notranslate nohighlight">\(e^*\)</span> is a given expression and <span class="math notranslate nohighlight">\(q\)</span> is a test function in <span class="math notranslate nohighlight">\(Q\)</span>.
+Generalizing this expression over a set of facets, the resulting assembled vector will therefore contains the value <span class="math notranslate nohighlight">\(|F|\omega_g e^*(x_g)\)</span> at the corresponding dof. As a result, if we choose <span class="math notranslate nohighlight">\(e^* = e/|F|\)</span> and <span class="math notranslate nohighlight">\(\omega_g=1\)</span>, the resulting assembled vector will exactly contains the wanted values <span class="math notranslate nohighlight">\(e(x_g)\)</span>.</p>
+<p>This strategy is implemented below. The damage expression <code class="docutils literal notranslate"><span class="pre">d_expr</span></code> to interpolate is first defined. Note that it is defined as the maximum between expression <a class="reference internal" href="#equation-damage">(35)</a> and <code class="docutils literal notranslate"><span class="pre">d_prev</span></code> to ensure irreversibility. A custom <code class="docutils literal notranslate"><span class="pre">basix</span></code> quadrature element using unitary weights and interpolation points of <code class="docutils literal notranslate"><span class="pre">V_int</span></code> as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, <code class="docutils literal notranslate"><span class="pre">facet_interp</span></code> contains the compiled form discussed previously.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetNormal</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">effective_opening</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">jump</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">n</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<span class="n">d_expr</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">max_value</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">d_prev</span><span class="p">),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">delta</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">delta_0</span><span class="p">)))</span>
+
+<span class="n">q_p</span> <span class="o">=</span> <span class="n">V_int</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">()</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">q_p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dolfinx</span><span class="o">.</span><span class="n">default_scalar_type</span><span class="p">)</span>
+<span class="n">q_el</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">quadrature_element</span><span class="p">(</span>
+    <span class="n">interface_mesh</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">q_p</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span>
+<span class="p">)</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">interface_mesh</span><span class="p">,</span> <span class="n">q_el</span><span class="p">)</span>
+<span class="n">q_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+<span class="n">dS_custom</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span>
+    <span class="s2">&quot;dS&quot;</span><span class="p">,</span>
+    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quadrature_points&quot;</span><span class="p">:</span> <span class="n">q_p</span><span class="p">,</span>
+        <span class="s2">&quot;quadrature_weights&quot;</span><span class="p">:</span> <span class="n">weights</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facets</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">facet_interp</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
+    <span class="mi">1</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetArea</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span> <span class="o">*</span> <span class="n">d_expr</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">q_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dS_custom</span><span class="p">,</span>
+    <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dirichlet-boundary-conditions">
+<h3>Dirichlet boundary conditions<a class="headerlink" href="#dirichlet-boundary-conditions" title="Link to this heading">#</a></h3>
+<p>Here, we define the Dirichlet boundary conditions consisting of fixed displacement on the left part and and an imposed displacement <span class="math notranslate nohighlight">\((t, 0)\)</span> on the right boundary.Note that since we use DG discretization of the displacement field,
+DG dofs do not live on the facets but are associated with cell interior. As a result, they cannot be found using <code class="docutils literal notranslate"><span class="pre">locate_dofs_topological</span></code> and the facet marker. We must use a geometrical approach to locating the dofs instead.</p>
+<p>Note that an alternative could have been to employ a weak Nitsche imposition of the Dirichlet BCs which is very similar to a cohesive traction law at the boundary.</p>
+<p>Finally, the imposed displacement constant <code class="docutils literal notranslate"><span class="pre">Uimp</span></code> is initialized with unitary values. This will serve to define a unitary virtual displacement field <code class="docutils literal notranslate"><span class="pre">v_reac</span></code> to be used for measuring the reaction force on the boundary in a consistent manner. We refer to <a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html"><span class="std std-doc">Computing consistent reaction forces</span></a> for more details.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Uimp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="n">left_dofs</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">))</span>
+<span class="n">right_dofs</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">length</span><span class="p">))</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tdim</span><span class="p">,)),</span> <span class="n">left_dofs</span><span class="p">,</span> <span class="n">V</span><span class="p">),</span>
+    <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">Uimp</span><span class="p">,</span> <span class="n">right_dofs</span><span class="p">,</span> <span class="n">V</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">v_reac</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">fem</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="n">v_reac</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
+<span class="n">virtual_work_form</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
+    <span class="n">ufl</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="o">-</span> <span class="n">Fext</span><span class="p">,</span> <span class="n">v_reac</span><span class="p">),</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The linear problem associated with resolution of displacement at fixed damage is now defined outside the load-stepping loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span>
+    <span class="n">a_compiled</span><span class="p">,</span>
+    <span class="n">Fext_compiled</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We will monitor the evolution of total damage over the structure by computing a normalized (or average) value of damage, separating its contribution from the physical interface <span class="math notranslate nohighlight">\(\Gamma_\text{int}\)</span> from the internal facets in the bulk matrix <span class="math notranslate nohighlight">\(\Gamma_\text{bulk}\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interface_damage</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">dS</span><span class="p">(</span><span class="n">INT_TAG</span><span class="p">),</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">)</span>
+<span class="n">bulk_damage</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
+    <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">*</span> <span class="n">dS</span><span class="p">(</span><span class="n">INNER_FACET_TAG</span><span class="p">),</span>
+    <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-stepping">
+<h3>Load-stepping<a class="headerlink" href="#load-stepping" title="Link to this heading">#</a></h3>
+<p>The load stepping loop is now started with progressively applied imposed displacement. For each load step, the inner fixed-point iteration loop is performed to first compute the new displacement and then update the value of damage by evaluating its expression on the different facets from assembling the <code class="docutils literal notranslate"><span class="pre">facet_interp</span></code> form. Convergence is checked by measuring the <span class="math notranslate nohighlight">\(L^2\)</span> difference between two consecutive values of the damage field.</p>
+<p>At the end of each time step, the total resulting force on the right boundary is computed as well as normalized values of the total damage, distinguishing the interfacial from the bulk contribution. Finally, the <code class="docutils literal notranslate"><span class="pre">d_prev</span></code> variable is updated with new values to account for damage irreversibility.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Nincr</span> <span class="o">=</span> <span class="mi">60</span>
+<span class="n">loading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">,</span> <span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">Niter_max</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-4</span>
+<span class="n">damage_results</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
+<span class="n">Force</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
+<span class="n">iterations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="s2">&quot;results/czm.pvd&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loading</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+    <span class="k">if</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Load step </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">loading</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">Uimp</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="n">nRes</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">Niter_max</span><span class="p">:</span>
+        <span class="c1"># displacement problem resolution</span>
+        <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+        <span class="c1"># interpolation of damage on facets</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="n">facet_interp</span><span class="p">)</span><span class="o">.</span><span class="n">array</span>
+        <span class="c1"># normalized residual for convergence check</span>
+        <span class="n">nRes</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">((</span><span class="n">d</span> <span class="o">-</span> <span class="n">d_old</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dx_int</span><span class="p">))))</span> <span class="o">/</span> <span class="n">Gamma</span>
+        <span class="p">)</span>
+        <span class="n">d_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
+        <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Iteration </span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> | Residual: </span><span class="si">{</span><span class="n">nRes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nRes</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Fixed-point solver did not converge in less than </span><span class="si">{}</span><span class="s2"> iterations&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">Niter_max</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="n">iterations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    <span class="n">d_prev</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
+
+    <span class="n">Force</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">virtual_work_form</span><span class="p">))</span>
+    <span class="n">damage_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">interface_damage</span><span class="p">),</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">bulk_damage</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">out_file</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">out_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Load step 60/60
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Iteration  1 | Residual: 5.084060128822264e-11
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="force-displacement-and-damage-evolution">
+<h3>Force-displacement and damage evolution<a class="headerlink" href="#force-displacement-and-damage-evolution" title="Link to this heading">#</a></h3>
+<p>As showcased in the initial GIF animation, the matrix/inclusion interface first starts to open almost elastically, then a sudden drop in the force-displacement curve corresponds to the unstable debonding of a large portion of both interfaces. The remaining load-carrying part of the structure then continues to stretch until a sudden final fracture of the central region.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">loading</span><span class="p">,</span> <span class="n">Force</span><span class="p">,</span> <span class="s2">&quot;-x&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Imposed displacement&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Reaction force&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">loading</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">damage_results</span><span class="p">)[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">Gamma_int</span><span class="p">,</span>
+    <span class="s2">&quot;-xC1&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Interfacial damage&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">loading</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">damage_results</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">Gamma_bulk</span><span class="p">,</span> <span class="s2">&quot;-xC2&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Bulk damage&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Imposed displacement&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Normalized total damage&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/6d33c61bb7c6c498f38a1b0bc08f00e28f2592042501fe2ef72d3acc46c4092d.png" src="../../../_images/6d33c61bb7c6c498f38a1b0bc08f00e28f2592042501fe2ef72d3acc46c4092d.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id3">
+<div role="list" class="citation-list">
+<div class="citation" id="id20" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">HS15</a><span class="fn-bracket">]</span></span>
+<p>Peter Hansbo and Kent Salomonsson. A discontinuous galerkin method for cohesive zone modelling. <em>Finite Elements in Analysis and Design</em>, 102:1–6, 2015. <a class="reference external" href="https://doi.org/10.1016/j.finel.2015.04.008">doi:10.1016/j.finel.2015.04.008</a>.</p>
+</div>
+</div>
+</div>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="codim" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p><em>Co-dimension</em> is a geometric concept which refers to the geometric dimension of a subset relative to a larger set. A co-dimension <code class="docutils literal notranslate"><span class="pre">codim</span></code> means that the subset is of dimension <code class="docutils literal notranslate"><span class="pre">dim-codim</span></code> where <code class="docutils literal notranslate"><span class="pre">dim</span></code> refers to the dimension of the original set. In the present context, facets are of co-dimension 1 with respect to the original mesh consisting of cells i.e. in 2D cells are of dimension 2 and facets of dimension 1, in 3D cells are of dimension 3 and facets of dimension 2.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/interfaces/intrinsic_czm"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../contents.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Interfaces</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../beams/contents.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Beams</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cohesive-zone-modeling">Cohesive zone modeling</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#traction-separation-law">Traction-separation law</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-point-resolution-strategy">Fixed-point resolution strategy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-and-markers">Mesh and markers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#submesh-creation">Submesh creation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-form-formulation">Weak form formulation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#facet-expressions-interpolation">Facet expressions interpolation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dirichlet-boundary-conditions">Dirichlet boundary conditions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-stepping">Load-stepping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#force-displacement-and-damage-evolution">Force-displacement and damage evolution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

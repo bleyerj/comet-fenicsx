@@ -1,0 +1,259 @@
+Traceback (most recent call last):
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+    return loop.run_until_complete(inner)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+    await self.async_execute_cell(
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+a_bulk = ufl.inner(sigma(du), epsilon(v)) * dx
+a_interface = ufl.dot(T(ufl.jump(du), ufl.avg(d)), ufl.jump(v)) * dS
+a = a_bulk + a_interface
+
+f = fem.Constant(domain, (0.0, 0.0))
+Fext = ufl.dot(f, v) * dx
+
+a_compiled = dolfinx.fem.form(a, entity_maps=entity_maps)
+Fext_compiled = dolfinx.fem.form(Fext, entity_maps=entity_maps)
+------------------
+
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mRuntimeError[0m                              Traceback (most recent call last)
+Cell [0;32mIn[13], line 8[0m
+[1;32m      5[0m f [38;5;241m=[39m fem[38;5;241m.[39mConstant(domain, ([38;5;241m0.0[39m, [38;5;241m0.0[39m))
+[1;32m      6[0m Fext [38;5;241m=[39m ufl[38;5;241m.[39mdot(f, v) [38;5;241m*[39m dx
+[0;32m----> 8[0m a_compiled [38;5;241m=[39m [43mdolfinx[49m[38;5;241;43m.[39;49m[43mfem[49m[38;5;241;43m.[39;49m[43mform[49m[43m([49m[43ma[49m[43m,[49m[43m [49m[43mentity_maps[49m[38;5;241;43m=[39;49m[43mentity_maps[49m[43m)[49m
+[1;32m      9[0m Fext_compiled [38;5;241m=[39m dolfinx[38;5;241m.[39mfem[38;5;241m.[39mform(Fext, entity_maps[38;5;241m=[39mentity_maps)
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/fem/forms.py:249[0m, in [0;36mform[0;34m(form, dtype, form_compiler_options, jit_options, entity_maps)[0m
+[1;32m    246[0m         [38;5;28;01mreturn[39;00m [38;5;28mlist[39m([38;5;28mmap[39m([38;5;28;01mlambda[39;00m sub_form: _create_form(sub_form), form))
+[1;32m    247[0m     [38;5;28;01mreturn[39;00m form
+[0;32m--> 249[0m [38;5;28;01mreturn[39;00m [43m_create_form[49m[43m([49m[43mform[49m[43m)[49m
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/fem/forms.py:244[0m, in [0;36mform.<locals>._create_form[0;34m(form)[0m
+[1;32m    241[0m [38;5;250m[39m[38;5;124;03m"""Recursively convert ufl.Forms to dolfinx.fem.Form, otherwise[39;00m
+[1;32m    242[0m [38;5;124;03mreturn form argument"""[39;00m
+[1;32m    243[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(form, ufl[38;5;241m.[39mForm):
+[0;32m--> 244[0m     [38;5;28;01mreturn[39;00m [43m_form[49m[43m([49m[43mform[49m[43m)[49m
+[1;32m    245[0m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(form, collections[38;5;241m.[39mabc[38;5;241m.[39mIterable):
+[1;32m    246[0m     [38;5;28;01mreturn[39;00m [38;5;28mlist[39m([38;5;28mmap[39m([38;5;28;01mlambda[39;00m sub_form: _create_form(sub_form), form))
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/fem/forms.py:186[0m, in [0;36mform.<locals>._form[0;34m(form)[0m
+[1;32m    184[0m [38;5;28;01mif[39;00m mesh [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    185[0m     [38;5;28;01mraise[39;00m [38;5;167;01mRuntimeError[39;00m([38;5;124m"[39m[38;5;124mExpecting to find a Mesh in the form.[39m[38;5;124m"[39m)
+[0;32m--> 186[0m ufcx_form, module, code [38;5;241m=[39m [43mjit[49m[38;5;241;43m.[39;49m[43mffcx_jit[49m[43m([49m
+[1;32m    187[0m [43m    [49m[43mmesh[49m[38;5;241;43m.[39;49m[43mcomm[49m[43m,[49m[43m [49m[43mform[49m[43m,[49m[43m [49m[43mform_compiler_options[49m[38;5;241;43m=[39;49m[43mform_compiler_options[49m[43m,[49m[43m [49m[43mjit_options[49m[38;5;241;43m=[39;49m[43mjit_options[49m
+[1;32m    188[0m [43m[49m[43m)[49m
+[1;32m    190[0m [38;5;66;03m# For each argument in form extract its function space[39;00m
+[1;32m    191[0m V [38;5;241m=[39m [arg[38;5;241m.[39mufl_function_space()[38;5;241m.[39m_cpp_object [38;5;28;01mfor[39;00m arg [38;5;129;01min[39;00m form[38;5;241m.[39marguments()]
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/jit.py:51[0m, in [0;36mmpi_jit_decorator.<locals>.mpi_jit[0;34m(comm, *args, **kwargs)[0m
+[1;32m     47[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(local_jit)
+[1;32m     48[0m [38;5;28;01mdef[39;00m [38;5;21mmpi_jit[39m(comm, [38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[1;32m     49[0m     [38;5;66;03m# Just call JIT compiler when running in serial[39;00m
+[1;32m     50[0m     [38;5;28;01mif[39;00m comm[38;5;241m.[39msize [38;5;241m==[39m [38;5;241m1[39m:
+[0;32m---> 51[0m         [38;5;28;01mreturn[39;00m [43mlocal_jit[49m[43m([49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+[1;32m     53[0m     [38;5;66;03m# Default status (0 == ok, 1 == fail)[39;00m
+[1;32m     54[0m     status [38;5;241m=[39m [38;5;241m0[39m
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/jit.py:201[0m, in [0;36mffcx_jit[0;34m(ufl_object, form_compiler_options, jit_options)[0m
+[1;32m    199[0m [38;5;66;03m# Switch on type and compile, returning cffi object[39;00m
+[1;32m    200[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(ufl_object, ufl[38;5;241m.[39mForm):
+[0;32m--> 201[0m     r [38;5;241m=[39m [43mffcx[49m[38;5;241;43m.[39;49m[43mcodegeneration[49m[38;5;241;43m.[39;49m[43mjit[49m[38;5;241;43m.[39;49m[43mcompile_forms[49m[43m([49m[43m[[49m[43mufl_object[49m[43m][49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43mp_ffcx[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mp_jit[49m[43m)[49m
+[1;32m    202[0m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(ufl_object, ufl[38;5;241m.[39mAbstractFiniteElement):
+[1;32m    203[0m     r [38;5;241m=[39m ffcx[38;5;241m.[39mcodegeneration[38;5;241m.[39mjit[38;5;241m.[39mcompile_elements([ufl_object], options[38;5;241m=[39mp_ffcx, [38;5;241m*[39m[38;5;241m*[39mp_jit)
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/codegeneration/jit.py:276[0m, in [0;36mcompile_forms[0;34m(forms, options, cache_dir, timeout, cffi_extra_compile_args, cffi_verbose, cffi_debug, cffi_libraries, visualise)[0m
+[1;32m    274[0m     [38;5;28;01mexcept[39;00m [38;5;167;01mException[39;00m:
+[1;32m    275[0m         [38;5;28;01mpass[39;00m
+[0;32m--> 276[0m     [38;5;28;01mraise[39;00m e
+[1;32m    278[0m obj, module [38;5;241m=[39m _load_objects(cache_dir, module_name, form_names)
+[1;32m    279[0m [38;5;28;01mreturn[39;00m obj, module, (decl, impl)
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/codegeneration/jit.py:256[0m, in [0;36mcompile_forms[0;34m(forms, options, cache_dir, timeout, cffi_extra_compile_args, cffi_verbose, cffi_debug, cffi_libraries, visualise)[0m
+[1;32m    253[0m     [38;5;28;01mfor[39;00m name [38;5;129;01min[39;00m form_names:
+[1;32m    254[0m         decl [38;5;241m+[39m[38;5;241m=[39m form_template[38;5;241m.[39mformat(name[38;5;241m=[39mname)
+[0;32m--> 256[0m     impl [38;5;241m=[39m [43m_compile_objects[49m[43m([49m
+[1;32m    257[0m [43m        [49m[43mdecl[49m[43m,[49m
+[1;32m    258[0m [43m        [49m[43mforms[49m[43m,[49m
+[1;32m    259[0m [43m        [49m[43mform_names[49m[43m,[49m
+[1;32m    260[0m [43m        [49m[43mmodule_name[49m[43m,[49m
+[1;32m    261[0m [43m        [49m[43mp[49m[43m,[49m
+[1;32m    262[0m [43m        [49m[43mcache_dir[49m[43m,[49m
+[1;32m    263[0m [43m        [49m[43mcffi_extra_compile_args[49m[43m,[49m
+[1;32m    264[0m [43m        [49m[43mcffi_verbose[49m[43m,[49m
+[1;32m    265[0m [43m        [49m[43mcffi_debug[49m[43m,[49m
+[1;32m    266[0m [43m        [49m[43mcffi_libraries[49m[43m,[49m
+[1;32m    267[0m [43m        [49m[43mvisualise[49m[38;5;241;43m=[39;49m[43mvisualise[49m[43m,[49m
+[1;32m    268[0m [43m    [49m[43m)[49m
+[1;32m    269[0m [38;5;28;01mexcept[39;00m [38;5;167;01mException[39;00m [38;5;28;01mas[39;00m e:
+[1;32m    270[0m     [38;5;28;01mtry[39;00m:
+[1;32m    271[0m         [38;5;66;03m# remove c file so that it will not timeout next time[39;00m
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/codegeneration/jit.py:383[0m, in [0;36m_compile_objects[0;34m(decl, ufl_objects, object_names, module_name, options, cache_dir, cffi_extra_compile_args, cffi_verbose, cffi_debug, cffi_libraries, visualise)[0m
+[1;32m    379[0m libraries [38;5;241m=[39m _libraries [38;5;241m+[39m cffi_libraries [38;5;28;01mif[39;00m cffi_libraries [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m [38;5;28;01melse[39;00m _libraries
+[1;32m    381[0m [38;5;66;03m# JIT uses module_name as prefix, which is needed to make names of all struct/function[39;00m
+[1;32m    382[0m [38;5;66;03m# unique across modules[39;00m
+[0;32m--> 383[0m _, code_body [38;5;241m=[39m [43mffcx[49m[38;5;241;43m.[39;49m[43mcompiler[49m[38;5;241;43m.[39;49m[43mcompile_ufl_objects[49m[43m([49m
+[1;32m    384[0m [43m    [49m[43mufl_objects[49m[43m,[49m[43m [49m[43mprefix[49m[38;5;241;43m=[39;49m[43mmodule_name[49m[43m,[49m[43m [49m[43moptions[49m[38;5;241;43m=[39;49m[43moptions[49m[43m,[49m[43m [49m[43mvisualise[49m[38;5;241;43m=[39;49m[43mvisualise[49m
+[1;32m    385[0m [43m[49m[43m)[49m
+[1;32m    387[0m ffibuilder [38;5;241m=[39m cffi[38;5;241m.[39mFFI()
+[1;32m    389[0m ffibuilder[38;5;241m.[39mset_source(
+[1;32m    390[0m     module_name,
+[1;32m    391[0m     code_body,
+[0;32m   (...)[0m
+[1;32m    394[0m     libraries[38;5;241m=[39mlibraries,
+[1;32m    395[0m )
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/compiler.py:113[0m, in [0;36mcompile_ufl_objects[0;34m(ufl_objects, options, object_names, prefix, visualise)[0m
+[1;32m    111[0m [38;5;66;03m# Stage 2: intermediate representation[39;00m
+[1;32m    112[0m cpu_time [38;5;241m=[39m time()
+[0;32m--> 113[0m ir [38;5;241m=[39m [43mcompute_ir[49m[43m([49m[43manalysis[49m[43m,[49m[43m [49m[43m_object_names[49m[43m,[49m[43m [49m[43m_prefix[49m[43m,[49m[43m [49m[43moptions[49m[43m,[49m[43m [49m[43mvisualise[49m[43m)[49m
+[1;32m    114[0m _print_timing([38;5;241m2[39m, time() [38;5;241m-[39m cpu_time)
+[1;32m    116[0m [38;5;66;03m# Stage 3: code generation[39;00m
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/ir/representation.py:225[0m, in [0;36mcompute_ir[0;34m(analysis, object_names, prefix, options, visualise)[0m
+[1;32m    214[0m ir_elements [38;5;241m=[39m [
+[1;32m    215[0m     _compute_element_ir(e, analysis[38;5;241m.[39melement_numbers, finite_element_names)
+[1;32m    216[0m     [38;5;28;01mfor[39;00m e [38;5;129;01min[39;00m analysis[38;5;241m.[39munique_elements
+[1;32m    217[0m ]
+[1;32m    219[0m ir_dofmaps [38;5;241m=[39m [
+[1;32m    220[0m     _compute_dofmap_ir(e, analysis[38;5;241m.[39melement_numbers, dofmap_names)
+[1;32m    221[0m     [38;5;28;01mfor[39;00m e [38;5;129;01min[39;00m analysis[38;5;241m.[39munique_elements
+[1;32m    222[0m ]
+[1;32m    224[0m irs [38;5;241m=[39m [
+[0;32m--> 225[0m     [43m_compute_integral_ir[49m[43m([49m
+[1;32m    226[0m [43m        [49m[43mfd[49m[43m,[49m
+[1;32m    227[0m [43m        [49m[43mi[49m[43m,[49m
+[1;32m    228[0m [43m        [49m[43manalysis[49m[38;5;241;43m.[39;49m[43melement_numbers[49m[43m,[49m
+[1;32m    229[0m [43m        [49m[43mintegral_names[49m[43m,[49m
+[1;32m    230[0m [43m        [49m[43mfinite_element_names[49m[43m,[49m
+[1;32m    231[0m [43m        [49m[43moptions[49m[43m,[49m
+[1;32m    232[0m [43m        [49m[43mvisualise[49m[43m,[49m
+[1;32m    233[0m [43m    [49m[43m)[49m
+[1;32m    234[0m     [38;5;28;01mfor[39;00m (i, fd) [38;5;129;01min[39;00m [38;5;28menumerate[39m(analysis[38;5;241m.[39mform_data)
+[1;32m    235[0m ]
+[1;32m    236[0m ir_integrals [38;5;241m=[39m [38;5;28mlist[39m(itertools[38;5;241m.[39mchain([38;5;241m*[39mirs))
+[1;32m    238[0m ir_forms [38;5;241m=[39m [
+[1;32m    239[0m     _compute_form_ir(
+[1;32m    240[0m         fd,
+[0;32m   (...)[0m
+[1;32m    250[0m     [38;5;28;01mfor[39;00m (i, fd) [38;5;129;01min[39;00m [38;5;28menumerate[39m(analysis[38;5;241m.[39mform_data)
+[1;32m    251[0m ]
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/ir/representation.py:588[0m, in [0;36m_compute_integral_ir[0;34m(form_data, form_index, element_numbers, integral_names, finite_element_names, options, visualise)[0m
+[1;32m    583[0m integrand_map: [38;5;28mdict[39m[QuadratureRule, ufl[38;5;241m.[39mcore[38;5;241m.[39mexpr[38;5;241m.[39mExpr] [38;5;241m=[39m {
+[1;32m    584[0m     rule: integral[38;5;241m.[39mintegrand() [38;5;28;01mfor[39;00m rule, integral [38;5;129;01min[39;00m sorted_integrals[38;5;241m.[39mitems()
+[1;32m    585[0m }
+[1;32m    587[0m [38;5;66;03m# Build more specific intermediate representation[39;00m
+[0;32m--> 588[0m integral_ir [38;5;241m=[39m [43mcompute_integral_ir[49m[43m([49m
+[1;32m    589[0m [43m    [49m[43mitg_data[49m[38;5;241;43m.[39;49m[43mdomain[49m[38;5;241;43m.[39;49m[43mufl_cell[49m[43m([49m[43m)[49m[43m,[49m
+[1;32m    590[0m [43m    [49m[43mitg_data[49m[38;5;241;43m.[39;49m[43mintegral_type[49m[43m,[49m
+[1;32m    591[0m [43m    [49m[43mir[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mentitytype[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
+[1;32m    592[0m [43m    [49m[43mintegrand_map[49m[43m,[49m
+[1;32m    593[0m [43m    [49m[43mir[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mtensor_shape[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
+[1;32m    594[0m [43m    [49m[43moptions[49m[43m,[49m
+[1;32m    595[0m [43m    [49m[43mvisualise[49m[43m,[49m
+[1;32m    596[0m [43m[49m[43m)[49m
+[1;32m    598[0m ir[38;5;241m.[39mupdate(integral_ir)
+[1;32m    600[0m [38;5;66;03m# Fetch name[39;00m
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/ir/integral.py:85[0m, in [0;36mcompute_integral_ir[0;34m(cell, integral_type, entitytype, integrands, argument_shape, p, visualise)[0m
+[1;32m     73[0m [38;5;66;03m# Build terminal_data from V here before factorization. Then we[39;00m
+[1;32m     74[0m [38;5;66;03m# can use it to derive table properties for all modified[39;00m
+[1;32m     75[0m [38;5;66;03m# terminals, and then use that to rebuild the scalar graph more[39;00m
+[1;32m     76[0m [38;5;66;03m# efficiently before argument factorization. We can build[39;00m
+[1;32m     77[0m [38;5;66;03m# terminal_data again after factorization if that's necessary.[39;00m
+[1;32m     79[0m initial_terminals [38;5;241m=[39m {
+[1;32m     80[0m     i: analyse_modified_terminal(v[[38;5;124m"[39m[38;5;124mexpression[39m[38;5;124m"[39m])
+[1;32m     81[0m     [38;5;28;01mfor[39;00m i, v [38;5;129;01min[39;00m S[38;5;241m.[39mnodes[38;5;241m.[39mitems()
+[1;32m     82[0m     [38;5;28;01mif[39;00m is_modified_terminal(v[[38;5;124m"[39m[38;5;124mexpression[39m[38;5;124m"[39m])
+[1;32m     83[0m }
+[0;32m---> 85[0m mt_table_reference [38;5;241m=[39m [43mbuild_optimized_tables[49m[43m([49m
+[1;32m     86[0m [43m    [49m[43mquadrature_rule[49m[43m,[49m
+[1;32m     87[0m [43m    [49m[43mcell[49m[43m,[49m
+[1;32m     88[0m [43m    [49m[43mintegral_type[49m[43m,[49m
+[1;32m     89[0m [43m    [49m[43mentitytype[49m[43m,[49m
+[1;32m     90[0m [43m    [49m[43minitial_terminals[49m[38;5;241;43m.[39;49m[43mvalues[49m[43m([49m[43m)[49m[43m,[49m
+[1;32m     91[0m [43m    [49m[43mir[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43munique_tables[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
+[1;32m     92[0m [43m    [49m[43muse_sum_factorization[49m[38;5;241;43m=[39;49m[43mp[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43msum_factorization[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
+[1;32m     93[0m [43m    [49m[43mrtol[49m[38;5;241;43m=[39;49m[43mp[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mtable_rtol[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
+[1;32m     94[0m [43m    [49m[43matol[49m[38;5;241;43m=[39;49m[43mp[49m[43m[[49m[38;5;124;43m"[39;49m[38;5;124;43mtable_atol[39;49m[38;5;124;43m"[39;49m[43m][49m[43m,[49m
+[1;32m     95[0m [43m[49m[43m)[49m
+[1;32m     97[0m [38;5;66;03m# Fetch unique tables for this quadrature rule[39;00m
+[1;32m     98[0m table_types [38;5;241m=[39m {v[38;5;241m.[39mname: v[38;5;241m.[39mttype [38;5;28;01mfor[39;00m v [38;5;129;01min[39;00m mt_table_reference[38;5;241m.[39mvalues()}
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/ir/elementtables.py:360[0m, in [0;36mbuild_optimized_tables[0;34m(quadrature_rule, cell, integral_type, entitytype, modified_terminals, existing_tables, use_sum_factorization, rtol, atol)[0m
+[1;32m    357[0m new_table [38;5;241m=[39m []
+[1;32m    358[0m [38;5;28;01mfor[39;00m ref [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;241m2[39m):
+[1;32m    359[0m     new_table[38;5;241m.[39mappend(
+[0;32m--> 360[0m         [43mget_ffcx_table_values[49m[43m([49m
+[1;32m    361[0m [43m            [49m[43mpermute_quadrature_interval[49m[43m([49m[43mquadrature_rule[49m[38;5;241;43m.[39;49m[43mpoints[49m[43m,[49m[43m [49m[43mref[49m[43m)[49m[43m,[49m
+[1;32m    362[0m [43m            [49m[43mcell[49m[43m,[49m
+[1;32m    363[0m [43m            [49m[43mintegral_type[49m[43m,[49m
+[1;32m    364[0m [43m            [49m[43melement[49m[43m,[49m
+[1;32m    365[0m [43m            [49m[43mavg[49m[43m,[49m
+[1;32m    366[0m [43m            [49m[43mentitytype[49m[43m,[49m
+[1;32m    367[0m [43m            [49m[43mlocal_derivatives[49m[43m,[49m
+[1;32m    368[0m [43m            [49m[43mflat_component[49m[43m,[49m
+[1;32m    369[0m [43m        [49m[43m)[49m
+[1;32m    370[0m     )
+[1;32m    372[0m t [38;5;241m=[39m new_table[[38;5;241m0[39m]
+[1;32m    373[0m t[[38;5;124m"[39m[38;5;124marray[39m[38;5;124m"[39m] [38;5;241m=[39m np[38;5;241m.[39mvstack([td[[38;5;124m"[39m[38;5;124marray[39m[38;5;124m"[39m] [38;5;28;01mfor[39;00m td [38;5;129;01min[39;00m new_table])
+
+File [0;32m/usr/lib/python3/dist-packages/ffcx/ir/elementtables.py:139[0m, in [0;36mget_ffcx_table_values[0;34m(points, cell, integral_type, element, avg, entitytype, derivative_counts, flat_component)[0m
+[1;32m    137[0m [38;5;28;01mfor[39;00m entity [38;5;129;01min[39;00m [38;5;28mrange[39m(num_entities):
+[1;32m    138[0m     entity_points [38;5;241m=[39m map_integral_points(points, integral_type, cell, entity)
+[0;32m--> 139[0m     tbl [38;5;241m=[39m [43mcomponent_element[49m[38;5;241;43m.[39;49m[43mtabulate[49m[43m([49m[43mderiv_order[49m[43m,[49m[43m [49m[43mentity_points[49m[43m)[49m
+[1;32m    140[0m     tbl [38;5;241m=[39m tbl[basix_index(derivative_counts)]
+[1;32m    141[0m     component_tables[38;5;241m.[39mappend(tbl)
+
+File [0;32m/usr/lib/python3/dist-packages/basix/ufl.py:660[0m, in [0;36m_ComponentElement.tabulate[0;34m(self, nderivs, points)[0m
+[1;32m    650[0m [38;5;28;01mdef[39;00m [38;5;21mtabulate[39m([38;5;28mself[39m, nderivs: [38;5;28mint[39m, points: _npt[38;5;241m.[39mNDArray[np[38;5;241m.[39mfloat64]) [38;5;241m-[39m[38;5;241m>[39m _npt[38;5;241m.[39mNDArray[np[38;5;241m.[39mfloat64]:
+[1;32m    651[0m [38;5;250m    [39m[38;5;124;03m"""Tabulate the basis functions of the element.[39;00m
+[1;32m    652[0m 
+[1;32m    653[0m [38;5;124;03m    Args:[39;00m
+[0;32m   (...)[0m
+[1;32m    658[0m [38;5;124;03m        Tabulated basis functions.[39;00m
+[1;32m    659[0m [38;5;124;03m    """[39;00m
+[0;32m--> 660[0m     tables [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_element[49m[38;5;241;43m.[39;49m[43mtabulate[49m[43m([49m[43mnderivs[49m[43m,[49m[43m [49m[43mpoints[49m[43m)[49m
+[1;32m    661[0m     output [38;5;241m=[39m []
+[1;32m    662[0m     [38;5;28;01mfor[39;00m tbl [38;5;129;01min[39;00m tables:
+
+File [0;32m/usr/lib/python3/dist-packages/basix/ufl.py:415[0m, in [0;36m_BasixElement.tabulate[0;34m(self, nderivs, points)[0m
+[1;32m    404[0m [38;5;28;01mdef[39;00m [38;5;21mtabulate[39m([38;5;28mself[39m, nderivs: [38;5;28mint[39m, points: _npt[38;5;241m.[39mNDArray[np[38;5;241m.[39mfloat64]) [38;5;241m-[39m[38;5;241m>[39m _npt[38;5;241m.[39mNDArray[np[38;5;241m.[39mfloat64]:
+[1;32m    405[0m [38;5;250m    [39m[38;5;124;03m"""Tabulate the basis functions of the element.[39;00m
+[1;32m    406[0m 
+[1;32m    407[0m [38;5;124;03m    Args:[39;00m
+[0;32m   (...)[0m
+[1;32m    413[0m 
+[1;32m    414[0m [38;5;124;03m    """[39;00m
+[0;32m--> 415[0m     tab [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_element[49m[38;5;241;43m.[39;49m[43mtabulate[49m[43m([49m[43mnderivs[49m[43m,[49m[43m [49m[43mpoints[49m[43m)[49m
+[1;32m    416[0m     [38;5;66;03m# TODO: update FFCx to remove the need for transposing here[39;00m
+[1;32m    417[0m     [38;5;28;01mreturn[39;00m tab[38;5;241m.[39mtranspose(([38;5;241m0[39m, [38;5;241m1[39m, [38;5;241m3[39m, [38;5;241m2[39m))[38;5;241m.[39mreshape((tab[38;5;241m.[39mshape[[38;5;241m0[39m], tab[38;5;241m.[39mshape[[38;5;241m1[39m], [38;5;241m-[39m[38;5;241m1[39m))
+
+File [0;32m/usr/lib/python3/dist-packages/basix/finite_element.py:137[0m, in [0;36mFiniteElement.tabulate[0;34m(self, n, x)[0m
+[1;32m    105[0m [38;5;28;01mdef[39;00m [38;5;21mtabulate[39m([38;5;28mself[39m, n: [38;5;28mint[39m, x: npt[38;5;241m.[39mNDArray) [38;5;241m-[39m[38;5;241m>[39m npt[38;5;241m.[39mNDArray[np[38;5;241m.[39mfloating]:
+[1;32m    106[0m [38;5;250m    [39m[38;5;124;03m"""Compute basis values and derivatives at set of points.[39;00m
+[1;32m    107[0m 
+[1;32m    108[0m [38;5;124;03m    Note:[39;00m
+[0;32m   (...)[0m
+[1;32m    135[0m [38;5;124;03m            basis functions.[39;00m
+[1;32m    136[0m [38;5;124;03m    """[39;00m
+[0;32m--> 137[0m     [38;5;28;01mreturn[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_e[49m[38;5;241;43m.[39;49m[43mtabulate[49m[43m([49m[43mn[49m[43m,[49m[43m [49m[43mx[49m[43m)[49m
+
+[0;31mRuntimeError[0m: Point dim (2) does not match element dim (1).
+

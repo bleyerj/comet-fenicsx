@@ -40,7 +40,7 @@ In this tour, we show how to perform 2D simulations in generalized plane strain 
 ```
 
 ```{attention}
-This tour requires `dolfinx` v.0.9.0 and `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
+This tour requires version `0.9.0` and `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
 ```
 
 ```{admonition} Download sources
@@ -148,8 +148,6 @@ from scifem import create_real_functionspace
 ```
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 hsize = 0.2
 
 Re = 11.0
@@ -317,8 +315,6 @@ sig.interpolate(sig_exp)
 Finally, the different components of the stress field can be visualized using Pyvista. We can check that the vertical stress is indeed a spatially varying field with a non-zero imposed vertical force.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 import pyvista
 
 pyvista.set_jupyter_backend("static")

@@ -14,40 +14,43 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
@@ -67,6 +70,7 @@
     <link rel="prev" title="Nonlinear beam model in finite rotations" href="finite_rotation_nonlinear_beam.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -74,31 +78,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../../search.html"
       method="get">
@@ -106,7 +95,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search..."
          aria-label="Search..."
          autocomplete="off"
@@ -114,10 +102,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -126,7 +119,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -141,6 +135,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../../../index.html">
   
@@ -154,21 +150,17 @@
     
     
     <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <script>document.write(`<img src="../../../_static/logo.png" class="logo__image only-dark" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>`);</script>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -187,48 +179,52 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
 </ul>
-</li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../interfaces/intrinsic_czm/intrinsic_czm.html">Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Beams</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">A module for rotation parametrization</a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
 </ul>
-</li>
+</details></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
 <ul class="nav bd-sidenav">
@@ -246,14 +242,19 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -262,14 +263,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -344,27 +345,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -416,28 +409,28 @@ document.write(`
 <h2>Implementation aspects<a class="headerlink" href="#implementation-aspects" title="Link to this heading">#</a></h2>
 <p>The module provides the <code class="docutils literal notranslate"><span class="pre">Skew</span></code> function, mapping a 3D vector to the corresponding skew-symmetric matrix.</p>
 <p>An abstract class handles the generic implementation of rotation parametrization based on the corresponding parametrization of the rotation angle <span class="math notranslate nohighlight">\(p(\varphi)\)</span>. Considering a generic rotation vector which we denote by <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>,  <span id="id2">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> works with <span class="math notranslate nohighlight">\(\varphi = \|\boldsymbol{\theta}\|\)</span> and the unit-norm vector <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{\theta}/\varphi\)</span>. Note that the involved expressions are usually ill-defined when <span class="math notranslate nohighlight">\(\varphi \to 0\)</span>. For this reason, the numerical implementation makes use of a regularized expression for the norm:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a64873da-8c98-47ff-bac5-6747cdc9194b">
-<span class="eqno">(34)<a class="headerlink" href="#equation-a64873da-8c98-47ff-bac5-6747cdc9194b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-36ab74dd-4357-4763-9bb1-0b298a81b6ac">
+<span class="eqno">(40)<a class="headerlink" href="#equation-36ab74dd-4357-4763-9bb1-0b298a81b6ac" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \varphi = \sqrt{\boldsymbol{\theta}^2 + \varepsilon}
 \end{equation}\]</div>
 <p>with <span class="math notranslate nohighlight">\({\varepsilon}\)</span> being a very small number in practice.</p>
 <p>The rotation parameter vector <span class="math notranslate nohighlight">\(\boldsymbol{p}\)</span> from <span id="id3">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> is given by the <code class="docutils literal notranslate"><span class="pre">rotation_parameter</span></code> attribute.</p>
 <p>The class then implements the following functions:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-83c8e978-ee81-4540-a6c0-df29f01bcb50">
-<span class="eqno">(35)<a class="headerlink" href="#equation-83c8e978-ee81-4540-a6c0-df29f01bcb50" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-86a099c9-d54b-4167-925f-439505461b65">
+<span class="eqno">(41)<a class="headerlink" href="#equation-86a099c9-d54b-4167-925f-439505461b65" title="Permalink to this equation">#</a></span>\[\begin{align}
 h_1(\varphi) &amp;= \dfrac{\nu(\varphi)^2}{\epsilon(\varphi)}\\
 h_2(\varphi) &amp;= \dfrac{\nu(\varphi)^2}{2}\\
 h_3(\varphi) &amp;= \dfrac{\mu(\varphi)-h_1(\varphi)}{p(\varphi)^2}\\
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\nu(\varphi),\epsilon(\varphi)\)</span> and <span class="math notranslate nohighlight">\(\mu(\varphi)\)</span> are defined in <span id="id4">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span>.</p>
 <p>It then provides the expression for the corresponding rotation matrix <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0d8e7557-d778-4e22-94b3-65a902240e92">
-<span class="eqno">(36)<a class="headerlink" href="#equation-0d8e7557-d778-4e22-94b3-65a902240e92" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-af9c9305-e6bd-418e-b2e2-e121030b840d">
+<span class="eqno">(42)<a class="headerlink" href="#equation-af9c9305-e6bd-418e-b2e2-e121030b840d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{R} = \boldsymbol{I} + h_1(\varphi)\boldsymbol{P} + h_2(\varphi)\boldsymbol{P}^2
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{P} = \operatorname{skew}(\boldsymbol{p})\)</span>, as well as the associated rotation curvature matrix <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span> involved in the computation of the rotation rate:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-0ee42acd-6068-4cf8-a77e-136cfcd40295">
-<span class="eqno">(37)<a class="headerlink" href="#equation-0ee42acd-6068-4cf8-a77e-136cfcd40295" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2c8a7884-34ee-458c-b9aa-6d471d6bcee3">
+<span class="eqno">(43)<a class="headerlink" href="#equation-2c8a7884-34ee-458c-b9aa-6d471d6bcee3" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{H} = \mu(\varphi)\boldsymbol{I} + h_2(\varphi)\boldsymbol{P} + h_3(\varphi)\boldsymbol{P}^2
 \end{equation}\]</div>
 </section>
@@ -446,8 +439,8 @@ h_3(\varphi) &amp;= \dfrac{\mu(\varphi)-h_1(\varphi)}{p(\varphi)^2}\\
 <section id="exponentialmap-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">ExponentialMap</span></code> parametrization<a class="headerlink" href="#exponentialmap-parametrization" title="Link to this heading">#</a></h3>
 <p>This parametrization corresponds to the simple choice:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5d1e521f-0fad-4a9a-9bbb-e4429028c1ba">
-<span class="eqno">(38)<a class="headerlink" href="#equation-5d1e521f-0fad-4a9a-9bbb-e4429028c1ba" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7f9df6e4-d9fe-4b6b-a4f3-3385df7a5f2f">
+<span class="eqno">(44)<a class="headerlink" href="#equation-7f9df6e4-d9fe-4b6b-a4f3-3385df7a5f2f" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi)=\varphi
 \end{equation}\]</div>
 <p>The corresponding expression for the rotation matrix is the famous Euler-Rodrigues formula.</p>
@@ -455,24 +448,24 @@ p(\varphi)=\varphi
 <section id="eulerrodrigues-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">EulerRodrigues</span></code> parametrization<a class="headerlink" href="#eulerrodrigues-parametrization" title="Link to this heading">#</a></h3>
 <p>This parametrization corresponds to the simple choice:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-090f01b6-4eeb-4c16-aacd-f72f580d07b7">
-<span class="eqno">(39)<a class="headerlink" href="#equation-090f01b6-4eeb-4c16-aacd-f72f580d07b7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9f41cee6-a541-4c9d-9e19-e3289422e51e">
+<span class="eqno">(45)<a class="headerlink" href="#equation-9f41cee6-a541-4c9d-9e19-e3289422e51e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi)=2 sin(\varphi/2)
 \end{equation}\]</div>
 </section>
 <section id="sinefamily-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">SineFamily</span></code> parametrization<a class="headerlink" href="#sinefamily-parametrization" title="Link to this heading">#</a></h3>
 <p>This generic family for any integer <span class="math notranslate nohighlight">\(m\)</span> corresponds to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a9209090-d831-433e-9a54-c358a3208d06">
-<span class="eqno">(40)<a class="headerlink" href="#equation-a9209090-d831-433e-9a54-c358a3208d06" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7698f269-6580-4aec-8d3e-cfc3cf63a776">
+<span class="eqno">(46)<a class="headerlink" href="#equation-7698f269-6580-4aec-8d3e-cfc3cf63a776" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi) = m \sin\left(\frac{\varphi}{m}\right)
 \end{equation}\]</div>
 </section>
 <section id="tangentfamily-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">TangentFamily</span></code> parametrization<a class="headerlink" href="#tangentfamily-parametrization" title="Link to this heading">#</a></h3>
 <p>This generic family for any integer <span class="math notranslate nohighlight">\(m\)</span> corresponds to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ac40a13d-004b-4b5e-971b-78c9b60215b2">
-<span class="eqno">(41)<a class="headerlink" href="#equation-ac40a13d-004b-4b5e-971b-78c9b60215b2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6ab25576-7c1c-46c8-902e-eeb5a0ff407a">
+<span class="eqno">(47)<a class="headerlink" href="#equation-6ab25576-7c1c-46c8-902e-eeb5a0ff407a" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
 \end{equation}\]</div>
 </section>
@@ -487,18 +480,18 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
 
 <span class="sd">@author: bleyerj</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">ufl</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">as_matrix</span><span class="p">,</span> <span class="n">Identity</span>
-<span class="kn">from</span> <span class="nn">dolfinx.fem</span> <span class="kn">import</span> <span class="n">Constant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ufl</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="p">,</span> <span class="n">tan</span><span class="p">,</span> <span class="n">as_matrix</span><span class="p">,</span> <span class="n">Identity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span>
 
 <span class="n">DOLFIN_EPS</span> <span class="o">=</span> <span class="mf">1e-12</span>
 
 
-<span class="k">def</span> <span class="nf">Skew</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">Skew</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Antisymmetric tensor associated with a vector n&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">as_matrix</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">n</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">]])</span>
 
 
-<span class="k">class</span> <span class="nc">RotationParametrization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RotationParametrization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A generic class for handling a vectorial parametrization of rotation</span>
 <span class="sd">    tensors.</span>
@@ -507,7 +500,7 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
 <span class="sd">        rotation. Nonlinear dynamics, 32(1), 71-92. DOI: 10.1023/A:1024265401576</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">dp</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">dp</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -518,37 +511,37 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
         <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">p</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dp</span> <span class="o">=</span> <span class="n">dp</span>
 
-    <span class="k">def</span> <span class="nf">ntheta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ntheta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotation vector norm&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span> <span class="o">+</span> <span class="n">DOLFIN_EPS</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">h1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">h1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntheta</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">h2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">h2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntheta</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
 
-    <span class="k">def</span> <span class="nf">mu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntheta</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">h3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">h3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntheta</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
 
-    <span class="k">def</span> <span class="nf">rotation_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reparametrized rotation vector&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntheta</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">theta</span> <span class="o">/</span> <span class="n">x</span>
 
-    <span class="k">def</span> <span class="nf">rotation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotation matrix&quot;&quot;&quot;</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_parameter</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h1</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">h2</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">P</span>
 
-    <span class="k">def</span> <span class="nf">curvature_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">curvature_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Curvature matrix involved in the computation of the rotation rate&quot;&quot;&quot;</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_parameter</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -556,52 +549,52 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
         <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">ExponentialMap</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExponentialMap</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Exponential map parametrization (p(x)=x)&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">RotationParametrization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">SineFamily</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SineFamily</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sine family parametrization (p(x)=m*sin(x/m))&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
         <span class="n">RotationParametrization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">m</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">m</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">cos</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span>
         <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">EulerRodrigues</span><span class="p">(</span><span class="n">SineFamily</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EulerRodrigues</span><span class="p">(</span><span class="n">SineFamily</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Euler-Rodrigues parametrization (p(x)=2*sin(x/2))&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">SineFamily</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">TangentFamily</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TangentFamily</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Tangent family parametrization (p(x)=m*tan(x/m))&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
         <span class="n">RotationParametrization</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">m</span> <span class="o">*</span> <span class="n">tan</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">m</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">tan</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
         <span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">RodriguesParametrization</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RodriguesParametrization</span><span class="p">(</span><span class="n">RotationParametrization</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
-    <span class="k">def</span> <span class="nf">rotation_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reparametrized rotation vector&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">theta</span>
 
-    <span class="k">def</span> <span class="nf">rotation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotation_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_parameter</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
         <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="n">h</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span> <span class="o">+</span> <span class="n">h</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">P</span>
 
-    <span class="k">def</span> <span class="nf">cruvature_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cruvature_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Curvature matrix involved in the computation of the rotation rate&quot;&quot;&quot;</span>
         <span class="n">P</span> <span class="o">=</span> <span class="n">Skew</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_parameter</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
         <span class="n">h</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -650,7 +643,7 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -678,7 +671,8 @@ p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -738,8 +732,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

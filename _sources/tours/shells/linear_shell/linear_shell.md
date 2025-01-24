@@ -320,7 +320,7 @@ The local frame is plotted with `Paraview` as `DG0` Functions since we use plana
 
 ### Function space choice and strain measures
 
-We now use the afore-mentioned `P2/CR`interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
+We now use the aforementioned `P2/CR` interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
 ```{code-cell} ipython3
 Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))  # displacement finite element

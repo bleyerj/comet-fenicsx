@@ -323,7 +323,7 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
 #
 # ### Function space choice and strain measures
 #
-# We now use the afore-mentioned `P2/CR`interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
+# We now use the aforementioned `P2/CR` interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
 # +
 Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))  # displacement finite element
