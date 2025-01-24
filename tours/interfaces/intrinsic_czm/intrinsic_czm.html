@@ -1232,7 +1232,12 @@ d^{(i+1)} &amp;= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
 <section id="mesh-and-markers">
 <h3>Mesh and markers<a class="headerlink" href="#mesh-and-markers" title="Link to this heading">#</a></h3>
 <p>We define a function to create the mesh and other utility functions.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_matrix_inclusion_mesh</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">hsize</span><span class="p">):</span>
     <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
@@ -1317,6 +1322,7 @@ d^{(i+1)} &amp;= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <p>We first create the mesh and define the different tags for identifying physical domains and interfaces.</p>
 <div class="cell docutils container">
