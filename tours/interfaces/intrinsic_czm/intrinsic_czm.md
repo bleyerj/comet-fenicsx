@@ -230,6 +230,8 @@ These fixed point iterations are then stopped until $\|d^{(i+1)}-d^{(i)}\|\leq \
 We define a function to create the mesh and other utility functions.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
