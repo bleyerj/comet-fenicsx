@@ -409,28 +409,28 @@
 <h2>Implementation aspects<a class="headerlink" href="#implementation-aspects" title="Link to this heading">#</a></h2>
 <p>The module provides the <code class="docutils literal notranslate"><span class="pre">Skew</span></code> function, mapping a 3D vector to the corresponding skew-symmetric matrix.</p>
 <p>An abstract class handles the generic implementation of rotation parametrization based on the corresponding parametrization of the rotation angle <span class="math notranslate nohighlight">\(p(\varphi)\)</span>. Considering a generic rotation vector which we denote by <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>,  <span id="id2">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> works with <span class="math notranslate nohighlight">\(\varphi = \|\boldsymbol{\theta}\|\)</span> and the unit-norm vector <span class="math notranslate nohighlight">\(\boldsymbol{u} = \boldsymbol{\theta}/\varphi\)</span>. Note that the involved expressions are usually ill-defined when <span class="math notranslate nohighlight">\(\varphi \to 0\)</span>. For this reason, the numerical implementation makes use of a regularized expression for the norm:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c9c49d69-fa3f-459c-aa3f-e7d344d7662d">
-<span class="eqno">(40)<a class="headerlink" href="#equation-c9c49d69-fa3f-459c-aa3f-e7d344d7662d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6b96bb98-237a-41e4-9fb0-183c424fd13c">
+<span class="eqno">(40)<a class="headerlink" href="#equation-6b96bb98-237a-41e4-9fb0-183c424fd13c" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \varphi = \sqrt{\boldsymbol{\theta}^2 + \varepsilon}
 \end{equation}\]</div>
 <p>with <span class="math notranslate nohighlight">\({\varepsilon}\)</span> being a very small number in practice.</p>
 <p>The rotation parameter vector <span class="math notranslate nohighlight">\(\boldsymbol{p}\)</span> from <span id="id3">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> is given by the <code class="docutils literal notranslate"><span class="pre">rotation_parameter</span></code> attribute.</p>
 <p>The class then implements the following functions:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-05cf23b8-7aa2-40ba-b0fb-ce7fe1dbe857">
-<span class="eqno">(41)<a class="headerlink" href="#equation-05cf23b8-7aa2-40ba-b0fb-ce7fe1dbe857" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7975b51c-7e71-4225-a5f8-464f51943666">
+<span class="eqno">(41)<a class="headerlink" href="#equation-7975b51c-7e71-4225-a5f8-464f51943666" title="Permalink to this equation">#</a></span>\[\begin{align}
 h_1(\varphi) &amp;= \dfrac{\nu(\varphi)^2}{\epsilon(\varphi)}\\
 h_2(\varphi) &amp;= \dfrac{\nu(\varphi)^2}{2}\\
 h_3(\varphi) &amp;= \dfrac{\mu(\varphi)-h_1(\varphi)}{p(\varphi)^2}\\
 \end{align}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\nu(\varphi),\epsilon(\varphi)\)</span> and <span class="math notranslate nohighlight">\(\mu(\varphi)\)</span> are defined in <span id="id4">[<a class="reference internal" href="#id18" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span>.</p>
 <p>It then provides the expression for the corresponding rotation matrix <span class="math notranslate nohighlight">\(\boldsymbol{R}\)</span>:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8bd20f9e-3249-456c-9a97-f63cc4ffa6e9">
-<span class="eqno">(42)<a class="headerlink" href="#equation-8bd20f9e-3249-456c-9a97-f63cc4ffa6e9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-faf42bda-5200-44cf-ac13-dea2a4d45c29">
+<span class="eqno">(42)<a class="headerlink" href="#equation-faf42bda-5200-44cf-ac13-dea2a4d45c29" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{R} = \boldsymbol{I} + h_1(\varphi)\boldsymbol{P} + h_2(\varphi)\boldsymbol{P}^2
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{P} = \operatorname{skew}(\boldsymbol{p})\)</span>, as well as the associated rotation curvature matrix <span class="math notranslate nohighlight">\(\boldsymbol{H}\)</span> involved in the computation of the rotation rate:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-394df4da-f0a6-4ab5-8ce6-ed27e9f1b43f">
-<span class="eqno">(43)<a class="headerlink" href="#equation-394df4da-f0a6-4ab5-8ce6-ed27e9f1b43f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3fe2f88c-a35b-4d92-8899-d6e6875f37cb">
+<span class="eqno">(43)<a class="headerlink" href="#equation-3fe2f88c-a35b-4d92-8899-d6e6875f37cb" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \boldsymbol{H} = \mu(\varphi)\boldsymbol{I} + h_2(\varphi)\boldsymbol{P} + h_3(\varphi)\boldsymbol{P}^2
 \end{equation}\]</div>
 </section>
@@ -439,8 +439,8 @@ h_3(\varphi) &amp;= \dfrac{\mu(\varphi)-h_1(\varphi)}{p(\varphi)^2}\\
 <section id="exponentialmap-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">ExponentialMap</span></code> parametrization<a class="headerlink" href="#exponentialmap-parametrization" title="Link to this heading">#</a></h3>
 <p>This parametrization corresponds to the simple choice:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-398f18d3-ca9c-4dd6-8298-acac6db0c5d6">
-<span class="eqno">(44)<a class="headerlink" href="#equation-398f18d3-ca9c-4dd6-8298-acac6db0c5d6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6878568f-9586-488f-8b63-71a362de2bb6">
+<span class="eqno">(44)<a class="headerlink" href="#equation-6878568f-9586-488f-8b63-71a362de2bb6" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi)=\varphi
 \end{equation}\]</div>
 <p>The corresponding expression for the rotation matrix is the famous Euler-Rodrigues formula.</p>
@@ -448,24 +448,24 @@ p(\varphi)=\varphi
 <section id="eulerrodrigues-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">EulerRodrigues</span></code> parametrization<a class="headerlink" href="#eulerrodrigues-parametrization" title="Link to this heading">#</a></h3>
 <p>This parametrization corresponds to the simple choice:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a7d32f97-0fff-45ca-a29d-d43ac9f49dcf">
-<span class="eqno">(45)<a class="headerlink" href="#equation-a7d32f97-0fff-45ca-a29d-d43ac9f49dcf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a3152acc-2d68-413a-ab9b-fe050303b4ea">
+<span class="eqno">(45)<a class="headerlink" href="#equation-a3152acc-2d68-413a-ab9b-fe050303b4ea" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi)=2 sin(\varphi/2)
 \end{equation}\]</div>
 </section>
 <section id="sinefamily-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">SineFamily</span></code> parametrization<a class="headerlink" href="#sinefamily-parametrization" title="Link to this heading">#</a></h3>
 <p>This generic family for any integer <span class="math notranslate nohighlight">\(m\)</span> corresponds to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4d7af4f3-9789-43a0-8f26-78577f908b78">
-<span class="eqno">(46)<a class="headerlink" href="#equation-4d7af4f3-9789-43a0-8f26-78577f908b78" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2ef5c2a0-459f-429d-9c08-ab3ce3a03812">
+<span class="eqno">(46)<a class="headerlink" href="#equation-2ef5c2a0-459f-429d-9c08-ab3ce3a03812" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi) = m \sin\left(\frac{\varphi}{m}\right)
 \end{equation}\]</div>
 </section>
 <section id="tangentfamily-parametrization">
 <h3><code class="docutils literal notranslate"><span class="pre">TangentFamily</span></code> parametrization<a class="headerlink" href="#tangentfamily-parametrization" title="Link to this heading">#</a></h3>
 <p>This generic family for any integer <span class="math notranslate nohighlight">\(m\)</span> corresponds to:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-455addea-3d1f-4663-845c-995a84f6c809">
-<span class="eqno">(47)<a class="headerlink" href="#equation-455addea-3d1f-4663-845c-995a84f6c809" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-aba495cc-8cb1-4abf-86e6-5c68dde48c2b">
+<span class="eqno">(47)<a class="headerlink" href="#equation-aba495cc-8cb1-4abf-86e6-5c68dde48c2b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 p(\varphi) = m \tan\left(\frac{\varphi}{m}\right)
 \end{equation}\]</div>
 </section>
