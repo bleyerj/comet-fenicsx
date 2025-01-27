@@ -293,8 +293,8 @@ def create_piecewise_constant_field(
     -------
     A DG-0 function
     """
-    V0 = dolfinx.fem.functionspace(domain, ("DG", 0))
-    k = dolfinx.fem.Function(V0, name=name)
+    V0 = fem.functionspace(domain, ("DG", 0))
+    k = fem.Function(V0, name=name)
     k.x.array[:] = default_value
     for tag, value in property_dict.items():
         cells = cell_markers.find(tag)
@@ -474,8 +474,8 @@ We will also need to compute quantities which live only on the facets of the mes
 Note that an alternative for V_int is to use a quadrature space on the facet mesh using the space `Q` defined later. However, functions on `Q` can then only be visualized as point clouds, see https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html.
 
 ```{code-cell} ipython3
-V = dolfinx.fem.functionspace(domain, ("DG", 1, (tdim,)))
-u = dolfinx.fem.Function(V, name="Displacement")
+V = fem.functionspace(domain, ("DG", 1, (tdim,)))
+u = fem.Function(V, name="Displacement")
 v = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 
@@ -497,8 +497,8 @@ a = a_bulk + a_interface
 f = fem.Constant(domain, (0.0, 0.0))
 Fext = ufl.dot(f, v) * dx
 
-a_compiled = dolfinx.fem.form(a, entity_maps=entity_maps)
-Fext_compiled = dolfinx.fem.form(Fext, entity_maps=entity_maps)
+a_compiled = fem.form(a, entity_maps=entity_maps)
+Fext_compiled = fem.form(Fext, entity_maps=entity_maps)
 ```
 
 ### Facet expressions interpolation
@@ -525,7 +525,7 @@ weights = np.full(q_p.shape[0], 1.0, dtype=dolfinx.default_scalar_type)
 q_el = basix.ufl.quadrature_element(
     interface_mesh.basix_cell(), scheme="custom", points=q_p, weights=weights
 )
-Q = dolfinx.fem.functionspace(interface_mesh, q_el)
+Q = fem.functionspace(interface_mesh, q_el)
 q_ = ufl.TestFunction(Q)
 dS_custom = ufl.Measure(
     "dS",
@@ -538,7 +538,7 @@ dS_custom = ufl.Measure(
     subdomain_data=facets,
 )
 
-facet_interp = dolfinx.fem.form(
+facet_interp = fem.form(
     1 / ufl.FacetArea(domain) * d_expr * ufl.avg(q_) * dS_custom,
     entity_maps=entity_maps,
 )
@@ -555,11 +555,11 @@ Finally, the imposed displacement constant `Uimp` is initialized with unitary va
 
 ```{code-cell} ipython3
 Uimp = fem.Constant(domain, (1.0, 0.0))
-left_dofs = dolfinx.fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], 0.0))
-right_dofs = dolfinx.fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], length))
+left_dofs = fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], 0.0))
+right_dofs = fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], length))
 bcs = [
-    dolfinx.fem.dirichletbc(np.zeros((tdim,)), left_dofs, V),
-    dolfinx.fem.dirichletbc(Uimp, right_dofs, V),
+    fem.dirichletbc(np.zeros((tdim,)), left_dofs, V),
+    fem.dirichletbc(Uimp, right_dofs, V),
 ]
 
 v_reac = fem.Function(V)
