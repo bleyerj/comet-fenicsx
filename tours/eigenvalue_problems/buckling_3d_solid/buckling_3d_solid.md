@@ -85,7 +85,7 @@ $$
 \delta\be[\delta\bu] = \beps(\delta\bu) + \nabla\bu\T\nabla\delta\bu = \beps(\delta\bu) + \bq(\bu,\delta\bu)
 $$
 
-The stability conditions of an equilibrium are obtained from the Lejeune-Dirichlet theorem stating that the energy second variation must be positive. Here the second variation bilinear form is given by:
+The stability conditions of an equilibrium are obtained from the Lagrange-Dirichlet theorem stating that the energy second variation must be positive. Here the second variation bilinear form is given by:
 
 $$ \partial_{uu}\mathcal{E}_\text{pot}[\delta\bu,\delta \bv] = \int_\Omega (\delta \be[\delta\bv]:\mathbb{C}:\delta\be[\delta\bu] + \be:\mathbb{C}:\delta^2\be[\delta\bu,\delta\bv] )d\Omega $$
 
