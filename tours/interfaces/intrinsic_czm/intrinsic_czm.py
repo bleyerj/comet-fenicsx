@@ -40,15 +40,22 @@
 # \newcommand{\sigc}{\sigma_{\text{c}}}$
 # ```
 #
-# ```{attention}
-# This tour requires version `0.9.0` of FEniCSx.
-# ```
-#
 # The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage caused by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.
 #
 # ```{image} intrinsic_czm.gif
 # :align: center
 # :width: 600px
+# ```
+#
+# ```{attention}
+# This tour requires version `0.9.0` of FEniCSx.
+# ```
+#
+# ```{admonition} Download sources
+# :class: download
+#
+# * {Download}`Python script<./intrinsic_czm.py>`
+# * {Download}`Jupyter notebook<./intrinsic_czm.ipynb>`
 # ```
 #
 # ## Cohesive zone modeling
@@ -289,8 +296,8 @@ def create_piecewise_constant_field(
     -------
     A DG-0 function
     """
-    V0 = dolfinx.fem.functionspace(domain, ("DG", 0))
-    k = dolfinx.fem.Function(V0, name=name)
+    V0 = fem.functionspace(domain, ("DG", 0))
+    k = fem.Function(V0, name=name)
     k.x.array[:] = default_value
     for tag, value in property_dict.items():
         cells = cell_markers.find(tag)
@@ -466,8 +473,8 @@ def T(opening, d):
 # Note that an alternative for V_int is to use a quadrature space on the facet mesh using the space `Q` defined later. However, functions on `Q` can then only be visualized as point clouds, see https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html.
 
 # +
-V = dolfinx.fem.functionspace(domain, ("DG", 1, (tdim,)))
-u = dolfinx.fem.Function(V, name="Displacement")
+V = fem.functionspace(domain, ("DG", 1, (tdim,)))
+u = fem.Function(V, name="Displacement")
 v = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 
@@ -489,10 +496,11 @@ a = a_bulk + a_interface
 f = fem.Constant(domain, (0.0, 0.0))
 Fext = ufl.dot(f, v) * dx
 
-a_compiled = dolfinx.fem.form(a, entity_maps=entity_maps)
-Fext_compiled = dolfinx.fem.form(Fext, entity_maps=entity_maps)
+a_compiled = fem.form(a, entity_maps=entity_maps)
+Fext_compiled = fem.form(Fext, entity_maps=entity_maps)
 # -
 
+# (facet:expressions:interpolation)=
 # ### Facet expressions interpolation
 #
 # In the load stepping process, the fixed-point procedure will iteratively update the damage field `d` with a new value computed from the current displacement estimate. To do so, we must compute the nonlinear expression {eq}`damage` at the interpolation points corresponding to the degrees of freedom of the `V_int` function space, namely the two vertices of a facet. To do so, we will build a linear form such that its assembled vector exactly corresponds to a vector of interpolated values using a custom quadrature trick.
@@ -500,10 +508,10 @@ Fext_compiled = dolfinx.fem.form(Fext, entity_maps=entity_maps)
 # Suppose that we want to evaluate an expression `e` at certain points on facets. Assuming that $Q$ is a quadrature function space defined on facets and $x_g$, $\omega_g$ are $n$ quadrature integration points and weights defined on the reference element, the facet quadrature rule can be expressed as follows:
 #
 # $$
-# \int_{F} e^* q \dS = \sum_{g=1}^{n} |F|\omega_g e(x_g)q(x_g) \quad \forall q\in Q
+# \int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} |F|\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
 # $$
-# where $F$ is a facet, $|F|$ its area measure, $e^*$ is a given expression and $q$ is a test function in $Q$.
-# Generalizing this expression over a set of facets, the resulting assembled vector will therefore contains the value $|F|\omega_g e^*(x_g)$ at the corresponding dof. As a result, if we choose $e^* = e/|F|$ and $\omega_g=1$, the resulting assembled vector will exactly contains the wanted values $e(x_g)$.
+# where $F$ is a facet, $|F|$ its area measure, $\widehat{e}$ is a generic expression and $q$ is a test function in $Q$.
+# Generalizing this quadrature over a set of facets, the resulting assembled vector will therefore contains the values $|F|\omega_g \widehat{e}(x_g)$ at the corresponding dofs. As a result, if we choose $\widehat{e} = e/|F|$ and $\omega_g=1$, the resulting assembled vector will exactly contains the wanted values $e(x_g)$.
 #
 # This strategy is implemented below. The damage expression `d_expr` to interpolate is first defined. Note that it is defined as the maximum between expression {eq}`damage` and `d_prev` to ensure irreversibility. A custom `basix` quadrature element using unitary weights and interpolation points of `V_int` as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, `facet_interp` contains the compiled form discussed previously.
 
@@ -517,7 +525,7 @@ weights = np.full(q_p.shape[0], 1.0, dtype=dolfinx.default_scalar_type)
 q_el = basix.ufl.quadrature_element(
     interface_mesh.basix_cell(), scheme="custom", points=q_p, weights=weights
 )
-Q = dolfinx.fem.functionspace(interface_mesh, q_el)
+Q = fem.functionspace(interface_mesh, q_el)
 q_ = ufl.TestFunction(Q)
 dS_custom = ufl.Measure(
     "dS",
@@ -530,7 +538,7 @@ dS_custom = ufl.Measure(
     subdomain_data=facets,
 )
 
-facet_interp = dolfinx.fem.form(
+facet_interp = fem.form(
     1 / ufl.FacetArea(domain) * d_expr * ufl.avg(q_) * dS_custom,
     entity_maps=entity_maps,
 )
@@ -547,11 +555,11 @@ facet_interp = dolfinx.fem.form(
 
 # +
 Uimp = fem.Constant(domain, (1.0, 0.0))
-left_dofs = dolfinx.fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], 0.0))
-right_dofs = dolfinx.fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], length))
+left_dofs = fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], 0.0))
+right_dofs = fem.locate_dofs_geometrical(V, lambda x: np.isclose(x[0], length))
 bcs = [
-    dolfinx.fem.dirichletbc(np.zeros((tdim,)), left_dofs, V),
-    dolfinx.fem.dirichletbc(Uimp, right_dofs, V),
+    fem.dirichletbc(np.zeros((tdim,)), left_dofs, V),
+    fem.dirichletbc(Uimp, right_dofs, V),
 ]
 
 v_reac = fem.Function(V)
