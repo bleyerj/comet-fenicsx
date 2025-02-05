@@ -41,15 +41,22 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\sigc}{\sigma_{\text{c}}}$
 ```
 
-```{attention}
-This tour requires version `0.9.0` of FEniCSx.
-```
-
 The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage caused by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.
 
 ```{image} intrinsic_czm.gif
 :align: center
 :width: 600px
+```
+
+```{attention}
+This tour requires version `0.9.0` of FEniCSx.
+```
+
+```{admonition} Download sources
+:class: download
+
+* {Download}`Python script<./intrinsic_czm.py>`
+* {Download}`Jupyter notebook<./intrinsic_czm.ipynb>`
 ```
 
 ## Cohesive zone modeling
@@ -230,8 +237,6 @@ These fixed point iterations are then stopped until $\|d^{(i+1)}-d^{(i)}\|\leq \
 We define a function to create the mesh and other utility functions.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
@@ -501,6 +506,7 @@ a_compiled = fem.form(a, entity_maps=entity_maps)
 Fext_compiled = fem.form(Fext, entity_maps=entity_maps)
 ```
 
+(facet:expressions:interpolation)=
 ### Facet expressions interpolation
 
 In the load stepping process, the fixed-point procedure will iteratively update the damage field `d` with a new value computed from the current displacement estimate. To do so, we must compute the nonlinear expression {eq}`damage` at the interpolation points corresponding to the degrees of freedom of the `V_int` function space, namely the two vertices of a facet. To do so, we will build a linear form such that its assembled vector exactly corresponds to a vector of interpolated values using a custom quadrature trick.
@@ -508,10 +514,10 @@ In the load stepping process, the fixed-point procedure will iteratively update 
 Suppose that we want to evaluate an expression `e` at certain points on facets. Assuming that $Q$ is a quadrature function space defined on facets and $x_g$, $\omega_g$ are $n$ quadrature integration points and weights defined on the reference element, the facet quadrature rule can be expressed as follows:
 
 $$
-\int_{F} e^* q \dS = \sum_{g=1}^{n} |F|\omega_g e(x_g)q(x_g) \quad \forall q\in Q
+\int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} |F|\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
 $$
-where $F$ is a facet, $|F|$ its area measure, $e^*$ is a given expression and $q$ is a test function in $Q$.
-Generalizing this expression over a set of facets, the resulting assembled vector will therefore contains the value $|F|\omega_g e^*(x_g)$ at the corresponding dof. As a result, if we choose $e^* = e/|F|$ and $\omega_g=1$, the resulting assembled vector will exactly contains the wanted values $e(x_g)$.
+where $F$ is a facet, $|F|$ its area measure, $\widehat{e}$ is a generic expression and $q$ is a test function in $Q$.
+Generalizing this quadrature over a set of facets, the resulting assembled vector will therefore contains the values $|F|\omega_g \widehat{e}(x_g)$ at the corresponding dofs. As a result, if we choose $\widehat{e} = e/|F|$ and $\omega_g=1$, the resulting assembled vector will exactly contains the wanted values $e(x_g)$.
 
 This strategy is implemented below. The damage expression `d_expr` to interpolate is first defined. Note that it is defined as the maximum between expression {eq}`damage` and `d_prev` to ensure irreversibility. A custom `basix` quadrature element using unitary weights and interpolation points of `V_int` as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, `facet_interp` contains the compiled form discussed previously.
 

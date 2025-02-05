@@ -66,7 +66,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/interfaces/intrinsic_czm/intrinsic_czm';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Beams" href="../../beams/contents.html" />
+    <link rel="next" title="Cohesive zone modeling restricted to an interface" href="../czm_interface_only/czm_interface_only.html" />
     <link rel="prev" title="Interfaces" href="../contents.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -207,6 +207,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Interfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../czm_interface_only/czm_interface_only.html">Cohesive zone modeling restricted to an interface <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -410,7 +411,7 @@
 <h1>Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#cohesive-zone-modeling-of-debonding-and-bulk-fracture" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
-<p>This tutorial demonstrates  the formulation of a cohesive fracture model with <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>. We adopt an <em>intrinsic</em> cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to <span id="id1">[<a class="reference internal" href="#id20" title="Peter Hansbo and Kent Salomonsson. A discontinuous galerkin method for cohesive zone modelling. Finite Elements in Analysis and Design, 102:1–6, 2015. doi:10.1016/j.finel.2015.04.008.">Hansbo and Salomonsson, 2015</a>]</span> for a related work. Other key aspects include:</p>
+<p>This tutorial demonstrates  the formulation of a cohesive fracture model with <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>. We adopt an <em>intrinsic</em> cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to <span id="id1">[<a class="reference internal" href="#id21" title="Peter Hansbo and Kent Salomonsson. A discontinuous galerkin method for cohesive zone modelling. Finite Elements in Analysis and Design, 102:1–6, 2015. doi:10.1016/j.finel.2015.04.008.">Hansbo and Salomonsson, 2015</a>]</span> for a related work. Other key aspects include:</p>
 <ul class="simple">
 <li><p>Interface submeshes</p></li>
 <li><p>Interpolation of expressions on facets</p></li>
@@ -438,12 +439,19 @@
 \newcommand{\sigc}{\sigma_{\text{c}}}\)</span></p></li>
 </ul>
 </div>
+<p>The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage caused by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.</p>
+<a class="reference internal image-reference" href="../../../_images/intrinsic_czm.gif"><img alt="../../../_images/intrinsic_czm.gif" class="align-center" src="../../../_images/intrinsic_czm.gif" style="width: 600px;" /></a>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>This tour requires version <code class="docutils literal notranslate"><span class="pre">0.9.0</span></code> of FEniCSx.</p>
 </div>
-<p>The problem that we consider is a heterogeneous elastic plate consisting of a matrix phase and stiffer elastic inclusions. Weak cohesive elements along the interface are considered while the remaining part of the mesh facets also consists of cohesive elements with stronger mechanical properties. Damage caused by normal and tangential opening induces debonding at the interface and, later, fracture in the bulk matrix phase.</p>
-<a class="reference internal image-reference" href="../../../_images/intrinsic_czm.gif"><img alt="../../../_images/intrinsic_czm.gif" class="align-center" src="../../../_images/intrinsic_czm.gif" style="width: 600px;" /></a>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/3355c5a7ad337db5cc176888d9781097/intrinsic_czm.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/bef16c970db551035fc522aca79e3ac6/intrinsic_czm.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
 <section id="cohesive-zone-modeling">
 <h2>Cohesive zone modeling<a class="headerlink" href="#cohesive-zone-modeling" title="Link to this heading">#</a></h2>
 <section id="traction-separation-law">
@@ -1232,12 +1240,7 @@ d^{(i+1)} &amp;= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
 <section id="mesh-and-markers">
 <h3>Mesh and markers<a class="headerlink" href="#mesh-and-markers" title="Link to this heading">#</a></h3>
 <p>We define a function to create the mesh and other utility functions.</p>
-<div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
-<summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
-</summary>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_matrix_inclusion_mesh</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">hsize</span><span class="p">):</span>
     <span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
@@ -1322,7 +1325,6 @@ d^{(i+1)} &amp;= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <p>We first create the mesh and define the different tags for identifying physical domains and interfaces.</p>
 <div class="cell docutils container">
@@ -1543,15 +1545,15 @@ Total interface measure = 88.172 vs 88.172
 </div>
 </section>
 <section id="facet-expressions-interpolation">
-<h3>Facet expressions interpolation<a class="headerlink" href="#facet-expressions-interpolation" title="Link to this heading">#</a></h3>
+<span id="id3"></span><h3>Facet expressions interpolation<a class="headerlink" href="#facet-expressions-interpolation" title="Link to this heading">#</a></h3>
 <p>In the load stepping process, the fixed-point procedure will iteratively update the damage field <code class="docutils literal notranslate"><span class="pre">d</span></code> with a new value computed from the current displacement estimate. To do so, we must compute the nonlinear expression <a class="reference internal" href="#equation-damage">(35)</a> at the interpolation points corresponding to the degrees of freedom of the <code class="docutils literal notranslate"><span class="pre">V_int</span></code> function space, namely the two vertices of a facet. To do so, we will build a linear form such that its assembled vector exactly corresponds to a vector of interpolated values using a custom quadrature trick.</p>
 <p>Suppose that we want to evaluate an expression <code class="docutils literal notranslate"><span class="pre">e</span></code> at certain points on facets. Assuming that <span class="math notranslate nohighlight">\(Q\)</span> is a quadrature function space defined on facets and <span class="math notranslate nohighlight">\(x_g\)</span>, <span class="math notranslate nohighlight">\(\omega_g\)</span> are <span class="math notranslate nohighlight">\(n\)</span> quadrature integration points and weights defined on the reference element, the facet quadrature rule can be expressed as follows:</p>
 <div class="math notranslate nohighlight">
 \[
-\int_{F} e^* q \dS = \sum_{g=1}^{n} |F|\omega_g e(x_g)q(x_g) \quad \forall q\in Q
+\int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} |F|\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(F\)</span> is a facet, <span class="math notranslate nohighlight">\(|F|\)</span> its area measure, <span class="math notranslate nohighlight">\(e^*\)</span> is a given expression and <span class="math notranslate nohighlight">\(q\)</span> is a test function in <span class="math notranslate nohighlight">\(Q\)</span>.
-Generalizing this expression over a set of facets, the resulting assembled vector will therefore contains the value <span class="math notranslate nohighlight">\(|F|\omega_g e^*(x_g)\)</span> at the corresponding dof. As a result, if we choose <span class="math notranslate nohighlight">\(e^* = e/|F|\)</span> and <span class="math notranslate nohighlight">\(\omega_g=1\)</span>, the resulting assembled vector will exactly contains the wanted values <span class="math notranslate nohighlight">\(e(x_g)\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(F\)</span> is a facet, <span class="math notranslate nohighlight">\(|F|\)</span> its area measure, <span class="math notranslate nohighlight">\(\widehat{e}\)</span> is a generic expression and <span class="math notranslate nohighlight">\(q\)</span> is a test function in <span class="math notranslate nohighlight">\(Q\)</span>.
+Generalizing this quadrature over a set of facets, the resulting assembled vector will therefore contains the values <span class="math notranslate nohighlight">\(|F|\omega_g \widehat{e}(x_g)\)</span> at the corresponding dofs. As a result, if we choose <span class="math notranslate nohighlight">\(\widehat{e} = e/|F|\)</span> and <span class="math notranslate nohighlight">\(\omega_g=1\)</span>, the resulting assembled vector will exactly contains the wanted values <span class="math notranslate nohighlight">\(e(x_g)\)</span>.</p>
 <p>This strategy is implemented below. The damage expression <code class="docutils literal notranslate"><span class="pre">d_expr</span></code> to interpolate is first defined. Note that it is defined as the maximum between expression <a class="reference internal" href="#equation-damage">(35)</a> and <code class="docutils literal notranslate"><span class="pre">d_prev</span></code> to ensure irreversibility. A custom <code class="docutils literal notranslate"><span class="pre">basix</span></code> quadrature element using unitary weights and interpolation points of <code class="docutils literal notranslate"><span class="pre">V_int</span></code> as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, <code class="docutils literal notranslate"><span class="pre">facet_interp</span></code> contains the compiled form discussed previously.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1740,9 +1742,9 @@ DG dofs do not live on the facets but are associated with cell interior. As a re
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
-<div class="docutils container" id="id3">
+<div class="docutils container" id="id4">
 <div role="list" class="citation-list">
-<div class="citation" id="id20" role="doc-biblioentry">
+<div class="citation" id="id21" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">HS15</a><span class="fn-bracket">]</span></span>
 <p>Peter Hansbo and Kent Salomonsson. A discontinuous galerkin method for cohesive zone modelling. <em>Finite Elements in Analysis and Design</em>, 102:1–6, 2015. <a class="reference external" href="https://doi.org/10.1016/j.finel.2015.04.008">doi:10.1016/j.finel.2015.04.008</a>.</p>
 </div>
@@ -1798,11 +1800,11 @@ DG dofs do not live on the facets but are associated with cell interior. As a re
       </div>
     </a>
     <a class="right-next"
-       href="../../beams/contents.html"
+       href="../czm_interface_only/czm_interface_only.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Beams</p>
+        <p class="prev-next-title">Cohesive zone modeling restricted to an interface <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

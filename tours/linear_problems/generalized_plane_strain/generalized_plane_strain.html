@@ -207,6 +207,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../interfaces/intrinsic_czm/intrinsic_czm.html">Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interfaces/czm_interface_only/czm_interface_only.html">Cohesive zone modeling restricted to an interface <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -460,8 +461,8 @@ u_z(x,y,z) &amp;= \varepsilon_{zz} z +  w_0
 \end{equation*}\]</div>
 <p>where the tilde notation refers to the in-plane part of the corresponding tensor/vector.</p>
 <p>However, to fix the out-of-plane strain an additional global balance condition in the <span class="math notranslate nohighlight">\(z\)</span>-direction must be given. Typical use case are generally concerned with conditions of the form:</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fb689ea9-7aba-41d4-a10c-c393f92b5bbf">
-<span class="eqno">(10)<a class="headerlink" href="#equation-fb689ea9-7aba-41d4-a10c-c393f92b5bbf" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-64b9628e-1348-43e6-b2e0-267e1752305e">
+<span class="eqno">(10)<a class="headerlink" href="#equation-64b9628e-1348-43e6-b2e0-267e1752305e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 F_z = \int_{\Omega}\sigma_{zz} \dOm
 \label{vert-equilibrium}
 \end{equation}\]</div>
