@@ -36,6 +36,7 @@ parts:
   - file: tours/interfaces/contents
     sections:
     - file: tours/interfaces/intrinsic_czm/intrinsic_czm.md
+    - file: tours/interfaces/czm_interface_only/czm_interface_only.md
   - file: tours/beams/contents
     sections:
     - file: tours/beams/linear_truss/linear_truss.md
