@@ -237,6 +237,8 @@ These fixed point iterations are then stopped until $\|d^{(i+1)}-d^{(i)}\|\leq \
 We define a function to create the mesh and other utility functions.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
@@ -514,10 +516,10 @@ In the load stepping process, the fixed-point procedure will iteratively update 
 Suppose that we want to evaluate an expression `e` at certain points on facets. Assuming that $Q$ is a quadrature function space defined on facets and $x_g$, $\omega_g$ are $n$ quadrature integration points and weights defined on the reference element, the facet quadrature rule can be expressed as follows:
 
 $$
-\int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} |F|\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
+\int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} \dfrac{|F|}{|F_\text{r}|}\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
 $$
-where $F$ is a facet, $|F|$ its area measure, $\widehat{e}$ is a generic expression and $q$ is a test function in $Q$.
-Generalizing this quadrature over a set of facets, the resulting assembled vector will therefore contains the values $|F|\omega_g \widehat{e}(x_g)$ at the corresponding dofs. As a result, if we choose $\widehat{e} = e/|F|$ and $\omega_g=1$, the resulting assembled vector will exactly contains the wanted values $e(x_g)$.
+where $F$ is a facet, $|F|$ its area measure and $|F_\text{r}|$ that of the reference element. Here, for a 1D facet, the `basix` reference interval is of measure $|F_\text{r}|=1. $\widehat{e}$ is a generic expression and $q$ is a test function in $Q$.
+Generalizing this quadrature over a set of facets, the resulting assembled vector will therefore contain the values $|F|\omega_g \widehat{e}(x_g)$ at the corresponding dofs. As a result, if we choose $\widehat{e} = e/|F|$ and $\omega_g=|F_\text{r}|=1$, the resulting assembled vector will exactly contain the wanted values $e(x_g)$.
 
 This strategy is implemented below. The damage expression `d_expr` to interpolate is first defined. Note that it is defined as the maximum between expression {eq}`damage` and `d_prev` to ensure irreversibility. A custom `basix` quadrature element using unitary weights and interpolation points of `V_int` as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, `facet_interp` contains the compiled form discussed previously.
 
