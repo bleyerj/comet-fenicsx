@@ -61,7 +61,7 @@ To do so, we will build a formulation involving the matrix and the inclusion sub
 
 For this problem, we need many utility functions which are implemented in a complementary {download}`utils.py` module.
 
-```{code-cell}
+```{code-cell} ipython3
 from IPython.display import clear_output, HTML
 import numpy as np
 import matplotlib.pyplot as plt
@@ -89,7 +89,9 @@ The same mesh is defined using `gmsh`.
 For `gmsh`, there is no discontinuity between the matrix and the inclusion. Elements from each side of the interface share common nodes from the mesh point of view. It is when defining two function spaces on both submeshes and when formulating the CZM law that we introduce the possibility of a jump at the interface.
 ```
 
-```{code-cell}
+```{code-cell} ipython3
+:tags: [hide-input]
+
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
@@ -135,7 +137,7 @@ def create_matrix_inclusion_mesh(L, W, R, hsize):
 
 We first create the mesh and define the different tags for identifying physical domains and interfaces.
 
-```{code-cell}
+```{code-cell} ipython3
 length = 1.0
 width = 0.5
 radius = 0.25
@@ -154,7 +156,7 @@ fdim = tdim - 1
 
 We define three submeshes: two submeshes (of codim. 0) corresponding to the matrix and inclusion 2D domains and one submesh (of codim. 1) corresponding to the facet restriction on the interface.
 
-```{code-cell}
+```{code-cell} ipython3
 subdomain2, subdomain2_cell_map, subdomain2_vertex_map, _ = dolfinx.mesh.create_submesh(
     domain, tdim, cells.find(INCL_TAG)
 )
@@ -168,7 +170,7 @@ interface_mesh, interface_cell_map, _, _ = dolfinx.mesh.create_submesh(
 
 Each submesh is plotted individually:
 
-```{code-cell}
+```{code-cell} ipython3
 plotter = pyvista.Plotter(off_screen=True)
 grid1 = pyvista.UnstructuredGrid(*dolfinx.plot.vtk_mesh(subdomain1))
 plotter.add_mesh(grid1, show_edges=True, color="gold")
@@ -183,7 +185,7 @@ plotter.show()
 
 Now that we have defined submeshes, we need to transfer (facets) meshtags from those defined on the original domain to their subdomain counterpart.
 
-```{code-cell}
+```{code-cell} ipython3
 subdomain1_facet_tags, subdomain1_facet_map = transfer_meshtags_to_submesh(
     domain, facets, subdomain1, subdomain1_vertex_map, subdomain1_cell_map
 )
@@ -196,7 +198,7 @@ subdomain2_facet_tags, subdomain2_facet_map = transfer_meshtags_to_submesh(
 
 Similarly to the previous CZM tour, *entity maps* must be defined to link integration of quantities defined on the subdomains.
 
-```{code-cell}
+```{code-cell} ipython3
 cell_imap = domain.topology.index_map(tdim)
 num_cells = cell_imap.size_local + cell_imap.num_ghosts
 domain_to_subdomain1 = np.full(num_cells, -1, dtype=np.int32)
@@ -227,7 +229,7 @@ Having a correct facet orientation does not really impact the results here as we
 :align: center
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 interface_entities, domain_to_subdomain1, domain_to_subdomain2 = interface_int_entities(
     domain, interface_facets, domain_to_subdomain1, domain_to_subdomain2
 )
@@ -241,7 +243,7 @@ entity_maps = {
 
 We are now in position to define the various integration measures. The key point here is that the `dInt` interface measure is defined using prescribed integration entities which have been defined earlier. This is done by passing them to `subdomain_data` as follows.
 
-```{code-cell}
+```{code-cell} ipython3
 dx = ufl.Measure("dx", domain=domain, subdomain_data=cells)
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 dx_int = ufl.Measure("dx", domain=interface_mesh)
@@ -255,7 +257,7 @@ dInt = ufl.Measure(
 
 We can check that the length of the interface is properly computed.
 
-```{code-cell}
+```{code-cell} ipython3
 Gamma = fem.assemble_scalar(fem.form(1 * dInt, entity_maps=entity_maps))
 print(f"Check that Gamma is such that {Gamma} ~ {np.pi*2*radius}")
 ```
@@ -264,7 +266,7 @@ print(f"Check that Gamma is such that {Gamma} ~ {np.pi*2*radius}")
 
 We generate a piecewise constant field of elastic properties, as in the previous tour.
 
-```{code-cell}
+```{code-cell} ipython3
 E = create_piecewise_constant_field(domain, cells, {MATRIX_TAG: 3.09e3, INCL_TAG: 10e3})
 nu = create_piecewise_constant_field(domain, cells, {MATRIX_TAG: 0.25, INCL_TAG: 0.4})
 mu = E / (2.0 * (1.0 + nu))
@@ -281,7 +283,7 @@ def sigma(v):
 
 Interfacial mechanical properties and expressions for the CZM law are defined similarly except that we consider constant properties since we define the CZM at the interface only.
 
-```{code-cell}
+```{code-cell} ipython3
 Gc = fem.Constant(domain, 0.5)
 sig_max = fem.Constant(domain, 50.0)
 delta_0 = Gc / sig_max / ufl.exp(1)
@@ -307,14 +309,14 @@ def T(opening, d):
 
 In the previous tour, it was possible to use `ufl.jump` to define $\jump{\bu}$. Here, we need to define it manually from two displacement fields `u1` and `u2` which live on two different subdomains. Here, we define $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$ where $(1)$ denotes subdomain 1 (the matrix) and $(2)$ denotes subdomain 2 (the inclusions). Note that we need to restrict quantities since we work with a facet measure. Although only one side exist for each subdomain, cells of a given subdomain from one side have been mapped to the other side, as discussed before. As a result, it does not really matter which side is used here. For consistency, we use the the `"+"` side for subdomain 1 and the `"-"` side for subdomain 2.
 
-```{code-cell}
+```{code-cell} ipython3
 def jump(u1, u2):
     return u2("-") - u1("+")
 ```
 
 We now define the relevant function spaces. As hinted before, the unknown $\bu$ will consist of two displacements $(\bu^{(1)},\bu^{(2)})$ respectively belonging to a continuous Lagrange space defined on subdomains 1 and 2. We use a `MixedFunctionSpace` for this, meaning that we will end up with a block system. For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non zero only at the interface.
 
-```{code-cell}
+```{code-cell} ipython3
 V1 = fem.functionspace(subdomain1, ("Lagrange", 1, (tdim,)))
 V2 = fem.functionspace(subdomain2, ("Lagrange", 1, (tdim,)))
 W = ufl.MixedFunctionSpace(V1, V2)
@@ -326,14 +328,14 @@ du1, du2 = ufl.TrialFunctions(W)
 
 For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non zero only at the interface. This space will not be used for defining the weak forms.
 
-```{code-cell}
+```{code-cell} ipython3
 V = fem.functionspace(domain, ("DG", 1, (tdim,)))  # for post-processing only
 u = fem.Function(V, name="Displacement")
 ```
 
 Similarly to the previous tour, a `DG-1` function space on the interface `V_int` will be used to represent the damage fields. Again, we could have used a Quadrature space but this choice proves easier for visualization purposes.
 
-```{code-cell}
+```{code-cell} ipython3
 V_int = fem.functionspace(interface_mesh, ("DG", 1))
 d = fem.Function(V_int, name="Interfacial_damage")
 d_prev = fem.Function(V_int, name="Previous_interfacial_damage")
@@ -342,7 +344,7 @@ d_old = fem.Function(V_int, name="Interfacial_damage_old")
 
 We can now define the expression for the interfacial damage based on the effective opening $\delta$. The latter involves $\jump{\bu}$ and the interface normal. Since $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$ , we need the normal $\bn^{(1)\to(2)}$ from subdomain 1 to subdomain 2. This is `n("+")` since subdomain 1 is on `"+"` side of the interface and the facet normal points outwards the cell.
 
-```{code-cell}
+```{code-cell} ipython3
 n1_to_2 = ufl.FacetNormal(domain)("+")
 delta = effective_opening(jump(u1, u2), n1_to_2)
 d_expr = ufl.max_value(ufl.avg(d_prev), 1 - ufl.exp(-delta / ufl.avg(delta_0)))
@@ -350,7 +352,7 @@ d_expr = ufl.max_value(ufl.avg(d_prev), 1 - ufl.exp(-delta / ufl.avg(delta_0)))
 
 Bulk and interface contributions to the bilinear form are defined by separating the contributions of both subdomains.
 
-```{code-cell}
+```{code-cell} ipython3
 a_bulk = ufl.inner(sigma(du1), epsilon(v1)) * dx(1) + ufl.inner(
     sigma(du2), epsilon(v2)
 ) * dx(2)
@@ -362,14 +364,14 @@ L = ufl.dot(f, v1) * dx(1) + ufl.dot(f, v2) * dx(2)
 
 Finally, we use `ufl.extract_blocks` to obtain the different blocks $\begin{bmatrix} \text{a}_{11} & \text{a}_{12}\\ \text{a}_{21} & \text{a}_{22}\end{bmatrix}$ of the bilinear form associated with $\bu^{(1)}$ and $\bu^{(2)}$. The blocked forms are then compiled by providing the entity maps.
 
-```{code-cell}
+```{code-cell} ipython3
 a_blocked_compiled = fem.form(ufl.extract_blocks(a), entity_maps=entity_maps)
 L_blocked_compiled = fem.form(ufl.extract_blocks(L), entity_maps=entity_maps)
 ```
 
 As in the previous tour, we need to evaluate expressions that live on the facet mesh. We follow the same approach as discussed in details in {ref}`facet:expressions:interpolation`.
 
-```{code-cell}
+```{code-cell} ipython3
 q_p = V_int.element.interpolation_points()
 weights = np.full(q_p.shape[0], 1.0)
 q_el = basix.ufl.quadrature_element(
@@ -399,7 +401,7 @@ facet_interp = fem.form(
 
 Dirichlet boundary conditions are now defined. Note that they involve only subdomain 1.
 
-```{code-cell}
+```{code-cell} ipython3
 Uimp = fem.Constant(domain, (1.0, 0.0))
 left_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(1))
 right_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(2))
@@ -412,7 +414,7 @@ bcs = [
 
 The imposed displacement is initialized with unitary values so as to define the virtual displacement fields `v_reac` to be used for measuring the reaction force on the boundary in a consistent manner based on the equilibrium residual $a(\bu,\bv_\text{read})-L(\bv_\text{reac})$.
 
-```{code-cell}
+```{code-cell} ipython3
 v_reac1 = fem.Function(V1)
 fem.set_bc(v_reac1.x.array, bcs)
 v_reac2 = fem.Function(V2)
@@ -425,7 +427,7 @@ virtual_work_form = fem.form(
 
 The linear problem associated with resolution of displacement at fixed damage is now defined outside the load-stepping loop. Since we use a mixed function space, we obtain a block linear system and therefore implement a custom class in {download}`utils.py` for repeatedly solving a blocked linear variational problem. The latter expects blocked compiled linear and bilinear forms and a list of functions in which to store the results. The solver can be parametrized using PETSc options.
 
-```{code-cell}
+```{code-cell} ipython3
 problem = BlockedLinearProblem(
     a_blocked_compiled,
     L_blocked_compiled,
@@ -443,7 +445,7 @@ problem = BlockedLinearProblem(
 
 The fixed-point resolution scheme is implemented as before. The main difference here lies in the post-processing steps. Data in `u1` and `u2` fields are transferred to a parent function `u` defined as a `DG` function on the parent mesh. We thus have a single displacement field in Paraview which presents jumps at the interface only.
 
-```{code-cell}
+```{code-cell} ipython3
 Nincr = 40
 loading = np.linspace(0, 0.04, Nincr + 1)
 
@@ -500,7 +502,7 @@ out_file.close()
 
 We finally plot the resulting load-displacement curve.
 
-```{code-cell}
+```{code-cell} ipython3
 plt.figure()
 plt.plot(loading, Force)
 plt.xlabel("Imposed displacement")
