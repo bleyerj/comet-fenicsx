@@ -140,19 +140,19 @@ This part provides code snippets for various small tasks frequently encountered 
 
 If you find these demos useful for your research work, please consider citing them using the following Zenodo DOI:
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10470942.svg)](https://doi.org/10.5281/zenodo.10470942)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13838486.svg)](https://doi.org/10.5281/zenodo.13838486)
 
 ```
 @software{bleyer2024comet,
   author       = {Bleyer, Jeremy},
   title        = {{Numerical tours of Computational Mechanics with 
                    FEniCSx}},
-  month        = jan,
+  month        = sep,
   year         = 2024,
   publisher    = {Zenodo},
-  version      = {v0.1},
-  doi          = {10.5281/zenodo.10470942},
-  url          = {https://doi.org/10.5281/zenodo.10470942}
+  version      = {v0.2},
+  doi          = {10.5281/zenodo.13838486},
+  url          = {https://doi.org/10.5281/zenodo.13838486}
 }
 ```
 
