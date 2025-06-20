@@ -67,18 +67,21 @@ $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat
 
 * Bending/curvature relation:
 
+```{math}
 \begin{align*}
 \begin{Bmatrix}M_{xx}\\ M_{yy} \\M_{xy} \end{Bmatrix} &= \textsf{D} \begin{bmatrix}1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & (1-\nu)/2 \end{bmatrix}\begin{Bmatrix}\chi_{xx} \\ \chi_{yy} \\ 2\chi_{xy}  \end{Bmatrix}\\
 \text{ where}\quad \textsf{D} &= \dfrac{E h^3}{12(1-\nu^2)}
 \end{align*}
+```
 
 * Shear strain/stress relation:
 
+```{math}
 \begin{align*}
 \bQ &= \textsf{F}\bgamma\\
 \text{ where}\quad \textsf{F} &= \dfrac{5}{6}\dfrac{E h}{2(1+\nu)}
 \end{align*}
-
+```
 
 ## Implementation
 
