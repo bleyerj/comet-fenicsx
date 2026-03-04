@@ -529,7 +529,7 @@ delta = effective_opening(ufl.jump(u), n("-"))
 d_expr = ufl.max_value(ufl.avg(d_prev), 1 - ufl.exp(-delta / ufl.avg(delta_0)))
 
 q_p = V_int.element.interpolation_points()
-weights = np.full(q_p.shape[0], 1.0, dtype=dolfinx.default_scalar_type)
+weights = np.full(q_p.shape[0], basix.cell.volume(interface_mesh.basix_cell()), dtype=dolfinx.default_scalar_type)
 q_el = basix.ufl.quadrature_element(
     interface_mesh.basix_cell(), scheme="custom", points=q_p, weights=weights
 )
