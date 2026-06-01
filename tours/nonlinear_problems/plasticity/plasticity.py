@@ -147,15 +147,16 @@
 # We start by importing the relevant modules and define some geometrical constants.
 
 # +
-import numpy as np
-import matplotlib.pyplot as plt
-
-import gmsh
-from mpi4py import MPI
-import ufl
 import basix
-from dolfinx import mesh, fem, io
+import basix.ufl
 import dolfinx.fem.petsc
+import dolfinx.la.petsc
+import gmsh
+import matplotlib.pyplot as plt
+import numpy as np
+import ufl
+from dolfinx import fem, io
+from mpi4py import MPI
 from petsc4py import PETSc
 
 hsize = 0.2
@@ -201,9 +202,10 @@ if MPI.COMM_WORLD.rank == 0:
 
     gmsh.model.mesh.generate(gdim)
 
-domain, _, facets = io.gmshio.model_to_mesh(
-    gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
-)
+mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+facets = mesh_data.facet_tags
+assert facets is not None
 gmsh.finalize()
 # -
 
@@ -238,7 +240,7 @@ top_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2)
 
 
 # used for post-processing
-def bottom_inside(x):
+def bottom_inside(x: np.ndarray) -> np.ndarray:
     return np.logical_and(np.isclose(x[0], Ri), np.isclose(x[1], 0))
 
 
@@ -409,7 +411,7 @@ def interpolate_quadrature(ufl_expr, function):
 
 # +
 class CustomLinearProblem(fem.petsc.LinearProblem):
-    def assemble_rhs(self, u=None):
+    def assemble_rhs(self, u: dolfinx.fem.Function | None = None) -> None:
         """Assemble right-hand side and lift Dirichlet bcs.
 
         Parameters
@@ -421,26 +423,26 @@ class CustomLinearProblem(fem.petsc.LinearProblem):
         """
 
         # Assemble rhs
-        with self._b.localForm() as b_loc:
-            b_loc.set(0)
+        dolfinx.la.petsc._zero_vector(self._b)
         fem.petsc.assemble_vector(self._b, self._L)
 
         # Apply boundary conditions to the rhs
-        x0 = [] if u is None else [u.vector]
-        fem.petsc.apply_lifting(self._b, [self._a], bcs=[self.bcs], x0=x0, scale=1.0)
-        self._b.ghostUpdate(addv=PETSc.InsertMode.ADD, mode=PETSc.ScatterMode.REVERSE)
-        x0 = None if u is None else u.vector
-        fem.petsc.set_bc(self._b, self.bcs, x0, scale=1.0)
+        x0 = [] if u is None else [u.x.petsc_vec]
+        fem.petsc.apply_lifting(self._b, [self._a], bcs=[self.bcs], x0=x0, alpha=1.0)
+        dolfinx.la.petsc._ghost_update(self._b, PETSc.InsertMode.ADD, PETSc.ScatterMode.REVERSE)
+        x0 = None if u is None else u.x.petsc_vec
+        fem.petsc.set_bc(self._b, self.bcs, x0, alpha=1.0)
 
-    def assemble_lhs(self):
+    def assemble_lhs(self) -> None:
         self._A.zeroEntries()
-        fem.petsc.assemble_matrix_mat(self._A, self._a, bcs=self.bcs)
+        fem.petsc.assemble_matrix(self._A, self._a, bcs=self.bcs)
         self._A.assemble()
 
-    def solve_system(self):
+    def solve_system(self) -> None:
         # Solve linear system and update ghost values in the solution
         self._solver.solve(self._b, self._x)
-        self.u.x.scatter_forward()
+        dolfinx.la.petsc._ghost_update(self._x, PETSc.InsertMode.INSERT, PETSc.ScatterMode.FORWARD)
+        dolfinx.fem.petsc.assign(self._x, self.u)
 
 
 tangent_problem = CustomLinearProblem(
@@ -448,6 +450,7 @@ tangent_problem = CustomLinearProblem(
     -Residual,
     u=du,
     bcs=bcs,
+    petsc_options_prefix="plasticity_problem_",
     petsc_options={
         "ksp_type": "preonly",
         "pc_type": "lu",
@@ -465,12 +468,12 @@ load_steps = np.linspace(0, 1.1, Nincr + 1)[1:] ** 0.5
 results = np.zeros((Nincr + 1, 3))
 
 # we set all functions to zero before entering the loop in case we would like to reexecute this code cell
-sig.vector.set(0.0)
-sig_old.vector.set(0.0)
-p.vector.set(0.0)
-u.vector.set(0.0)
-n_elas.vector.set(0.0)
-beta.vector.set(0.0)
+sig.x.array[:] = 0.0
+sig_old.x.array[:] = 0.0
+p.x.array[:] = 0.0
+u.x.array[:] = 0.0
+n_elas.x.array[:] = 0.0
+beta.x.array[:] = 0.0
 
 Δε = eps(Du)
 sig_, n_elas_, beta_, dp_ = constitutive_update(Δε, sig_old, p)
@@ -481,7 +484,7 @@ for i, t in enumerate(load_steps):
 
     # compute the residual norm at the beginning of the load step
     tangent_problem.assemble_rhs()
-    nRes0 = tangent_problem._b.norm()
+    nRes0 = tangent_problem.b.norm()
     nRes = nRes0
     Du.x.array[:] = 0
 
@@ -492,7 +495,7 @@ for i, t in enumerate(load_steps):
         tangent_problem.solve_system()
 
         # update the displacement increment with the current correction
-        Du.vector.axpy(1, du.vector)  # Du = Du + 1*du
+        Du.x.petsc_vec.axpy(1, du.x.petsc_vec)  # Du = Du + 1*du
         Du.x.scatter_forward()
 
         # interpolate the new stresses and internal state variables
@@ -502,17 +505,17 @@ for i, t in enumerate(load_steps):
 
         # compute the new residual
         tangent_problem.assemble_rhs()
-        nRes = tangent_problem._b.norm()
+        nRes = tangent_problem.b.norm()
 
         niter += 1
 
     # Update the displacement with the converged increment
-    u.vector.axpy(1, Du.vector)  # u = u + 1*Du
+    u.x.petsc_vec.axpy(1, Du.x.petsc_vec)  # u = u + 1*Du
     u.x.scatter_forward()
 
     # Update the previous plastic strain
     interpolate_quadrature(dp_, dp)
-    p.vector.axpy(1, dp.vector)
+    p.x.petsc_vec.axpy(1, dp.x.petsc_vec)
 
     # Update the previous stress
     sig_old.x.array[:] = sig.x.array[:]
