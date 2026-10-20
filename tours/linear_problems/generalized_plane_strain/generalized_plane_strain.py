@@ -2,17 +2,20 @@
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: fenicsx-v0.11
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Generalized plane strain computations using `Real` elements {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -39,7 +42,7 @@
 # ```
 #
 # ```{attention}
-# This tour requires version `0.9.0` and `Real` function space support, which has been implemented in the `scifem` package and aims at providing missing functionalities to `FEniCSx` users. More details and installation instructions are to be found here https://github.com/scientificcomputing/scifem.
+# `Real` function space support has been introduced in version `v0.11`. Earlier versions were supported via the `scifem` package, see https://github.com/scientificcomputing/scifem.
 # ```
 #
 # ```{admonition} Download sources
@@ -133,18 +136,17 @@
 #
 # ## Implementation
 #
-# The problem consists in a quarter of the 2D cross-section of a hollow cylinder, as considered in [](/tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md). When importing the modules, we will especially need the `create_real_functionspace` from `scifem`.
+# The problem consists in a quarter of the 2D cross-section of a hollow cylinder, as considered in [](/tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md).
 
+# %%
 import gmsh
 from mpi4py import MPI
-from petsc4py import PETSc
 import ufl
+import basix
 from dolfinx import fem, io, plot
 import dolfinx.fem.petsc
-from dolfinx.cpp.la.petsc import get_local_vectors
-from scifem import create_real_functionspace
 
-# +
+# %%
 hsize = 0.2
 
 Re = 11.0
@@ -184,18 +186,19 @@ gmsh.model.addPhysicalGroup(gdim - 1, [outer_circ], 3, name="outer")
 
 gmsh.model.mesh.generate(gdim)
 
-domain, _, facets = io.gmshio.model_to_mesh(
-    gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
-)
+mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
+
 gmsh.finalize()
 
 
-# -
-
+# %% [markdown]
 # The 3D strain expression {eq}`gps-strain` is defined as a function of both the in-plane displacement and the out-of-plane strain. The same is done for
 # the 3D stress obtained from 3D linear elasticity.
 
-# +
+# %%
 def eps(v, ezz):
     return ufl.sym(
         ufl.as_tensor(
@@ -218,19 +221,21 @@ def sigma(v, ezz):
     return lmbda * ufl.tr(eps(v, ezz)) * ufl.Identity(3) + 2.0 * mu * eps(v, ezz)
 
 
-# -
-
+# %% [markdown]
 # A mixed function space involving a standard $P_2$-Lagrange space for the displacement and a `Real` function space is defined.
 
+# %%
 V = fem.functionspace(domain, ("P", 2, (gdim,)))
-R = create_real_functionspace(domain)
+el = basix.ufl.real_element(domain.basix_cell())
+R = dolfinx.fem.functionspace(domain, el)
 W = ufl.MixedFunctionSpace(V, R)
 du, dezz = ufl.TrialFunctions(W)
 u_, ezz_ = ufl.TestFunctions(W)
 
-# The weak form {eq}`gps-weak-form` is now defined. Loading consists of a spatially varying in-plane body force $\boldsymbol{f} = f \boldsymbol{x}$ and of an imposed resultant vertical force $F_z$. Mixed bilinear and linear weak forms are written and corresponding blocks of the mixed formulation are extracted using `ufl.extract_blocks`. The forms are then both compiled using `fem.form`.
+# %% [markdown]
+# The weak form {eq}`gps-weak-form` is now defined. Loading consists of a spatially varying in-plane body force $\boldsymbol{f} = f \boldsymbol{x}$ and of an imposed resultant vertical force $F_z$. Mixed bilinear and linear weak forms are written and corresponding blocks of the mixed formulation are extracted using `ufl.extract_blocks`.
 
-# +
+# %%
 Fz = fem.Constant(domain, 10.0)
 f = fem.Constant(domain, 1.0)
 dx = ufl.Measure("dx", domain=domain)
@@ -240,13 +245,13 @@ S = fem.assemble_scalar(fem.form(1 * dx))
 
 a_form = ufl.inner(sigma(du, dezz), eps(u_, ezz_)) * dx
 L_form = Fz / S * ezz_ * dx - ufl.dot(f * x, u_) * dx
-a_blocked_compiled = fem.form(ufl.extract_blocks(a_form))
-L_blocked_compiled = fem.form(ufl.extract_blocks(L_form))
-# -
+a_blocked = ufl.extract_blocks(a_form)
+L_blocked = ufl.extract_blocks(L_form)
 
+# %% [markdown]
 # We apply smooth contact conditions on the vertical $y=0$ (facet tag `2`) and the horizontal $x=0$ (facet tag `1`) boundaries.
 
-# +
+# %%
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
@@ -261,42 +266,20 @@ bcs = [
     fem.dirichletbc(u0x, top_dofsx, V.sub(0)),
     fem.dirichletbc(u0y, bottom_dofsy, V.sub(1)),
 ]
-# -
 
-# The block linear system is then explicitly constructed using PETSc. Mappings are used
+# %% [markdown]
+# A linear problem is then defined, supporting the previously defined block system.
 
-# +
-A = dolfinx.fem.petsc.assemble_matrix_block(a_blocked_compiled, bcs=bcs)
-A.assemble()
-b = dolfinx.fem.petsc.assemble_vector_block(
-    L_blocked_compiled, a_blocked_compiled, bcs=bcs
+# %%
+problem = fem.petsc.LinearProblem(
+    a_blocked, L_blocked, bcs=bcs, petsc_options_prefix="elasticity"
 )
+u, ezz = problem.solve()
 
-ksp = PETSc.KSP().create(domain.comm)
-ksp.setOperators(A)
-ksp.setType("preonly")
-pc = ksp.getPC()
-pc.setType("lu")
-pc.setFactorSolverType("mumps")
-
-# solve system
-xh = dolfinx.fem.petsc.create_vector_block(L_blocked_compiled)
-ksp.solve(b, xh)
-xh.ghostUpdate(addv=PETSc.InsertMode.INSERT, mode=PETSc.ScatterMode.FORWARD)
-# -
-
-# Mappings are then used to retrieve the corresponding local vector values of both unknowns.
-
-maps = [(Wi.dofmap.index_map, Wi.dofmap.index_map_bs) for Wi in W.ufl_sub_spaces()]
-u = fem.Function(V, name="Displacement")
-x_local = get_local_vectors(xh, maps)
-u.x.array[: len(x_local[0])] = x_local[0]
-u.x.scatter_forward()
-ezz = x_local[1][0]
-
+# %% [markdown]
 # We check that the computed resultant force indeed corresponds to the applied value.
 
-# +
+# %%
 print("Vertical strain", ezz)
 print(
     "Computed resultant force",
@@ -304,14 +287,14 @@ print(
 )
 
 V0 = fem.functionspace(domain, ("DG", 0, (3, 3)))
-sig_exp = fem.Expression(sigma(u, ezz), V0.element.interpolation_points())
+sig_exp = fem.Expression(sigma(u, ezz), V0.element.interpolation_points)
 sig = fem.Function(V0, name="Stress")
 sig.interpolate(sig_exp)
-# -
 
+# %% [markdown]
 # Finally, the different components of the stress field can be visualized using Pyvista. We can check that the vertical stress is indeed a spatially varying field with a non-zero imposed vertical force.
 
-# +
+# %%
 import pyvista
 
 pyvista.set_jupyter_backend("static")
