@@ -1,13 +1,13 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py:percent
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: fenicsx-v0.11
   language: python
   name: python3
 ---
@@ -247,7 +247,7 @@ We now consider the case of a square plate perforated by a circular hole of radi
 ```{code-cell} ipython3
 from mpi4py import MPI
 import gmsh
-from dolfinx.io.gmshio import model_to_mesh
+from dolfinx.io.gmsh import model_to_mesh
 
 L, R = 1.0, 0.1
 h = 0.02
@@ -297,7 +297,10 @@ if mesh_comm.rank == model_rank:
 
     gmsh.model.mesh.generate(gdim)
 
-    domain, cells, facets = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+    mesh_data = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+    domain = mesh_data.mesh
+    markers = mesh_data.cell_tags
+    facets = mesh_data.facet_tags
 
     gmsh.finalize()
 ```
@@ -356,12 +359,14 @@ bcs = [
 ]
 
 
-problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
+problem = fem.petsc.LinearProblem(
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="elasticity"
+)
 problem.solve()
 
 
 V0 = fem.functionspace(domain, ("DG", 0, (3,)))
-sig_exp = fem.Expression(stress(u), V0.element.interpolation_points())
+sig_exp = fem.Expression(stress(u), V0.element.interpolation_points)
 sig = fem.Function(V0, name="Stress")
 sig.interpolate(sig_exp)
 
