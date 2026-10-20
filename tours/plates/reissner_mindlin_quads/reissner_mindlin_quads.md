@@ -1,10 +1,15 @@
 ---
 jupytext:
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
+kernelspec:
+  display_name: fenicsx-v0.11
+  language: python
+  name: python3
 ---
 
 # Shear-locking in thick plate models with quadrilateral elements  {far}`star`
@@ -75,7 +80,6 @@ constant value of 1 in the thin plate. This thin plate limit will be used to che
 ```{code-cell} ipython3
 f = -D / 1.265319087e-3  # with this we have w_Love-Kirchhoff = 1.0
 ```
-
 
 Continuous interpolation using degree $d=\texttt{deg}$ is chosen for both deflection and rotation. Note that when using quadrilaterals, we have different choices of interpolation over the cell. We will not discuss here variants such as `equispaced` or `GLL` variants which mostly differ in the dof location up to $d=3$, see [here for more details](https://defelement.com/elements/lagrange.html). However, already for $d=2$, we may have the choice of using an 8 or a 9-dof quadrilateral.
 
@@ -189,14 +193,19 @@ We then solve for the solution and print the deflection normalized with respect 
 
 ```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
-    a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="plate",
 )
 problem.solve()
 
 w = u.sub(0).collapse()
 w.name = "Deflection"
 
-print(f"Reissner-Mindlin FE deflection: {max(abs(w.vector.array)):.5f}")
+print(f"Reissner-Mindlin FE deflection: {max(abs(w.x.array)):.5f}")
 ```
 
 ## Results

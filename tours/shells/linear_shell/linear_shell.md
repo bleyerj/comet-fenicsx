@@ -4,7 +4,8 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
+  formats: md:myst,ipynb,py
 kernelspec:
   display_name: Python 3
   language: python
@@ -215,17 +216,20 @@ We first load the relevant packages and the mesh which has been generated as {do
 
 We plot the mesh using `pyvista`.
 
-```{code-cell} ipython3
+```{code-cell}
 import numpy as np
 from pathlib import Path
 import pyvista
 from mpi4py import MPI
 import ufl
 import basix
-from dolfinx import mesh, fem, io, plot
+from dolfinx import fem, io, plot
 import dolfinx.fem.petsc
 
-domain, markers, facets = io.gmshio.read_from_msh("I_beam.msh", MPI.COMM_WORLD)
+mesh_data = io.gmsh.read_from_msh("I_beam.msh", MPI.COMM_WORLD)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 
 gdim = domain.geometry.dim
 tdim = domain.topology.dim
@@ -243,7 +247,7 @@ plotter.show()
 
 We then define the corresponding physical parameters. In particular, we consider here a uniformly distributed loading of unit intensity along the downward global $Z$ direction and of intensity 0.2 along the $Y$ direction perpendicular to the arch plane in order to induce a combined bending and twisting deflection mode.
 
-```{code-cell} ipython3
+```{code-cell}
 # material parameters
 thick = fem.Constant(domain, 1e-3)
 E = fem.Constant(domain, 210e9)
@@ -265,7 +269,7 @@ We define the `local_frame` function which returns the UFL representation of the
 We could have also used one of the two vectors $\bt_1$ or $\bt_2$ to fix one of the in-plane directions. The issue with this choice is that the orientation of these vectors depends on the local ordering of each element. Their variation across the mesh is therefore not smooth. It is more convenient to use some convention to specify a nicely behaved local orientation. Obviously, our choice is only one among many other possibilities.
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 def normalize(v):
     """Normalize a vector to unit norm."""
     return v / ufl.sqrt(ufl.dot(v, v))
@@ -294,12 +298,12 @@ VT = fem.functionspace(domain, ("DG", 0, (gdim,)))
 V0, _ = VT.sub(0).collapse()
 
 frame = local_frame(domain)
-basis_vectors = [fem.Function(VT, name=f"Basis_vector_e{i+1}") for i in range(gdim)]
+basis_vectors = [fem.Function(VT, name=f"Basis_vector_e{i + 1}") for i in range(gdim)]
 e1, e2, e3 = basis_vectors
 
 
 for i in range(gdim):
-    e_exp = fem.Expression(frame[i], V0.element.interpolation_points())
+    e_exp = fem.Expression(frame[i], V0.element.interpolation_points)
     basis_vectors[i].interpolate(e_exp)
 
 
@@ -322,9 +326,13 @@ The local frame is plotted with `Paraview` as `DG0` Functions since we use plana
 
 We now use the aforementioned `P2/CR` interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
-```{code-cell} ipython3
-Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))  # displacement finite element
-Te = basix.ufl.element("CR", domain.basix_cell(), 1, shape=(gdim,)) # rotation finite element
+```{code-cell}
+Ue = basix.ufl.element(
+    "P", domain.basix_cell(), 2, shape=(gdim,)
+)  # displacement finite element
+Te = basix.ufl.element(
+    "CR", domain.basix_cell(), 1, shape=(gdim,)
+)  # rotation finite element
 V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 v = fem.Function(V)
@@ -337,7 +345,7 @@ dv = ufl.TrialFunction(V)
 
 We then define the in-plane projector and the in-plane (tangential) gradient operator ($\tilde\nabla$ above) as follows:
 
-```{code-cell} ipython3
+```{code-cell}
 def vstack(vectors):
     """Stack a list of vectors vertically."""
     return ufl.as_matrix([[v[i] for i in range(len(v))] for v in vectors])
@@ -360,7 +368,7 @@ def t_grad(u):
 
 We then extract gradient of the in-plane displacement $\tilde\nabla\tilde\bu$ and define the membrane strain $\bepsilon$ as its symmetric part. We similarly define the bending curvature $\bchi$ and shear strain $\bgamma$ as defined in {eq}`strains`. We also define directional derivatives in a `TestFunction` for later use.
 
-```{code-cell} ipython3
+```{code-cell}
 t_gu = ufl.dot(P_plane.T, t_grad(u))
 eps = ufl.sym(t_gu)
 beta = ufl.cross(e3, theta)
@@ -376,7 +384,7 @@ gamma_ = ufl.derivative(gamma, v, v_)
 
 We now define the corresponding stress measure using the plane stress linear elastic constitutive laws {eq}`shells-constitutive-equations`.
 
-```{code-cell} ipython3
+```{code-cell}
 def plane_stress_elasticity(e):
     return lmbda_ps * ufl.tr(e) * ufl.Identity(tdim) + 2 * mu * e
 
@@ -407,7 +415,7 @@ w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2
 
 where the drilling stiffness $\dfrac{E h^3}{h_\text{cell}^2}$ is the usually recommended value in the literature with $h_\text{cell}$ being the local mesh size which we can obtain from `ufl.CellDiameter`. We can observe that the drilling stiffness is equal to the typical membrane stiffness $Eh$ times the non-dimensional factor $\left(\dfrac{h}{h_\text{cell}}\right)^2$. As the mesh size goes to zero, the drilling stiffness becomes increasingly larger.
 
-```{code-cell} ipython3
+```{code-cell}
 drilling_strain = (t_gu[0, 1] - t_gu[1, 0]) / 2 + ufl.dot(theta, e3)
 drilling_strain_ = ufl.replace(drilling_strain, {v: v_})
 
@@ -420,7 +428,7 @@ drilling_stress = drilling_stiffness * drilling_strain
 
 We then account for fixed supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.
 
-```{code-cell} ipython3
+```{code-cell}
 Vu, _ = V.sub(0).collapse()
 left_dofs = fem.locate_dofs_topological((V.sub(0), Vu), 1, facets.find(1))
 right_dofs = fem.locate_dofs_topological((V.sub(0), Vu), 1, facets.find(2))
@@ -441,14 +449,19 @@ a = ufl.derivative(Wdef, v, dv)
 Wext = ufl.dot(f, u_) * ufl.dx
 
 problem = dolfinx.fem.petsc.LinearProblem(
-    a, Wext, u=v, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    Wext,
+    u=v,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="shell",
 )
 problem.solve()
 ```
 
 We then output the displacement and rotation fields:
 
-```{code-cell} ipython3
+```{code-cell}
 u_out = v.sub(0).collapse()
 u_out.name = "Displacement"
 theta_out = v.sub(1).collapse()

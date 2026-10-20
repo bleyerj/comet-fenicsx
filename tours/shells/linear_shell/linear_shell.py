@@ -1,11 +1,12 @@
 # ---
 # jupyter:
 #   jupytext:
+#     formats: md:myst,ipynb,py:light
 #     text_representation:
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -223,10 +224,13 @@ import pyvista
 from mpi4py import MPI
 import ufl
 import basix
-from dolfinx import mesh, fem, io, plot
+from dolfinx import fem, io, plot
 import dolfinx.fem.petsc
 
-domain, markers, facets = io.gmshio.read_from_msh("I_beam.msh", MPI.COMM_WORLD)
+mesh_data = io.gmsh.read_from_msh("I_beam.msh", MPI.COMM_WORLD)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 
 gdim = domain.geometry.dim
 tdim = domain.topology.dim
@@ -268,6 +272,7 @@ f = fem.Constant(domain, (0, 0.2, -1))
 # We could have also used one of the two vectors $\bt_1$ or $\bt_2$ to fix one of the in-plane directions. The issue with this choice is that the orientation of these vectors depends on the local ordering of each element. Their variation across the mesh is therefore not smooth. It is more convenient to use some convention to specify a nicely behaved local orientation. Obviously, our choice is only one among many other possibilities.
 # ```
 
+
 # +
 def normalize(v):
     """Normalize a vector to unit norm."""
@@ -297,12 +302,12 @@ VT = fem.functionspace(domain, ("DG", 0, (gdim,)))
 V0, _ = VT.sub(0).collapse()
 
 frame = local_frame(domain)
-basis_vectors = [fem.Function(VT, name=f"Basis_vector_e{i+1}") for i in range(gdim)]
+basis_vectors = [fem.Function(VT, name=f"Basis_vector_e{i + 1}") for i in range(gdim)]
 e1, e2, e3 = basis_vectors
 
 
 for i in range(gdim):
-    e_exp = fem.Expression(frame[i], V0.element.interpolation_points())
+    e_exp = fem.Expression(frame[i], V0.element.interpolation_points)
     basis_vectors[i].interpolate(e_exp)
 
 
@@ -326,8 +331,12 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
 # We now use the aforementioned `P2/CR` interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
 # +
-Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))  # displacement finite element
-Te = basix.ufl.element("CR", domain.basix_cell(), 1, shape=(gdim,)) # rotation finite element
+Ue = basix.ufl.element(
+    "P", domain.basix_cell(), 2, shape=(gdim,)
+)  # displacement finite element
+Te = basix.ufl.element(
+    "CR", domain.basix_cell(), 1, shape=(gdim,)
+)  # rotation finite element
 V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 v = fem.Function(V)
@@ -341,6 +350,7 @@ dv = ufl.TrialFunction(V)
 # -
 
 # We then define the in-plane projector and the in-plane (tangential) gradient operator ($\tilde\nabla$ above) as follows:
+
 
 # +
 def vstack(vectors):
@@ -384,6 +394,7 @@ gamma_ = ufl.derivative(gamma, v, v_)
 # ### Stress measures
 #
 # We now define the corresponding stress measure using the plane stress linear elastic constitutive laws {eq}`shells-constitutive-equations`.
+
 
 # +
 def plane_stress_elasticity(e):
@@ -450,7 +461,12 @@ a = ufl.derivative(Wdef, v, dv)
 Wext = ufl.dot(f, u_) * ufl.dx
 
 problem = dolfinx.fem.petsc.LinearProblem(
-    a, Wext, u=v, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    Wext,
+    u=v,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="shell",
 )
 problem.solve()
 # -
