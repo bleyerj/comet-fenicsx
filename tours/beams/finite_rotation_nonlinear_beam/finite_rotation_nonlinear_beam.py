@@ -2,13 +2,20 @@
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
+#   kernelspec:
+#     display_name: fenicsx-v0.11
+#     language: python
+#     name: python3
 # ---
 
+# %% [markdown]
 # # Nonlinear beam model in finite rotations {far}`star`{far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -212,6 +219,7 @@
 #
 # We first import the relevant module and functions. In particular, we import the `ExponentialMap` parametrization of rotations from the `rotation_parametrization.py` module. We then define the mesh of a rectilinear beam along the global X axis.
 
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
@@ -220,14 +228,16 @@ from mpi4py import MPI
 from petsc4py import PETSc
 import basix
 import ufl
-from dolfinx import mesh, io, fem, nls
+from dolfinx import mesh, io, fem
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
 from rotation_parametrization import ExponentialMap
 
 
+# %% [markdown]
 # We explicitly build the mesh using the `ufl.Mesh` object with shape=`(3,)` and a list of cells. Doing so we obtain a mesh of topology dimension 1 and geometrical dimension 3, instead of 1 if we were using the `create_interval_mesh` built-in function. With this precaution, the following implementation will be completely generic without making any a priori assumption on the geometry, for instance when defining tangent vectors etc. We also define the `left_end` and `right_end` boundary markers for applying loading and boundary conditions. We use the `mark_facets` function from [](/tips/mark_facets/mark_facets.md) to tag the left and right ends for later applying boundary conditions.
 
+
+# %%
 def mark_facets(domain, surfaces_dict):
     """Mark facets of the domain according to a geometrical marker
 
@@ -259,7 +269,7 @@ def mark_facets(domain, surfaces_dict):
     return facet_tag
 
 
-# +
+# %%
 # Mesh
 length = 10.0
 N = 80  # number of elements
@@ -274,8 +284,8 @@ x[:, 0] = np.linspace(0, length, N + 1)
 cells = [[i, i + 1] for i in range(N)]
 
 # Use ufl.Mesh to generate custom mesh
-_mesh = ufl.Mesh(basix.ufl.element("Lagrange", shape, degree, shape=(gdim,)))
-domain = mesh.create_mesh(MPI.COMM_WORLD, cells, x, _mesh)
+ufl_mesh = ufl.Mesh(basix.ufl.element("Lagrange", shape, degree, shape=(gdim,)))
+domain = mesh.create_mesh(MPI.COMM_WORLD, cells, ufl_mesh, x)
 
 
 def left_end(x):
@@ -287,11 +297,11 @@ def right_end(x):
 
 
 facets = mark_facets(domain, {1: left_end, 2: right_end})
-# -
 
+# %% [markdown]
 # We now define the geometric and material properties of the beam cross-section as well as the loading corresponding to those investigated in {cite:p}`ibrahimbegovic1995computational`. The loading consists of an externally applied concentrated bending moment $\boldsymbol{m}(t)=-M_\text{max}t\be_y$ and concentrated load $\boldsymbol{f}(t)=F_\text{max} t \be_y$ applied in 400 load steps. Finally, we specify the method resolution relying either on the `total` rotation vector or on the `incremental` rotation vector, as discussed before.
 
-# +
+# %%
 # Geometrical properties
 radius = fem.Constant(domain, 0.2)
 S = np.pi * radius**2
@@ -317,11 +327,11 @@ load = fem.Constant(domain, 0.0)
 
 # Resolution method {"total", "incremental"}
 method = "incremental"
-# -
 
+# %% [markdown]
 # We then define a mixed function space consisting of a $P_2$ displacement vector and $P_1$ rotation parameter vector. We will also need a DG-0 function space for keeping track of the previous rotation matrix $\bR_n$ (named `R_old`) as well as the previous curvature strain $\bchi_n$ for implementing the `incremental` approach. In the following, the previous rotation matrix `R_old` must be interpolated to the identity matrix. We also keep track of the total displacement vector.
 
-# +
+# %%
 Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))
 Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(gdim,))
 V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
@@ -359,11 +369,11 @@ Vu, _ = V.sub(0).collapse()
 total_displ = fem.Function(Vu, name="Previous_total_displacement")
 
 end_dof = fem.locate_dofs_topological((Vu, V.sub(0)), 0, facets.find(2))[0]
-# -
 
+# %% [markdown]
 # We then define the rotation parametrization and the corresponding rotation $\bR$ and curvature matrices $\bH$ obtained from the vector rotation parameter $\btheta$. We then use the mesh `Jacobian` (which we flatten to be of shape=`(3,)`) to compute the beam axis unit tangent vector `t0` in the reference configuration. We then define the `tgrad` function in order to compute the curvilinear derivative in the beam axis direction.
 
-# +
+# %%
 rot_param = ExponentialMap()
 R = rot_param.rotation_matrix(theta)
 H = rot_param.curvature_matrix(theta)
@@ -377,29 +387,28 @@ def tgrad(u):
     return ufl.dot(ufl.grad(u), t0)
 
 
-# -
-
+# %% [markdown]
 # The strain measures are now defined, depending on the chosen resolution method. We also define the constitutive matrices.
 
-# +
+# %%
 if method == "total":
     defo = ufl.dot(R.T, t0 + tgrad(u)) - t0
     curv = ufl.dot(H.T, tgrad(theta))
 elif method == "incremental":
     R_new = R * R_old
-    R_new_expr = fem.Expression(R_new, VR.element.interpolation_points())
+    R_new_expr = fem.Expression(R_new, VR.element.interpolation_points)
     defo = ufl.dot(R_new.T, t0 + tgrad(total_displ + u)) - t0
     curv = curv_old + ufl.dot(R_old.T * H.T, tgrad(theta))
-    curv_expr = fem.Expression(curv, V0.element.interpolation_points())
+    curv_expr = fem.Expression(curv, V0.element.interpolation_points)
 
 C_N = ufl.diag(ufl.as_vector([ES, GS_2, GS_3]))
 C_M = ufl.diag(ufl.as_vector([GJ, EI_2, EI_3]))
-# -
 
+# %% [markdown]
 # We first define a uniform quadrature degree of 4 for integrating the various nonlinear forms.
 # We are now in position to define the beam elastic energy as well as the nonlinear residual form expressing balance between the internal and external works. The corresponding tangent form is also differentiated for the Newton-Raphson solver.
 
-# +
+# %%
 metadata = {"quadrature_degree": 4}
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets, metadata=metadata)
 dx = ufl.Measure("dx", domain=domain, metadata=metadata)
@@ -411,37 +420,34 @@ residual = ufl.derivative(elastic_energy, v, v_)
 residual += load * (M_max * ufl.dot(H, theta_)[1] - F_max * u_[1]) * ds(2)
 
 tangent_form = ufl.derivative(residual, v, dv)
-# -
 
+# %% [markdown]
 # We finish by defining the clamped boundary conditions and the nonlinear Newton solver.
 
-# +
+# %%
 left_dofs = fem.locate_dofs_topological(V, 0, facets.find(1))
 u0 = fem.Function(V)
 bcs = [fem.dirichletbc(u0, left_dofs)]
 
-problem = fem.petsc.NonlinearProblem(residual, v, bcs)
+petsc_options = {
+    "snes_type": "newtonls",
+    "snes_linesearch_type": "none",
+    "snes_atol": 1e-8,
+    "snes_rtol": 1e-8,
+    "snes_stol": 1e-8,
+    "ksp_type": "preonly",
+    "pc_type": "lu",
+    "pc_factor_mat_solver_type": "mumps",
+}
+problem = fem.petsc.NonlinearProblem(
+    residual, u=v, bcs=bcs, petsc_options=petsc_options, petsc_options_prefix="beam"
+)
 
-solver = nls.petsc.NewtonSolver(domain.comm, problem)
-# Set Newton solver options
-solver.atol = 1e-6
-solver.rtol = 1e-6
-solver.convergence_criterion = "residual"
-solver.max_it = 100
 
-ksp = solver.krylov_solver
-opts = PETSc.Options()
-option_prefix = ksp.getOptionsPrefix()
-opts[f"{option_prefix}ksp_type"] = "preonly"
-opts[f"{option_prefix}ksp_rtol"] = 1.0e-6
-opts[f"{option_prefix}pc_type"] = "lu"
-opts[f"{option_prefix}pc_factor_mat_solver_type"] = "mumps"
-ksp.setFromOptions()
-# -
-
+# %% [markdown]
 # During the load stepping loop, total displacement vector will be saved to VTK format at every increment. We also plot the trajectory of the extremal point in the $X-Z$ plane. Note that depending on the resolution method, the total displacement is given by $\bu$ for the `total` method or by incrementing it with $\bu$ for the `incremental` method, stored in `total_displ`. For the latter case, we also update the previous rotation matrix `R_old` and curvature `curv_old`. Note also that for this approach, a good initial guess is the zero vector, rather than the previous increment. We therefore zero the solution vector `v` which will be used as an initial guess for the next increment.
 
-# +
+# %%
 uh = np.zeros((Nsteps + 1, 3))
 
 vtk = io.VTKFile(domain.comm, "results/helical_beam.pvd", "w")
@@ -452,8 +458,7 @@ for i, t in enumerate(times[1:]):
         print(f"Increment {i}/{Nsteps}")
     load.value = t
 
-    num_its, converged = solver.solve(v)
-    assert converged
+    problem.solve()
 
     v.x.scatter_forward()
 
@@ -473,7 +478,7 @@ for i, t in enumerate(times[1:]):
 
 vtk.close()
 
-# +
+# %%
 fig = plt.figure()
 ax = fig.gca()
 ax.set_xlim(-length / 2, length)
@@ -503,8 +508,8 @@ anim = animation.FuncAnimation(
 )
 plt.close()
 HTML(anim.to_html5_video())
-# -
 
+# %% [markdown]
 # ## References
 #
 # ```{bibliography}

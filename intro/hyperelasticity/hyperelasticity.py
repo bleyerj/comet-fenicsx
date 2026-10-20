@@ -209,7 +209,7 @@ Residual = derivative(
 Jacobian = derivative(Residual, u, du)
 
 # %% [markdown]
-# Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. The latter will also be attached to a nonlinear solver implementing a Newton method.
+# Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. We also attach to the latter a set of PETSc options defining the SNES nonlinear solver parameters (Newton method here).
 
 # %%
 petsc_options = {

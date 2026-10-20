@@ -88,7 +88,7 @@ import numpy as np
 import ufl
 
 from mpi4py import MPI
-from dolfinx import fem, io, nls
+from dolfinx import fem, io
 import dolfinx.fem.petsc
 from dolfinx.mesh import create_box, CellType
 from ufl import (
@@ -204,7 +204,7 @@ Residual = derivative(
 Jacobian = derivative(Residual, u, du)
 ```
 
-Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. The latter will also be attached to a nonlinear solver implementing a Newton method.
+Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. We also attach to the latter a set of PETSc options defining the SNES nonlinear solver parameters (Newton method here).
 
 ```{code-cell} ipython3
 petsc_options = {

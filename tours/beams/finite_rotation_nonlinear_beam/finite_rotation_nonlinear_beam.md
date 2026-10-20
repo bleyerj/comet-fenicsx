@@ -1,13 +1,17 @@
 ---
 jupytext:
   cell_metadata_filter: -all
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   main_language: python
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
+kernelspec:
+  display_name: fenicsx-v0.11
+  language: python
+  name: python3
 ---
 
 # Nonlinear beam model in finite rotations {far}`star`{far}`star`{far}`star`
@@ -222,9 +226,8 @@ from mpi4py import MPI
 from petsc4py import PETSc
 import basix
 import ufl
-from dolfinx import mesh, io, fem, nls
+from dolfinx import mesh, io, fem
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
 from rotation_parametrization import ExponentialMap
 ```
 
@@ -277,8 +280,8 @@ x[:, 0] = np.linspace(0, length, N + 1)
 cells = [[i, i + 1] for i in range(N)]
 
 # Use ufl.Mesh to generate custom mesh
-_mesh = ufl.Mesh(basix.ufl.element("Lagrange", shape, degree, shape=(gdim,)))
-domain = mesh.create_mesh(MPI.COMM_WORLD, cells, x, _mesh)
+ufl_mesh = ufl.Mesh(basix.ufl.element("Lagrange", shape, degree, shape=(gdim,)))
+domain = mesh.create_mesh(MPI.COMM_WORLD, cells, ufl_mesh, x)
 
 
 def left_end(x):
@@ -388,10 +391,10 @@ if method == "total":
     curv = ufl.dot(H.T, tgrad(theta))
 elif method == "incremental":
     R_new = R * R_old
-    R_new_expr = fem.Expression(R_new, VR.element.interpolation_points())
+    R_new_expr = fem.Expression(R_new, VR.element.interpolation_points)
     defo = ufl.dot(R_new.T, t0 + tgrad(total_displ + u)) - t0
     curv = curv_old + ufl.dot(R_old.T * H.T, tgrad(theta))
-    curv_expr = fem.Expression(curv, V0.element.interpolation_points())
+    curv_expr = fem.Expression(curv, V0.element.interpolation_points)
 
 C_N = ufl.diag(ufl.as_vector([ES, GS_2, GS_3]))
 C_M = ufl.diag(ufl.as_vector([GJ, EI_2, EI_3]))
@@ -421,23 +424,19 @@ left_dofs = fem.locate_dofs_topological(V, 0, facets.find(1))
 u0 = fem.Function(V)
 bcs = [fem.dirichletbc(u0, left_dofs)]
 
-problem = fem.petsc.NonlinearProblem(residual, v, bcs)
-
-solver = nls.petsc.NewtonSolver(domain.comm, problem)
-# Set Newton solver options
-solver.atol = 1e-6
-solver.rtol = 1e-6
-solver.convergence_criterion = "residual"
-solver.max_it = 100
-
-ksp = solver.krylov_solver
-opts = PETSc.Options()
-option_prefix = ksp.getOptionsPrefix()
-opts[f"{option_prefix}ksp_type"] = "preonly"
-opts[f"{option_prefix}ksp_rtol"] = 1.0e-6
-opts[f"{option_prefix}pc_type"] = "lu"
-opts[f"{option_prefix}pc_factor_mat_solver_type"] = "mumps"
-ksp.setFromOptions()
+petsc_options = {
+    "snes_type": "newtonls",
+    "snes_linesearch_type": "none",
+    "snes_atol": 1e-8,
+    "snes_rtol": 1e-8,
+    "snes_stol": 1e-8,
+    "ksp_type": "preonly",
+    "pc_type": "lu",
+    "pc_factor_mat_solver_type": "mumps",
+}
+problem = fem.petsc.NonlinearProblem(
+    residual, u=v, bcs=bcs, petsc_options=petsc_options, petsc_options_prefix="beam"
+)
 ```
 
 During the load stepping loop, total displacement vector will be saved to VTK format at every increment. We also plot the trajectory of the extremal point in the $X-Z$ plane. Note that depending on the resolution method, the total displacement is given by $\bu$ for the `total` method or by incrementing it with $\bu$ for the `incremental` method, stored in `total_displ`. For the latter case, we also update the previous rotation matrix `R_old` and curvature `curv_old`. Note also that for this approach, a good initial guess is the zero vector, rather than the previous increment. We therefore zero the solution vector `v` which will be used as an initial guess for the next increment.
@@ -453,8 +452,7 @@ for i, t in enumerate(times[1:]):
         print(f"Increment {i}/{Nsteps}")
     load.value = t
 
-    num_its, converged = solver.solve(v)
-    assert converged
+    problem.solve()
 
     v.x.scatter_forward()
 
