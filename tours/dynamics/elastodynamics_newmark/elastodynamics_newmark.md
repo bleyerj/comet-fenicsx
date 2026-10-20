@@ -1,17 +1,15 @@
 ---
 jupytext:
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: fenicsx-v0.11
   language: python
   name: python3
-language_info:
-  name: python3
-  pygments_lexer: ipython3
 ---
 
 # Transient elastodynamics with Newmark time-integration {far}`star`{far}`star`
@@ -243,10 +241,10 @@ gamma = fem.Constant(domain, gamma_)
 dt = fem.Constant(domain, 0.0)
 
 a = 1 / beta / dt**2 * (u - u_old - dt * v_old) + a_old * (1 - 1 / 2 / beta)
-a_expr = fem.Expression(a, V.element.interpolation_points())
+a_expr = fem.Expression(a, V.element.interpolation_points)
 
 v = v_old + dt * ((1 - gamma) * a_old + gamma * a)
-v_expr = fem.Expression(v, V.element.interpolation_points())
+v_expr = fem.Expression(v, V.element.interpolation_points)
 ```
 
 Now, we define a mass, a stiffness and a damping form which are used to define `Residual` as the residual weak form of the elastodynamics equation {eq}`discrete-elastodynamics`. In the present case, the latter is in fact a linear form of the unknown `u`. We therefore replace every instance of `u` with a trial function `du` to obtain a combined bilinear and linear form and extract the relevant bilinear part using `ufl.lhs` and the corresponding linear right-hand side using `ufl.rhs`. We can then setup the corresponding `LinearProblem` object.
@@ -282,7 +280,12 @@ a_form = ufl.lhs(Residual_du)
 L_form = ufl.rhs(Residual_du)
 
 problem = fem.petsc.LinearProblem(
-    a_form, L_form, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a_form,
+    L_form,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="elastodynamics",
 )
 ```
 
@@ -357,13 +360,13 @@ for i, dti in enumerate(np.diff(times)):
     a_new.interpolate(a_expr)
 
     # update u_n with u_n+1
-    u.vector.copy(u_old.vector)
+    u.x.petsc_vec.copy(u_old.x.petsc_vec)
 
     # update v_n with v_n+1
-    v_new.vector.copy(v_old.vector)
+    v_new.x.petsc_vec.copy(v_old.x.petsc_vec)
 
     # update a_n with a_n+1
-    a_new.vector.copy(a_old.vector)
+    a_new.x.petsc_vec.copy(a_old.x.petsc_vec)
 
     energies[i + 1, 0] = fem.assemble_scalar(E_el)
     energies[i + 1, 1] = fem.assemble_scalar(E_kin)
@@ -372,7 +375,7 @@ for i, dti in enumerate(np.diff(times)):
     tip_displacement[i + 1, :] = u.x.array[point_dofs]
 
     clear_output(wait=True)
-    print(f"Time increment {i+1}/{Nsteps}")
+    print(f"Time increment {i + 1}/{Nsteps}")
 
 vtk.close()
 ```

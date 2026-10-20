@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: fenicsx-v0.11
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Transient elastodynamics with Newmark time-integration {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -144,7 +146,7 @@
 #
 # We first import the relevant packages for this demo.
 
-# +
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
@@ -155,11 +157,11 @@ import ufl
 from dolfinx import fem, io
 import dolfinx.fem.petsc
 from dolfinx.mesh import create_box, CellType
-# -
 
+# %% [markdown]
 # We consider a slender beam of length `L` with a rectangular cross-section of width `B` and height `H`. We create a corresponding hexahedral mesh. We will discretize in space using $\mathbb{P}_2$ hexahedral elements. Note that $\mathbb{P}_1$ hexahedral elements suffer from severe shear-locking issues in such situation, needing specific treatment such as selective reduced integration to yield correct result. The mesh resolution is chosen to be quite coarse to limit the computational cost when running the demo.
 
-# +
+# %%
 L = 8.0
 H = 0.2
 B = 0.1
@@ -180,8 +182,7 @@ V = fem.functionspace(domain, ("Q", degree, shape))
 u = fem.Function(V, name="Displacement")
 
 
-# -
-
+# %% [markdown]
 # Boundary conditions will consist of the left extremity of the beam being fully clamped. We also retrieve the dof corresponding to the center of the cross-section located at the right extremity (`point(x)`) to monitor its displacement during the simulation.
 #
 # ```{attention}
@@ -190,7 +191,8 @@ u = fem.Function(V, name="Displacement")
 # In general, the dof block size can be obtained from `V.dofmap.index_map_bs`.
 # ```
 
-# +
+
+# %%
 def left(x):
     return np.isclose(x[0], 0.0)
 
@@ -205,11 +207,11 @@ point_dofs = np.arange(point_dof * dim, (point_dof + 1) * dim)
 
 
 bcs = [fem.dirichletbc(np.zeros((dim,)), clamped_dofs, V)]
-# -
 
+# %% [markdown]
 # We now define the material elastic properties and the linear elastic constitutive relation, see [](/tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md) for more details.
 
-# +
+# %%
 E = fem.Constant(domain, 210e3)
 nu = fem.Constant(domain, 0.3)
 rho = fem.Constant(domain, 7.8e-3)
@@ -227,11 +229,10 @@ def sigma(v):
     return lmbda * ufl.tr(epsilon(v)) * ufl.Identity(dim) + 2 * mu * epsilon(v)
 
 
-# -
-
+# %% [markdown]
 # We are now ready to implement the Newmark time discretization of the elastodynamics equation {eq}`discrete-elastodynamics`. We first define functions `u_old`, `v_old` and `a_old` which will be used to store the displacement, velocity and acceleration at the previous time step $t_n$. We will also need two functions to store the acceleration `a_new` and the velocity `v_new` at the current time step $t_{n+1}$. We define the Newmark $\beta$ and $\gamma$ parameters, which are selected at the usual $\beta=0.25$ and $\gamma=0.5$ values. Finally, we define the UFL expressions `a` and `v` corresponding to relation {eq}`acceleration-formula` and {eq}`velocity-update` which express the new acceleration and velocity as a function of the unknown displacement `u` and the fields at the previous time step. These UFL expressions will then be used in the variational form.
 
-# +
+# %%
 u_old = fem.Function(V)
 v_old = fem.Function(V)
 a_old = fem.Function(V)
@@ -245,19 +246,19 @@ gamma = fem.Constant(domain, gamma_)
 dt = fem.Constant(domain, 0.0)
 
 a = 1 / beta / dt**2 * (u - u_old - dt * v_old) + a_old * (1 - 1 / 2 / beta)
-a_expr = fem.Expression(a, V.element.interpolation_points())
+a_expr = fem.Expression(a, V.element.interpolation_points)
 
 v = v_old + dt * ((1 - gamma) * a_old + gamma * a)
-v_expr = fem.Expression(v, V.element.interpolation_points())
-# -
+v_expr = fem.Expression(v, V.element.interpolation_points)
 
+# %% [markdown]
 # Now, we define a mass, a stiffness and a damping form which are used to define `Residual` as the residual weak form of the elastodynamics equation {eq}`discrete-elastodynamics`. In the present case, the latter is in fact a linear form of the unknown `u`. We therefore replace every instance of `u` with a trial function `du` to obtain a combined bilinear and linear form and extract the relevant bilinear part using `ufl.lhs` and the corresponding linear right-hand side using `ufl.rhs`. We can then setup the corresponding `LinearProblem` object.
 #
 # ```{tip}
 # It is recommended to define all the forms and objects such as `LinearProblem` outside the time-stepping loop. This avoids creating at each time step a new object which instantiates PETSc matrices, solvers, etc. under the hood. This approach requires to update values of the external loading or boundary conditions without recreating new objects.
 # ```
 
-# +
+# %%
 u_ = ufl.TestFunction(V)
 du = ufl.TrialFunction(V)
 
@@ -284,10 +285,15 @@ a_form = ufl.lhs(Residual_du)
 L_form = ufl.rhs(Residual_du)
 
 problem = fem.petsc.LinearProblem(
-    a_form, L_form, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a_form,
+    L_form,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="elastodynamics",
 )
-# -
 
+# %% [markdown]
 # We also define the forms corresponding to the total kinetic `E_kin` and elastic `E_el` energies as well as the damping dissipated power `P_damp`. Indeed, multiplying equation {eq}`discrete-elastodynamics` with $\{\dot{u}\}$ yields:
 #
 # $$
@@ -311,10 +317,12 @@ problem = fem.petsc.LinearProblem(
 #
 # We compute all three contributions to check the conservation of total energy by the Newmark scheme.
 
+# %%
 E_kin = fem.form(0.5 * mass(v_old, v_old))
 E_el = fem.form(0.5 * stiffness(u_old, u_old))
 P_damp = fem.form(damping(v_old, v_old))
 
+# %% [markdown]
 # Finally, we implement the time stepping loop over `Nsteps` time increments of size `dt`, which can possibly vary with time. Fields output are saved in a `VTKFile`. We choose here to save only `Nsave=100` snapshots in total, thus outputting to the file only every `save_freq` time steps.
 #
 # The loading consists of a uniform body force acting in the $(y,z)$ plane which is linearly applied from 0 to its maximum value for a short time period of 0.2s. Then the loading is removed and the beam oscillates freely. Once the elastodynamics system has been solved with the call to `problem.solve()`, the field `u` now contains the displacement $\{u_{n+1}\}$. We can then compute the nodal values of the acceleration $\{\ddot{u}_{n+1}\}$ using {eq}`acceleration-formula` and the velocity $\{\dot{u}_{n+1}\}$ using {eq}`velocity-update`. We then march forward in time by replacing the fields at the previous time step with the new values. Finally, we compute the kinetic and elastic energies and the damping dissipation by accumulating $\Delta t \mathcal{P}_\text{damp}$ at each time step. We also store the in-plane displacements $u_y,u_z$ of the right extremity.
@@ -323,7 +331,7 @@ P_damp = fem.form(damping(v_old, v_old))
 # We have chosen here to use the interpolation mechanism of the UFL expressions `a` and `v` via a `fem.Expression` which we interpolate at the interpolation points of the function space `V`. We could also have computed directly formula {eq}`acceleration-formula` and {eq}`velocity-update` by working with the array of values, as done below for the velocity update. Here, we make use of the fact that we have already implemented such formulae when defining the variational form which avoids reimplementing these formulae a second time.
 # ```
 
-# +
+# %%
 vtk = io.VTKFile(domain.comm, "results/elastodynamics.pvd", "w")
 
 t = 0.0
@@ -357,13 +365,13 @@ for i, dti in enumerate(np.diff(times)):
     a_new.interpolate(a_expr)
 
     # update u_n with u_n+1
-    u.vector.copy(u_old.vector)
+    u.x.petsc_vec.copy(u_old.x.petsc_vec)
 
     # update v_n with v_n+1
-    v_new.vector.copy(v_old.vector)
+    v_new.x.petsc_vec.copy(v_old.x.petsc_vec)
 
     # update a_n with a_n+1
-    a_new.vector.copy(a_old.vector)
+    a_new.x.petsc_vec.copy(a_old.x.petsc_vec)
 
     energies[i + 1, 0] = fem.assemble_scalar(E_el)
     energies[i + 1, 1] = fem.assemble_scalar(E_kin)
@@ -372,11 +380,11 @@ for i, dti in enumerate(np.diff(times)):
     tip_displacement[i + 1, :] = u.x.array[point_dofs]
 
     clear_output(wait=True)
-    print(f"Time increment {i+1}/{Nsteps}")
+    print(f"Time increment {i + 1}/{Nsteps}")
 
 vtk.close()
-# -
 
+# %% [markdown]
 # ## Results
 #
 # We animate here the displacement of the beam extremity in the $(y,z)$ plane. Due to the chosen loading, the free oscillations mainly involve the first two bending modes. Eigenfrequencies of such modes using the Euler-Bernoulli beam theory are given by:
@@ -404,7 +412,7 @@ vtk.close()
 # ```
 # where $u_{0y}$ and $u_{0z}$ depend on the initial condition induced by the initial loading. Below, we measure the latter from the maximum recorded displacement. The black dashed line denotes the theoretical periodic orbit {eq}`periodic-orbit`.
 
-# +
+# %%
 cmap = plt.get_cmap("plasma")
 colors = cmap(times / max(times))
 
@@ -435,10 +443,11 @@ def draw_frame(n):
 anim = animation.FuncAnimation(fig, draw_frame, frames=Nsteps, interval=20, blit=True)
 plt.close()
 HTML(anim.to_html5_video())
-# -
 
+# %% [markdown]
 # Finally, we plot the three contributions to the total energy. We see that the kinetic and elastic energy contributions decreases with time due to the slight damping dissipation induced by non-zero values for $\eta_M$ and $\eta_K$. However, we verify that the sum of all three contributions is conserved once there is no external loading anymore.
 
+# %%
 plt.plot(times, energies[:, 0], label="Elastic")
 plt.plot(times, energies[:, 1], label="Kinetic")
 plt.plot(times, energies[:, 2], label="Damping")
@@ -448,6 +457,7 @@ plt.xlabel("Time")
 plt.ylabel("Energies")
 plt.show()
 
+# %% [markdown]
 # ## References
 #
 # ```{bibliography}
