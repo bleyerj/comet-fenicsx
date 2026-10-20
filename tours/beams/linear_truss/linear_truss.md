@@ -1,10 +1,11 @@
 ---
 jupytext:
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
 kernelspec:
   display_name: Python 3
   language: python
@@ -55,7 +56,7 @@ where $\bv$ is a test function and $\boldsymbol{F}_i$ are concentrated external 
 
 ### Geometry
 
-```{code-cell} ipython3
+```{code-cell}
 import numpy as np
 import pyvista
 import gmsh
@@ -68,7 +69,7 @@ import dolfinx.fem.petsc
 
 We create the truss domain with the `Gmsh` Python API. Importantly, we generate a 1D mesh and add physical groups for nodes: `tag=1` for the left and right supports and `tag=2` for the bottom nodes for applied loading.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 l = 5.0
@@ -133,19 +134,21 @@ for l in lines:
 gmsh.model.add_physical_group(0, bottom_points, 1)
 gmsh.model.add_physical_group(0, [left] + [right], 2)
 gmsh.model.add_physical_group(1, bottom_lines, 1)
-gmsh.model.add_physical_group(1, top_lines
-    + vertical_lines
-    + right_diagonal_lines
-    + left_diagonal_lines, 2)
+gmsh.model.add_physical_group(
+    1, top_lines + vertical_lines + right_diagonal_lines + left_diagonal_lines, 2
+)
 gmsh.model.mesh.generate(dim=1)
 gmsh.write("truss.msh")
 
-domain, markers, facets = io.gmshio.model_to_mesh(gmsh.model, MPI.COMM_WORLD, 0, gdim=2)
+mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, 0, gdim=2)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 
 gmsh.finalize()
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 gdim = domain.geometry.dim
 tdim = domain.topology.dim
 
@@ -162,16 +165,16 @@ $$
 \boldsymbol{t} = \dfrac{d\boldsymbol{x}}{ds} = \dfrac{1}{\left\|\frac{d\boldsymbol{x}}{dX}\right\|}\dfrac{d\boldsymbol{x}}{dX}
 $$
 
-```{code-cell} ipython3
+```{code-cell}
 dx_dX = ufl.Jacobian(domain)[:, 0]
 t_ufl = dx_dX / ufl.sqrt(ufl.inner(dx_dX, dx_dX))
 t = fem.Function(Vv, name="Tangent_vector")
-t.interpolate(fem.Expression(t_ufl, Vv.element.interpolation_points()))
+t.interpolate(fem.Expression(t_ufl, Vv.element.interpolation_points))
 ```
 
 To apply point loads on the truss nodes, it will be more convenient to define a piecewise linear function `F` and set the corresponding degrees of freedom with the corresponding nodal forces. In this case, we apply vertical downwards concentrated forces of intensity 1 on the bottom nodes which we retrieve from the facet tag `1`. We also retrieve the left and right dofs for applying Dirichlet boundary conditions
 
-```{code-cell} ipython3
+```{code-cell}
 F = fem.Function(V)
 fdim = tdim - 1
 load_dofs = fem.locate_dofs_topological(V.sub(1), fdim, facets.find(1))
@@ -183,7 +186,7 @@ bcs = [fem.dirichletbc(np.zeros((gdim,)), bc_dofs, V)]
 
 We plot the mesh, the loading (in black) and the unit tangent vectors in red using `pyvista`.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 pyvista.set_jupyter_backend("static")
@@ -222,7 +225,7 @@ plotter.show()
 
 We define the variational problem
 
-```{code-cell} ipython3
+```{code-cell}
 du = ufl.TrialFunction(V)
 u_ = ufl.TestFunction(V)
 u = fem.Function(V, name="Displacement")
@@ -238,21 +241,22 @@ def strain(u):
 def normal_force(u):
     return E * S * strain(u)
 
+
 dx = ufl.Measure("dx", subdomain_data=markers)
-a_form = fem.form(ufl.inner(normal_force(du), strain(u_)) *dx)
+a_form = fem.form(ufl.inner(normal_force(du), strain(u_)) * dx)
 ```
 
 ### Concentrated loadings
 
 To define concentrated loadings, several (undirect) approaches can be used, considering the fact that point measures are not available. A first possibility is to define a distributed loading which when assembled into a global nodal forces vectors approximates the corresponding concentrated loading. A second approach is to assemble an empty nodal force vector and set the corresponding entries to the wanted concentrated loading. Below, we follow this approach. However, it prevents us from using the `LinearProblem` class and we must instead write the assembly and solve steps manually using `petsc4py`.
 
-```{code-cell} ipython3
+```{code-cell}
 F0 = fem.Constant(domain, np.zeros((gdim,)))
 L_form = fem.form(ufl.dot(F0, u_) * dx)
 
 A = fem.petsc.assemble_matrix(a_form, bcs=bcs)
 A.assemble()
-b = fem.petsc.create_vector(L_form)
+b = fem.petsc.create_vector(V)
 
 b.array[:] = F.x.array[:]
 ```
@@ -261,28 +265,28 @@ b.array[:] = F.x.array[:]
 
 We finally setup the linear solver and solve the problem.
 
-```{code-cell} ipython3
+```{code-cell}
 solver = PETSc.KSP().create(domain.comm)
 solver.setOperators(A)
 solver.setType(PETSc.KSP.Type.PREONLY)
 solver.getPC().setType(PETSc.PC.Type.LU)
 
-solver.solve(b, u.vector)
+solver.solve(b, u.x.petsc_vec)
 u.x.scatter_forward()
 ```
 
 The normal force obtained from the elastic behavior {eq}`truss-constitutive-elastic` is then interpolated onto a piecewise-constant function space.
 
-```{code-cell} ipython3
+```{code-cell}
 V0 = fem.functionspace(domain, ("DG", 0, ()))
-N_exp = fem.Expression(normal_force(u), V0.element.interpolation_points())
+N_exp = fem.Expression(normal_force(u), V0.element.interpolation_points)
 N = fem.Function(V0, name="Normal_force")
 N.interpolate(N_exp)
 ```
 
 AWe plot the resulting normal force on the (scaled) deformed configuration using `pyvista`.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 plotter = pyvista.Plotter()
