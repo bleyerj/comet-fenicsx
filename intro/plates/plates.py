@@ -1,11 +1,12 @@
 # ---
 # jupyter:
 #   jupytext:
+#     formats: md:myst,ipynb,py:light
 #     text_representation:
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -171,6 +172,7 @@ a = (
 
 # Boundary conditions are now defined. We consider a fully clamped boundary. Note that since we are using a mixed function space, we cannnot use the `locate_dofs_geometrical` function. Instead, we locate the facets on the boundary using `dolfinx.mesh.locate_entities_boundary`. Then we locate the dofs on such facets using `locate_dofs_topological`.
 
+
 # +
 # Boundary of the plate
 def border(x):
@@ -196,7 +198,12 @@ bcs = [fem.dirichletbc(u0, clamped_dofs)]
 
 # +
 problem = fem.petsc.LinearProblem(
-    a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="plates",
 )
 problem.solve()
 
@@ -206,7 +213,7 @@ with io.VTKFile(domain.comm, "plates.xdmf", "w") as vtk:
     vtk.write_function(w)
 
 w_LK = 1.265319087e-3 * -f.value / D.value
-print(f"Reissner-Mindlin deflection: {max(abs(w.vector.array)):.5f}")
+print(f"Reissner-Mindlin deflection: {max(abs(w.x.array)):.5f}")
 print(f"Love-Kirchhoff deflection: {w_LK:.5f}")
 # -
 
@@ -264,9 +271,9 @@ plotter.show()
 rho = fem.Constant(domain, 2700.0)
 m_form = rho * thick * ufl.dot(du, u_) * dx
 
-K = fem.petsc.assemble_matrix(fem.form(a), bcs, diagonal=1)
+K = fem.petsc.assemble_matrix(fem.form(a), bcs, diag=1)
 K.assemble()
-M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diagonal=0)
+M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diag=0)
 M.assemble()
 # -
 
@@ -307,7 +314,7 @@ for i in range(2):
         current_index = 3 * i + j
         eigenmode = f"eigenmode_{current_index:02}"
         pl.add_text(
-            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index]))/2/np.pi*1e3:.1f} Hz",
+            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index])) / 2 / np.pi * 1e3:.1f} Hz",
             font_size=10,
         )
         wi = eigvec_r[current_index].sub(0).collapse()

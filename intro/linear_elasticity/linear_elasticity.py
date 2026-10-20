@@ -1,11 +1,12 @@
 # ---
 # jupyter:
 #   jupytext:
+#     formats: md:myst,ipynb,py:light
 #     text_representation:
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -166,6 +167,7 @@ L = inner(f, v) * dx
 
 # We now define boundary conditions. For simplicity, we first fix both the left and right boundaries. To do so, we must locate the corresponding degrees of freedom from a marker function thet returns `True` for points `x` on the boundary and `False` otherwise.
 
+
 # +
 def left(x):
     return np.isclose(x[0], 0)
@@ -189,7 +191,12 @@ bcs = [
 
 # +
 problem = fem.petsc.LinearProblem(
-    a, L, u=u_sol, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u_sol,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="linear_elasticity",
 )
 problem.solve()
 
@@ -214,7 +221,12 @@ bcs2 = [
 ]
 
 problem = fem.petsc.LinearProblem(
-    a, L, u=u_sol, bcs=bcs2, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u_sol,
+    bcs=bcs2,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="linear_elasticity2",
 )
 problem.solve()
 

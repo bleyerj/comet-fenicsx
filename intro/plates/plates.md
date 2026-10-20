@@ -1,11 +1,11 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
+  formats: md:myst,ipynb,py
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -64,30 +64,24 @@ In weak form:
 $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f \widehat{w} \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}$$
 
 ### Isotropic linear elastic constitutive relation
-
 * Bending/curvature relation:
-
-```{math}
 \begin{align*}
 \begin{Bmatrix}M_{xx}\\ M_{yy} \\M_{xy} \end{Bmatrix} &= \textsf{D} \begin{bmatrix}1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & (1-\nu)/2 \end{bmatrix}\begin{Bmatrix}\chi_{xx} \\ \chi_{yy} \\ 2\chi_{xy}  \end{Bmatrix}\\
 \text{ where}\quad \textsf{D} &= \dfrac{E h^3}{12(1-\nu^2)}
 \end{align*}
-```
 
 * Shear strain/stress relation:
-
-```{math}
 \begin{align*}
 \bQ &= \textsf{F}\bgamma\\
 \text{ where}\quad \textsf{F} &= \dfrac{5}{6}\dfrac{E h}{2(1+\nu)}
 \end{align*}
-```
+
 
 ## Implementation
 
 We first load relevant modules and functions and generate a unit square mesh of triangles.
 
-```{code-cell} ipython3
+```{code-cell}
 import numpy as np
 import ufl
 import basix
@@ -111,7 +105,7 @@ domain = create_unit_square(
 
 Next we define material properties and functions which will be used for defining the variational formulation.
 
-```{code-cell} ipython3
+```{code-cell}
 # material parameters
 thick = 0.05
 E = 210.0e3
@@ -150,7 +144,7 @@ def shear_force(u):
 
 Now we define the corresponding function space. Our dofs are $w$ and $\btheta$, so the full function space $V$ will be a **mixed** function space consisting of a scalar subspace related to $w$ and a vectorial subspace related to $\btheta$. We first use a continuous $P^2$ interpolation for $w$ and a continuous $P^1$ interpolation for $\btheta$. We then define the corresponding linear and bilinear forms.
 
-```{code-cell} ipython3
+```{code-cell}
 # Definition of function space for U:displacement, T:rotation
 Ue = basix.ufl.element("P", domain.basix_cell(), 2)
 Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(2,))
@@ -173,7 +167,7 @@ a = (
 
 Boundary conditions are now defined. We consider a fully clamped boundary. Note that since we are using a mixed function space, we cannnot use the `locate_dofs_geometrical` function. Instead, we locate the facets on the boundary using `dolfinx.mesh.locate_entities_boundary`. Then we locate the dofs on such facets using `locate_dofs_topological`.
 
-```{code-cell} ipython3
+```{code-cell}
 # Boundary of the plate
 def border(x):
     return np.logical_or(
@@ -196,9 +190,14 @@ $$
 w_\text{LK} = 1.265319087.10^{-3} \dfrac{f}{\mathsf{D}}
 $$
 
-```{code-cell} ipython3
+```{code-cell}
 problem = fem.petsc.LinearProblem(
-    a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="plates",
 )
 problem.solve()
 
@@ -208,7 +207,7 @@ with io.VTKFile(domain.comm, "plates.xdmf", "w") as vtk:
     vtk.write_function(w)
 
 w_LK = 1.265319087e-3 * -f.value / D.value
-print(f"Reissner-Mindlin deflection: {max(abs(w.vector.array)):.5f}")
+print(f"Reissner-Mindlin deflection: {max(abs(w.x.array)):.5f}")
 print(f"Love-Kirchhoff deflection: {w_LK:.5f}")
 ```
 
@@ -218,7 +217,7 @@ This simple formulation may suffer from **shear locking** issues in the thin pla
 
 We can plot the plate deflection $w$ and the rotation vector $\boldsymbol{\beta} = \boldsymbol{e}_z\times \btheta$ using `pyvista`. $\boldsymbol{\beta}$ represents the axis vector around which the plate is rotating.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 import pyvista
@@ -264,20 +263,20 @@ plotter.show()
 
 Now we define the form corresponding to the definition of the mass matrix and we assemble the stiffness and mass forms into corresponding PETSc matrix objects. We use a value of 1 on the diagonal for K and 0 for M for the rows corresponding to the boundary conditions. Doing so, eigenvalues associated to boundary conditions are equal to infinity and will not pollute the low-frequency spectrum.
 
-```{code-cell} ipython3
+```{code-cell}
 rho = fem.Constant(domain, 2700.0)
 m_form = rho * thick * ufl.dot(du, u_) * dx
 
-K = fem.petsc.assemble_matrix(fem.form(a), bcs, diagonal=1)
+K = fem.petsc.assemble_matrix(fem.form(a), bcs, diag=1)
 K.assemble()
-M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diagonal=0)
+M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diag=0)
 M.assemble()
 ```
 
 We now use `slepc4py` to define a eigenvalue solver (EPS -- *Eigenvalue Problem Solver* -- in SLEPc vocable) and solve the corresponding generalized eigenvalue problem. Functions defined in {Download}`eigenvalue_solver.py<./eigenvalue_solver.py>`
 enable to define the corresponding objects, set up the parameters, monitor the resolution and extract the corresponding eigenpairs. Here the problem is of type `GHEP` (Generalized Hermitian eigenproblem) and we use a shift-invert transform to compute the smallest eigenvalues.
 
-```{code-cell} ipython3
+```{code-cell}
 from slepc4py import SLEPc
 from eigenvalue_solver import solve_GEP_shiftinvert, EPS_get_spectrum
 
@@ -301,7 +300,7 @@ with io.VTKFile(domain.comm, "plates_eigenvalues.xdmf", "w") as vtk:
 
 The eigenmodes look as follows using `pyvista`:
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-input]
 
 w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)
@@ -313,7 +312,7 @@ for i in range(2):
         current_index = 3 * i + j
         eigenmode = f"eigenmode_{current_index:02}"
         pl.add_text(
-            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index]))/2/np.pi*1e3:.1f} Hz",
+            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index])) / 2 / np.pi * 1e3:.1f} Hz",
             font_size=10,
         )
         wi = eigvec_r[current_index].sub(0).collapse()
