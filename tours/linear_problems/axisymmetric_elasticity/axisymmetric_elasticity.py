@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Axisymmetric formulation for elastic structures of revolution {far}`star`
 #
 # ```{admonition} Objectives
@@ -58,7 +61,7 @@
 #
 # We first import the relevant modules.
 
-# +
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -72,11 +75,11 @@ hsize = 0.2
 
 Re = 11.0
 Ri = 9.0
-# -
 
+# %% [markdown]
 # The domain is created and meshed using the `Gmsh` Python API.
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 gmsh.initialize()
 gmsh.option.setNumber("General.Terminal", 0)  # to disable meshing info
 gdim = 2
@@ -111,12 +114,13 @@ gmsh.model.addPhysicalGroup(gdim - 1, [outer_circ], 3, name="outer")
 
 gmsh.model.mesh.generate(gdim)
 
-domain, _, facets = io.gmshio.model_to_mesh(
-    gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
-)
+mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 gmsh.finalize()
-# -
 
+# %% [markdown]
 # ## Definition of axisymmetric strains and stresses
 #
 # For axisymmetric conditions, the unknown displacement field is of the form:
@@ -139,7 +143,7 @@ gmsh.finalize()
 # We could also express the strain components in the form of a vector of size 4 in alternative of the 3D tensor representation implemented below.
 # ```
 
-# +
+# %%
 x = ufl.SpatialCoordinate(domain)
 
 
@@ -155,11 +159,10 @@ def eps(v):
     )
 
 
-# -
-
+# %% [markdown]
 # The linear elastic constitutive equation giving the stress `sigma` is written using 3D tensors:
 
-# +
+# %%
 E = fem.Constant(domain, 1e5)
 nu = fem.Constant(domain, 0.3)
 mu = E / 2 / (1 + nu)
@@ -170,8 +173,7 @@ def sigma(v):
     return lmbda * ufl.tr(eps(v)) * ufl.Identity(3) + 2.0 * mu * eps(v)
 
 
-# -
-
+# %% [markdown]
 # ## Weak formulation
 #
 # The rest of the formulation is similar to the 2D elastic case with a small difference in the integration measure. Indeed, the virtual work principle reads as:
@@ -202,7 +204,7 @@ def sigma(v):
 #
 # The final formulation is therefore pretty straightforward. Since a uniform pressure loading is applied on the outer boundary, we will also need the exterior normal vector to define the work of external forces form.
 
-# +
+# %%
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 dx = ufl.Measure("dx", domain=domain)
 
@@ -216,11 +218,11 @@ a_form = ufl.inner(sigma(du), eps(u_)) * x[0] * dx
 L_form = ufl.inner(-p * n, u_) * x[0] * ds(3)
 
 u = fem.Function(V, name="Displacement")
-# -
 
+# %% [markdown]
 # We apply smooth contact conditions on the vertical $r=0$ (facet tag `2`) and the horizontal $z=0$ (facet tag `1`) boundaries.
 
-# +
+# %%
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
@@ -237,10 +239,12 @@ bcs = [
 ]
 
 # solve problem
-problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
+problem = fem.petsc.LinearProblem(
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="axisymmetric"
+)
 problem.solve()
-# -
 
+# %% [markdown]
 # For this specific case, we can compare to the classical solution of a hollow sphere under external pressure with a purely radial displacement given by:
 #
 # $$
@@ -250,9 +254,9 @@ problem.solve()
 #
 # We extract the radial displacement dofs on the bottom boundary and compare with the analytical solution.
 
-# +
+# %%
 ur = u.sub(0).collapse()
-ur_FEM = ur.vector.array[bottom_dofsx]
+ur_FEM = ur.x.array[bottom_dofsx]
 
 r = Vx.tabulate_dof_coordinates()[bottom_dofsx, 0]
 

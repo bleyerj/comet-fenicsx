@@ -1,11 +1,11 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
   display_name: Python 3
   language: python
@@ -113,9 +113,10 @@ gmsh.model.addPhysicalGroup(gdim - 1, [outer_circ], 3, name="outer")
 
 gmsh.model.mesh.generate(gdim)
 
-domain, _, facets = io.gmshio.model_to_mesh(
-    gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
-)
+mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 gmsh.finalize()
 ```
 
@@ -235,7 +236,9 @@ bcs = [
 ]
 
 # solve problem
-problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
+problem = fem.petsc.LinearProblem(
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="axisymmetric"
+)
 problem.solve()
 ```
 
@@ -250,7 +253,7 @@ We extract the radial displacement dofs on the bottom boundary and compare with 
 
 ```{code-cell} ipython3
 ur = u.sub(0).collapse()
-ur_FEM = ur.vector.array[bottom_dofsx]
+ur_FEM = ur.x.array[bottom_dofsx]
 
 r = Vx.tabulate_dof_coordinates()[bottom_dofsx, 0]
 
