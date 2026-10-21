@@ -235,7 +235,7 @@ problem = LinearProblem(
     l,
     bcs=bcs,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
-    petsc_options_prefix="prestress",
+    petsc_options_prefix="prestress_",
 )
 u = problem.solve()
 

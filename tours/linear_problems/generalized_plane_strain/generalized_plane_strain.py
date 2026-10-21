@@ -198,6 +198,7 @@ gmsh.finalize()
 # The 3D strain expression {eq}`gps-strain` is defined as a function of both the in-plane displacement and the out-of-plane strain. The same is done for
 # the 3D stress obtained from 3D linear elasticity.
 
+
 # %%
 def eps(v, ezz):
     return ufl.sym(
@@ -272,7 +273,7 @@ bcs = [
 
 # %%
 problem = fem.petsc.LinearProblem(
-    a_blocked, L_blocked, bcs=bcs, petsc_options_prefix="elasticity"
+    a_blocked, L_blocked, bcs=bcs, petsc_options_prefix="elasticity_"
 )
 u, ezz = problem.solve()
 

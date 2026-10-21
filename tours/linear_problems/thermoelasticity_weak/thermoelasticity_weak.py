@@ -104,7 +104,7 @@ bcT = [
 
 # solve problem
 problem = fem.petsc.LinearProblem(
-    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal"
+    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal_"
 )
 problem.solve()
 
@@ -183,7 +183,7 @@ bcu = [fem.dirichletbc(np.zeros((gdim,)), lateral_dofs_u, Vu)]
 # %%
 u = fem.Function(Vu, name="Displacement")
 problem = fem.petsc.LinearProblem(
-    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical"
+    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical_"
 )
 problem.solve()
 

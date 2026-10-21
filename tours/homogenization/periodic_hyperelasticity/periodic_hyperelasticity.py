@@ -182,10 +182,17 @@ if comm.rank == model_rank:
         translation[i, 3] = a
         masters = [tag for tag in faces if abs(centers[tag][i]) < eps]
         slaves = [
-            min(faces, key=lambda t: np.linalg.norm(centers[t] - centers[m] - a * np.eye(3)[i]))
+            min(
+                faces,
+                key=lambda t: np.linalg.norm(
+                    centers[t] - centers[m] - a * np.eye(3)[i]
+                ),
+            )
             for m in masters
         ]
-        gmsh.model.mesh.setPeriodic(gdim - 1, slaves, masters, translation.flatten().tolist())
+        gmsh.model.mesh.setPeriodic(
+            gdim - 1, slaves, masters, translation.flatten().tolist()
+        )
 
     gmsh.option.setNumber("Mesh.MeshSizeMin", hsize)
     gmsh.option.setNumber("Mesh.MeshSizeMax", hsize)
@@ -213,7 +220,9 @@ plotter.show()
 # %%
 dx = ufl.Measure("dx", domain=domain, metadata={"quadrature_degree": 4})
 cell_volume = a**3
-solid_fraction = comm.allreduce(fem.assemble_scalar(fem.form(1 * dx)), op=MPI.SUM) / cell_volume
+solid_fraction = (
+    comm.allreduce(fem.assemble_scalar(fem.form(1 * dx)), op=MPI.SUM) / cell_volume
+)
 print(f"Solid fraction: {solid_fraction:.3f}")
 
 # %% [markdown]
@@ -258,6 +267,7 @@ bcs = [fem.dirichletbc(np.zeros(gdim), vertex_dofs, V)]
 
 # %% [markdown]
 # The periodic map sends a slave point to its master by subtracting $a$ from every coordinate equal to $a$. Face slaves have exactly one coordinate on a boundary plane, ridge slaves exactly two. Passing `bcs` to each constraint ensures that the vertex dofs are never used as slaves.
+
 
 # %%
 def periodic_map(x):
@@ -351,7 +361,10 @@ def effective_stress():
     return (
         np.array(
             [
-                [comm.allreduce(fem.assemble_scalar(P_forms[i][j]), op=MPI.SUM) for j in range(gdim)]
+                [
+                    comm.allreduce(fem.assemble_scalar(P_forms[i][j]), op=MPI.SUM)
+                    for j in range(gdim)
+                ]
                 for i in range(gdim)
             ]
         )
@@ -444,7 +457,9 @@ sigma_eq.interpolate(
 u_grid = pyvista.UnstructuredGrid(*plot.vtk_mesh(V))
 u_grid.point_data["Displacement"] = u_total.x.array.reshape(-1, gdim)
 u_grid.cell_data["sigma_eq"] = sigma_eq.x.array
-deformed = u_grid.warp_by_vector("Displacement", factor=1.0).extract_surface(algorithm="dataset_surface")
+deformed = u_grid.warp_by_vector("Displacement", factor=1.0).extract_surface(
+    algorithm="dataset_surface"
+)
 
 Fb = Fbar.value
 plotter = pyvista.Plotter()

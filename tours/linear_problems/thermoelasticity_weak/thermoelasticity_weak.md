@@ -101,7 +101,7 @@ bcT = [
 
 # solve problem
 problem = fem.petsc.LinearProblem(
-    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal"
+    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal_"
 )
 problem.solve()
 ```
@@ -180,7 +180,7 @@ First, the self-weight loading is deactivated, only thermal stresses are compute
 ```{code-cell} ipython3
 u = fem.Function(Vu, name="Displacement")
 problem = fem.petsc.LinearProblem(
-    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical"
+    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical_"
 )
 problem.solve()
 ```

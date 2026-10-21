@@ -280,7 +280,7 @@ problem = fem.petsc.LinearProblem(
     u=w,
     bcs=bcs,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
-    petsc_options_prefix="beam",
+    petsc_options_prefix="beam_",
 )
 problem.solve()
 ```

@@ -196,7 +196,7 @@ problem = fem.petsc.LinearProblem(
     u=u_sol,
     bcs=bcs,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
-    petsc_options_prefix="linear_elasticity",
+    petsc_options_prefix="linear_elasticity_",
 )
 problem.solve()
 
@@ -226,7 +226,7 @@ problem = fem.petsc.LinearProblem(
     u=u_sol,
     bcs=bcs2,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
-    petsc_options_prefix="linear_elasticity2",
+    petsc_options_prefix="linear_elasticity2_",
 )
 problem.solve()
 

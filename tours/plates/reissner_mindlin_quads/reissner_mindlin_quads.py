@@ -205,7 +205,7 @@ problem = fem.petsc.LinearProblem(
     u=u,
     bcs=bcs,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
-    petsc_options_prefix="plate",
+    petsc_options_prefix="plate_",
 )
 problem.solve()
 

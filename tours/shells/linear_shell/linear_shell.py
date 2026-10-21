@@ -466,7 +466,7 @@ problem = dolfinx.fem.petsc.LinearProblem(
     u=v,
     bcs=bcs,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
-    petsc_options_prefix="shell",
+    petsc_options_prefix="shell_",
 )
 problem.solve()
 # -

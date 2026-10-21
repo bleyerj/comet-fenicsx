@@ -268,7 +268,7 @@ A linear problem is then defined, supporting the previously defined block system
 
 ```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
-    a_blocked, L_blocked, bcs=bcs, petsc_options_prefix="elasticity"
+    a_blocked, L_blocked, bcs=bcs, petsc_options_prefix="elasticity_"
 )
 u, ezz = problem.solve()
 ```

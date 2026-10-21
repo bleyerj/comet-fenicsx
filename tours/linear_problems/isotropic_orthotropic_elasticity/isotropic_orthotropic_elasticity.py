@@ -363,7 +363,7 @@ bcs = [
 
 
 problem = fem.petsc.LinearProblem(
-    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="elasticity"
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="elasticity_"
 )
 problem.solve()
 

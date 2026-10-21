@@ -440,7 +440,7 @@ petsc_options = {
     "pc_factor_mat_solver_type": "mumps",
 }
 problem = fem.petsc.NonlinearProblem(
-    residual, u=v, bcs=bcs, petsc_options=petsc_options, petsc_options_prefix="beam"
+    residual, u=v, bcs=bcs, petsc_options=petsc_options, petsc_options_prefix="beam_"
 )
 
 

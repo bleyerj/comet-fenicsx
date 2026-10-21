@@ -290,7 +290,7 @@ problem = fem.petsc.NonlinearProblem(
     bcs=bcs,
     J=Jac,
     petsc_options=petsc_options,
-    petsc_options_prefix="thermomechanics",
+    petsc_options_prefix="thermomechanics_",
 )
 ```
 

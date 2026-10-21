@@ -223,7 +223,7 @@ petsc_options = {
     "pc_factor_mat_solver_type": "mumps",
 }
 problem = fem.petsc.NonlinearProblem(
-    Residual, u=u, bcs=bcs, petsc_options_prefix="hyperelasticity"
+    Residual, u=u, bcs=bcs, petsc_options_prefix="hyperelasticity_"
 )
 
 # %% [markdown]

@@ -165,7 +165,9 @@ if comm.rank == model_rank:
     # periodic edge meshes: edge xi_i = 1 is the image of edge xi_i = 0 by a translation a_i
     curves = [tag for _, tag in gmsh.model.getEntities(gdim - 1)]
     xi_curves = {
-        tag: lattice_coordinates(np.array(occ.getCenterOfMass(gdim - 1, tag))[:, None])[:, 0]
+        tag: lattice_coordinates(np.array(occ.getCenterOfMass(gdim - 1, tag))[:, None])[
+            :, 0
+        ]
         for tag in curves
     }
     for i, ai in enumerate([a1, a2]):
@@ -180,7 +182,9 @@ if comm.rank == model_rank:
         )
         translation = np.eye(4)
         translation[:2, 3] = ai
-        gmsh.model.mesh.setPeriodic(gdim - 1, slaves, masters, translation.flatten().tolist())
+        gmsh.model.mesh.setPeriodic(
+            gdim - 1, slaves, masters, translation.flatten().tolist()
+        )
 
     gmsh.option.setNumber("Mesh.MeshSizeMin", h)
     gmsh.option.setNumber("Mesh.MeshSizeMax", h)
@@ -196,7 +200,9 @@ cells = mesh_data.cell_tags
 # We compute the unit cell area from the mesh for verification:
 
 # %%
-vol = comm.allreduce(fem.assemble_scalar(fem.form(1 * ufl.dx(domain=domain))), op=MPI.SUM)
+vol = comm.allreduce(
+    fem.assemble_scalar(fem.form(1 * ufl.dx(domain=domain))), op=MPI.SUM
+)
 print(f"Area: {vol:.6f} (expected {Lx * Ly:.6f})")
 
 
@@ -204,6 +210,7 @@ print(f"Area: {vol:.6f} (expected {Lx * Ly:.6f})")
 # ### Variational formulation with heterogeneous material properties
 #
 # In the [legacy demo](https://comet-fenics.readthedocs.io/en/latest/demo/periodic_homog_elas/periodic_homog_elas.html), the bilinear form used two terms with the `dx(1)` and `dx(2)` cell measures, one per phase. This approach does not scale well to many phases or to spatially varying properties. Instead, we use a single constitutive law for all phases, with Young's modulus and Poisson's ratio represented as piecewise constant (`DG0`) functions, see [](/tips/piecewise_constant_field/piecewise_constant_field.md).
+
 
 # %%
 def create_piecewise_constant_field(domain, cell_markers, property_dict, name=None):
@@ -232,8 +239,12 @@ def create_piecewise_constant_field(domain, cell_markers, property_dict, name=No
     return k
 
 
-E = create_piecewise_constant_field(domain, cells, {1: 50e3, 2: 210e3}, name="YoungModulus")
-nu = create_piecewise_constant_field(domain, cells, {1: 0.2, 2: 0.3}, name="PoissonRatio")
+E = create_piecewise_constant_field(
+    domain, cells, {1: 50e3, 2: 210e3}, name="YoungModulus"
+)
+nu = create_piecewise_constant_field(
+    domain, cells, {1: 0.2, 2: 0.3}, name="PoissonRatio"
+)
 
 lmbda = E * nu / (1 + nu) / (1 - 2 * nu)
 mu = E / 2 / (1 + nu)
@@ -286,6 +297,7 @@ bcs = [fem.dirichletbc(np.zeros((gdim,)), corner_dofs, V)]
 
 # %% [markdown]
 # We then map the interior of the right edge ($\xi_1 = 1$) onto the left edge with the translation $-\ba_1$, and the interior of the top edge ($\xi_2 = 1$) onto the bottom edge with the translation $-\ba_2$. Corners are excluded from both slave sets, and passing `bcs` ensures that Dirichlet dofs are never used as slaves.
+
 
 # %%
 def edge_slaves(i):
@@ -386,7 +398,8 @@ for nload in range(dim_load):
         Eps_.value = elementary_load[nload_]
         C_hom[nload, nload_] = (
             comm.allreduce(
-                fem.assemble_scalar(fem.form(ufl.inner(sigma(v), Eps_) * ufl.dx)), op=MPI.SUM
+                fem.assemble_scalar(fem.form(ufl.inner(sigma(v), Eps_) * ufl.dx)),
+                op=MPI.SUM,
             )
             / vol
         )
@@ -404,8 +417,12 @@ with np.printoptions(suppress=True, precision=0):
 # %%
 lmbda_hom = C_hom[0, 1]
 mu_hom = C_hom[2, 2]
-print(f"Symmetry check: max |C - C^T| / max |C| = {np.max(np.abs(C_hom - C_hom.T)) / np.max(np.abs(C_hom)):.1e}")
-print(f"Isotropy check: C_xxxx = {C_hom[0, 0]:.0f}, C_yyyy = {C_hom[1, 1]:.0f}, lambda + 2 mu = {lmbda_hom + 2 * mu_hom:.0f}")
+print(
+    f"Symmetry check: max |C - C^T| / max |C| = {np.max(np.abs(C_hom - C_hom.T)) / np.max(np.abs(C_hom)):.1e}"
+)
+print(
+    f"Isotropy check: C_xxxx = {C_hom[0, 0]:.0f}, C_yyyy = {C_hom[1, 1]:.0f}, lambda + 2 mu = {lmbda_hom + 2 * mu_hom:.0f}"
+)
 
 # %% [markdown]
 # ```{note}
@@ -434,7 +451,9 @@ sig_xx.interpolate(fem.Expression(sigma(v)[0, 0], W0.element.interpolation_point
 
 # %% tags=["hide-input"]
 num_cells = domain.topology.index_map(gdim).size_local
-grid = pyvista.UnstructuredGrid(*plot.vtk_mesh(domain, gdim, np.arange(num_cells, dtype=np.int32)))
+grid = pyvista.UnstructuredGrid(
+    *plot.vtk_mesh(domain, gdim, np.arange(num_cells, dtype=np.int32))
+)
 grid.cell_data["sigma_xx"] = sig_xx.x.array[:num_cells]
 plotter = pyvista.Plotter()
 plotter.window_size = (800, 600)
@@ -442,9 +461,16 @@ for i in range(2):
     for j in range(2):
         shift = i * a1 + j * a2
         tile = grid.translate((shift[0], shift[1], 0.0), inplace=False)
-        plotter.add_mesh(tile, scalars="sigma_xx", cmap="coolwarm", scalar_bar_args={"title": "Local stress sigma_xx"})
         plotter.add_mesh(
-            tile.extract_feature_edges(boundary_edges=True, feature_edges=False, manifold_edges=False),
+            tile,
+            scalars="sigma_xx",
+            cmap="coolwarm",
+            scalar_bar_args={"title": "Local stress sigma_xx"},
+        )
+        plotter.add_mesh(
+            tile.extract_feature_edges(
+                boundary_edges=True, feature_edges=False, manifold_edges=False
+            ),
             color="k",
             line_width=1,
         )

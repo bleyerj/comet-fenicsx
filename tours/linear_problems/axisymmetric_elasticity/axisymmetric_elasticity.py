@@ -240,7 +240,7 @@ bcs = [
 
 # solve problem
 problem = fem.petsc.LinearProblem(
-    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="axisymmetric"
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="axisymmetric_"
 )
 problem.solve()
 
