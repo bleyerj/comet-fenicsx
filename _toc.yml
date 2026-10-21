@@ -30,6 +30,7 @@ parts:
   - file: tours/eigenvalue_problems/contents
     sections:
     - file: tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.md
+    - file: tours/eigenvalue_problems/bloch_waves/bloch_waves.md
   - file: tours/homogenization/contents
     sections:
     - file: tours/homogenization/periodic_elasticity/periodic_elasticity.md
