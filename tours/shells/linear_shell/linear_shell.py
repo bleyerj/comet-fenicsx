@@ -1,11 +1,12 @@
 # ---
 # jupyter:
 #   jupytext:
-#     formats: md:myst,ipynb,py:light
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
+#       format_name: percent
+#       format_version: '1.3'
 #       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
@@ -13,6 +14,7 @@
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Linear shell model {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -65,7 +67,7 @@
 # * {Download}`Complete sources files<./linear_shell.zip>`
 # ```
 #
-# # %TODO: update links to new demos when available
+# %TODO: update links to new demos when available
 #
 # Implementing a shell model in `FEniCSx` is not necessarily straightforward due to the different behavior in the shell normal and tangential directions. In the [FEniCSx-Shells](https://github.com/FEniCS-Shells/fenicsx-shells) project {cite:p}`hale2018simple`, the shell surface is described by a mapping between a parametric 2D domain and the shell initial stress-free configuration. This approach makes it impossible to tackle non-manifold surfaces or closed surfaces for which the mapping would exhibit singularities.
 #
@@ -217,7 +219,7 @@
 #
 # We plot the mesh using `pyvista`.
 
-# +
+# %%
 import numpy as np
 from pathlib import Path
 import pyvista
@@ -244,11 +246,11 @@ ugrid = pyvista.UnstructuredGrid(*plot.vtk_mesh(domain))
 plotter.add_mesh(ugrid, show_edges=True)
 plotter.show_axes()
 plotter.show()
-# -
 
+# %% [markdown]
 # We then define the corresponding physical parameters. In particular, we consider here a uniformly distributed loading of unit intensity along the downward global $Z$ direction and of intensity 0.2 along the $Y$ direction perpendicular to the arch plane in order to induce a combined bending and twisting deflection mode.
 
-# +
+# %%
 # material parameters
 thick = fem.Constant(domain, 1e-3)
 E = fem.Constant(domain, 210e9)
@@ -261,8 +263,7 @@ lmbda_ps = 2 * lmbda * mu / (lmbda + 2 * mu)
 f = fem.Constant(domain, (0, 0.2, -1))
 
 
-# -
-
+# %% [markdown]
 # ### Computing a local tangent frame
 #
 # We define the `local_frame` function which returns the UFL representation of the local frame  $(\be_1,\be_2,\be_3)$. We first use UFL's `Jacobian` function to retrieve the Jacobian of the mapping from reference cells to spatial coordinates. Contrary to the [FEniCSx-Shells](https://github.com/FEniCS-Shells/fenicsx-shells) approach which uses a global analytical mapping between the reference domain and the shell surface, we use here the reference element mapping of the finite-element method. For a shell, the Jacobian is of size $3\times 2$ with both columns $\bt_1,\bt_2$ being a vector of the local tangent plane. We therefore compute $\be_3$, the normal to the mid-surface from $\bt_1\times \bt_2$. We then have to choose a convention to compute $\be_1,\be_2$, knowing $\be_3$. Our convention is that $\be_1$ lies in the plane orthogonal to $\be_Y$ and $\be_3$. If $\be_3$ happens to be colinear to $\be_Y$, we set $\be_1=\be_Z$. $\be_2$ then follows from $\be_2=\be_3\times\be_1$.
@@ -272,8 +273,7 @@ f = fem.Constant(domain, (0, 0.2, -1))
 # We could have also used one of the two vectors $\bt_1$ or $\bt_2$ to fix one of the in-plane directions. The issue with this choice is that the orientation of these vectors depends on the local ordering of each element. Their variation across the mesh is therefore not smooth. It is more convenient to use some convention to specify a nicely behaved local orientation. Obviously, our choice is only one among many other possibilities.
 # ```
 
-
-# +
+# %%
 def normalize(v):
     """Normalize a vector to unit norm."""
     return v / ufl.sqrt(ufl.dot(v, v))
@@ -317,8 +317,8 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
     vtk.write_function(e1, 0.0)
     vtk.write_function(e2, 0.0)
     vtk.write_function(e3, 0.0)
-# -
 
+# %% [markdown]
 # The local frame is plotted with `Paraview` as `DG0` Functions since we use planar facets with affine triangles. We can check that the orientation is indeed consistent with what has been defined ($\be_1$ in blue, $\be_2$ in green, $\be_3$ in red).
 #
 # ```{image} local_frame.png
@@ -330,7 +330,7 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
 #
 # We now use the aforementioned `P2/CR` interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
-# +
+# %%
 Ue = basix.ufl.element(
     "P", domain.basix_cell(), 2, shape=(gdim,)
 )  # displacement finite element
@@ -347,12 +347,10 @@ u_, theta_ = ufl.split(v_)
 dv = ufl.TrialFunction(V)
 
 
-# -
-
+# %% [markdown]
 # We then define the in-plane projector and the in-plane (tangential) gradient operator ($\tilde\nabla$ above) as follows:
 
-
-# +
+# %%
 def vstack(vectors):
     """Stack a list of vectors vertically."""
     return ufl.as_matrix([[v[i] for i in range(len(v))] for v in vectors])
@@ -373,11 +371,10 @@ def t_grad(u):
     return ufl.dot(g, P_plane)
 
 
-# -
-
+# %% [markdown]
 # We then extract gradient of the in-plane displacement $\tilde\nabla\tilde\bu$ and define the membrane strain $\bepsilon$ as its symmetric part. We similarly define the bending curvature $\bchi$ and shear strain $\bgamma$ as defined in {eq}`strains`. We also define directional derivatives in a `TestFunction` for later use.
 
-# +
+# %%
 t_gu = ufl.dot(P_plane.T, t_grad(u))
 eps = ufl.sym(t_gu)
 beta = ufl.cross(e3, theta)
@@ -389,14 +386,12 @@ kappa_ = ufl.derivative(kappa, v, v_)
 gamma_ = ufl.derivative(gamma, v, v_)
 
 
-# -
-
+# %% [markdown]
 # ### Stress measures
 #
 # We now define the corresponding stress measure using the plane stress linear elastic constitutive laws {eq}`shells-constitutive-equations`.
 
-
-# +
+# %%
 def plane_stress_elasticity(e):
     return lmbda_ps * ufl.tr(e) * ufl.Identity(tdim) + 2 * mu * e
 
@@ -404,8 +399,8 @@ def plane_stress_elasticity(e):
 N = thick * plane_stress_elasticity(eps)
 M = thick**3 / 12 * plane_stress_elasticity(kappa)
 Q = mu * thick * gamma
-# -
 
+# %% [markdown]
 # ### Drilling rotation stabilization
 #
 # A classical problem in shell models involving 6 degrees of freedom (3D rotation) is the absence of any constraint on the drilling rotation $\theta_3=\btheta\cdot\be_3$. However, this degree of freedom is necessary to tackle non-smooth junctions
@@ -427,20 +422,20 @@ Q = mu * thick * gamma
 #
 # where the drilling stiffness $\dfrac{E h^3}{h_\text{cell}^2}$ is the usually recommended value in the literature with $h_\text{cell}$ being the local mesh size which we can obtain from `ufl.CellDiameter`. We can observe that the drilling stiffness is equal to the typical membrane stiffness $Eh$ times the non-dimensional factor $\left(\dfrac{h}{h_\text{cell}}\right)^2$. As the mesh size goes to zero, the drilling stiffness becomes increasingly larger.
 
-# +
+# %%
 drilling_strain = (t_gu[0, 1] - t_gu[1, 0]) / 2 + ufl.dot(theta, e3)
 drilling_strain_ = ufl.replace(drilling_strain, {v: v_})
 
 h_mesh = ufl.CellDiameter(domain)
 drilling_stiffness = E * thick**3 / h_mesh**2
 drilling_stress = drilling_stiffness * drilling_strain
-# -
 
+# %% [markdown]
 # ### Boundary conditions and resolution
 #
 # We then account for fixed supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.
 
-# +
+# %%
 Vu, _ = V.sub(0).collapse()
 left_dofs = fem.locate_dofs_topological((V.sub(0), Vu), 1, facets.find(1))
 right_dofs = fem.locate_dofs_topological((V.sub(0), Vu), 1, facets.find(2))
@@ -469,11 +464,11 @@ problem = dolfinx.fem.petsc.LinearProblem(
     petsc_options_prefix="shell_",
 )
 problem.solve()
-# -
 
+# %% [markdown]
 # We then output the displacement and rotation fields:
 
-# +
+# %%
 u_out = v.sub(0).collapse()
 u_out.name = "Displacement"
 theta_out = v.sub(1).collapse()
@@ -483,8 +478,8 @@ with io.VTKFile(MPI.COMM_WORLD, results_folder / "displacement.pvd", "w") as vtk
     vtk.write_function(u_out, 0.0)
 with io.VTKFile(MPI.COMM_WORLD, results_folder / "rotation.pvd", "w") as vtk:
     vtk.write_function(theta_out, 0.0)
-# -
 
+# %% [markdown]
 # which yields the following deformed configuration (2000 times amplification):
 #
 # ```{image} deformed_configuration.png

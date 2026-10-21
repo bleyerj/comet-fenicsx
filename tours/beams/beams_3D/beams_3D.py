@@ -1,6 +1,7 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
@@ -253,9 +254,9 @@ k_form = (
 )
 l_form = -rho * S * g * u_[2] * ufl.dx
 
+
 # %% [markdown]
 # Clamped boundary conditions are considered at the bottom $z=0$ level and the linear problem is finally solved.
-
 
 # %%
 def bottom(x):

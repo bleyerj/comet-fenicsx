@@ -236,7 +236,6 @@ from rotation_parametrization import ExponentialMap
 # %% [markdown]
 # We explicitly build the mesh using the `ufl.Mesh` object with shape=`(3,)` and a list of cells. Doing so we obtain a mesh of topology dimension 1 and geometrical dimension 3, instead of 1 if we were using the `create_interval_mesh` built-in function. With this precaution, the following implementation will be completely generic without making any a priori assumption on the geometry, for instance when defining tangent vectors etc. We also define the `left_end` and `right_end` boundary markers for applying loading and boundary conditions. We use the `mark_facets` function from [](/tips/mark_facets/mark_facets.md) to tag the left and right ends for later applying boundary conditions.
 
-
 # %%
 def mark_facets(domain, surfaces_dict):
     """Mark facets of the domain according to a geometrical marker
@@ -442,7 +441,6 @@ petsc_options = {
 problem = fem.petsc.NonlinearProblem(
     residual, u=v, bcs=bcs, petsc_options=petsc_options, petsc_options_prefix="beam_"
 )
-
 
 # %% [markdown]
 # During the load stepping loop, total displacement vector will be saved to VTK format at every increment. We also plot the trajectory of the extremal point in the $X-Z$ plane. Note that depending on the resolution method, the total displacement is given by $\bu$ for the `total` method or by incrementing it with $\bu$ for the `incremental` method, stored in `total_displ`. For the latter case, we also update the previous rotation matrix `R_old` and curvature `curv_old`. Note also that for this approach, a good initial guess is the zero vector, rather than the previous increment. We therefore zero the solution vector `v` which will be used as an initial guess for the next increment.

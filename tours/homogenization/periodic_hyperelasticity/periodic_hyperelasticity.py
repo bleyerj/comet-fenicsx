@@ -2,7 +2,6 @@
 # jupyter:
 #   jupytext:
 #     default_lexer: ipython3
-#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -15,7 +14,7 @@
 # ---
 
 # %% [markdown]
-# # Finite-strain periodic homogenization of a soft open-cell foam {far}`star`{far}`star`{far}`star`
+# # Finite-strain periodic homogenization of a soft open-cell foam {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
 # :class: objectives
@@ -70,7 +69,7 @@
 # \bx(\bX) = \bFbar\cdot\bX + \bw(\bX) \quad \text{with } \bw \text{ being } \cY\text{-periodic}
 # $$
 #
-# so that the microscopic deformation gradient reads $\bF = \bFbar + \nabla\bw$. The cell edges, and hence the lattice vectors $a\be_i$, are transformed by $\bFbar$: the deformed cells still tile space.
+# so that the microscopic deformation gradient reads $\bF = \bFbar + \nabla\bw$. The cell edges, and hence the lattice vectors $a\be_i$, are transformed by $\bFbar$.
 #
 # ### Local problem and effective stress
 #
@@ -85,7 +84,7 @@
 # where the energy is divided by the volume of the whole cell $|\cY| = a^3$, pore included. Its first-order optimality condition is the weak form of the local equilibrium:
 #
 # $$
-# \int_{\cY_s} \bP(\bFbar + \nabla\bw) : \nabla\widehat{\bw} \dY = 0 \quad \forall \widehat{\bw} \ \cY\text{-periodic}
+# \int_{\cY_s} \bP(\bFbar + \nabla\bw) : \nabla\widehat{\bw} \dY = 0 \quad \forall \widehat{\bw} \quad \cY\text{-periodic}
 # $$
 #
 # where $\bP = \dfrac{\partial\psi}{\partial\bF}$ is the first Piola-Kirchhoff stress. In strong form, $\Div\bP = 0$ in $\cY_s$, the pore surface is traction-free, and the traction $\bP\cdot\bN$ is anti-periodic on the cell boundary.
@@ -134,7 +133,7 @@
 #
 # We consider a cell of size $a=1$ with a spherical pore of radius $R=0.6\,a$ centered in the cell. Since $R > a/2$, the pore cuts every face of the cube along a circular window of radius $\sqrt{R^2-a^2/4} \approx 0.33\,a$, through which it connects to the pores of the six neighbouring cells. The remaining solid is an open-cell foam made of curved struts along the cube edges, meeting at the cube vertices.
 #
-# Periodic meshing with `gmsh` requires opposite faces with identical topology. Subtracting a sphere from the cube does not guarantee it, since the seam of the spherical surface cuts some faces and not their opposites. We therefore build one octant of the cell, $[0, a/2]^3$ minus the pore, and mirror it with respect to the three mid-planes. The `fragment` operation glues the eight copies into a conforming geometry, and `setPeriodic` makes the surface meshes of opposite faces identical, so that each slave node has a matching master node.
+# Periodic meshing with `gmsh` requires opposite faces with identical topology. We build one octant of the cell, $[0, a/2]^3$ minus the pore, and mirror it with respect to the three mid-planes. The `fragment` operation glues the eight copies into a conforming geometry, and `setPeriodic` makes the surface meshes of opposite faces identical, so that each slave node has a matching master node.
 
 # %%
 import numpy as np
@@ -267,7 +266,6 @@ bcs = [fem.dirichletbc(np.zeros(gdim), vertex_dofs, V)]
 
 # %% [markdown]
 # The periodic map sends a slave point to its master by subtracting $a$ from every coordinate equal to $a$. Face slaves have exactly one coordinate on a boundary plane, ridge slaves exactly two. Passing `bcs` to each constraint ensures that the vertex dofs are never used as slaves.
-
 
 # %%
 def periodic_map(x):

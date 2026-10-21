@@ -1,6 +1,7 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
@@ -190,7 +191,6 @@ u = fem.Function(V, name="Displacement")
 #
 # In general, the dof block size can be obtained from `V.dofmap.index_map_bs`.
 # ```
-
 
 # %%
 def left(x):

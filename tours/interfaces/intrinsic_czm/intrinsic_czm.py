@@ -235,7 +235,6 @@ from dolfinx.fem.petsc import LinearProblem
 #
 # We define a function to create the mesh and other utility functions.
 
-
 # %%
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD

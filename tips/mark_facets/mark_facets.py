@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Marking facets with geometrical functions
 #
 # ```{admonition} Objectives
@@ -27,7 +29,7 @@
 # * {Download}`Jupyter notebook<./mark_facets.ipynb>`
 # ```
 
-# +
+# %%
 from mpi4py import MPI
 import numpy as np
 from dolfinx import mesh
@@ -64,11 +66,10 @@ def mark_facets(domain, surfaces_dict):
     return facet_tag
 
 
-# -
-
+# %% [markdown]
 # For instance, tagging the bottom, right, top and left boundary of a square mesh will look like this:
 
-# +
+# %%
 N = 4
 domain = mesh.create_unit_square(MPI.COMM_WORLD, N, N)
 
@@ -93,11 +94,10 @@ facets = mark_facets(domain, {1: bottom, 2: right, 3: top, 4: left})
 print(facets.values)
 
 
-# -
-
+# %% [markdown]
 # Note that we can also adapt the function to mark entities of specified dimension i.e. subdomains if `dim=tdim`, facets if `dim=tdim-1`, etc. where `tdim` is the domain topological dimension.
 
-# +
+# %%
 def mark_entities(domain, dim, entities_dict):
     """Mark entities of specified dimension according to a geometrical marker function
 
@@ -144,8 +144,8 @@ def half_right(x):
 tdim = domain.topology.dim
 cell_markers = mark_entities(domain, tdim, {1: half_left, 2: half_right})
 print(cell_markers.values)
-# -
 
+# %% [markdown]
 # ```{warning}
 #
 # When calling `mesh.locate_entities` for a cell or a facet, the geometrical marker function gets evaluated for all vertices of the cell/facet. The marker must therefore evaluate to `True` for all vertices to properly identify the entity.

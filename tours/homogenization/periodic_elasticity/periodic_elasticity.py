@@ -211,7 +211,6 @@ print(f"Area: {vol:.6f} (expected {Lx * Ly:.6f})")
 #
 # In the [legacy demo](https://comet-fenics.readthedocs.io/en/latest/demo/periodic_homog_elas/periodic_homog_elas.html), the bilinear form used two terms with the `dx(1)` and `dx(2)` cell measures, one per phase. This approach does not scale well to many phases or to spatially varying properties. Instead, we use a single constitutive law for all phases, with Young's modulus and Poisson's ratio represented as piecewise constant (`DG0`) functions, see [](/tips/piecewise_constant_field/piecewise_constant_field.md).
 
-
 # %%
 def create_piecewise_constant_field(domain, cell_markers, property_dict, name=None):
     """Create a DG0 function taking a constant value on each tagged subdomain.
@@ -297,7 +296,6 @@ bcs = [fem.dirichletbc(np.zeros((gdim,)), corner_dofs, V)]
 
 # %% [markdown]
 # We then map the interior of the right edge ($\xi_1 = 1$) onto the left edge with the translation $-\ba_1$, and the interior of the top edge ($\xi_2 = 1$) onto the bottom edge with the translation $-\ba_2$. Corners are excluded from both slave sets, and passing `bcs` ensures that Dirichlet dofs are never used as slaves.
-
 
 # %%
 def edge_slaves(i):

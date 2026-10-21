@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Lumping a mass matrix
 #
 # ```{admonition} Objectives
@@ -32,7 +34,7 @@
 #
 # We show how to do this for Lagrange elements using the Gauss-Lobatto-Legendre quadrature rule, see also the [](/tips/quadrature_schemes/quadrature_schemes.md) tour. For the high order case in wave propagation, this setting defines the so-called *spectral element method*.
 
-# +
+# %%
 import numpy as np
 from mpi4py import MPI
 import ufl
@@ -60,10 +62,11 @@ for order in range(1, 3):
 
     M_lumped = fem.assemble_matrix(fem.form(lumped_mass_form))
     print("Lumped mass matrix:\n", np.array_str(M_lumped.to_dense(), precision=3))
-# -
 
+# %% [markdown]
 # For explicit dynamics simulation, the mass matrix can then be manipulated using the diagonal vector, to compute for instance $M^{-1}w$ where $w$ is some Function.
 
+# %%
 mass_diagonal = u * dx_lumped  # defines a linear form corresponding to the diagonal
 M_vect = fem.petsc.assemble_vector(fem.form(mass_diagonal))
 w = fem.Function(V)

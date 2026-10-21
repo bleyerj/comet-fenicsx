@@ -83,7 +83,6 @@ from dolfinx.fem.petsc import LinearProblem
 # For `gmsh`, there is no discontinuity between the matrix and the inclusion. Elements from each side of the interface share common nodes from the mesh point of view. It is when defining two function spaces on both submeshes and when formulating the CZM law that we introduce the possibility of a jump at the interface.
 # ```
 
-
 # %%
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
@@ -197,6 +196,7 @@ subdomain2.topology.create_connectivity(fdim, tdim)
 # %%
 entity_maps = [interface_cell_map, subdomain1_cell_map, subdomain2_cell_map]
 
+
 # %% [markdown]
 # Integrating terms on the interface requires a specific treatment. Indeed, the interface is a set of interior facets of `domain`, each of them being shared by one cell of subdomain 1 and one cell of subdomain 2. For an interior facet integral, these two cells correspond to the `"+"` and `"-"` sides of the facet, but their ordering is arbitrary. We must therefore define the integration entities manually, i.e. a list of `(cell, local facet index)` pairs for both sides of each interface facet. These are first computed with `fem.compute_integration_domains` and then reordered so that cells of subdomain 1 always correspond to the `"+"` side and cells of subdomain 2 to the `"-"` side. Functions defined on subdomain 1 (resp. 2) must therefore only be restricted to the `"+"` (resp. `"-"`) side in the interface forms.
 #
@@ -208,7 +208,6 @@ entity_maps = [interface_cell_map, subdomain1_cell_map, subdomain2_cell_map]
 # :align: center
 # ```
 # ````
-
 
 # %%
 def interface_int_entities(domain, interface_facets, plus_cells):
@@ -259,7 +258,6 @@ print(f"Check that Gamma is such that {Gamma} ~ {np.pi * 2 * radius}")
 # ### Weak form definition
 #
 # We generate piecewise constant fields of elastic properties, as in the previous tour, see also [](/tips/piecewise_constant_field/piecewise_constant_field.md).
-
 
 # %%
 def create_piecewise_constant_field(
@@ -318,7 +316,6 @@ def T(opening, d):
 
 # %% [markdown]
 # In the previous tour, it was possible to use `ufl.jump` to define $\jump{\bu}$. Here, we need to define it manually from two displacement fields `u1` and `u2` which live on two different subdomains. Here, we define $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$ where $(1)$ denotes subdomain 1 (the matrix) and $(2)$ denotes subdomain 2 (the inclusions). Note that we need to restrict quantities since we work with a facet measure. Since each subdomain only exists on one side of the interface, the restriction is imposed by the ordering of the integration entities: we must use the `"+"` side for subdomain 1 and the `"-"` side for subdomain 2.
-
 
 # %%
 def jump(u1, u2):
@@ -453,11 +450,11 @@ problem = LinearProblem(
     petsc_options_prefix="czm_interface_",
 )
 
+
 # %% [markdown]
 # ### Load-stepping
 #
 # The fixed-point resolution scheme is implemented as before. The main difference here lies in the post-processing steps. Data in `u1` and `u2` fields are transferred to a parent function `u` defined as a `DG` function on the parent mesh. We thus have a single displacement field in ParaView which presents jumps at the interface only. This interpolation from a submesh to its parent mesh is performed with `u.interpolate(u1, cells0=..., cells1=...)` where `cells0` are the submesh cells and `cells1` the corresponding cells of the parent mesh, as given by the cell entity map.
-
 
 # %%
 def submesh_to_parent_cells(submesh, cell_map):

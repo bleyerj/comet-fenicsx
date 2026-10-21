@@ -1,6 +1,7 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
@@ -120,7 +121,6 @@ V = fem.functionspace(domain, basix.ufl.mixed_element([We, Te]))
 # %% [markdown]
 # Clamped boundary conditions on the lateral boundary are defined as:
 
-
 # %%
 # Boundary of the plate
 def border(x):
@@ -141,7 +141,6 @@ bcs = [fem.dirichletbc(u0, clamped_dofs)]
 # %% [markdown]
 # Some useful functions for implementing generalized constitutive relations are now
 # defined:
-
 
 # %%
 def strain2voigt(eps):

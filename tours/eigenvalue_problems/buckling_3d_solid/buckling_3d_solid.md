@@ -138,7 +138,7 @@ In the present case, the geometric stiffness matrix is associated with a symmetr
 
 Here, we will consider a fully three dimensional beam-like structure with length $L = 1$ and of rectangular cross-section with height $h = 0.01$, and width $b = 0.03$.
 
-```{code-cell}
+```{code-cell} ipython3
 import numpy as np
 from mpi4py import MPI
 from petsc4py import PETSc
@@ -161,7 +161,7 @@ gdim = domain.geometry.dim
 
 We first need to compute the pre-stressed linear state $\bu_0$. It is obtained by solving a simple linear elasticity problem. The material is assumed here isotropic and we consider a pre-stressed state obtained from the application of a unit compression applied at the beam right end in the $X$ direction while the $Y$ and $Z$ displacement are fixed, mimicking a simple support condition. The beam is fully clamped on its left extremity.
 
-```{code-cell}
+```{code-cell} ipython3
 E, nu = 1e3, 0.3
 
 mu = fem.Constant(domain, default_scalar_type(E / 2 / (1 + nu)))
@@ -226,7 +226,7 @@ l = ufl.dot(T, v) * ds(1)
 
 We will need the stiffness matrix in the linear buckling computation and hence we use `assemble_matrix` to assemble the matrix corresponding to our bilinear form in PETSc format. Note that we enforce a value of 1 on the diagonal at dofs corresponding to the Dirichlet boundary conditions.
 
-```{code-cell}
+```{code-cell} ipython3
 # Solution of the trivial problem
 problem = LinearProblem(
     a,
@@ -253,7 +253,7 @@ From the previous solution, the prestressed state $\bsig_0$ entering the geometr
 
 In contrast to the assembly of $\mathbf{K}$, we will put 0 on the diagonal of $\mathbf{K}_G$ in rows corresponding to boundary conditions. If we were to put 1 in both matrices, eigenvalues associated with the boundary conditions would be equal to 1 and would pollute the spectrum. By putting 0 in $\mathbf{K}_G$, they will be equal to infinity instead.
 
-```{code-cell}
+```{code-cell} ipython3
 kgform = -ufl.inner(sigma(u), ufl.grad(du).T * ufl.grad(v)) * ufl.dx
 
 KG = assemble_matrix(fem.form(kgform), bcs=bcs, diag=0)
@@ -278,7 +278,7 @@ $$
 meaning that the eigenvalues $\zeta_i$ of largest magnitude correspond to the eigenvalues $\lambda_i$ closest to $\sigma$. Eigenvalues of large magnitude are easier to compute with a Krylov method, and thus the shift $\sigma$ should be chosen close to the eigenvalues we are trying to compute. Here, we will use a shift of 0.01, as the buckling points of interest are the smallest critical loads, i.e. the points corresponding to the smallest $\lambda_i$.
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 # Requested number of eigenvalues
 N_eig = 6
 
@@ -356,7 +356,7 @@ $$
 $$
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 # Analytical beam theory solution
 # F_cr,n = alpha_n^2*EI/L^2
 # where alpha_n are solutions to tan(alpha) = alpha
@@ -373,7 +373,7 @@ for i in range(N_eig):
 
 We can see that the computed 3D buckling loads are vey close to the analytical solution of the beam theory. This is further confirmed when plotting the computed eigenmodes with `pyvista`.
 
-```{code-cell}
+```{code-cell} ipython3
 import pyvista
 
 pyvista.set_jupyter_backend("static")

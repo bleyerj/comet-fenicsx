@@ -300,7 +300,6 @@ u_ = ufl.TestFunction(V)
 # %% [markdown]
 # Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function `as_3D_tensor` will enable to represent a 4 dimensional vector containing respectively $xx, yy, zz$ and $xy$ components as a 3D tensor:
 
-
 # %%
 def eps(v):
     e = ufl.sym(ufl.grad(v))
@@ -348,7 +347,6 @@ def constitutive_update(Δε, old_sig, old_p):
 # ```
 #
 # where $\mathbb{Dev}$ is the 4th-order tensor associated with the deviatoric operator (note that $\CC_{\text{tang}}^{\text{alg}}=\CC$ for elastic evolution). Contrary to what is done in {cite:p}`logg2012fenicsbook`, we do not store it as the components of a 4th-order tensor but it will suffice keeping track of the normal vector and the $\beta$ parameter related to the plastic strains. We instead define the function `sigma_tang` computing the tangent stress $\bsig_\text{tang} = \CC_{\text{tang}}^{\text{alg}}: \boldsymbol{\varepsilon}$ as follows:
-
 
 # %%
 def sigma_tang(eps):
@@ -406,7 +404,6 @@ dp_expr = fem.Expression(dp_, W0.element.interpolation_points)
 # ```{warning}
 # We will use the `CustomLinearProblem` class within a custom implementation of the Newton method. During the course of the Newton iterations, we need to account for possible non-zero Dirichlet boundary conditions (although all Dirichlet boundary conditions are zero in the present case). We use the implementation provided in [the FEniCSx Tutorial - Newton’s method with DirichletBC](https://jsdokken.com/dolfinx-tutorial/chapter4/newton-solver.html#newtons-method-with-dirichletbc) for lifting the right-hand side of the Newton system with non-zero Dirichlet boundary conditions.
 # ```
-
 
 # %%
 class CustomLinearProblem(fem.petsc.LinearProblem):

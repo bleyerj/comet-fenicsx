@@ -163,7 +163,6 @@ print(P)
 # %% [markdown]
 # Now, we set up the boundary conditions by first identifying the top and bottom dofs. We use Functions to provide the imposed displacement on both faces. For now, such functions are zero.
 
-
 # %%
 def bottom(x):
     return np.isclose(x[2], 0.0)

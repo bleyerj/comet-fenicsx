@@ -17,6 +17,14 @@
 # %% [markdown]
 # # Bloch-wave analysis of a phononic crystal plate {far}`star`{far}`star`
 #
+# ```{admonition} Coauthors
+# :class: coauthors
+#
+# This tour has been written in collaboration with:
+#
+# **Felipe Rocha** (University Gustave Eiffel, felipe.figueredo-rocha@u-pec.fr) https://felipefr.github.io/
+# ```
+#
 # ```{admonition} Objectives
 # :class: objectives
 #
@@ -26,8 +34,8 @@
 # \newcommand{\bw}{\boldsymbol{w}}
 # \newcommand{\bk}{\boldsymbol{k}}
 # \newcommand{\bx}{\boldsymbol{x}}
-# \newcommand{\bR}{\boldsymbol{R}}
-# \newcommand{\bG}{\boldsymbol{G}}
+# \newcommand{\br}{\boldsymbol{r}}
+# \newcommand{\bq}{\boldsymbol{q}}
 # \newcommand{\be}{\boldsymbol{e}}
 # \newcommand{\bsig}{\boldsymbol{\sigma}}
 # \newcommand{\beps}{\boldsymbol{\varepsilon}}
@@ -60,7 +68,7 @@
 #
 # ### Bloch's theorem
 #
-# We consider a linear elastic medium which is periodic with respect to a lattice of vectors $\bR = n_1L\be_1 + n_2L\be_2$, $(n_1, n_2) \in \mathbb{Z}^2$. The square unit cell $\Omega = [0, L]^2$ contains four circular holes with traction-free boundaries. Time-harmonic waves $\bu(\bx, t) = \bw(\bx)e^{-i\omega t}$ satisfy:
+# We consider a linear elastic medium which is periodic with respect to a lattice of vectors $\br = n_1L\be_1 + n_2L\be_2$, $(n_1, n_2) \in \mathbb{Z}^2$. The square unit cell $\Omega = [0, L]^2$ contains four circular holes with traction-free boundaries. Time-harmonic waves $\bu(\bx, t) = \bw(\bx)e^{-i\omega t}$ satisfy:
 #
 # $$
 # \operatorname{div}\bsig(\bw) + \rho\omega^2\bw = 0, \qquad \bsig(\bw) = \lambda\tr(\beps(\bw))\bI + 2\mu\beps(\bw)
@@ -71,10 +79,10 @@
 # ```{math}
 # :label: bloch-condition
 #
-# \bw(\bx + \bR) = \bw(\bx)e^{i\bk\cdot\bR} \quad \text{for all lattice vectors } \bR
+# \bw(\bx + \br) = \bw(\bx)e^{i\bk\cdot\br} \quad \text{for all lattice vectors } \br
 # ```
 #
-# where $\bk$ is the wave vector. Since $e^{i\bG\cdot\bR} = 1$ for any vector $\bG = \dfrac{2\pi}{L}(m_1\be_1 + m_2\be_2)$ of the reciprocal lattice, the wave vectors $\bk$ and $\bk + \bG$ describe the same Bloch wave. It is therefore sufficient to consider $\bk$ in the first Brillouin zone $[-\pi/L, \pi/L]^2$. Using in addition the symmetries of the unit cell, $\bk$ can be further restricted to the *irreducible Brillouin zone*, the triangle $\Gamma\text{X}\text{M}$ shown below {cite:p}`hussein2014dynamics`.
+# where $\bk$ is the wave vector. Since $e^{i\bq\cdot\br} = 1$ for any vector $\bq = \dfrac{2\pi}{L}(m_1\be_1 + m_2\be_2)$ of the reciprocal lattice, the wave vectors $\bk$ and $\bk + \bq$ describe the same Bloch wave. It is therefore sufficient to consider $\bk$ in the first Brillouin zone $[-\pi/L, \pi/L]^2$. Using in addition the symmetries of the unit cell, $\bk$ can be further restricted to the *irreducible Brillouin zone*, the triangle $\Gamma\text{X}\text{M}$ shown below {cite:p}`hussein2014dynamics`.
 
 # %% tags=["hide-input"]
 import matplotlib.pyplot as plt
@@ -109,7 +117,7 @@ plt.show()
 #
 # ### Weak form with a periodic unknown
 #
-# A direct implementation of {eq}`bloch-condition` would require complex-valued periodicity constraints depending on $\bk$. Instead, we write the Bloch wave as $\bw(\bx) = \widehat{\bw}(\bx)e^{i\bk\cdot\bx}$, where $\widehat{\bw}$ is $\Omega$-periodic. Indeed, $\bw(\bx + \bR) = \widehat{\bw}(\bx)e^{i\bk\cdot\bx}e^{i\bk\cdot\bR} = \bw(\bx)e^{i\bk\cdot\bR}$. The periodicity constraint is then the same for all $\bk$, and the wave vector appears in the gradient:
+# A direct implementation of {eq}`bloch-condition` would require complex-valued periodicity constraints depending on $\bk$. Instead, we write the Bloch wave as $\bw(\bx) = \widehat{\bw}(\bx)e^{i\bk\cdot\bx}$, where $\widehat{\bw}$ is $\Omega$-periodic. Indeed, $\bw(\bx + \br) = \widehat{\bw}(\bx)e^{i\bk\cdot\bx}e^{i\bk\cdot\br} = \bw(\bx)e^{i\bk\cdot\br}$. The periodicity constraint is then the same for all $\bk$, and the wave vector appears in the gradient:
 #
 # $$
 # \nabla\bw = e^{i\bk\cdot\bx}\left(\nabla\widehat{\bw} + i\,\widehat{\bw}\otimes\bk\right) = e^{i\bk\cdot\bx}\,\nabla_{\bk}\widehat{\bw}
@@ -117,11 +125,13 @@ plt.show()
 #
 # where $\nabla_{\bk}\widehat{\bw} = \nabla\widehat{\bw} + i\,\widehat{\bw}\otimes\bk$ is the *Bloch gradient*. Since the phase factors $e^{i\bk\cdot\bx}$ cancel in the Hermitian products of the weak form, the problem reads:
 #
+#
+#
 # > Find $\widehat{\bw} \neq 0$ periodic and $\omega$ such that:
 # > ```{math}
 # > :label: bloch-eigenproblem
 # >
-# > \int_\Omega \bsig(\nabla^\text{s}_{\bk}\widehat{\bw}) : \overline{\nabla^\text{s}_{\bk}\widehat{\bv}} \dOm = \omega^2\int_\Omega \rho\, \widehat{\bw}\cdot\overline{\widehat{\bv}} \dOm \quad \forall \widehat{\bv} \text{ periodic}
+# >\int_\Omega \bsig(\nabla^\text{s}_{\bk}\widehat{\bw}) : \overline{\nabla^\text{s}_{\bk}\bv} \dOm = \omega^2\int_\Omega \rho\, \widehat{\bw}\cdot\overline{\bv} \dOm \quad \forall \bv \text{ periodic}
 # > ```
 #
 # where $\nabla^\text{s}_{\bk}$ is the symmetric part of the Bloch gradient and the overline denotes complex conjugation. After discretization, we obtain a generalized eigenvalue problem $[\mathbf{K}(\bk)]\{\widehat{w}\} = \omega^2[\mathbf{M}]\{\widehat{w}\}$, where $[\mathbf{K}(\bk)]$ is Hermitian positive semi-definite and $[\mathbf{M}]$ is real symmetric positive definite and independent of $\bk$. The eigenvalues $\omega^2$ are therefore real and non-negative.
@@ -201,7 +211,7 @@ gmsh.finalize()
 
 # %% [markdown]
 # ```{note}
-# The four holes are identical and arranged with period $L/2$, so the cell contains $2\times 2$ periods of a simpler lattice with one hole per cell. The dispersion diagram computed below is the exact one for the chosen cell, but it contains *folded* bands: each band of the one-hole lattice appears together with copies shifted by reciprocal vectors $2\pi/L$. Folding does not affect complete band gaps, and a larger cell is the natural starting point for studying perturbed or disordered arrangements of holes.
+# The four holes are identical and arranged with period $L/2$, so the cell contains $2\times 2$ periods of a simpler lattice with one hole per cell. The dispersion diagram computed below is the exact one for the chosen cell, but it contains *folded* bands: each band of the one-hole lattice appears together with copies shifted by reciprocal vectors $2\pi/L$.
 # ```
 #
 # ### Periodic constraint and reduction matrix
@@ -209,7 +219,6 @@ gmsh.finalize()
 # The periodic unknown $\widehat{\bw}$ is constrained with a `MultiPointConstraint` from `dolfinx_mpc`. Degrees of freedom on the right and top edges (the *slaves*) are expressed in terms of those on the left and bottom edges (the *masters*) by a single map which subtracts $L$ from every coordinate equal to $L$. In particular, the three corners $(L,0)$, $(0,L)$ and $(L,L)$ are all mapped directly onto the origin, so that no slave is constrained twice, see [](/tours/homogenization/periodic_elasticity/periodic_elasticity.md). Contrary to static homogenization problems, we do not fix any degree of freedom: rigid translations are genuine zero-frequency Bloch waves at $\bk=0$.
 #
 # The periodic constraint does not depend on $\bk$ and is real-valued. We store it as a sparse matrix $[\mathbf{P}]$ such that the full vector of degrees of freedom reads $\{\widehat{w}\} = [\mathbf{P}]\{\widehat{w}_r\}$ in terms of the reduced vector $\{\widehat{w}_r\}$ of non-slave degrees of freedom. The constrained matrices are then $[\mathbf{P}]^\text{T}[\mathbf{K}][\mathbf{P}]$ and $[\mathbf{P}]^\text{T}[\mathbf{M}][\mathbf{P}]$.
-
 
 # %%
 def periodic_reduction_matrix(V, L, tol=1e-8):
@@ -255,7 +264,6 @@ def periodic_reduction_matrix(V, L, tol=1e-8):
 # The Bloch gradient is written in index notation. Note that `ufl.outer(a, b)` conjugates its first argument in complex mode, while `ufl.inner(a, b)` conjugates its second argument: the test function then appears conjugated, as required for a sesquilinear form.
 #
 # The generalized eigenvalue problem is solved with `scipy.sparse.linalg.eigsh` in shift-and-invert mode. Since $[\mathbf{K}(\bk)]$ is singular at $\bk = 0$ (rigid translations), we use a small negative shift $\sigma$ so that $[\mathbf{K}] - \sigma[\mathbf{M}]$ is always positive definite.
-
 
 # %%
 class BlochEigenproblem:
@@ -306,7 +314,6 @@ class BlochEigenproblem:
 # ### Dispersion diagram
 #
 # We define the wave vectors along the contour $\Gamma\to\text{X}\to\text{M}\to\Gamma$, with $\text{X} = (\pi/L, 0)$ and $\text{M} = (\pi/L, \pi/L)$, and the corresponding abscissa for plotting.
-
 
 # %%
 def k_path(num_per_segment):

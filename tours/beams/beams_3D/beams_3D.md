@@ -83,7 +83,7 @@ where we considered only a distributed loading $\boldsymbol{f}$ and where $\wide
 
 We start by loading the relevant modules.
 
-```{code-cell}
+```{code-cell} ipython3
 import numpy as np
 import gmsh
 import ufl
@@ -95,7 +95,7 @@ import dolfinx.fem.petsc
 
 We generate the mesh (`domain`) using the `Gmsh` Python API.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-input, hide-output]
 
 # Initialize gmsh
@@ -158,7 +158,7 @@ gmsh.finalize()
 
 We can check that the mesh is embedded in a 3D geometrical space while being of 1D topology.
 
-```{code-cell}
+```{code-cell} ipython3
 gdim = domain.geometry.dim
 tdim = domain.topology.dim
 
@@ -168,14 +168,14 @@ print(f"Topological dimension = {tdim}")
 
 We use the `ufl.Jacobian` function to compute the transformation Jacobian between a reference element (interval here) and the current element. In our case, the Jacobian is of shape (3,1). Transforming it into a vector of unit length will give us the local tangent vector $\boldsymbol{t}$.
 
-```{code-cell}
+```{code-cell} ipython3
 dx_dX = ufl.Jacobian(domain)[:, 0]
 t = dx_dX / ufl.sqrt(ufl.inner(dx_dX, dx_dX))
 ```
 
 We now compute the section local axis. As mentioned earlier, $\boldsymbol{a}_1$ will be perpendicular to $\boldsymbol{t}$ and the vertical direction $\boldsymbol{e}_z=(0,0,1)$. After normalization, $\boldsymbol{a}_2$ is built by taking the cross product between $\boldsymbol{t}$ and $\boldsymbol{a}_1$, $\boldsymbol{a}_2$ will therefore belong to the plane made by $\boldsymbol{t}$ and the vertical direction.
 
-```{code-cell}
+```{code-cell} ipython3
 ez = ufl.as_vector([0, 0, 1])
 a1 = ufl.cross(t, ez)
 a1 /= ufl.sqrt(ufl.dot(a1, a1))
@@ -185,7 +185,7 @@ a2 /= ufl.sqrt(ufl.dot(a2, a2))
 
 We now define the material and geometrical constants which will be used in the constitutive relation. We consider the case of a rectangular cross-section of width $b$ and height $h$ in directions $\boldsymbol{a}_1$ and $\boldsymbol{a}_2$. The bending inertia will therefore be $I_1 = bh^3/12$ and $I_2=hb^3/12$. The torsional inertia is $J=\beta hb^3$ with $\beta\approx 0.26$ for $h=3b$. Finally, the shear areas are approximated by $S_1=S_2=\kappa S$ with $\kappa=5/6$.
 
-```{code-cell}
+```{code-cell} ipython3
 thick = fem.Constant(domain, 0.3)
 width = thick / 3
 E = fem.Constant(domain, 70e3)
@@ -208,7 +208,7 @@ We now consider a mixed $\mathbb{P}_1/\mathbb{P}_1$-Lagrange interpolation for t
 
 Finally, similarly to Reissner-Mindlin plates, shear-locking issues might arise in the thin beam limit. To avoid this, reduced integration is performed on the shear part $Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2$ of the variational form using a one-point rule.
 
-```{code-cell}
+```{code-cell} ipython3
 Ue = basix.ufl.element("P", domain.basix_cell(), 1, shape=(gdim,))
 W = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Ue]))
 
@@ -256,7 +256,7 @@ l_form = -rho * S * g * u_[2] * ufl.dx
 
 Clamped boundary conditions are considered at the bottom $z=0$ level and the linear problem is finally solved.
 
-```{code-cell}
+```{code-cell} ipython3
 def bottom(x):
     return np.isclose(x[2], 0.0)
 
@@ -287,7 +287,7 @@ problem.solve()
 
 We finally plot the deflected shape and the bending moment distribution using `pyvista`.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-input]
 
 import pyvista

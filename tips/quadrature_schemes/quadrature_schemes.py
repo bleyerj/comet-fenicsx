@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Quadrature schemes
 #
 # ```{admonition} Objectives
@@ -29,7 +31,7 @@
 #
 # ## 2D Quadrature rule
 
-# +
+# %%
 import matplotlib.pyplot as plt
 import numpy as np
 import basix
@@ -45,7 +47,7 @@ quad_rules = {
 }
 
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 def plot_quad_points_2D(rule, cell_type, deg, color, ax):
     points, weights = basix.make_quadrature(cell_type, deg, rule=rule)
 
@@ -80,27 +82,34 @@ def plot_quadrature_rule_2D(rule, color="C0"):
         plt.show()
 
 
-# -
-
+# %% [markdown]
 # ### Default quadrature rule
 
+# %%
 plot_quadrature_rule_2D(QuadratureType.Default, color="C3")
 
+# %% [markdown]
 # ### Gauss-Jacobi quadrature rule
 
+# %%
 plot_quadrature_rule_2D(QuadratureType.gauss_jacobi, color="C2")
 
+# %% [markdown]
 # ### Gauss-Legendre-Lobatto quadrature rule
 
+# %%
 plot_quadrature_rule_2D(QuadratureType.gll, color="C1")
 
+# %% [markdown]
 # ### Xiao-Gimbutas quadrature rule
 
+# %%
 plot_quadrature_rule_2D(QuadratureType.xiao_gimbutas, color="C0")
 
+# %% [markdown]
 # ## 3D rules
 
-# +
+# %%
 cell_type = CellType.hexahedron
 dim = 3
 deg = 2
@@ -121,7 +130,7 @@ quad_rules = {
 }
 
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 def plot_quad_points_3D(rule, cell_type, deg, color, plotter):
     points, weights = basix.make_quadrature(cell_type, deg, rule=rule)
 
@@ -175,20 +184,26 @@ def plot_quadrature_rule_3D(rule, color="C0"):
         plotter.show()
 
 
-# -
-
+# %% [markdown]
 # ### Default quadrature rule
 
+# %%
 plot_quadrature_rule_3D(QuadratureType.Default, "C3")
 
+# %% [markdown]
 # ### Gauss-Jacobi quadrature rule
 
+# %%
 plot_quadrature_rule_3D(QuadratureType.gauss_jacobi, "C2")
 
+# %% [markdown]
 # ### Gauss-Legendre-Lobatto quadrature rule
 
+# %%
 plot_quadrature_rule_3D(QuadratureType.gll, "C1")
 
+# %% [markdown]
 # ### Xiao-Gimbutas quadrature rule
 
+# %%
 plot_quadrature_rule_3D(QuadratureType.xiao_gimbutas, "C0")

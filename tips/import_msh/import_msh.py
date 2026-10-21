@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Importing a `.msh` file
 #
 # ```{admonition} Objectives
@@ -29,7 +31,7 @@
 #
 # The geometry is a square plate of size $L$ with a circular hole of radius $R$. In the `Gmsh` file {Download}`plate_hole.msh<./plate_hole.msh>`, the square domain boundary has been tagged `10` and the hole inner boundary as been tagged `20`. We check that the corresponding area and perimeters match the expected values.
 
-# +
+# %%
 import numpy as np
 from mpi4py import MPI
 from dolfinx import io, fem
@@ -50,7 +52,7 @@ print(f"Expected length = {4*L:.3f}   Computed length = {length_1:.3f}")
 length_2 = fem.assemble_scalar(fem.form(1.0 * ds(20)))
 print(f"Expected length = {2*np.pi*R:.3f}   Computed length = {length_2:.3f}")
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 import pyvista
 from dolfinx import plot
 

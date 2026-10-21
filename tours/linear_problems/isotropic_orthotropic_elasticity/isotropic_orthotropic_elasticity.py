@@ -1,6 +1,7 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
@@ -230,7 +231,6 @@ C = ufl.inv(S)
 # ```
 #
 # Finally, we can define the stress function `stress`, again using either a vectorial or a tensorial representation, as:
-
 
 # %%
 def stress(u, repr="vectorial"):
