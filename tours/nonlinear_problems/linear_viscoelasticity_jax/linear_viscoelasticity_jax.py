@@ -49,6 +49,9 @@
 # ```{seealso}
 #
 # For more details about JAX-based implementation of constitutive equations, we refer to:
+# - the `jaxmat` library:
+#     * [Online documentation](https://erc-automatix.github.io/jaxmat)
+#     * Repository https://github.com/erc-automatix/jaxmat
 # - the `dolfinx_materials` library:
 #     * [Online documentation](https://bleyerj.github.io/dolfinx_materials)
 #     * Repository https://github.com/bleyerj/dolfinx_materials
