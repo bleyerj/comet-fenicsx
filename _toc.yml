@@ -33,6 +33,7 @@ parts:
   - file: tours/homogenization/contents
     sections:
     - file: tours/homogenization/periodic_elasticity/periodic_elasticity.md
+    - file: tours/homogenization/periodic_hyperelasticity/periodic_hyperelasticity.md
   - file: tours/interfaces/contents
     sections:
     - file: tours/interfaces/intrinsic_czm/intrinsic_czm.md
