@@ -4,7 +4,8 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
+  formats: md:myst,ipynb,py
 kernelspec:
   display_name: Python 3
   language: python
@@ -118,7 +119,9 @@ bcs = [fem.dirichletbc(u_bc, left_dofs)]
 
 u = fem.Function(V, name="Displacement")
 
-problem = dolfinx.fem.petsc.LinearProblem(a, l, bcs, u=u)
+problem = dolfinx.fem.petsc.LinearProblem(
+    a, l, petsc_options_prefix="displacement_", bcs=bcs, u=u
+)
 problem.solve()
 ```
 
@@ -204,23 +207,23 @@ def y(x):
 
 
 u_bc.sub(0).interpolate(one)
-fem.set_bc(v_reac.vector, bcs)
+fem.set_bc(v_reac.x.petsc_vec, bcs)
 print(f"Horizontal reaction Rx = {fem.assemble_scalar(virtual_work_form):.6f}")
 print(f"             (analytic = {-L * H * fx})")
 print("-" * 50)
 
-u_bc.vector.set(0.0)
-v_reac.vector.set(0.0)
+u_bc.x.petsc_vec.set(0.0)
+v_reac.x.petsc_vec.set(0.0)
 u_bc.sub(1).interpolate(one)
-fem.set_bc(v_reac.vector, bcs)
+fem.set_bc(v_reac.x.petsc_vec, bcs)
 print(f"Vertical reaction Ry = {fem.assemble_scalar(virtual_work_form):.6f}")
 print(f"           (analytic = {-L * H * fy})")
 print("-" * 50)
 
-u_bc.vector.set(0.0)
-v_reac.vector.set(0.0)
+u_bc.x.petsc_vec.set(0.0)
+v_reac.x.petsc_vec.set(0.0)
 u_bc.sub(0).interpolate(y)
-fem.set_bc(v_reac.vector, bcs)
+fem.set_bc(v_reac.x.petsc_vec, bcs)
 print(f"Bending moment Mz = {fem.assemble_scalar(virtual_work_form):.6f}")
 print(f"        (analytic = {H * L**2 / 2 * fy})")
 print("-" * 50)

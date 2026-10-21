@@ -2,6 +2,7 @@
 # jupyter:
 #   jupytext:
 #     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -71,4 +72,4 @@ mass_diagonal = u * dx_lumped  # defines a linear form corresponding to the diag
 M_vect = fem.petsc.assemble_vector(fem.form(mass_diagonal))
 w = fem.Function(V)
 iMw = fem.Function(V)
-iMw.vector.pointwiseDivide(M_vect, w.vector)
+iMw.x.petsc_vec.pointwiseDivide(M_vect, w.x.petsc_vec)

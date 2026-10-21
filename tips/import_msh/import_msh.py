@@ -2,6 +2,7 @@
 # jupyter:
 #   jupytext:
 #     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -38,19 +39,23 @@ from dolfinx import io, fem
 import ufl
 
 L, R = 10, 2
-domain, markers, facets = io.gmshio.read_from_msh("plate_hole.msh", MPI.COMM_WORLD)
+mesh_data = io.gmsh.read_from_msh("plate_hole.msh", MPI.COMM_WORLD)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
+
 
 dx = ufl.Measure("dx", domain=domain, subdomain_data=markers)
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 
 area = fem.assemble_scalar(fem.form(1.0 * dx))
-print(f"Expected area = {L**2-np.pi*R**2:.3f}   Computed area = {area:.3f}")
+print(f"Expected area = {L**2 - np.pi * R**2:.3f}   Computed area = {area:.3f}")
 
 
 length_1 = fem.assemble_scalar(fem.form(1.0 * ds(10)))
-print(f"Expected length = {4*L:.3f}   Computed length = {length_1:.3f}")
+print(f"Expected length = {4 * L:.3f}   Computed length = {length_1:.3f}")
 length_2 = fem.assemble_scalar(fem.form(1.0 * ds(20)))
-print(f"Expected length = {2*np.pi*R:.3f}   Computed length = {length_2:.3f}")
+print(f"Expected length = {2 * np.pi * R:.3f}   Computed length = {length_2:.3f}")
 
 # %% tags=["hide-input"]
 import pyvista

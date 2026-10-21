@@ -1,13 +1,13 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3
+  display_name: fenicsx-v0.11
   language: python
   name: python3
 ---
@@ -38,7 +38,7 @@ from basix import CellType, QuadratureType
 all_cell_types = [CellType.triangle, CellType.quadrilateral]
 degrees = range(5)
 quad_rules = {
-    QuadratureType.Default: (degrees, all_cell_types),
+    QuadratureType.default: (degrees, all_cell_types),
     QuadratureType.gauss_jacobi: (degrees, all_cell_types),
     QuadratureType.gll: (degrees, [CellType.quadrilateral]),
     QuadratureType.xiao_gimbutas: (degrees[1:], [CellType.triangle]),
@@ -85,7 +85,7 @@ def plot_quadrature_rule_2D(rule, color="C0"):
 ### Default quadrature rule
 
 ```{code-cell} ipython3
-plot_quadrature_rule_2D(QuadratureType.Default, color="C3")
+plot_quadrature_rule_2D(QuadratureType.default, color="C3")
 ```
 
 ### Gauss-Jacobi quadrature rule
@@ -122,7 +122,7 @@ pv.set_jupyter_backend("static")
 all_cell_types = [CellType.tetrahedron, CellType.hexahedron]
 degrees = range(5)
 quad_rules = {
-    QuadratureType.Default: (degrees, all_cell_types),
+    QuadratureType.default: (degrees, all_cell_types),
     QuadratureType.gauss_jacobi: (degrees, all_cell_types),
     QuadratureType.gll: (degrees, [CellType.hexahedron]),
     QuadratureType.xiao_gimbutas: (degrees[1:], [CellType.tetrahedron]),
@@ -188,7 +188,7 @@ def plot_quadrature_rule_3D(rule, color="C0"):
 ### Default quadrature rule
 
 ```{code-cell} ipython3
-plot_quadrature_rule_3D(QuadratureType.Default, "C3")
+plot_quadrature_rule_3D(QuadratureType.default, "C3")
 ```
 
 ### Gauss-Jacobi quadrature rule
