@@ -3,7 +3,7 @@
 
 format: jb-book
 root: index
-title: Numerical tours of Computational Mechanics using FEniCSx
+title: Numerical Tours of Computational Mechanics with FEniCSx
 parts:
 - caption: Introduction
   chapters:

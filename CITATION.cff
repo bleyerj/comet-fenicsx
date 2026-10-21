@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you find these numerical tours useful, please consider citing them as below."
+title: "Numerical tours of Computational Mechanics with FEniCSx"
+type: software
+authors:
+  - family-names: Bleyer
+    given-names: Jeremy
+    orcid: "https://orcid.org/0000-0001-8212-9921"
+    affiliation: "Laboratoire Navier, École nationale des ponts et chaussées, Université Gustave Eiffel, CNRS"
+identifiers:
+  - type: doi
+    value: 
+    description: "Concept DOI, resolving to the latest release"
+doi: 10.5281/zenodo.10470942
+url: "https://bleyerj.github.io/comet-fenicsx/"
+repository-code: "https://github.com/bleyerj/comet-fenicsx"
+license: CC-BY-SA-4.0
+keywords:
+  - FEniCSx
+  - finite element method
+  - computational mechanics
+  - solid mechanics
+  - structural mechanics
+  - tutorial
