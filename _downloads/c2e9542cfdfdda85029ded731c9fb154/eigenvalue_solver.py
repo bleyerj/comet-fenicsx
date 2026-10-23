@@ -92,7 +92,7 @@ def EPS_get_spectrum(
         vr = fem.Function(V)
         vi = fem.Function(V)
 
-        eigval.append(EPS.getEigenpair(i, vr.vector, vi.vector))
+        eigval.append(EPS.getEigenpair(i, vr.x.petsc_vec, vi.x.petsc_vec))
         eigvec_r.append(vr)
         eigvec_i.append(vi)  # Sort by increasing magnitude
     idx = np.argsort(np.abs(np.array(eigval)), axis=0)

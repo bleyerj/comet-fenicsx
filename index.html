@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Welcome &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Welcome &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,26 +64,33 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Linear elasticity" href="intro/linear_elasticity/linear_elasticity.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -109,7 +116,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -150,8 +201,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -184,26 +235,31 @@
 <li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tours/linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tours/multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tours/multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tours/nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tours/nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tours/nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tours/homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -219,12 +275,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="tours/shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="tours/shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tours/shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="tours/optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="tours/optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tours/optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -333,7 +394,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -357,7 +418,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -379,15 +440,15 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-it-about">What is it about ?</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-it-about">What is it about?</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tours">Tours</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-tricks">Tips &amp; Tricks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing">Citing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-author">About the author</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-author">About the author</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-contributors">Other contributors</a></li>
 </ul>
 </li>
@@ -405,21 +466,26 @@
   <h1 style="text-align: center;" class="ignore-toc"> Numerical Tours of Computational Mechanics with FEniCSx</h1>
 <h3 style="text-align: center;" class="ignore-toc"> Jeremy Bleyer</h3>
 <p><span class="math notranslate nohighlight">\(\,\)</span></p>
-<a class="reference internal image-reference" href="_images/logo.png"><img alt="_images/logo.png" class="align-center" src="_images/logo.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="_images/logo.png"><img alt="_images/logo.png" class="align-center" src="_images/logo.png" style="width: 800px;" />
+</a>
 <p><span class="math notranslate nohighlight">\(\,\)</span></p>
 <section class="tex2jax_ignore mathjax_ignore" id="welcome">
 <h1>Welcome<a class="headerlink" href="#welcome" title="Link to this heading">#</a></h1>
 <section id="what-is-it-about">
-<h2>What is it about ?<a class="headerlink" href="#what-is-it-about" title="Link to this heading">#</a></h2>
-<p>These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>, <a class="reference external" href="http://fenicsproject.org">http://fenicsproject.org</a>.</p>
+<h2>What is it about?<a class="headerlink" href="#what-is-it-about" title="Link to this heading">#</a></h2>
+<p>These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software <a class="reference external" href="https://fenicsproject.org"><code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code></a>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>These tours comply with <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code> v.0.8.0.</p>
+<p>These tours are compatible with <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code> v0.11. A suitable environment can be installed from <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code> with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>fenicsx-0.11<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>fenics-dolfinx<span class="o">=</span><span class="m">0</span>.11<span class="w"> </span><span class="nv">dolfinx_mpc</span><span class="o">=</span><span class="m">0</span>.11<span class="w"> </span>scifem<span class="w"> </span>python-gmsh<span class="w"> </span>pyvista<span class="w"> </span>jax<span class="w"> </span>matplotlib
+</pre></div>
 </div>
-<p>The book is organized in the following different parts:</p>
+</div>
+<p>The book is organized in the following parts:</p>
 <section id="introduction">
 <h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
-<p>This part contains a set of short demos to get introduced to <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> via basic examples:</p>
+<p>This part contains a set of short demos to get started with <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> via basic examples:</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-1 sd-row-cols-lg-1 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -465,14 +531,13 @@
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For another general introduction to <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>, we heavily recommend to follow the “official” <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/index.html">FEniCSx tutorial</a> by Jørgen S. Dokken.</p>
+<p>For another general introduction to <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>, we strongly recommend the “official” <a class="reference external" href="https://jsdokken.com/dolfinx-tutorial/index.html">FEniCSx tutorial</a> by Jørgen S. Dokken.</p>
 </div>
 </section>
 <section id="tours">
 <h3>Tours<a class="headerlink" href="#tours" title="Link to this heading">#</a></h3>
-<p>This part is the main body of the book. These numerical tours are intended to complement the existing <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> tutorials in the official documentation by focusing on specific applications within the field of computational solid and structural mechanics. The purpose of these tours is to offer users with a background in mechanics a starting point for utilizing <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>, using examples familiar to them.</p>
-<p>While many of the covered topics are standard and relatively easy to implement, others, such as structural elements (beams, plates, and shells) or nonlinear constitutive models, present more complexity.
-Other topics will also be more advanced and exploratory and will reflect currently investigated research topics, illustrating the versatility of <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> for handling advanced models. The difficulty of each tour will be indicated by the star symbols: <span class="far fa-star"></span> = easy, <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span> = difficult.</p>
+<p>This part is the main body of the book. These numerical tours are intended to complement the existing <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> tutorials in the official documentation by focusing on specific applications within the field of computational solid and structural mechanics. The purpose of these tours is to offer users with a background in mechanics a starting point for using <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>, with examples familiar to them.</p>
+<p>Many of the covered topics are standard and relatively easy to implement. Others, such as structural elements (beams, plates and shells), nonlinear constitutive models or interface problems, are more involved, and some reflect current research topics, illustrating the versatility of <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> for handling advanced models. The difficulty of each tour is indicated by stars, from <span class="far fa-star"></span> (easy) to <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span> (difficult).</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-1 sd-row-cols-lg-1 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -490,6 +555,15 @@ Other topics will also be more advanced and exploratory and will reflect current
 <img alt="logo" src="_images/linear_problems.svg" />
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference external" href="tours/linear_problems/contents.html"><span>tours/linear_problems/contents.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Multiphysics</strong></span></div>
+<img alt="logo" src="_images/multiphysics.png" />
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tours/multiphysics/contents.html"><span>tours/multiphysics/contents.html</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -531,6 +605,15 @@ Other topics will also be more advanced and exploratory and will reflect current
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Interfaces</strong></span></div>
+<img alt="logo" src="_images/intrinsic_czm.gif" />
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tours/interfaces/contents.html"><span>tours/interfaces/contents.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
 <span class="pst-color-primary"><strong>Beams</strong></span></div>
 <img alt="logo" src="_images/truss.png" />
 </div>
@@ -554,6 +637,15 @@ Other topics will also be more advanced and exploratory and will reflect current
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference external" href="tours/shells/contents.html"><span>tours/shells/contents.html</span></a></div>
 </div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Optimization</strong></span></div>
+<img alt="logo" src="_images/topology_optimization.gif" />
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tours/optimization/contents.html"><span>tours/optimization/contents.html</span></a></div>
+</div>
 </div>
 </div>
 </div>
@@ -566,48 +658,127 @@ Other topics will also be more advanced and exploratory and will reflect current
 <p>The previous set of numerical tours based on the legacy <code class="docutils literal notranslate"><span class="pre">FEniCS</span></code> version can be found here <a class="reference external" href="https://comet-fenics.readthedocs.io/">https://comet-fenics.readthedocs.io/</a>.</p>
 </div>
 </section>
-<section id="tips-tricks">
-<h3>Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Link to this heading">#</a></h3>
+<section id="tips-and-tricks">
+<h3>Tips and tricks<a class="headerlink" href="#tips-and-tricks" title="Link to this heading">#</a></h3>
 <p>This part provides code snippets for various small tasks frequently encountered in computational mechanics with <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code>.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-1 sd-row-cols-lg-1 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-lg sd-text-center docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="h3 pst-color-primary"><strong>Tips and tricks</strong></span></div>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-3 sd-row-cols-xs-3 sd-row-cols-sm-3 sd-row-cols-md-3 sd-row-cols-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Marking facets</strong></span></div>
+<p class="sd-card-text">Marking facets with geometrical functions</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tips/mark_facets/mark_facets.html"><span>tips/mark_facets/mark_facets.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Importing meshes</strong></span></div>
+<p class="sd-card-text">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file generated with <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code></p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tips/import_msh/import_msh.html"><span>tips/import_msh/import_msh.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Piecewise constant fields</strong></span></div>
+<p class="sd-card-text">Spatially varying material properties</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tips/piecewise_constant_field/piecewise_constant_field.html"><span>tips/piecewise_constant_field/piecewise_constant_field.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Mass lumping</strong></span></div>
+<p class="sd-card-text">Lumping a mass matrix</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tips/mass_lumping/mass_lumping.html"><span>tips/mass_lumping/mass_lumping.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Quadrature schemes</strong></span></div>
+<p class="sd-card-text">Choosing quadrature rules and degrees</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tips/quadrature_schemes/quadrature_schemes.html"><span>tips/quadrature_schemes/quadrature_schemes.html</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+<span class="pst-color-primary"><strong>Reaction forces</strong></span></div>
+<p class="sd-card-text">Computing consistent reaction forces</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference external" href="tips/computing_reactions/computing_reactions.html"><span>tips/computing_reactions/computing_reactions.html</span></a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="citing">
 <h2>Citing<a class="headerlink" href="#citing" title="Link to this heading">#</a></h2>
-<p>If you find these demos useful for your research work, please consider citing them using the following Zenodo DOI:</p>
+<p>If you find these tours useful for your research or teaching, please consider citing them using the following Zenodo DOI. This DOI always points to the latest release; the Zenodo page also gives the DOI of each individual release, should you need to refer to a specific version.</p>
 <p><a class="reference external" href="https://doi.org/10.5281/zenodo.10470942"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.10470942.svg" /></a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">bleyer2024comet</span><span class="p">,</span>
-  <span class="n">author</span>       <span class="o">=</span> <span class="p">{</span><span class="n">Bleyer</span><span class="p">,</span> <span class="n">Jeremy</span><span class="p">},</span>
-  <span class="n">title</span>        <span class="o">=</span> <span class="p">{{</span><span class="n">Numerical</span> <span class="n">tours</span> <span class="n">of</span> <span class="n">Computational</span> <span class="n">Mechanics</span> <span class="k">with</span> 
-                   <span class="n">FEniCSx</span><span class="p">}},</span>
-  <span class="n">month</span>        <span class="o">=</span> <span class="n">jan</span><span class="p">,</span>
-  <span class="n">year</span>         <span class="o">=</span> <span class="mi">2024</span><span class="p">,</span>
-  <span class="n">publisher</span>    <span class="o">=</span> <span class="p">{</span><span class="n">Zenodo</span><span class="p">},</span>
-  <span class="n">version</span>      <span class="o">=</span> <span class="p">{</span><span class="n">v0</span><span class="mf">.1</span><span class="p">},</span>
-  <span class="n">doi</span>          <span class="o">=</span> <span class="p">{</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="mf">.10470942</span><span class="p">},</span>
-  <span class="n">url</span>          <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.5281</span><span class="o">/</span><span class="n">zenodo</span><span class="mf">.10470942</span><span class="p">}</span>
+<blockquote>
+<div><p>J. Bleyer, <em>Numerical tours of Computational Mechanics with FEniCSx</em>, Zenodo, 2024. <a class="reference external" href="https://doi.org/10.5281/zenodo.10470942">https://doi.org/10.5281/zenodo.10470942</a></p>
+</div></blockquote>
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@software</span><span class="p">{</span><span class="nl">bleyer2024comet</span><span class="p">,</span>
+<span class="w">  </span><span class="na">author</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="s">{Bleyer, Jeremy}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">title</span><span class="w">     </span><span class="p">=</span><span class="w"> </span><span class="s">{{Numerical tours of Computational Mechanics with FEniCSx}}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">year</span><span class="w">      </span><span class="p">=</span><span class="w"> </span><span class="s">{2024}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">publisher</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">{Zenodo}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">doi</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{10.5281/zenodo.10470942}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">url</span><span class="w">       </span><span class="p">=</span><span class="w"> </span><span class="s">{https://doi.org/10.5281/zenodo.10470942}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>All this work is licensed under the <a class="reference external" href="http://creativecommons.org/licenses/by-sa/4.0/%3E">Creative Commons Attribution-ShareAlike 4.0 International License</a> <img alt="license" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />.</p>
+<p>Some tours have been written with the help of other contributors, who are acknowledged at the top of the corresponding pages.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>These tours rely on the <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> project. If you use them in published work, please also cite the <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> components as <a class="reference external" href="https://fenicsproject.org/citing/">recommended by the FEniCS project</a>, namely:</p>
+<ul class="simple">
+<li><p>I. A. Baratta, J. P. Dean, J. S. Dokken, M. Habera, J. S. Hale, C. N. Richardson, M. E. Rognes, M. W. Scroggs, N. Sime, G. N. Wells. DOLFINx: the next generation FEniCS problem solving environment, preprint, 2023. <a class="reference external" href="https://doi.org/10.5281/zenodo.10447666">doi:10.5281/zenodo.10447666</a></p></li>
+<li><p>M. W. Scroggs, I. A. Baratta, C. N. Richardson, G. N. Wells. Basix: a runtime finite element basis evaluation library, <em>Journal of Open Source Software</em> 7(73), 3982, 2022. <a class="reference external" href="https://doi.org/10.21105/joss.03982">doi:10.21105/joss.03982</a></p></li>
+<li><p>M. S. Alnæs, A. Logg, K. B. Ølgaard, M. E. Rognes, G. N. Wells. Unified Form Language: a domain-specific language for weak formulations of partial differential equations, <em>ACM Transactions on Mathematical Software</em> 40, 2014. <a class="reference external" href="https://doi.org/10.1145/2566630">doi:10.1145/2566630</a></p></li>
+</ul>
+<p>as well as the other libraries used in a given tour (e.g. <code class="docutils literal notranslate"><span class="pre">PETSc</span></code>, <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code>, <code class="docutils literal notranslate"><span class="pre">dolfinx_mpc</span></code>, <code class="docutils literal notranslate"><span class="pre">JAX</span></code>) following their own recommendations.</p>
+</div>
+<p>All this work is licensed under the <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> <img alt="license" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />.</p>
 </section>
 <section id="about-the-author">
 <h2>About the author<a class="headerlink" href="#about-the-author" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://bleyerj.github.io/">Jeremy Bleyer</a> is a researcher in Solid and Structural Mechanics at <a class="reference external" href="https://navier-lab.fr">Laboratoire Navier</a>, a joint research  (UMR 8205) of <a class="reference external" href="http://www.enpc.fr">Ecole Nationale des Ponts et Chaussées</a>,
-<a class="reference external" href="https://www.univ-gustave-eiffel.fr/">Université Gustave Eiffel</a> and <a class="reference external" href="http://www.cnrs.fr">CNRS</a>.</p>
+<p><a class="reference external" href="https://bleyerj.github.io/">Jeremy Bleyer</a> is a researcher in Solid and Structural Mechanics at <a class="reference external" href="https://navier-lab.fr">Laboratoire Navier</a>, a joint research unit (UMR 8205) of <a class="reference external" href="https://www.enpc.fr">École nationale des ponts et chaussées</a>, <a class="reference external" href="https://www.univ-gustave-eiffel.fr/">Université Gustave Eiffel</a> and <a class="reference external" href="https://www.cnrs.fr">CNRS</a>.</p>
 <p><a class="reference external" href="mailto:jeremy&#46;bleyer&#37;&#52;&#48;enpc&#46;fr"><span class="fas fa-at"></span> jeremy<span>&#46;</span>bleyer<span>&#64;</span>enpc<span>&#46;</span>fr</a></p>
-<p><a class="reference external" href="http://www.linkedin.com/in/j%C3%A9r%C3%A9my-bleyer-0aabb531"><span class="fab fa-linkedin"></span> jeremy-bleyer</a></p>
-<a href="https://orcid.org/0000-0001-8212-9921">
-<img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_32x32.png" width="16" height="16" />
- 0000-0001-8212-9921
-</a>
+<p><a class="reference external" href="https://www.linkedin.com/in/j%C3%A9r%C3%A9my-bleyer-0aabb531"><span class="fab fa-linkedin"></span> jeremy-bleyer</a></p>
+<p><a class="reference external" href="https://orcid.org/0000-0001-8212-9921"><span class="fab fa-orcid"></span> 0000-0001-8212-9921</a></p>
 <p><span class="math notranslate nohighlight">\(\,\)</span></p>
-<a class="bg-primary mb-1 reference internal image-reference" href="_images/banner_tutelles.png"><img alt="_images/banner_tutelles.png" class="bg-primary mb-1 align-center" src="_images/banner_tutelles.png" style="width: 600px;" /></a>
+<a class="bg-primary mb-1 reference internal image-reference" href="_images/banner_tutelles.png"><img alt="_images/banner_tutelles.png" class="bg-primary mb-1 align-center" src="_images/banner_tutelles.png" style="width: 600px;" />
+</a>
 <section id="other-contributors">
 <h3>Other contributors<a class="headerlink" href="#other-contributors" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Andrey Latyshev (University of Luxembourg, Sorbonne Université, <a class="reference external" href="mailto:andrey&#46;latyshev&#37;&#52;&#48;uni&#46;lu">andrey<span>&#46;</span>latyshev<span>&#64;</span>uni<span>&#46;</span>lu</a>)</p></li>
 <li><p>Corrado Maurini (Sorbonne Université, <a class="reference external" href="mailto:corrado&#46;maurini&#37;&#52;&#48;sorbonne-universite&#46;fr">corrado<span>&#46;</span>maurini<span>&#64;</span>sorbonne-universite<span>&#46;</span>fr</a>)</p></li>
 <li><p>Maxime Pierre (Ecole des Ponts ParisTech, <a class="reference external" href="mailto:maxime&#46;pierre&#37;&#52;&#48;enpc&#46;fr">maxime<span>&#46;</span>pierre<span>&#64;</span>enpc<span>&#46;</span>fr</a>)</p></li>
+<li><p>Felipe Rocha (Université Gustave Eiffel, <a class="reference external" href="mailto:felipe&#46;figueredo-rocha&#37;&#52;&#48;u-pec&#46;fr">felipe<span>&#46;</span>figueredo-rocha<span>&#64;</span>u-pec<span>&#46;</span>fr</a>)</p></li>
 </ul>
 </section>
 </section>
@@ -669,20 +840,21 @@ Other topics will also be more advanced and exploratory and will reflect current
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-it-about">What is it about ?</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-it-about">What is it about?</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tours">Tours</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-tricks">Tips &amp; Tricks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-and-tricks">Tips and tricks</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing">Citing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-author">About the author</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-author">About the author</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#other-contributors">Other contributors</a></li>
 </ul>
 </li>
@@ -727,8 +899,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -1,20 +1,20 @@
 Traceback (most recent call last):
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 1319, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
     return future.result()
            ^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
@@ -23,6 +23,7 @@ from pathlib import Path
 import pyvista
 from mpi4py import MPI
 import ufl
+import basix
 from dolfinx import mesh, fem, io, plot
 import dolfinx.fem.petsc
 
@@ -42,15 +43,38 @@ plotter.show_axes()
 plotter.show()
 ------------------
 
+----- stderr -----
+Error   : Unable to open file 'I_beam.msh'
+------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Cell [0;32mIn[1], line 3[0m
-[1;32m      1[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
-[1;32m      2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mpathlib[39;00m [38;5;28;01mimport[39;00m Path
-[0;32m----> 3[0m [38;5;28;01mimport[39;00m [38;5;21;01mpyvista[39;00m
-[1;32m      4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mmpi4py[39;00m [38;5;28;01mimport[39;00m MPI
-[1;32m      5[0m [38;5;28;01mimport[39;00m [38;5;21;01mufl[39;00m
+[0;31mException[0m                                 Traceback (most recent call last)
+[0;32m/tmp/ipykernel_22178/3349289351.py[0m in [0;36m?[0;34m()[0m
+[1;32m      6[0m [0;32mimport[0m [0mbasix[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      7[0m [0;32mfrom[0m [0mdolfinx[0m [0;32mimport[0m [0mmesh[0m[0;34m,[0m [0mfem[0m[0;34m,[0m [0mio[0m[0;34m,[0m [0mplot[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      8[0m [0;32mimport[0m [0mdolfinx[0m[0;34m.[0m[0mfem[0m[0;34m.[0m[0mpetsc[0m[0;34m[0m[0;34m[0m[0m
+[1;32m      9[0m [0;34m[0m[0m
+[0;32m---> 10[0;31m [0mdomain[0m[0;34m,[0m [0mmarkers[0m[0;34m,[0m [0mfacets[0m [0;34m=[0m [0mio[0m[0;34m.[0m[0mgmshio[0m[0;34m.[0m[0mread_from_msh[0m[0;34m([0m[0;34m"I_beam.msh"[0m[0;34m,[0m [0mMPI[0m[0;34m.[0m[0mCOMM_WORLD[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     11[0m [0;34m[0m[0m
+[1;32m     12[0m [0mgdim[0m [0;34m=[0m [0mdomain[0m[0;34m.[0m[0mgeometry[0m[0;34m.[0m[0mdim[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     13[0m [0mtdim[0m [0;34m=[0m [0mdomain[0m[0;34m.[0m[0mtopology[0m[0;34m.[0m[0mdim[0m[0;34m[0m[0;34m[0m[0m
 
-[0;31mModuleNotFoundError[0m: No module named 'pyvista'
+[0;32m~/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/dolfinx/io/gmshio.py[0m in [0;36m?[0;34m(filename, comm, rank, gdim, partitioner)[0m
+[1;32m    369[0m [0;34m[0m[0m
+[1;32m    370[0m     [0;32mif[0m [0mcomm[0m[0;34m.[0m[0mrank[0m [0;34m==[0m [0mrank[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    371[0m         [0mgmsh[0m[0;34m.[0m[0minitialize[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    372[0m         [0mgmsh[0m[0;34m.[0m[0mmodel[0m[0;34m.[0m[0madd[0m[0;34m([0m[0;34m"Mesh from file"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 373[0;31m         [0mgmsh[0m[0;34m.[0m[0mmerge[0m[0;34m([0m[0mstr[0m[0;34m([0m[0mfilename[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    374[0m         [0mmsh[0m [0;34m=[0m [0mmodel_to_mesh[0m[0;34m([0m[0mgmsh[0m[0;34m.[0m[0mmodel[0m[0;34m,[0m [0mcomm[0m[0;34m,[0m [0mrank[0m[0;34m,[0m [0mgdim[0m[0;34m=[0m[0mgdim[0m[0;34m,[0m [0mpartitioner[0m[0;34m=[0m[0mpartitioner[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    375[0m         [0mgmsh[0m[0;34m.[0m[0mfinalize[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    376[0m         [0;32mreturn[0m [0mmsh[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/gmsh.py[0m in [0;36m?[0;34m(fileName)[0m
+[1;32m    355[0m     lib.gmshMerge(
+[1;32m    356[0m         [0mc_char_p[0m[0;34m([0m[0mfileName[0m[0;34m.[0m[0mencode[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    357[0m         byref(ierr))
+[1;32m    358[0m     [0;32mif[0m [0mierr[0m[0;34m.[0m[0mvalue[0m [0;34m!=[0m [0;36m0[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 359[0;31m         [0;32mraise[0m [0mException[0m[0;34m([0m[0mlogger[0m[0;34m.[0m[0mgetLastError[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m
+[0;31mException[0m: Unable to open file 'I_beam.msh'
 

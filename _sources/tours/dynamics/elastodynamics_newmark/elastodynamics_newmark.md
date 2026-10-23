@@ -1,20 +1,18 @@
 ---
 jupytext:
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: fenicsx-v0.11
   language: python
   name: python3
-language_info:
-  name: python3
-  pygments_lexer: ipython3
 ---
 
-# Transient elastodynamics with Newmark time-integration {far}`star`{far}`star`
+# Transient elastodynamics with Newmark time integration {far}`star`{far}`star`
 
 ```{admonition} Objectives
 :class: objectives
@@ -47,21 +45,21 @@ This demo shows how to perform time integration of transient dynamics in the lin
 
 ## Introduction and elastodynamics equation
 
-The elastodynamics equation combine the balance of linear momentum:
+The elastodynamics equation combines the balance of linear momentum:
 
 $$
-\nabla \cdot \bsig + \rho \bf = \rho \ddot{\bu}
+\nabla \cdot \bsig + \bf = \rho \ddot{\bu}
 $$
 
 where $\bu$ is the displacement vector field, $\ba=\ddot{\bu}=\dfrac{\partial^2 \bu}{\partial t^2}$ is the acceleration,
 $\rho$ the material density, $\bf$ a given body force and $\bsig$ the stress tensor which is related
 to the displacement through a constitutive equation. We consider in the following the case of isotropic linear elasticity.
 
-The weak form is readily obtained by integrating by part the balance equation using a test function $\bv\in V$
+The weak form is readily obtained by integrating by parts the balance equation using a test function $\bv\in V$
 with $V$ being a suitable function space that satisfies the displacement boundary conditions:
 
 $$
-\int_{\Omega} \rho \ddot{\bu}\cdot \bv \dOm + \int_{\Omega} \bsig(\bu):\beps(v) \dOm = \int_{\Omega} \rho \bf \cdot \bv \dOm + \int_{\partial\Omega} (\bsig\bn) \cdot \bv \dS \quad \text{for all } \bv\in V
+\int_{\Omega} \rho \ddot{\bu}\cdot \bv \dOm + \int_{\Omega} \bsig(\bu):\beps(\bv) \dOm = \int_{\Omega} \bf \cdot \bv \dOm + \int_{\Neumann} (\bsig\bn) \cdot \bv \dS \quad \text{for all } \bv\in V
 $$
 
 The previous equation can be written as follows:
@@ -93,16 +91,16 @@ The damping form $c$ is generally considered to be bilinear and symmetric, being
 
 ### Rayleigh damping
 
-When little is known about the origin of damping in the structure, a popular choice for the damping matrix, known as *Rayleigh damping*, consists in using a linear combination of the mass and stiffness matrix $[C] = \eta_M[M]+\eta_K[K]$ with two positive parameters $\eta_M,\eta_K$ which can be fitted against experimental data for instance (usually by measuring the damping ratio of two natural modes of vibration).
+When little is known about the origin of damping in the structure, a popular choice for the damping matrix, known as *Rayleigh damping*, consists in using a linear combination of the mass and stiffness matrices $[C] = \eta_M[M]+\eta_K[K]$ with two positive parameters $\eta_M,\eta_K$ which can be fitted against experimental data for instance (usually by measuring the damping ratio of two natural modes of vibration).
 
 One notable advantage of using such a choice is that modes identified from the modal analysis based on $[K]$ and $[M]$ still form an orthogonal basis, yielding decoupled evolution equations, even in the presence of damping. This is no longer the case in general for other forms of damping modeling.
 
 ## Time discretization using the Newmark scheme
 
-We now introduce a time discretization of the interval study $[0;T]$ in $N+1$ time increments $t_0=0,t_1,\ldots,t_N,t_{N+1}=T$
+We now introduce a time discretization of the study interval $[0;T]$ in $N$ time increments $t_0=0,t_1,\ldots,t_{N}=T$
 with $\Delta t=T/N$ denoting the time step (supposed constant). The resolution will make use of the Newmark-$\beta$ method {cite:p}`newmark1959method` in structural dynamics. As an implicit method, it is unconditionally stable for a proper choice of coefficients so that quite large time steps can be used.
 
-The method consists in solving the dynamic evolution equation at intermediate time between $t_n$ and $t_{n+1}$ as follows:
+The method consists in solving the dynamic evolution equation at time $t_{n+1}$ as follows:
 
 ```{math}
 :label: discrete-elastodynamics
@@ -111,7 +109,7 @@ The method consists in solving the dynamic evolution equation at intermediate ti
 ```
 
 
-In addition, the following approximation for the displacement and velocity
+In addition, the following approximations for the displacement and velocity
 at $t_{n+1}$ are used:
 
 ```{math}
@@ -159,7 +157,7 @@ import dolfinx.fem.petsc
 from dolfinx.mesh import create_box, CellType
 ```
 
-We consider a slender beam of length `L` with a rectangular cross-section of width `B` and height `H`. We create a corresponding hexahedral mesh. We will discretize in space using $\mathbb{P}_2$ hexahedral elements. Note that $\mathbb{P}_1$ hexahedral elements suffer from severe shear-locking issues in such situation, needing specific treatment such as selective reduced integration to yield correct result. The mesh resolution is chosen to be quite coarse to limit the computational cost when running the demo.
+We consider a slender beam of length `L` with a rectangular cross-section of width `B` and height `H`. We create a corresponding hexahedral mesh. We will discretize in space using $\mathbb{Q}_2$ hexahedral elements. Note that $\mathbb{Q}_1$ hexahedral elements suffer from severe shear-locking issues in such situation, needing specific treatment such as selective reduced integration to yield correct result. The mesh resolution is chosen to be quite coarse to limit the computational cost when running the demo.
 
 ```{code-cell} ipython3
 L = 8.0
@@ -243,16 +241,16 @@ gamma = fem.Constant(domain, gamma_)
 dt = fem.Constant(domain, 0.0)
 
 a = 1 / beta / dt**2 * (u - u_old - dt * v_old) + a_old * (1 - 1 / 2 / beta)
-a_expr = fem.Expression(a, V.element.interpolation_points())
+a_expr = fem.Expression(a, V.element.interpolation_points)
 
 v = v_old + dt * ((1 - gamma) * a_old + gamma * a)
-v_expr = fem.Expression(v, V.element.interpolation_points())
+v_expr = fem.Expression(v, V.element.interpolation_points)
 ```
 
-Now, we define a mass, a stiffness and a damping form which are used to define `Residual` as the residual weak form of the elastodynamics equation {eq}`discrete-elastodynamics`. In the present case, the latter is in fact a linear form of the unknown `u`. We therefore replace every instance of `u` with a trial function `du` to obtain a combined bilinear and linear form and extract the relevant bilinear part using `ufl.lhs` and the corresponding linear right-hand side using `ufl.rhs`. We can then setup the corresponding `LinearProblem` object.
+Now, we define a mass, a stiffness and a damping form which are used to define `Residual` as the residual weak form of the elastodynamics equation {eq}`discrete-elastodynamics`. In the present case, the latter is in fact a linear form of the unknown `u`. We therefore replace every instance of `u` with a trial function `du` to obtain a combined bilinear and linear form and extract the relevant bilinear part using `ufl.lhs` and the corresponding linear right-hand side using `ufl.rhs`. We can then set up the corresponding `LinearProblem` object.
 
 ```{tip}
-It is recommended to define all the forms and objects such as `LinearProblem` outside the time-stepping loop. This avoids creating at each time step a new object which instantiates PETSc matrices, solvers, etc. under the hood. This approach requires to update values of the external loading or boundary conditions without recreating new objects.
+It is recommended to define all the forms and objects such as `LinearProblem` outside the time-stepping loop. This avoids creating at each time step a new object which instantiates PETSc matrices, solvers, etc. under the hood. This approach requires updating values of the external loading or boundary conditions without recreating new objects.
 ```
 
 ```{code-cell} ipython3
@@ -282,7 +280,12 @@ a_form = ufl.lhs(Residual_du)
 L_form = ufl.rhs(Residual_du)
 
 problem = fem.petsc.LinearProblem(
-    a_form, L_form, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a_form,
+    L_form,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="elastodynamics_",
 )
 ```
 
@@ -301,7 +304,7 @@ $$
 \end{align*}
 $$
 
-Thus, in the absence of external forcing ($\mathcal{P}_\text{ext}=0$), we see that the sum of all three contributions of kinetic, elastic and damping energies are conserved:
+Thus, in the absence of external forcing ($\mathcal{P}_\text{ext}=0$), we see that the sum of all three contributions of kinetic, elastic and dissipated energies is conserved:
 
 $$
 \mathcal{E}_\text{kin} +\mathcal{E}_\text{el} + \int_0^T \mathcal{P}_\text{damp} \text{d}t = \text{cst}
@@ -320,7 +323,7 @@ Finally, we implement the time stepping loop over `Nsteps` time increments of si
 The loading consists of a uniform body force acting in the $(y,z)$ plane which is linearly applied from 0 to its maximum value for a short time period of 0.2s. Then the loading is removed and the beam oscillates freely. Once the elastodynamics system has been solved with the call to `problem.solve()`, the field `u` now contains the displacement $\{u_{n+1}\}$. We can then compute the nodal values of the acceleration $\{\ddot{u}_{n+1}\}$ using {eq}`acceleration-formula` and the velocity $\{\dot{u}_{n+1}\}$ using {eq}`velocity-update`. We then march forward in time by replacing the fields at the previous time step with the new values. Finally, we compute the kinetic and elastic energies and the damping dissipation by accumulating $\Delta t \mathcal{P}_\text{damp}$ at each time step. We also store the in-plane displacements $u_y,u_z$ of the right extremity.
 
 ```{note}
-We have chosen here to use the interpolation mechanism of the UFL expressions `a` and `v` via a `fem.Expression` which we interpolate at the interpolation points of the function space `V`. We could also have computed directly formula {eq}`acceleration-formula` and {eq}`velocity-update` by working with the array of values, as done below for the velocity update. Here, we make use of the fact that we have already implemented such formulae when defining the variational form which avoids reimplementing these formulae a second time.
+We have chosen here to use the interpolation mechanism of the UFL expressions `a` and `v` via a `fem.Expression` which we interpolate at the interpolation points of the function space `V`. We could also have computed directly formula {eq}`acceleration-formula` and {eq}`velocity-update` by working with the array of values. Here, we make use of the fact that we have already implemented such formulae when defining the variational form which avoids reimplementing these formulae a second time.
 ```
 
 ```{code-cell} ipython3
@@ -357,13 +360,13 @@ for i, dti in enumerate(np.diff(times)):
     a_new.interpolate(a_expr)
 
     # update u_n with u_n+1
-    u.vector.copy(u_old.vector)
+    u.x.petsc_vec.copy(u_old.x.petsc_vec)
 
     # update v_n with v_n+1
-    v_new.vector.copy(v_old.vector)
+    v_new.x.petsc_vec.copy(v_old.x.petsc_vec)
 
     # update a_n with a_n+1
-    a_new.vector.copy(a_old.vector)
+    a_new.x.petsc_vec.copy(a_old.x.petsc_vec)
 
     energies[i + 1, 0] = fem.assemble_scalar(E_el)
     energies[i + 1, 1] = fem.assemble_scalar(E_kin)
@@ -372,7 +375,7 @@ for i, dti in enumerate(np.diff(times)):
     tip_displacement[i + 1, :] = u.x.array[point_dofs]
 
     clear_output(wait=True)
-    print(f"Time increment {i+1}/{Nsteps}")
+    print(f"Time increment {i + 1}/{Nsteps}")
 
 vtk.close()
 ```
@@ -384,7 +387,7 @@ We animate here the displacement of the beam extremity in the $(y,z)$ plane. Due
 $$
 \omega_y = \alpha_1^2 \sqrt{\dfrac{EI_y}{\rho S L^4}}
 $$
-for the vertical bending mode oscillating around the $y$-axis, where $I_y=\dfrac{BH^3}{12}$ is the corresponding bending inertia and $S=BH$ the cross-section area. Here, $\alpha_1$ is the smallest root to the transcendental equation:
+for the vertical bending mode oscillating around the $y$-axis, where $I_y=\dfrac{BH^3}{12}$ is the corresponding bending inertia and $S=BH$ the cross-section area. Here, $\alpha_1$ is the smallest root of the transcendental equation:
 
 $$
 \cos(\alpha)\cosh(\alpha)+1=0
@@ -393,7 +396,7 @@ which is approximately $\alpha_1=1.8751$.
 
 The eigenfrequency corresponding to the lateral oscillations around the vertical $z$-axis is similar except that the inertia is now $I_z= \dfrac{HB^3}{12}$, so that $\omega_z = \dfrac{B}{H}\omega_y$.
 
-Assuming that only these two modes are participating to the beam general movement, the displacement of the extremity is expected to oscillate around the following periodic orbit:
+Assuming that only these two modes are participating in the beam general movement, the displacement of the extremity is expected to oscillate around the following periodic orbit:
 
 ```{math}
 :label: periodic-orbit
@@ -432,12 +435,14 @@ def draw_frame(n):
     return markers
 
 
-anim = animation.FuncAnimation(fig, draw_frame, frames=Nsteps, interval=20, blit=True)
+anim = animation.FuncAnimation(
+    fig, draw_frame, frames=Nsteps + 1, interval=20, blit=True
+)
 plt.close()
 HTML(anim.to_html5_video())
 ```
 
-Finally, we plot the three contributions to the total energy. We see that the kinetic and elastic energy contributions decreases with time due to the slight damping dissipation induced by non-zero values for $\eta_M$ and $\eta_K$. However, we verify that the sum of all three contributions is conserved once there is no external loading anymore.
+Finally, we plot the three contributions to the total energy. We see that the kinetic and elastic energy contributions decrease with time due to the slight damping dissipation induced by non-zero values for $\eta_M$ and $\eta_K$. However, we verify that the sum of all three contributions is conserved once there is no external loading anymore.
 
 ```{code-cell} ipython3
 plt.plot(times, energies[:, 0], label="Elastic")

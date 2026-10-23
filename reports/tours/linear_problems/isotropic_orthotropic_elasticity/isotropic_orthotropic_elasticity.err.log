@@ -1,46 +1,104 @@
 Traceback (most recent call last):
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/home/bleyerj/.local/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 1323, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
     return future.result()
            ^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import pyvista
-from dolfinx import plot, fem
+from mpi4py import MPI
+import gmsh
+from dolfinx.io.gmsh import model_to_mesh
 
-pyvista.set_jupyter_backend("static")
+L, R = 1.0, 0.1
+h = 0.02
 
-topology, cell_types, geometry = plot.vtk_mesh(domain, gdim)
-grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+gdim = 2  # domain geometry dimension
+fdim = 1  # facets dimension
 
-# Create plotter and pyvista grid
-p = pyvista.Plotter()
-p.add_mesh(grid, show_edges=True)
-p.view_xy()
-p.show_axes()
-p.show()
+gmsh.initialize()
+
+occ = gmsh.model.occ
+mesh_comm = MPI.COMM_WORLD
+model_rank = 0
+if mesh_comm.rank == model_rank:
+    plate = occ.addRectangle(0.0, 0.0, 0.0, L, L)  # (x, y, z, dx, dy)
+    notch = occ.addDisk(0.0, 0.0, 0.0, R, R)  # (x, y, z, Rx, Ry=Rx)
+
+    # cut "plate" with "notch"
+    outDimTags, _ = occ.cut([(gdim, plate)], [(gdim, notch)])
+    # get tag of newly created object
+    perf_plate = outDimTags[0][1]
+
+    occ.synchronize()
+
+    # identify boundary tags from bounding box
+    eps = 1e-3  # tolerance for bounding box
+    left = gmsh.model.getEntitiesInBoundingBox(
+        -eps, -eps, -eps, eps, L + eps, eps, dim=fdim
+    )[0][1]
+    bottom = gmsh.model.getEntitiesInBoundingBox(
+        -eps, -eps, -eps, L + eps, eps, eps, dim=fdim
+    )[0][1]
+    right = gmsh.model.getEntitiesInBoundingBox(
+        L - eps, -eps, -eps, L + eps, L + eps, eps, dim=fdim
+    )[0][1]
+    top = gmsh.model.getEntitiesInBoundingBox(
+        -eps, L - eps, -eps, L + eps, L + eps, eps, dim=fdim
+    )[0][1]
+    # tag physical domains and facets
+    gmsh.model.addPhysicalGroup(gdim, [perf_plate], 1)
+    gmsh.model.addPhysicalGroup(fdim, [bottom], 1)
+    gmsh.model.addPhysicalGroup(fdim, [right], 2)
+    gmsh.model.addPhysicalGroup(fdim, [top], 3)
+    gmsh.model.addPhysicalGroup(fdim, [left], 4)
+
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMin", h)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", h)
+
+    gmsh.model.mesh.generate(gdim)
+
+    domain, cells, facets = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+
+    gmsh.finalize()
 ------------------
 
+----- stdout -----
+Info    : [  0%] Difference                                                                                  Info    : [ 10%] Difference                                                                                  Info    : [ 20%] Difference                                                                                  Info    : [ 30%] Difference                                                                                  Info    : [ 40%] Difference                                                                                  Info    : [ 50%] Difference                                                                                  Info    : [ 70%] Difference                                                                                  Info    : [ 80%] Difference                                                                                  Info    : [ 90%] Difference                                                                                                                                                                  Info    : Meshing 1D...
+Info    : [  0%] Meshing curve 1 (Ellipse)
+Info    : [ 30%] Meshing curve 2 (Line)
+Info    : [ 50%] Meshing curve 3 (Line)
+Info    : [ 70%] Meshing curve 4 (Line)
+Info    : [ 90%] Meshing curve 5 (Line)
+Info    : Done meshing 1D (Wall 0.000236795s, CPU 0.000237s)
+Info    : Meshing 2D...
+Info    : Meshing surface 1 (Plane, Frontal-Delaunay)
+Info    : Done meshing 2D (Wall 0.0458672s, CPU 0.04503s)
+Info    : 3010 nodes 6023 elements
+------------------
 
-[0;31m---------------------------------------------------------------------------[0m
-[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Cell [0;32mIn[5], line 1[0m
-[0;32m----> 1[0m [38;5;28;01mimport[39;00m [38;5;21;01mpyvista[39;00m
-[1;32m      2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mdolfinx[39;00m [38;5;28;01mimport[39;00m plot, fem
-[1;32m      4[0m pyvista[38;5;241m.[39mset_jupyter_backend([38;5;124m"[39m[38;5;124mstatic[39m[38;5;124m"[39m)
+[31m---------------------------------------------------------------------------[39m
+[31mValueError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[4][39m[32m, line 53[39m
+[32m     49[39m     gmsh.option.setNumber([33m"Mesh.CharacteristicLengthMax"[39m, h)
+[32m     50[39m 
+[32m     51[39m     gmsh.model.mesh.generate(gdim)
+[32m     52[39m 
+[32m---> [39m[32m53[39m     domain, cells, facets = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+[32m     54[39m 
+[32m     55[39m     gmsh.finalize()
 
-[0;31mModuleNotFoundError[0m: No module named 'pyvista'
+[31mValueError[39m: too many values to unpack (expected 3)
 

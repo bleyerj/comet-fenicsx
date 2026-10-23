@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Hyperelasticity
 #
 # ```{admonition} Objectives
@@ -81,16 +84,15 @@
 #
 # ## Implementation
 #
-# We load the relevant modules and useful functions and setup the corresponding box mesh. In the following, we will use hexahedra of degree 1.
+# We load the relevant modules and useful functions and set up the corresponding box mesh. In the following, we will use hexahedra of degree 1.
 
-# +
+# %%
 import numpy as np
 import ufl
 
 from mpi4py import MPI
-from dolfinx import fem, io, nls
+from dolfinx import fem, io
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
 from dolfinx.mesh import create_box, CellType
 from ufl import (
     as_matrix,
@@ -126,11 +128,11 @@ shape = (dim,)
 V = fem.functionspace(mesh, ("P", degree, shape))
 
 u = fem.Function(V, name="Displacement")
-# -
 
+# %% [markdown]
 # Next, we define the corresponding hyperelastic potential using UFL operators. We can easily obtain the UFL expression for the PK1 stress by differentiating the potential $\psi$ {eq}`psi-neo-Hookean` with respect to the deformation gradient $\bF$. We therefore declare it as a variable using `ufl.variable` and then compute $\bP = \dfrac{\partial \psi}{\partial \bF}$ using `ufl.diff`.
 
-# +
+# %%
 # Identity tensor
 Id = Identity(dim)
 
@@ -158,11 +160,10 @@ P = ufl.diff(psi, F)
 print(P)
 
 
-# -
-
+# %% [markdown]
 # Now, we set up the boundary conditions by first identifying the top and bottom dofs. We use Functions to provide the imposed displacement on both faces. For now, such functions are zero.
 
-# +
+# %%
 def bottom(x):
     return np.isclose(x[2], 0.0)
 
@@ -178,22 +179,24 @@ u_bot = fem.Function(V)
 u_top = fem.Function(V)
 
 bcs = [fem.dirichletbc(u_bot, bottom_dofs), fem.dirichletbc(u_top, top_dofs)]
-# -
 
+# %% [markdown]
 # We will later update the value of the `u_top` function based on a UFL expression corresponding to the imposed rigid body rotation. This expression depends on a scalar value $\theta$ represented as a `Constant` object. The use of a `fem.Expression` results in JIT compilation of the code corresponding to the evaluation of this expression at specific points in the reference elements (here the interpolation points of $V$ i.e. the hexahedron vertices).
 
+# %%
 x = SpatialCoordinate(mesh)
 theta = fem.Constant(mesh, 0.0)
 Rot = as_matrix([[cos(theta), sin(theta), 0], [-sin(theta), cos(theta), 0], [0, 0, 1]])
 rotation_displ = dot(Rot, x) - x
-rot_expr = fem.Expression(rotation_displ, V.element.interpolation_points())
+rot_expr = fem.Expression(rotation_displ, V.element.interpolation_points)
 
+# %% [markdown]
 # Now, we define the global non-linear potential energy. Note that since we have non-linear expressions, we specify to the measure `dx` the desired level of accuracy of the quadrature method. Otherwise, FEniCS may use overly conservative estimates of the required number of quadrature points.
 #
 # Next, we compute the corresponding non-linear residual using the `ufl.derivative` function which computes the directional derivative in the direction of the TestFunction `v`.
 # We also apply it to the residual itself to compute the corresponding consistent tangent bilinear form, usually called the Jacobian in the context of a Newton method. The latter is computed in the direction of the TrialFunction `du`.
 
-# +
+# %%
 dx = ufl.Measure("dx", domain=mesh, metadata={"quadrature_degree": 4})
 E_pot = psi * dx
 
@@ -203,23 +206,29 @@ Residual = derivative(
     E_pot, u, v
 )  # This is equivalent to Residual = inner(P, grad(v))*dx
 Jacobian = derivative(Residual, u, du)
-# -
 
-# Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. The latter will also be attached to a nonlinear solver implementing a Newton method.
+# %% [markdown]
+# Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. We also attach to the latter a set of PETSc options defining the SNES nonlinear solver parameters (Newton method here).
 
-# +
-problem = fem.petsc.NonlinearProblem(Residual, u, bcs)
+# %%
+petsc_options = {
+    "snes_type": "newtonls",
+    "snes_linesearch_type": "none",
+    "snes_atol": 1e-8,
+    "snes_rtol": 1e-8,
+    "snes_stol": 1e-8,
+    "ksp_type": "preonly",
+    "pc_type": "lu",
+    "pc_factor_mat_solver_type": "mumps",
+}
+problem = fem.petsc.NonlinearProblem(
+    Residual, u=u, bcs=bcs, petsc_options_prefix="hyperelasticity_"
+)
 
-solver = nls.petsc.NewtonSolver(mesh.comm, problem)
-# Set Newton solver options
-solver.atol = 1e-4
-solver.rtol = 1e-4
-solver.convergence_criterion = "incremental"
-# -
-
+# %% [markdown]
 # We are now in position to write the load-stepping loop which simply updates the value of $\theta$. Since, `rot_expr` is symbolically linked to `theta`, this new value is automatically accounted for when interpolating the imposed top displacement from `rot_expr`.
 
-# +
+# %%
 angle_max = 2 * np.pi
 Nsteps = 15
 
@@ -227,24 +236,26 @@ out_file = "hyperelasticity.xdmf"
 with io.XDMFFile(mesh.comm, out_file, "w") as xdmf:
     xdmf.write_mesh(mesh)
 
-u.vector.set(0.0)
+u.x.petsc_vec.set(0.0)
 for n, angle in enumerate(np.linspace(0, angle_max, Nsteps + 1)[1:]):
     theta.value = angle
     u_top.interpolate(rot_expr)
 
-    num_its, converged = solver.solve(u)
-    assert converged
+    problem.solve()
+    converged = problem.solver.getConvergedReason()
+    num_its = problem.solver.getIterationNumber()
+    assert converged > 0, f"Solver did not converge with reason {converged}."
 
     u.x.scatter_forward()  # updates ghost values for parallel computations
 
     print(
-        f"Time step {n}, Number of iterations {num_its}, Angle {angle*180/np.pi:.0f} deg."
+        f"Time step {n}, Number of iterations {num_its}, Angle {angle * 180 / np.pi:.0f} deg."
     )
 
     with io.XDMFFile(mesh.comm, out_file, "a") as xdmf:
         xdmf.write_function(u, n + 1)
-# -
 
+# %% [markdown]
 # ## Exercise
 #
 # Change the hyperelasticity model to another version of a compressible neo-Hookean model:

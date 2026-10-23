@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Localized 1D solutions in phase-field approach to brittle fracture &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Bound-constrained problems: localized damage and obstacle problem &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,6 +64,7 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/bound_constrained/bound_constrained';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Eigenvalue problems" href="../../eigenvalue_problems/contents.html" />
@@ -71,20 +72,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -369,7 +430,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Localized 1D solutions in phase-field approach to brittle fracture </h1>
+    <h1>Bound-constrained problems: localized damage and obstacle problem </h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -378,11 +439,26 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#localized-1d-solutions">Localized 1D solutions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-solvers-petsc-tao">Optimization solvers: PETSc TAO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inequality-solvers-petsc-snes">Variational inequality solvers: PETSc SNES</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#localized-1d-solutions-in-phase-field-fracture">Localized 1D solutions in phase-field fracture</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obstacle-problem">Obstacle problem</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Problem position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-with-tao">Resolution with TAO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-with-a-snes-variational-inequality-solver">Resolution with a SNES variational inequality solver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
             </nav>
         </div>
@@ -394,11 +470,11 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="localized-1d-solutions-in-phase-field-approach-to-brittle-fracture">
-<h1>Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#localized-1d-solutions-in-phase-field-approach-to-brittle-fracture" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="bound-constrained-problems-localized-damage-and-obstacle-problem">
+<h1>Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#bound-constrained-problems-localized-damage-and-obstacle-problem" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
-<p>This demo demonstrates how to solve a bound-constrained PDE optimization problem using <code class="docutils literal notranslate"><span class="pre">PETSc</span> <span class="pre">TAO</span></code> solver. The application examples involves the computation of localized solutions in the phase-field/damage gradient approach to brittle fracture.
+<p>This demo shows how to solve bound-constrained PDE optimization problems using the <code class="docutils literal notranslate"><span class="pre">PETSc</span> <span class="pre">TAO</span></code> solver. As an alternative, we also show how to solve them as variational inequalities using the <code class="docutils literal notranslate"><span class="pre">PETSc</span> <span class="pre">SNES</span></code> solver. The application examples involve the computation of localized solutions in the phase-field/damage gradient approach to brittle fracture and the classical obstacle problem of an elastic membrane.
 <span class="math notranslate nohighlight">\(\newcommand{\dOm}{\,\text{d}\Omega}\)</span></p>
 </div>
 <div class="download admonition">
@@ -412,42 +488,55 @@
 <section id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
 <p>Bound-constrained problems involve finding the optimal solution of optimization problems of the form:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{array}{rl} \displaystyle{\min_{x\in\mathbb{R}^n}} &amp; f(x)\\
+<div class="math notranslate nohighlight" id="equation-bound-constrained-pb">
+<span class="eqno">(28)<a class="headerlink" href="#equation-bound-constrained-pb" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle{\min_{x\in\mathbb{R}^n}} &amp; f(x)\\
 \text{s.t.} &amp; x_l \leq x \leq x_u
 \end{array}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(f(x)\)</span> is the objective function to minimize and <span class="math notranslate nohighlight">\(x_l, x_u\)</span> are known lower and upper bounds set on the optimization vector <span class="math notranslate nohighlight">\(x\)</span>.</p>
 <p>There exist many methods to solve such a constrained optimization problem. It is important to note that constraints are here very simple as they bound only the minimum and maximum values of the optimization variable <span class="math notranslate nohighlight">\(x\)</span>. In particular, this setting does not allow for more general linear or non-linear equality or inequality constraints.</p>
-<p>PETSc’s <a class="reference external" href="https://petsc.org/main/manual/tao/#">Toolkit for Advanced Optimization (TAO)</a> offers a wide range of algorithms to solve various constrained or unconstrained optimization problems, including bound-constrained problems. To interact with such a solver, the user is required to provide the objective function and the bounds. Depending on the chosen algorithm, the user should also provide:</p>
+<section id="optimization-solvers-petsc-tao">
+<h3>Optimization solvers: PETSc TAO<a class="headerlink" href="#optimization-solvers-petsc-tao" title="Link to this heading">#</a></h3>
+<p>PETSc’s <a class="reference external" href="https://petsc.org/main/manual/tao/">Toolkit for Advanced Optimization (TAO)</a> offers a wide range of algorithms to solve various constrained or unconstrained optimization problems, including bound-constrained problems. To interact with such a solver, the user is required to provide the objective function and the bounds. Depending on the chosen algorithm, the user should also provide:</p>
 <ul class="simple">
 <li><p>the objective gradient <span class="math notranslate nohighlight">\(\nabla f(x)\)</span>;</p></li>
 <li><p>the Hessian operator <span class="math notranslate nohighlight">\(\nabla^2 f(x)\)</span>.</p></li>
 </ul>
-<p>In the following demo, we will use</p>
+<p>In the following, we will use a bounded Newton method with line search, which requires the objective, its gradient and its Hessian.</p>
 </section>
+<section id="variational-inequality-solvers-petsc-snes">
+<h3>Variational inequality solvers: PETSc SNES<a class="headerlink" href="#variational-inequality-solvers-petsc-snes" title="Link to this heading">#</a></h3>
+<p>When <span class="math notranslate nohighlight">\(f\)</span> is convex and differentiable, a solution <span class="math notranslate nohighlight">\(x\)</span> of <a class="reference internal" href="#equation-bound-constrained-pb">(28)</a> is characterized by the following optimality conditions, written for each component <span class="math notranslate nohighlight">\(i\)</span>:</p>
+<div class="math notranslate nohighlight" id="equation-complementarity">
+<span class="eqno">(29)<a class="headerlink" href="#equation-complementarity" title="Link to this equation">#</a></span>\[\begin{split}\begin{cases}
+\nabla f(x)_i \geq 0 &amp; \text{if } x_i = x_{l,i} \\
+\nabla f(x)_i \leq 0 &amp; \text{if } x_i = x_{u,i} \\
+\nabla f(x)_i = 0 &amp; \text{if } x_{l,i} &lt; x_i &lt; x_{u,i}
+\end{cases}\end{split}\]</div>
+<p>This <em>complementarity problem</em> is the discrete version of a <em>variational inequality</em> (VI). Such problems can be solved with the variational inequality solvers of PETSc’s nonlinear solver <a class="reference external" href="https://petsc.org/main/manual/snes/#sec-vi">SNES</a>, such as active set (<code class="docutils literal notranslate"><span class="pre">vinewtonrsls</span></code>) or semi-smooth (<code class="docutils literal notranslate"><span class="pre">vinewtonssls</span></code>) Newton methods. Contrary to TAO, they only require the residual <span class="math notranslate nohighlight">\(F(x) = \nabla f(x)\)</span> and its Jacobian, but not the objective function itself. As a result, they can also be used to solve VIs which do not derive from the minimization of an objective function. Since SNES is the nonlinear solver used by <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code>’s <code class="docutils literal notranslate"><span class="pre">NonlinearProblem</span></code>, using VI solvers simply amounts to choosing the solver type and setting the bounds.</p>
+</section>
+</section>
+<section id="localized-1d-solutions-in-phase-field-fracture">
+<h2>Localized 1D solutions in phase-field fracture<a class="headerlink" href="#localized-1d-solutions-in-phase-field-fracture" title="Link to this heading">#</a></h2>
 <section id="problem-position">
-<h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
-<p>We consider a simple 1D bound constrained problem which arise from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span id="id1">[<a class="reference internal" href="#id8" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000. doi:10.1016/S0022-5096(99)00028-9.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id9" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
+<h3>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h3>
+<p>We consider a simple 1D bound-constrained problem which arises from the use of <em>phase-field</em> or <em>damage gradient</em> models of brittle fracture <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id10" title="Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. Journal of the Mechanics and Physics of Solids, 48(4):797–826, 2000. doi:10.1016/S0022-5096(99)00028-9.">Bourdin <em>et al.</em>, 2000</a>, <a class="reference internal" href="#id11" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>]</span>. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the <span class="math notranslate nohighlight">\(\text{AT1}\)</span> model, the fracture energy is written as:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra">
-<span class="eqno">(28)<a class="headerlink" href="#equation-at1-efra" title="Link to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
+<span class="eqno">(30)<a class="headerlink" href="#equation-at1-efra" title="Link to this equation">#</a></span>\[\mathcal{E}_\text{f}(d) = \dfrac{3G_\text{c}}{8\ell_0}\int_{\Omega}\left(d + \ell_0^2\nabla d \cdot\nabla d\right)\dOm\]</div>
 <p>where <span class="math notranslate nohighlight">\(d\)</span> is a damage-like variable (with values in <span class="math notranslate nohighlight">\([0;1]\)</span>) which smears the discrete crack representation (corresponding to <span class="math notranslate nohighlight">\(d=1\)</span>) over a regularization length <span class="math notranslate nohighlight">\(\ell_0\)</span>. <span class="math notranslate nohighlight">\(G_\text{c}\)</span> represents the material fracture energy.</p>
 <p>During the solution process, the damage field is found by minimizing the total energy for a fixed displacement field and subject to bound constraints <span class="math notranslate nohighlight">\(d_n \leq d \leq 1\)</span> where <span class="math notranslate nohighlight">\(d_n\)</span> denotes the damage field at the previous time step which is used to enforce the irreversible evolution of damage.</p>
-<p>When subject to a given mechanical loading, damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(28)</a>.</p>
-</section>
-<section id="localized-1d-solutions">
-<h2>Localized 1D solutions<a class="headerlink" href="#localized-1d-solutions" title="Link to this heading">#</a></h2>
+<p>When subject to a given mechanical loading, the damage field will tend to localize spatially, corresponding to a smeared crack representation. In the 1D setting, it is possible to characterize the shape of the localized solution by finding damage fields which minimize the fracture energy <a class="reference internal" href="#equation-at1-efra">(30)</a>.</p>
 <p>More precisely, we consider a 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span> of length <span class="math notranslate nohighlight">\(2L\)</span> and we look for a minimizer <span class="math notranslate nohighlight">\(d(x)\)</span> of:</p>
 <div class="math notranslate nohighlight" id="equation-at1-efra-1d">
-<span class="eqno">(29)<a class="headerlink" href="#equation-at1-efra-1d" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
+<span class="eqno">(31)<a class="headerlink" href="#equation-at1-efra-1d" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{d(x)} &amp; \displaystyle\int_{\Omega}\left(d + \ell_0^2\left(\dfrac{\partial d}{\partial x}\right)^2\right)\dOm \\
 \text{s.t.} &amp; 0 \leq d(x) \leq 1 \quad \forall x \in \Omega
 \end{array}\end{split}\]</div>
-<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(29)</a>.</p>
-<p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span id="id2">[<a class="reference internal" href="#id9" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id10" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013. doi:10.1007/s00161-011-0228-3.">Pham and Marigo, 2013</a>]</span>.</p>
-<p>In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective is null, that is:</p>
+<p>where we ignored the factor <span class="math notranslate nohighlight">\(3G_\text{c}/(8\ell_0)\)</span> of the fracture energy. In the following, we note <span class="math notranslate nohighlight">\(j(d)\)</span> the objective function of <a class="reference internal" href="#equation-at1-efra-1d">(31)</a>.</p>
+<p>In addition, in order to force localization around a given point, we will impose here the boundary condition <span class="math notranslate nohighlight">\(d(x)=d_0\)</span> at <span class="math notranslate nohighlight">\(x=0\)</span> where <span class="math notranslate nohighlight">\(d_0\in [0;1]\)</span> is given. In this case, we can show that there exists a region <span class="math notranslate nohighlight">\(]-D;D[\)</span> where <span class="math notranslate nohighlight">\(0 &lt; d(x) &lt; 1\)</span> and with <span class="math notranslate nohighlight">\(d(x)=0\)</span> outside. We can show in particular that we must have <span class="math notranslate nohighlight">\(d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0\)</span> at the transition points <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id11" title="Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. International Journal of Damage Mechanics, 20(4):618–652, 2011. doi:10.1177/1056789510386852.">Pham <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id12" title="Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. Continuum Mechanics and Thermodynamics, 25:147–171, 2013. doi:10.1007/s00161-011-0228-3.">Pham and Marigo, 2013</a>]</span>.</p>
+<p>In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective vanishes, that is:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-D_d j(d;\widehat{d}) = 0 \quad \forall \widehat{d}\\
-\int_{\Omega} \left(\widehat{d} + \ell_0^2 \dfrac{\partial d}{\partial x}\dfrac{\partial \widehat{d}}{\partial x}\right)\dOm = 0 \quad \forall \widehat{d}\\
+D_d j(d;\widehat{d}) &amp;= 0 \quad \forall \widehat{d}\\
+\Leftrightarrow \int_{\Omega} \left(\widehat{d} + 2\ell_0^2 \dfrac{\partial d}{\partial x}\dfrac{\partial \widehat{d}}{\partial x}\right)\dOm &amp;= 0 \quad \forall \widehat{d}
 \end{align*}\]</div>
 <p>The corresponding linear variational problem results in the following strong form differential equation:</p>
 <div class="math notranslate nohighlight">
@@ -461,23 +550,24 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 \]</div>
 <p>we easily show that the localization region size is <span class="math notranslate nohighlight">\(D=2\ell_0\sqrt{d_0}\)</span> and that the solution is given by:</p>
 <div class="math notranslate nohighlight" id="equation-at1-1d-solution">
-<span class="eqno">(30)<a class="headerlink" href="#equation-at1-1d-solution" title="Link to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
+<span class="eqno">(32)<a class="headerlink" href="#equation-at1-1d-solution" title="Link to this equation">#</a></span>\[\begin{split}d(x) = \begin{cases}
 \left(\sqrt{d_0} - \dfrac{|x|}{2\ell_0}\right)^2 &amp; \text{if } |x| \leq D \\
 0 &amp; \text{otherwise}
 \end{cases}\end{split}\]</div>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
-<p>For the implementation, we first provide a utility class <code class="docutils literal notranslate"><span class="pre">TAOProblem</span></code> in the <a class="reference download internal" download="" href="../../../_downloads/c4f5f8086ad28f27befa74cf74e00b57/tao_problem.py"><code class="xref download docutils literal notranslate"><span class="pre">tao_problem.py</span></code></a> module. This class enables to interact with PETSc TAO solver objects by providing methods for computing the objective function, the gradient and the Hessian/Jacobian of the objective.</p>
-<p>We now import the relevant modules and define the 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span></p>
+<h3>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h3>
+<p>For the implementation, we first provide a utility class <code class="docutils literal notranslate"><span class="pre">TAOProblem</span></code> in the <a class="reference download internal" download="" href="../../../_downloads/c4f5f8086ad28f27befa74cf74e00b57/tao_problem.py"><code class="xref download docutils literal notranslate"><span class="pre">tao_problem.py</span></code></a> module. This class provides the interface with PETSc TAO solver objects through methods computing the objective function, its gradient and its Hessian.</p>
+<p>We now import the relevant modules and define the 1D domain <span class="math notranslate nohighlight">\(\Omega=[-L;L]\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">petsc4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">PETSc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">mesh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">plot</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tao_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">TAOProblem</span>
 
@@ -488,7 +578,7 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 </div>
 </div>
 </div>
-<p>We now create a scalar <span class="math notranslate nohighlight">\(\mathbb{P}_1\)</span> Lagrange function space and defines functions to store the lower and upper bound values.</p>
+<p>We now create a scalar <span class="math notranslate nohighlight">\(\mathbb{P}_1\)</span> Lagrange function space and define functions to store the lower and upper bound values.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
@@ -496,9 +586,9 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 <span class="n">d_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">dd</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">dlb</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Lower_bound&quot;</span><span class="p">)</span>
-<span class="n">dlb</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">dlb</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">dub</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Upper_bound&quot;</span><span class="p">)</span>
-<span class="n">dub</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">dub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.0</span>
 </pre></div>
 </div>
 </div>
@@ -537,17 +627,18 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 </div>
 </div>
 </div>
-<p>We now setup the TAO solver object using <code class="docutils literal notranslate"><span class="pre">petsc4py</span></code>. We use a Bounded Newton Line Search <code class="docutils literal notranslate"><span class="pre">bnls</span></code> method and use a direct LU solver for the resolution of linear systems arising in the underlying Newton method.</p>
+<p>We now set up the TAO solver object using <code class="docutils literal notranslate"><span class="pre">petsc4py</span></code>. We use a Bounded Newton Line Search <code class="docutils literal notranslate"><span class="pre">bnls</span></code> method and use a direct LU solver for the resolution of linear systems arising in the underlying Newton method.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For more details on the algorithm and other available solvers, see the <a class="reference external" href="https://petsc.org/main/manual/tao/#bound-constrained-optimization">bound-constrained solvers documentation</a>.</p>
+<p>For more details on the algorithm and other available solvers, see the <a class="reference external" href="https://petsc.org/main/manual/tao/#sec-tao-bound">bound-constrained solvers documentation</a>.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tao</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">TAO</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">PETSc</span><span class="o">.</span><span class="n">COMM_SELF</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tao</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">TAO</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">)</span>
 <span class="n">tao</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;bnls&quot;</span><span class="p">)</span>
 <span class="n">tao</span><span class="o">.</span><span class="n">getKSP</span><span class="p">()</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;preonly&quot;</span><span class="p">)</span>
 <span class="n">tao</span><span class="o">.</span><span class="n">getKSP</span><span class="p">()</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;lu&quot;</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">getKSP</span><span class="p">()</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setFactorSolverType</span><span class="p">(</span><span class="s2">&quot;mumps&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -562,40 +653,43 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 </div>
 </div>
 </div>
-<p>Finally, we set the corresponding variable bounds and we also prescribe some stopping tolerances where:</p>
+<p>Finally, we set the corresponding variable bounds and we also prescribe some stopping tolerances. The solver stops as soon as one of the following conditions is satisfied:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\texttt{gatol} &amp;= \|\nabla f(X)\|\\
-\texttt{grtol} &amp;= \|\nabla f(X)\|/|f(X)|\\
-\texttt{gttol} &amp;= \|\nabla f(X)\|/ \|\nabla f(X_0)\|
+\|\nabla f(X)\| &amp;\leq \texttt{gatol}\\
+\|\nabla f(X)\|/|f(X)| &amp;\leq \texttt{grtol}\\
+\|\nabla f(X)\|/ \|\nabla f(X_0)\| &amp;\leq \texttt{gttol}
 \end{align*}\]</div>
-<p>with <span class="math notranslate nohighlight">\(X_0\)</span> being the initial value.</p>
+<p>with <span class="math notranslate nohighlight">\(X_0\)</span> being the initial value. For bound-constrained problems, <span class="math notranslate nohighlight">\(\nabla f(X)\)</span> here denotes the gradient projected onto the set of free variables, i.e. excluding the components for which a bound is attained.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tao</span><span class="o">.</span><span class="n">setVariableBounds</span><span class="p">(</span><span class="n">dlb</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="n">dub</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tao</span><span class="o">.</span><span class="n">setVariableBounds</span><span class="p">(</span><span class="n">dlb</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">,</span> <span class="n">dub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
 <span class="n">tao</span><span class="o">.</span><span class="n">setTolerances</span><span class="p">(</span><span class="n">gatol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">grtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">gttol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We now set different values of <span class="math notranslate nohighlight">\(d_0 \in [0;1]\)</span> and solve the corresponding problem.</p>
+<p>We now set different values of <span class="math notranslate nohighlight">\(d_0 \in [0;1]\)</span> and solve the corresponding problem. Before each solve, the imposed value <span class="math notranslate nohighlight">\(d_0\)</span> is applied to the current solution which serves as an initial guess.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ppos</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">tabulate_dof_coordinates</span><span class="p">()[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_prop_cycle</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">turbo</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">d0</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
     <span class="n">d_imp</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">d0</span>
-    <span class="n">fem</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">vector</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
 
-    <span class="n">tao</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
-    <span class="n">dvals</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">array</span>
+    <span class="n">tao</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
+    <span class="n">dvals</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
 
     <span class="n">h</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dvals</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">)</span>
     <span class="n">l0</span> <span class="o">=</span> <span class="n">ell0</span><span class="o">.</span><span class="n">value</span>
-    <span class="n">ppos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="n">d_an</span> <span class="o">=</span> <span class="p">(</span><span class="n">ppos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">l0</span><span class="p">)))</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">d_an</span> <span class="o">=</span> <span class="n">ppos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">l0</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d_an</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_color</span><span class="p">())</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
@@ -605,30 +699,247 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">((</span><span class="s2">&quot;Numerical solution&quot;</span><span class="p">,</span> <span class="s2">&quot;Analytical solution&quot;</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
-
 <span class="n">tao</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/d50e9fe89debba426966d0fccd367e97d17984a94a7b9d932a3d88f60b1eeb11.png" src="../../../_images/d50e9fe89debba426966d0fccd367e97d17984a94a7b9d932a3d88f60b1eeb11.png" />
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;petsc4py.PETSc.TAO at 0x7228eccd0680&gt;
+<img alt="../../../_images/08be768a4a340df7000a81027809bc836265c68135436cde853f8b8c5616f880.png" src="../../../_images/08be768a4a340df7000a81027809bc836265c68135436cde853f8b8c5616f880.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;petsc4py.PETSc.TAO at 0x7c0ac35c2bb0&gt;
 </pre></div>
 </div>
 </div>
 </div>
-<div class="docutils container" id="id3">
+</section>
+</section>
+<section id="obstacle-problem">
+<h2>Obstacle problem<a class="headerlink" href="#obstacle-problem" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Problem position<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>We now consider the classical obstacle problem of an elastic membrane occupying the unit square <span class="math notranslate nohighlight">\(\Omega=[0;1]^2\)</span>. The membrane is fixed on its boundary <span class="math notranslate nohighlight">\(\partial \Omega\)</span> and is subjected to a uniform transverse loading <span class="math notranslate nohighlight">\(f&lt;0\)</span>. It lies above a rigid obstacle described by its height <span class="math notranslate nohighlight">\(g(x,y)\)</span> so that the membrane deflection <span class="math notranslate nohighlight">\(u(x,y)\)</span> must satisfy <span class="math notranslate nohighlight">\(u \geq g\)</span>. Assuming a unit membrane tension, the deflection is the solution of the following bound-constrained minimization problem:</p>
+<div class="math notranslate nohighlight" id="equation-obstacle-pb">
+<span class="eqno">(33)<a class="headerlink" href="#equation-obstacle-pb" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl} \displaystyle\min_{u(x,y)} &amp; \displaystyle\int_{\Omega}\left(\dfrac{1}{2}\nabla u \cdot \nabla u - f u\right)\dOm \\
+\text{s.t.} &amp; u \geq g \quad \text{in } \Omega\\
+&amp; u = 0 \quad \text{on } \partial\Omega
+\end{array}\end{split}\]</div>
+<p>The domain then splits into a contact region where <span class="math notranslate nohighlight">\(u=g\)</span> and <span class="math notranslate nohighlight">\(-\Delta u - f \geq 0\)</span>, i.e. the obstacle exerts a non-negative contact pressure, and a free region where <span class="math notranslate nohighlight">\(u &gt; g\)</span> and the membrane is in equilibrium <span class="math notranslate nohighlight">\(-\Delta u = f\)</span>. The boundary between both regions is not known in advance.</p>
+<p>The obstacle is defined as a slightly oscillating surface around a mean height <span class="math notranslate nohighlight">\(h_\text{mean}\)</span>, with an amplitude <span class="math notranslate nohighlight">\(A\)</span> and two wavenumbers <span class="math notranslate nohighlight">\(k_1,k_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+g(x,y) = h_\text{mean} + A \sin(2\pi k_1 x)\cos(2\pi k_1 y)\sin(2\pi k_2 x)\cos(2\pi k_2 y)
+\]</div>
+</section>
+<section id="id4">
+<h3>Implementation<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>We use a <span class="math notranslate nohighlight">\(\mathbb{P}_1\)</span> discretization of the membrane deflection on a structured mesh of triangles. The bound constraints are then imposed on the nodal values, which ensures that <span class="math notranslate nohighlight">\(u \geq g\)</span> everywhere for the piecewise linear interpolant of <span class="math notranslate nohighlight">\(g\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_unit_square</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+<span class="n">fdim</span> <span class="o">=</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
+<span class="n">boundary_facets</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">exterior_facet_indices</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="p">)</span>
+<span class="n">boundary_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">boundary_facets</span><span class="p">)</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">boundary_dofs</span><span class="p">,</span> <span class="n">V</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The lower bound is the interpolation of the obstacle height on the <span class="math notranslate nohighlight">\(\mathbb{P}_1\)</span> space. Since no upper bound is prescribed on the deflection, we use an infinite value <code class="docutils literal notranslate"><span class="pre">PETSc.INFINITY</span></code> for the upper bound.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">load</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">)</span>
+<span class="n">hmean</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span>
+<span class="n">ampl</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">k1</span><span class="p">,</span> <span class="n">k2</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">8</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">obstacle_fun</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">hmean</span> <span class="o">+</span> <span class="n">ampl</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
+        <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+
+<span class="n">obstacle</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Obstacle&quot;</span><span class="p">)</span>
+<span class="n">obstacle</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">obstacle_fun</span><span class="p">)</span>
+<span class="n">u_ub</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Upper_bound&quot;</span><span class="p">)</span>
+<span class="n">u_ub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">INFINITY</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The energy and its first and second variations are defined as before.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Deflection&quot;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">du</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">energy</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span> <span class="o">-</span> <span class="n">load</span> <span class="o">*</span> <span class="n">u</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+<span class="n">D_energy</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">derivative</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="n">D2_energy</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">derivative</span><span class="p">(</span><span class="n">D_energy</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">du</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="resolution-with-tao">
+<h3>Resolution with TAO<a class="headerlink" href="#resolution-with-tao" title="Link to this heading">#</a></h3>
+<p>The TAO solver is set up exactly as for the previous problem. The solution is initialized with <span class="math notranslate nohighlight">\(u=0\)</span> which satisfies the bound constraints and the boundary conditions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">TAOProblem</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">D_energy</span><span class="p">,</span> <span class="n">D2_energy</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
+
+<span class="n">tao</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">TAO</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;bnls&quot;</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">getKSP</span><span class="p">()</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;preonly&quot;</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">getKSP</span><span class="p">()</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;lu&quot;</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">getKSP</span><span class="p">()</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setFactorSolverType</span><span class="p">(</span><span class="s2">&quot;mumps&quot;</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">setObjective</span><span class="p">(</span><span class="n">problem</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">setGradient</span><span class="p">(</span><span class="n">problem</span><span class="o">.</span><span class="n">F</span><span class="p">,</span> <span class="n">problem</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">setHessian</span><span class="p">(</span><span class="n">problem</span><span class="o">.</span><span class="n">J</span><span class="p">,</span> <span class="n">problem</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">setVariableBounds</span><span class="p">(</span><span class="n">obstacle</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">,</span> <span class="n">u_ub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">setTolerances</span><span class="p">(</span><span class="n">gatol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">grtol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">gttol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+
+<span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TAO converged in </span><span class="si">{</span><span class="n">tao</span><span class="o">.</span><span class="n">getIterationNumber</span><span class="p">()</span><span class="si">}</span><span class="s2"> iterations&quot;</span><span class="p">)</span>
+<span class="n">u_tao</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">tao</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TAO converged in 13 iterations
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;petsc4py.PETSc.TAO at 0x7c0ac3b3cc20&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="resolution-with-a-snes-variational-inequality-solver">
+<h3>Resolution with a SNES variational inequality solver<a class="headerlink" href="#resolution-with-a-snes-variational-inequality-solver" title="Link to this heading">#</a></h3>
+<p>We now solve the same problem as a variational inequality. We use <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code>’s <code class="docutils literal notranslate"><span class="pre">NonlinearProblem</span></code> which takes the residual <span class="math notranslate nohighlight">\(F(u)=D_u j(u;v)\)</span> and its Jacobian, together with the boundary conditions. The objective function is not needed here. We choose the reduced-space active set Newton method <code class="docutils literal notranslate"><span class="pre">vinewtonrsls</span></code> and we provide the bounds to the underlying SNES object through <code class="docutils literal notranslate"><span class="pre">setVariableBounds</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vi_problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">NonlinearProblem</span><span class="p">(</span>
+    <span class="n">D_energy</span><span class="p">,</span>
+    <span class="n">u</span><span class="p">,</span>
+    <span class="n">J</span><span class="o">=</span><span class="n">D2_energy</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;obstacle_&quot;</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;snes_type&quot;</span><span class="p">:</span> <span class="s2">&quot;vinewtonrsls&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;snes_rtol&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
+        <span class="s2">&quot;snes_atol&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
+        <span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">vi_problem</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">setVariableBounds</span><span class="p">(</span><span class="n">obstacle</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">,</span> <span class="n">u_ub</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
+
+<span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">vi_problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+<span class="k">assert</span> <span class="n">vi_problem</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">getConvergedReason</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;SNES solver did not converge.&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SNES converged in </span><span class="si">{</span><span class="n">vi_problem</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">getIterationNumber</span><span class="p">()</span><span class="si">}</span><span class="s2"> iterations&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>SNES converged in 20 iterations
+</pre></div>
+</div>
+</div>
+</div>
+<p>We check that both solvers provide the same solution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">error</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span> <span class="o">-</span> <span class="n">u_tao</span><span class="p">)),</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">MAX</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Maximum difference between TAO and SNES solutions: </span><span class="si">{</span><span class="n">error</span><span class="si">:</span><span class="s2">.2e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum difference between TAO and SNES solutions: 1.39e-17
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results">
+<h3>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h3>
+<p>We plot the deflection of the membrane, amplified by a factor 5, using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>, as well as the contact zone, i.e. the nodes where the lower bound is attained. The membrane is in contact with the obstacle in the central region only, where the deflected surface follows the obstacle oscillations.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+
+<span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">u_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span><span class="p">)</span>
+<span class="n">u_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Deflection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span> <span class="o">-</span> <span class="n">obstacle</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span> <span class="o">&lt;</span> <span class="mf">1e-8</span>
+<span class="n">u_grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Contact&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">contact</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">warped</span> <span class="o">=</span> <span class="n">u_grid</span><span class="o">.</span><span class="n">warp_by_scalar</span><span class="p">(</span><span class="s2">&quot;Deflection&quot;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">window_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">500</span><span class="p">))</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">&quot;Deflection (x5)&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">warped</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="s2">&quot;Deflection&quot;</span><span class="p">,</span> <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="s2">&quot;Contact zone&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">u_grid</span><span class="p">,</span> <span class="n">scalars</span><span class="o">=</span><span class="s2">&quot;Contact&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;lightgray&quot;</span><span class="p">,</span> <span class="s2">&quot;firebrick&quot;</span><span class="p">],</span> <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">view_xy</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/4f1519896694e1013216567ffb8a9528995828205bef1160ffa4531941fb94af.png" src="../../../_images/4f1519896694e1013216567ffb8a9528995828205bef1160ffa4531941fb94af.png" />
+</div>
+</div>
+<p>Finally, we plot the deflection and the obstacle along the line <span class="math notranslate nohighlight">\(y=1/2\)</span>. In the central region, where the free deflection would be the largest, the membrane touches the highest peaks of the obstacle and spans the gaps between them.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_dofs</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">tabulate_dof_coordinates</span><span class="p">()</span>
+<span class="n">line_dofs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x_dofs</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">))</span>
+<span class="n">line_dofs</span> <span class="o">=</span> <span class="n">line_dofs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x_dofs</span><span class="p">[</span><span class="n">line_dofs</span><span class="p">,</span> <span class="mi">0</span><span class="p">])]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dofs</span><span class="p">[</span><span class="n">line_dofs</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">obstacle</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">line_dofs</span><span class="p">],</span> <span class="s2">&quot;-k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Obstacle&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_dofs</span><span class="p">[</span><span class="n">line_dofs</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">line_dofs</span><span class="p">],</span> <span class="s2">&quot;-C3&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Deflection&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$x$ coordinate&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Deflection along $y=1/2$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../../_images/6fd32a45eadc890a6ac2ce62f63d209d3bdc825eb6455afb446e78709005e25b.png" src="../../../_images/6fd32a45eadc890a6ac2ce62f63d209d3bdc825eb6455afb446e78709005e25b.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id5">
 <div role="list" class="citation-list">
-<div class="citation" id="id8" role="doc-biblioentry">
+<div class="citation" id="id10" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">BFM00</a><span class="fn-bracket">]</span></span>
 <p>Blaise Bourdin, Gilles A Francfort, and Jean-Jacques Marigo. Numerical experiments in revisited brittle fracture. <em>Journal of the Mechanics and Physics of Solids</em>, 48(4):797–826, 2000. <a class="reference external" href="https://doi.org/10.1016/S0022-5096(99)00028-9">doi:10.1016/S0022-5096(99)00028-9</a>.</p>
 </div>
-<div class="citation" id="id9" role="doc-biblioentry">
+<div class="citation" id="id11" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>PAMM11<span class="fn-bracket">]</span></span>
 <span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
 <p>Kim Pham, Hanen Amor, Jean-Jacques Marigo, and Corrado Maurini. Gradient damage models and their use to approximate brittle fracture. <em>International Journal of Damage Mechanics</em>, 20(4):618–652, 2011. <a class="reference external" href="https://doi.org/10.1177/1056789510386852">doi:10.1177/1056789510386852</a>.</p>
 </div>
-<div class="citation" id="id10" role="doc-biblioentry">
+<div class="citation" id="id12" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">PM13</a><span class="fn-bracket">]</span></span>
 <p>Kim Pham and Jean-Jacques Marigo. From the onset of damage to rupture: construction of responses with damage localization for a general class of gradient damage models. <em>Continuum Mechanics and Thermodynamics</em>, 25:147–171, 2013. <a class="reference external" href="https://doi.org/10.1007/s00161-011-0228-3">doi:10.1007/s00161-011-0228-3</a>.</p>
 </div>
@@ -696,16 +1007,32 @@ d(0)=d_0 \quad ; \quad d(\pm D) = 0 \quad ;\quad  \dfrac{\partial d}{\partial x}
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#localized-1d-solutions">Localized 1D solutions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-solvers-petsc-tao">Optimization solvers: PETSc TAO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-inequality-solvers-petsc-snes">Variational inequality solvers: PETSc SNES</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#localized-1d-solutions-in-phase-field-fracture">Localized 1D solutions in phase-field fracture</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#obstacle-problem">Obstacle problem</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Problem position</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-with-tao">Resolution with TAO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-with-a-snes-variational-inequality-solver">Resolution with a SNES variational inequality solver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>
 
@@ -747,8 +1074,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -1,67 +1,59 @@
 Traceback (most recent call last):
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/home/bleyerj/.local/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 1323, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
     return future.result()
            ^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-deg_quad = 2  # quadrature degree for internal state variable representation
-vdim = 3  # dimension of the vectorial representation of tensors
-W0 = basix.
-W0e = ufl.FiniteElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    quad_scheme="default",
+V_ux, _ = V.sub(0).collapse()
+V_uy, _ = V.sub(1).collapse()
+left_dofs = fem.locate_dofs_geometrical(
+    (V.sub(0), V_ux), lambda x: np.isclose(x[0], 0.0)
 )
-We = ufl.VectorElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    dim=vdim,
-    quad_scheme="default",
+bot_dofs = fem.locate_dofs_geometrical(
+    (V.sub(1), V_uy), lambda x: np.isclose(x[1], 0.0)
 )
-WTe = ufl.TensorElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    shape=(vdim, vdim),
-    quad_scheme="default",
+top_dofs = fem.locate_dofs_geometrical(
+    (V.sub(1), V_uy), lambda x: np.isclose(x[1], height)
 )
-W = fem.functionspace(domain, We)
-WT = fem.functionspace(domain, WTe)
-W0 = fem.functionspace(domain, W0e)
 
-
-sig = fem.Function(W, name="Stress")
-Ct = fem.Function(WT, name="Tangent_operator")
-epsv = fem.Function(W, name="Viscous_strain")
-epsv_old = fem.Function(W, name="Previous_viscous_strain")
-eps_old = fem.Function(W, name="Previous_total_strain")
-
-u = fem.Function(V, name="Total_displacement")
-du = fem.Function(V, name="Iteration_correction")
-v = ufl.TrialFunction(V)
-u_ = ufl.TestFunction(V)
+uD_x0 = fem.Function(V_ux)
+uD_y0 = fem.Function(V_uy)
+uD_y = fem.Function(V_uy)
+epsr = 1e-3
+uD_y.vector.set(epsr * height)
+bcs = [
+    fem.dirichletbc(uD_x0, left_dofs, V.sub(0)),
+    fem.dirichletbc(uD_y0, bot_dofs, V.sub(1)),
+    fem.dirichletbc(uD_y, top_dofs, V.sub(1)),
+]
 ------------------
 
 
-[0;36m  Cell [0;32mIn[4], line 3[0;36m[0m
-[0;31m    W0 = basix.[0m
-[0m               ^[0m
-[0;31mSyntaxError[0m[0;31m:[0m invalid syntax
+[31m---------------------------------------------------------------------------[39m
+[31mAttributeError[39m                            Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[3][39m[32m, line 17[39m
+[32m     13[39m uD_x0 = fem.Function(V_ux)
+[32m     14[39m uD_y0 = fem.Function(V_uy)
+[32m     15[39m uD_y = fem.Function(V_uy)
+[32m     16[39m epsr = [32m1e-3[39m
+[32m---> [39m[32m17[39m uD_y.vector.set(epsr * height)
+[32m     18[39m bcs = [
+[32m     19[39m     fem.dirichletbc(uD_x0, left_dofs, V.sub([32m0[39m)),
+[32m     20[39m     fem.dirichletbc(uD_y0, bot_dofs, V.sub([32m1[39m)),
 
+[31mAttributeError[39m: 'Function' object has no attribute 'vector'
 

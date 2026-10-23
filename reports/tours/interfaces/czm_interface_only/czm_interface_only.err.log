@@ -1,46 +1,69 @@
 Traceback (most recent call last):
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 1319, in execute
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
+  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
     return future.result()
            ^^^^^^^^^^^^^^^
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.9/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-dx = ufl.Measure("dx", domain=domain, subdomain_data=cells)
-ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
-dx_int = ufl.Measure("dx", domain=interface_mesh)
-dInt = ufl.Measure(
-    "dS",
-    domain=domain,
-    subdomain_data=[(INT_TAG, interface_entities)],
-    subdomain_id=INT_TAG,
-)
+Gamma = fem.assemble_scalar(fem.form(1 * dInt, entity_maps=entity_maps))
+print(f"Check that Gamma is such that {Gamma} ~ {np.pi*2*radius}")
 ------------------
 
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mNameError[0m                                 Traceback (most recent call last)
-Cell [0;32mIn[8], line 7[0m
-[1;32m      2[0m ds [38;5;241m=[39m ufl[38;5;241m.[39mMeasure([38;5;124m"[39m[38;5;124mds[39m[38;5;124m"[39m, domain[38;5;241m=[39mdomain, subdomain_data[38;5;241m=[39mfacets)
-[1;32m      3[0m dx_int [38;5;241m=[39m ufl[38;5;241m.[39mMeasure([38;5;124m"[39m[38;5;124mdx[39m[38;5;124m"[39m, domain[38;5;241m=[39minterface_mesh)
-[1;32m      4[0m dInt [38;5;241m=[39m ufl[38;5;241m.[39mMeasure(
-[1;32m      5[0m     [38;5;124m"[39m[38;5;124mdS[39m[38;5;124m"[39m,
-[1;32m      6[0m     domain[38;5;241m=[39mdomain,
-[0;32m----> 7[0m     subdomain_data[38;5;241m=[39m[(INT_TAG, [43minterface_entities[49m)],
-[1;32m      8[0m     subdomain_id[38;5;241m=[39mINT_TAG,
-[1;32m      9[0m )
+[0;31mTypeError[0m                                 Traceback (most recent call last)
+Cell [0;32mIn[10], line 1[0m
+[0;32m----> 1[0m Gamma [38;5;241m=[39m fem[38;5;241m.[39massemble_scalar([43mfem[49m[38;5;241;43m.[39;49m[43mform[49m[43m([49m[38;5;241;43m1[39;49m[43m [49m[38;5;241;43m*[39;49m[43m [49m[43mdInt[49m[43m,[49m[43m [49m[43mentity_maps[49m[38;5;241;43m=[39;49m[43mentity_maps[49m[43m)[49m)
+[1;32m      2[0m [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mCheck that Gamma is such that [39m[38;5;132;01m{[39;00mGamma[38;5;132;01m}[39;00m[38;5;124m ~ [39m[38;5;132;01m{[39;00mnp[38;5;241m.[39mpi[38;5;241m*[39m[38;5;241m2[39m[38;5;241m*[39mradius[38;5;132;01m}[39;00m[38;5;124m"[39m)
 
-[0;31mNameError[0m: name 'interface_entities' is not defined
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/fem/forms.py:249[0m, in [0;36mform[0;34m(form, dtype, form_compiler_options, jit_options, entity_maps)[0m
+[1;32m    246[0m         [38;5;28;01mreturn[39;00m [38;5;28mlist[39m([38;5;28mmap[39m([38;5;28;01mlambda[39;00m sub_form: _create_form(sub_form), form))
+[1;32m    247[0m     [38;5;28;01mreturn[39;00m form
+[0;32m--> 249[0m [38;5;28;01mreturn[39;00m [43m_create_form[49m[43m([49m[43mform[49m[43m)[49m
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/fem/forms.py:244[0m, in [0;36mform.<locals>._create_form[0;34m(form)[0m
+[1;32m    241[0m [38;5;250m[39m[38;5;124;03m"""Recursively convert ufl.Forms to dolfinx.fem.Form, otherwise[39;00m
+[1;32m    242[0m [38;5;124;03mreturn form argument"""[39;00m
+[1;32m    243[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(form, ufl[38;5;241m.[39mForm):
+[0;32m--> 244[0m     [38;5;28;01mreturn[39;00m [43m_form[49m[43m([49m[43mform[49m[43m)[49m
+[1;32m    245[0m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(form, collections[38;5;241m.[39mabc[38;5;241m.[39mIterable):
+[1;32m    246[0m     [38;5;28;01mreturn[39;00m [38;5;28mlist[39m([38;5;28mmap[39m([38;5;28;01mlambda[39;00m sub_form: _create_form(sub_form), form))
+
+File [0;32m/usr/lib/petsc/lib/python3/dist-packages/dolfinx/fem/forms.py:229[0m, in [0;36mform.<locals>._form[0;34m(form)[0m
+[1;32m    221[0m [38;5;66;03m# Subdomain markers (possibly empty list for some integral types)[39;00m
+[1;32m    222[0m subdomains [38;5;241m=[39m {
+[1;32m    223[0m     _ufl_to_dolfinx_domain[key]: get_integration_domains(
+[1;32m    224[0m         _ufl_to_dolfinx_domain[key], subdomain_data[[38;5;241m0[39m]
+[1;32m    225[0m     )
+[1;32m    226[0m     [38;5;28;01mfor[39;00m (key, subdomain_data) [38;5;129;01min[39;00m sd[38;5;241m.[39mget(domain)[38;5;241m.[39mitems()
+[1;32m    227[0m }
+[0;32m--> 229[0m f [38;5;241m=[39m [43mftype[49m[43m([49m
+[1;32m    230[0m [43m    [49m[43mmodule[49m[38;5;241;43m.[39;49m[43mffi[49m[38;5;241;43m.[39;49m[43mcast[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43muintptr_t[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[43mmodule[49m[38;5;241;43m.[39;49m[43mffi[49m[38;5;241;43m.[39;49m[43maddressof[49m[43m([49m[43mufcx_form[49m[43m)[49m[43m)[49m[43m,[49m
+[1;32m    231[0m [43m    [49m[43mV[49m[43m,[49m
+[1;32m    232[0m [43m    [49m[43mcoeffs[49m[43m,[49m
+[1;32m    233[0m [43m    [49m[43mconstants[49m[43m,[49m
+[1;32m    234[0m [43m    [49m[43msubdomains[49m[43m,[49m
+[1;32m    235[0m [43m    [49m[43mentity_maps[49m[43m,[49m
+[1;32m    236[0m [43m    [49m[43mmesh[49m[43m,[49m
+[1;32m    237[0m [43m[49m[43m)[49m
+[1;32m    238[0m [38;5;28;01mreturn[39;00m Form(f, ufcx_form, code)
+
+[0;31mTypeError[0m: __init__(): incompatible function arguments. The following argument types are supported:
+    1. __init__(self, spaces: list[dolfinx.cpp.fem.FunctionSpace_float64], integrals: dict[dolfinx.cpp.fem.IntegralType, list[tuple[int, int, ndarray[dtype=int32, writable=False, shape=(*), order='C']]]], coefficients: list[dolfinx.cpp.fem.Function_float64], constants: list[dolfinx.cpp.fem.Constant_float64], need_permutation_data: bool, entity_maps: dict[dolfinx.cpp.mesh.Mesh_float64, ndarray[dtype=int32, writable=False, shape=(*), order='C']], mesh: Optional[dolfinx.cpp.mesh.Mesh_float64]) -> None
+    2. __init__(self, form: int, spaces: list[dolfinx.cpp.fem.FunctionSpace_float64], coefficients: list[dolfinx.cpp.fem.Function_float64], constants: list[dolfinx.cpp.fem.Constant_float64], subdomains: dict[dolfinx.cpp.fem.IntegralType, list[tuple[int, ndarray[dtype=int32, writable=False, shape=(*), order='C']]]], entity_maps: dict[dolfinx.cpp.mesh.Mesh_float64, ndarray[dtype=int32, writable=False, shape=(*), order='C']], mesh: Optional[dolfinx.cpp.mesh.Mesh_float64]) -> None
+
+Invoked with types: dolfinx.cpp.fem.Form_float64, _CDataBase, list, list, list, dict, dict, dolfinx.cpp.mesh.Mesh_float64
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Elasto-plastic analysis of a 2D von Mises material &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Elasto-plastic analysis of a 2D von Mises material &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,6 +64,7 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/plasticity/plasticity';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Linear viscoelasticity with JAX" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html" />
@@ -71,20 +72,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,13 +439,13 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elastoplastic-behavior">Elastoplastic behavior</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration">Predictor-corrector algorithm for constitutive behavior integration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-state-variables-and-quadrature-elements">Internal state variables and <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-problem-and-custom-newton-raphson-procedure">Global problem and custom Newton-Raphson procedure</a></li>
 </ul>
@@ -425,7 +486,8 @@
 <li><p>Corrado Maurini (Sorbonne Université, <a class="reference external" href="mailto:corrado&#46;maurini&#37;&#52;&#48;sorbonne-universite&#46;fr">corrado<span>&#46;</span>maurini<span>&#64;</span>sorbonne-universite<span>&#46;</span>fr</a>)</p></li>
 </ul>
 </div>
-<a class="reference internal image-reference" href="../../../_images/plastic_strain.gif"><img alt="../../../_images/plastic_strain.gif" class="align-center" src="../../../_images/plastic_strain.gif" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/plastic_strain.gif"><img alt="../../../_images/plastic_strain.gif" class="align-center" src="../../../_images/plastic_strain.gif" style="width: 600px;" />
+</a>
 <div class="download admonition">
 <p class="admonition-title">Download sources</p>
 <ul class="simple">
@@ -444,7 +506,7 @@
 <p>The yield condition is given by:</p>
 <div class="math notranslate nohighlight">
 \[ f(\bsig) = \sqrt{\frac{3}{2}\boldsymbol{s}:\boldsymbol{s}} - \sigma_0 -Hp \leq 0\]</div>
-<p>where <span class="math notranslate nohighlight">\(\bs = \dev(\bsig)\)</span> is the deviatoric stress and <span class="math notranslate nohighlight">\(p\)</span> is the cumulated equivalent plastic strain which is such that <span class="math notranslate nohighlight">\(\dot{p} = \sqrt{\frac{2}{3}}\|\dot{\beps}^\text{p}\|\)</span>. We also introduce the von Mises equivalent stress:</p>
+<p>where <span class="math notranslate nohighlight">\(\bs = \dev(\bsig)\)</span> is the deviatoric stress and <span class="math notranslate nohighlight">\(p\)</span> is the cumulative equivalent plastic strain which is such that <span class="math notranslate nohighlight">\(\dot{p} = \sqrt{\frac{2}{3}}\|\dot{\beps}^\text{p}\|\)</span>. We also introduce the von Mises equivalent stress:</p>
 <div class="math notranslate nohighlight">
 \[\sigeq =  \sqrt{\frac{3}{2}\boldsymbol{s}:\boldsymbol{s}}\]</div>
 <p>Plastic evolution is given by the associated flow rule:</p>
@@ -456,7 +518,7 @@
 </section>
 <section id="predictor-corrector-algorithm-for-constitutive-behavior-integration">
 <h3>Predictor-corrector algorithm for constitutive behavior integration<a class="headerlink" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration" title="Link to this heading">#</a></h3>
-<p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follow notations from <span id="id1">[<a class="reference internal" href="#id8" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
+<p>The return mapping procedure consists in finding a new stress <span class="math notranslate nohighlight">\(\bsig_{n+1}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_{n+1}\)</span> state verifying the current plasticity condition from a previous stress <span class="math notranslate nohighlight">\(\bsig_{n}\)</span> and internal variable <span class="math notranslate nohighlight">\(p_n\)</span> state and an increment of total deformation <span class="math notranslate nohighlight">\(\Delta \beps\)</span>. This step is quite classical in FEM plasticity for a von Mises criterion with isotropic hardening and follows the notations of <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id8" title="Marc Bonnet, Attilio Frangi, and Christian Rey. The finite element method in solid mechanics. McGraw-Hill Education New York, 2014. ISBN 978-8838674464.">Bonnet <em>et al.</em>, 2014</a>]</span>.</p>
 <p>In the case of plastic flow, the flow rule <a class="reference internal" href="#equation-flow-rule">(19)</a> is approximated at <span class="math notranslate nohighlight">\(t_{n+1}\)</span> using a backward-Euler approximation:</p>
 <div class="math notranslate nohighlight" id="equation-flow-rule-incr">
 <span class="eqno">(20)<a class="headerlink" href="#equation-flow-rule-incr" title="Link to this equation">#</a></span>\[\Delta \bepsp = \Delta p \dfrac{3}{2\sigma_{\text{eq},n+1}}\bs_{n+1}\]</div>
@@ -500,7 +562,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <p>The considered problem is that of a plane strain hollow cylinder of internal (resp. external) radius <span class="math notranslate nohighlight">\(R_i\)</span> (resp. <span class="math notranslate nohighlight">\(R_e\)</span>) under internal uniform pressure <span class="math notranslate nohighlight">\(q\)</span>.</p>
-<p>We start by importing the relevant modules and define some geometrical constants.</p>
+<p>We start by importing the relevant modules and defining some geometrical constants.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -510,7 +572,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">basix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">petsc4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">PETSc</span>
 
@@ -524,10 +586,10 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 <p>We then model a quarter of cylinder using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> similarly to the <a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html"><span class="std std-doc">Axisymmetric formulation for elastic structures of revolution </span></a> demo.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gmsh</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
@@ -564,9 +626,10 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 
     <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
 
-<span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
-    <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span>
-<span class="p">)</span>
+<span class="n">mesh_data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">mesh</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">cell_tags</span>
+<span class="n">facets</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">facet_tags</span>
 <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -602,7 +665,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Vx</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
 <span class="n">Vy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
 <span class="n">bottom_dofsy</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Vy</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">top_dofsx</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vx</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">left_dofsx</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">((</span><span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">Vx</span><span class="p">),</span> <span class="n">gdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facets</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 
 
 <span class="c1"># used for post-processing</span>
@@ -615,7 +678,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <span class="n">u0x</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vx</span><span class="p">)</span>
 <span class="n">u0y</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vy</span><span class="p">)</span>
 <span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0x</span><span class="p">,</span> <span class="n">top_dofsx</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0x</span><span class="p">,</span> <span class="n">left_dofsx</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
     <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0y</span><span class="p">,</span> <span class="n">bottom_dofsy</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
 <span class="p">]</span>
 
@@ -629,10 +692,10 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 <section id="internal-state-variables-and-quadrature-elements">
 <h3>Internal state variables and <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements<a class="headerlink" href="#internal-state-variables-and-quadrature-elements" title="Link to this heading">#</a></h3>
-<p>When dealing with nonlinear constitutive models, internal state variables such as plastic strains represent the history seen by the material and have to be stored in some way. We choose here to represent them using <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements. This choice will make it possible to express the complex non-linear material constitutive equation at the Gauss points only, without involving any interpolation of non-linear expressions throughout the element. It will ensure an optimal convergence rate for the Newton-Raphson method, see chap. 26 of <span id="id2">[<a class="reference internal" href="#id5" title="Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. Automated Solution of Differential Equations by the Finite Element Method. Springer, 2012. ISBN 978-3-642-23098-1. doi:10.1007/978-3-642-23099-8.">Logg <em>et al.</em>, 2012</a>]</span>. We will need <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements for 4-dimensional vectors and scalars, the number of Gauss points will be determined by the required degree <code class="docutils literal notranslate"><span class="pre">deg_quad</span></code> of the <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> element, see the <a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html"><span class="std std-doc">Quadrature schemes</span></a> tour for more details on the choice of quadrature rules.</p>
+<p>When dealing with nonlinear constitutive models, internal state variables such as plastic strains represent the history seen by the material and have to be stored in some way. We choose here to represent them using <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements. This choice will make it possible to express the complex non-linear material constitutive equation at the Gauss points only, without involving any interpolation of non-linear expressions throughout the element. It will ensure an optimal convergence rate for the Newton-Raphson method, see chap. 26 of <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id5" title="Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. Automated Solution of Differential Equations by the Finite Element Method. Springer, 2012. ISBN 978-3-642-23098-1. doi:10.1007/978-3-642-23099-8.">Logg <em>et al.</em>, 2012</a>]</span>. We will need <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements for 4-dimensional vectors and scalars, the number of Gauss points will be determined by the required degree <code class="docutils literal notranslate"><span class="pre">deg_quad</span></code> of the <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> element, see the <a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html"><span class="std std-doc">Quadrature schemes</span></a> tour for more details on the choice of quadrature rules.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>We point out that, although the problem is 2D, plastic strain still occur in the transverse <span class="math notranslate nohighlight">\(zz\)</span> direction. This will require us to keep track of the out-of-plane <span class="math notranslate nohighlight">\(zz\)</span> components of stress/strain states.</p>
+<p>We point out that, although the problem is 2D, plastic strains still occur in the transverse <span class="math notranslate nohighlight">\(zz\)</span> direction. This will require us to keep track of the out-of-plane <span class="math notranslate nohighlight">\(zz\)</span> components of stress/strain states.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -663,14 +726,11 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <span class="n">Du</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Current_increment&quot;</span><span class="p">)</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">u_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
-
-<span class="n">P0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">p_avg</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">P0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Plastic_strain&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function <code class="docutils literal notranslate"><span class="pre">as_3D_tensor</span></code> will enable to represent a 4 dimensional vector containing respectively <span class="math notranslate nohighlight">\(xx, yy, zz\)</span> and <span class="math notranslate nohighlight">\(xy\)</span> components as a 3D tensor:</p>
+<p>Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function <code class="docutils literal notranslate"><span class="pre">as_3D_tensor</span></code> makes it possible to represent a 4 dimensional vector containing respectively <span class="math notranslate nohighlight">\(xx, yy, zz\)</span> and <span class="math notranslate nohighlight">\(xy\)</span> components as a 3D tensor:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">eps</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
@@ -717,7 +777,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <p>In order to use a Newton-Raphson procedure to resolve global equilibrium, we also need to derive the algorithmic consistent tangent matrix given by:</p>
 <div class="math notranslate nohighlight">
 \[\CC_{\text{tang}}^{\text{alg}} = \CC - 3\mu\left(\dfrac{3\mu}{3\mu+H}-\beta\right)  \boldsymbol{n}_{\text{elas}} \otimes \boldsymbol{n}_{\text{elas}} - 2\mu\beta\mathbb{Dev}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbb{Dev}\)</span> is the 4th-order tensor associated with the deviatoric operator (note that <span class="math notranslate nohighlight">\(\CC_{\text{tang}}^{\text{alg}}=\CC\)</span> for elastic evolution). Contrary to what is done in <span id="id3">[<a class="reference internal" href="#id5" title="Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. Automated Solution of Differential Equations by the Finite Element Method. Springer, 2012. ISBN 978-3-642-23098-1. doi:10.1007/978-3-642-23099-8.">Logg <em>et al.</em>, 2012</a>]</span>, we do not store it as the components of a 4th-order tensor but it will suffice keeping track of the normal vector and the <span class="math notranslate nohighlight">\(\beta\)</span> parameter related to the plastic strains. We instead define the function <code class="docutils literal notranslate"><span class="pre">sigma_tang</span></code> computing the tangent stress <span class="math notranslate nohighlight">\(\bsig_\text{tang} = \CC_{\text{tang}}^{\text{alg}}: \boldsymbol{\varepsilon}\)</span> as follows:</p>
+<p>where <span class="math notranslate nohighlight">\(\mathbb{Dev}\)</span> is the 4th-order tensor associated with the deviatoric operator (note that <span class="math notranslate nohighlight">\(\CC_{\text{tang}}^{\text{alg}}=\CC\)</span> for elastic evolution). Contrary to what is done in <span class="bibtex-citation" id="id3">[<a class="reference internal" href="#id5" title="Anders Logg, Kent-Andre Mardal, Garth N. Wells, and others. Automated Solution of Differential Equations by the Finite Element Method. Springer, 2012. ISBN 978-3-642-23098-1. doi:10.1007/978-3-642-23099-8.">Logg <em>et al.</em>, 2012</a>]</span>, we do not store it as the components of a 4th-order tensor but it suffices to keep track of the normal vector and the <span class="math notranslate nohighlight">\(\beta\)</span> parameter related to the plastic strains. We instead define the function <code class="docutils literal notranslate"><span class="pre">sigma_tang</span></code> computing the tangent stress <span class="math notranslate nohighlight">\(\bsig_\text{tang} = \CC_{\text{tang}}^{\text{alg}}: \boldsymbol{\varepsilon}\)</span> as follows:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sigma_tang</span><span class="p">(</span><span class="n">eps</span><span class="p">):</span>
@@ -733,19 +793,19 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>In this simple case, the stress expression from <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> is explicit and can be represented using pure <code class="docutils literal notranslate"><span class="pre">ufl</span></code> expressions. Hence, we could use this nonlinear expression in the nonlinear residual and use automatic differentiation to compute directly the corresponding tangent form. Here, we voluntarily do differently, as a pedagogical way towards more complex constitutive models for which the stress expression is no longer explicit. In these cases, the stress and tangent stiffness have to be formally represented as quadrature points and the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> provides the corresponding values at quadrature points.</p>
+<p>In this simple case, the stress expression from <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> is explicit and can be represented using pure <code class="docutils literal notranslate"><span class="pre">ufl</span></code> expressions. Hence, we could use this nonlinear expression in the nonlinear residual and use automatic differentiation to compute directly the corresponding tangent form. Here, we deliberately proceed differently, as a pedagogical way towards more complex constitutive models for which the stress expression is no longer explicit. In these cases, the stress and tangent stiffness have to be formally represented as quadrature functions and the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> provides the corresponding values at quadrature points.</p>
 </div>
 </section>
 <section id="global-problem-and-custom-newton-raphson-procedure">
 <h3>Global problem and custom Newton-Raphson procedure<a class="headerlink" href="#global-problem-and-custom-newton-raphson-procedure" title="Link to this heading">#</a></h3>
-<p>We now are in position to define the nonlinear residual variational form and the corresponding tangent bilinear form to be used in a global Newton-Raphson scheme. Each iteration will require establishing equilibrium by driving to zero the residual between the internal forces associated with the current stress state <code class="docutils literal notranslate"><span class="pre">sig</span></code> and the external force vector. Because we use <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements a custom integration measure <code class="docutils literal notranslate"><span class="pre">dx</span></code> must be defined to match the quadrature degree and scheme used by the Quadrature elements.</p>
+<p>We are now in position to define the nonlinear residual variational form and the corresponding tangent bilinear form to be used in a global Newton-Raphson scheme. Each iteration will require establishing equilibrium by driving to zero the residual between the internal forces associated with the current stress state <code class="docutils literal notranslate"><span class="pre">sig</span></code> and the external force vector. Because we use <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements a custom integration measure <code class="docutils literal notranslate"><span class="pre">dx</span></code> must be defined to match the quadrature degree and scheme used by the Quadrature elements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facets</span><span class="p">)</span>
 <span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span>
     <span class="s2">&quot;dx&quot;</span><span class="p">,</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
-    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="n">deg_quad</span><span class="p">,</span> <span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="n">deg_quad</span><span class="p">,</span> <span class="s2">&quot;quadrature_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="n">Residual</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">eps</span><span class="p">(</span><span class="n">u_</span><span class="p">),</span> <span class="n">as_3D_tensor</span><span class="p">(</span><span class="n">sig</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span>
     <span class="o">-</span><span class="n">loading</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="n">u_</span>
@@ -755,21 +815,16 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>During the Newton-Raphson iterations, we will have to interpolate some <code class="docutils literal notranslate"><span class="pre">ufl</span></code> expressions at quadrature points to update the corresponding functions. We define the <code class="docutils literal notranslate"><span class="pre">interpolate_quadrature</span></code> function to do so. We first get the quadrature points location in the reference element and then use the <code class="docutils literal notranslate"><span class="pre">fem.Expression.eval</span></code> to evaluate the expression on all cells.</p>
+<p>During the Newton-Raphson iterations, we will have to evaluate the stress and internal state variables at quadrature points for the current displacement increment <code class="docutils literal notranslate"><span class="pre">Du</span></code>. The corresponding <code class="docutils literal notranslate"><span class="pre">ufl</span></code> expressions are given by the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function. The interpolation points of a <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> element being its quadrature points, these expressions are evaluated by interpolating a <code class="docutils literal notranslate"><span class="pre">fem.Expression</span></code>, defined at these points, onto the corresponding <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> function. The different expressions are compiled once and for all before entering the load-stepping loop.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basix_celltype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">CellType</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">cell_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="n">quadrature_points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">make_quadrature</span><span class="p">(</span><span class="n">basix_celltype</span><span class="p">,</span> <span class="n">deg_quad</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Δε</span> <span class="o">=</span> <span class="n">eps</span><span class="p">(</span><span class="n">Du</span><span class="p">)</span>
+<span class="n">sig_</span><span class="p">,</span> <span class="n">n_elas_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">dp_</span> <span class="o">=</span> <span class="n">constitutive_update</span><span class="p">(</span><span class="n">Δε</span><span class="p">,</span> <span class="n">sig_old</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
 
-<span class="n">map_c</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-<span class="n">num_cells</span> <span class="o">=</span> <span class="n">map_c</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">map_c</span><span class="o">.</span><span class="n">num_ghosts</span>
-<span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">interpolate_quadrature</span><span class="p">(</span><span class="n">ufl_expr</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
-    <span class="n">expr_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">ufl_expr</span><span class="p">,</span> <span class="n">quadrature_points</span><span class="p">)</span>
-    <span class="n">expr_eval</span> <span class="o">=</span> <span class="n">expr_expr</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">)</span>
-    <span class="n">function</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">expr_eval</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[:]</span>
+<span class="n">sig_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">sig_</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
+<span class="n">n_elas_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">n_elas_</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
+<span class="n">beta_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">beta_</span><span class="p">,</span> <span class="n">W0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
+<span class="n">dp_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">dp_</span><span class="p">,</span> <span class="n">W0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -794,30 +849,30 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <span class="sd">        ----------</span>
 <span class="sd">        u : dolfinx.fem.Function, optional</span>
 <span class="sd">            For non-zero Dirichlet bcs u_D, use this function to assemble rhs with the value u_D - u_{bc}</span>
-<span class="sd">            where u_{bc} is the value of the given u at the corresponding. Typically used for custom Newton methods</span>
+<span class="sd">            where u_{bc} is the value of the given u at the corresponding dof. Typically used for custom Newton methods</span>
 <span class="sd">            with non-zero Dirichlet bcs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Assemble rhs</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">localForm</span><span class="p">()</span> <span class="k">as</span> <span class="n">b_loc</span><span class="p">:</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">localForm</span><span class="p">()</span> <span class="k">as</span> <span class="n">b_loc</span><span class="p">:</span>
             <span class="n">b_loc</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">)</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
 
         <span class="c1"># Apply boundary conditions to the rhs</span>
-        <span class="n">x0</span> <span class="o">=</span> <span class="p">[]</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="p">]</span>
-        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">apply_lifting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">],</span> <span class="n">bcs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">],</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">REVERSE</span><span class="p">)</span>
-        <span class="n">x0</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">u</span><span class="o">.</span><span class="n">vector</span>
-        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">]</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">apply_lifting</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">],</span> <span class="n">bcs</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">],</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">REVERSE</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">assemble_lhs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="o">.</span><span class="n">zeroEntries</span><span class="p">()</span>
-        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix_mat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_A</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">zeroEntries</span><span class="p">()</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bcs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">solve_system</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Solve linear system and update ghost values in the solution</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">)</span>
+        <span class="c1"># Solve linear system directly into the solution vector and update ghost values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
 
 
@@ -831,12 +886,13 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
         <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">,</span>
     <span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;plasticity_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We discretize the applied loading using <code class="docutils literal notranslate"><span class="pre">Nincr</span></code> increments from <span class="math notranslate nohighlight">\(0\)</span> up to a value slightly larger than <span class="math notranslate nohighlight">\(1\)</span> (we exclude <span class="math notranslate nohighlight">\(0\)</span> from the list of load steps). A nonlinear discretization is adopted to refine the load steps during the plastic evolution phase. At each time increment, the system is assembled and the residual norm is computed. The incremental displacement <code class="docutils literal notranslate"><span class="pre">Du</span></code> is initialized to zero and the inner iteration loop performing the constitutive update is initiated. Inside this loop, corrections <code class="docutils literal notranslate"><span class="pre">du</span></code> to the displacement increment <code class="docutils literal notranslate"><span class="pre">Du</span></code> are computed by solving the Newton system and the return mapping update is performed using the current total strain increment <code class="docutils literal notranslate"><span class="pre">deps</span></code>. The resulting quantities are then interpolated onto their appropriate <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> function space. The Newton system and residuals are reassembled and this procedure continues until the residual norm falls below a given tolerance. After convergence of the iteration loop, the total displacement, stress and plastic strain states are updated for the next time step.</p>
+<p>We discretize the applied loading using <code class="docutils literal notranslate"><span class="pre">Nincr</span></code> increments from <span class="math notranslate nohighlight">\(0\)</span> up to a value slightly larger than <span class="math notranslate nohighlight">\(1\)</span> (we exclude <span class="math notranslate nohighlight">\(0\)</span> from the list of load steps). A nonlinear discretization is adopted to refine the load steps during the plastic evolution phase. At each time increment, the system is assembled and the residual norm is computed. The incremental displacement <code class="docutils literal notranslate"><span class="pre">Du</span></code> is initialized to zero and the inner iteration loop performing the constitutive update is initiated. Inside this loop, corrections <code class="docutils literal notranslate"><span class="pre">du</span></code> to the displacement increment <code class="docutils literal notranslate"><span class="pre">Du</span></code> are computed by solving the Newton system and the return mapping update is performed using the current total strain increment <code class="docutils literal notranslate"><span class="pre">Δε</span></code>. The resulting quantities are then interpolated onto their appropriate <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> function space. The Newton system and residuals are reassembled and this procedure continues until the residual norm falls below a given tolerance. An error is raised if convergence is not reached within <code class="docutils literal notranslate"><span class="pre">Nitermax</span></code> iterations. After convergence of the iteration loop, the total displacement, stress and plastic strain states are updated for the next time step.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Nitermax</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">1e-6</span>  <span class="c1"># parameters of the Newton-Raphson procedure</span>
@@ -845,23 +901,15 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
 <span class="c1"># we set all functions to zero before entering the loop in case we would like to reexecute this code cell</span>
-<span class="n">sig</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">sig_old</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">p</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">n_elas</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">beta</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-
-<span class="n">Δε</span> <span class="o">=</span> <span class="n">eps</span><span class="p">(</span><span class="n">Du</span><span class="p">)</span>
-<span class="n">sig_</span><span class="p">,</span> <span class="n">n_elas_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">dp_</span> <span class="o">=</span> <span class="n">constitutive_update</span><span class="p">(</span><span class="n">Δε</span><span class="p">,</span> <span class="n">sig_old</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">sig</span><span class="p">,</span> <span class="n">sig_old</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">n_elas</span><span class="p">,</span> <span class="n">beta</span><span class="p">]:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">load_steps</span><span class="p">):</span>
     <span class="n">loading</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">t</span> <span class="o">*</span> <span class="n">q_lim</span>
 
     <span class="c1"># compute the residual norm at the beginning of the load step</span>
     <span class="n">tangent_problem</span><span class="o">.</span><span class="n">assemble_rhs</span><span class="p">()</span>
-    <span class="n">nRes0</span> <span class="o">=</span> <span class="n">tangent_problem</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+    <span class="n">nRes0</span> <span class="o">=</span> <span class="n">tangent_problem</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
     <span class="n">nRes</span> <span class="o">=</span> <span class="n">nRes0</span>
     <span class="n">Du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mi">0</span>
 
@@ -872,27 +920,28 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
         <span class="n">tangent_problem</span><span class="o">.</span><span class="n">solve_system</span><span class="p">()</span>
 
         <span class="c1"># update the displacement increment with the current correction</span>
-        <span class="n">Du</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">du</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>  <span class="c1"># Du = Du + 1*du</span>
-        <span class="n">Du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+        <span class="n">Du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>  <span class="c1"># Du = Du + du</span>
 
         <span class="c1"># interpolate the new stresses and internal state variables</span>
-        <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">sig_</span><span class="p">,</span> <span class="n">sig</span><span class="p">)</span>
-        <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">n_elas_</span><span class="p">,</span> <span class="n">n_elas</span><span class="p">)</span>
-        <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">beta_</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        <span class="n">sig</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">sig_expr</span><span class="p">)</span>
+        <span class="n">n_elas</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">n_elas_expr</span><span class="p">)</span>
+        <span class="n">beta</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">beta_expr</span><span class="p">)</span>
 
         <span class="c1"># compute the new residual</span>
         <span class="n">tangent_problem</span><span class="o">.</span><span class="n">assemble_rhs</span><span class="p">()</span>
-        <span class="n">nRes</span> <span class="o">=</span> <span class="n">tangent_problem</span><span class="o">.</span><span class="n">_b</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
+        <span class="n">nRes</span> <span class="o">=</span> <span class="n">tangent_problem</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">norm</span><span class="p">()</span>
 
         <span class="n">niter</span> <span class="o">+=</span> <span class="mi">1</span>
 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">nRes</span> <span class="o">/</span> <span class="n">nRes0</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Newton method failed to converge at load step </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="c1"># Update the displacement with the converged increment</span>
-    <span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">Du</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>  <span class="c1"># u = u + 1*Du</span>
-    <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">Du</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>  <span class="c1"># u = u + Du</span>
 
     <span class="c1"># Update the previous plastic strain</span>
-    <span class="n">interpolate_quadrature</span><span class="p">(</span><span class="n">dp_</span><span class="p">,</span> <span class="n">dp</span><span class="p">)</span>
-    <span class="n">p</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">axpy</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dp</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+    <span class="n">dp</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">dp_expr</span><span class="p">)</span>
+    <span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">+=</span> <span class="n">dp</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
 
     <span class="c1"># Update the previous stress</span>
     <span class="n">sig_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
@@ -903,7 +952,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 </div>
-<p>We plot the evolution e of the cylinder displacement on the inner boundary with the applied loading. We can check that we recover the correct analytical limit load when considering no hardening.</p>
+<p>We plot the evolution of the cylinder displacement on the inner boundary with the applied loading. We can check that we recover the correct analytical limit load when considering no hardening.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bottom_inside_dof</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># test if proc has dof</span>
@@ -915,7 +964,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/ed9dd603aad9777691824e55760a91bb1335ba003b952f528f2bd601cbf7d31a.png" src="../../../_images/ed9dd603aad9777691824e55760a91bb1335ba003b952f528f2bd601cbf7d31a.png" />
+<img alt="../../../_images/6c244b4a159e227545d8229b1cca961d183903320b36f808e332b475d44a5dc7.png" src="../../../_images/6c244b4a159e227545d8229b1cca961d183903320b36f808e332b475d44a5dc7.png" />
 </div>
 </div>
 <p>Finally, we also report the evolution of the number of Newton iterations as a function of the loading increments:</p>
@@ -931,7 +980,7 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/1d101a4542ee5a038fb9aa5cc027662893950f709e070ac69e0f19c219ed557e.png" src="../../../_images/1d101a4542ee5a038fb9aa5cc027662893950f709e070ac69e0f19c219ed557e.png" />
+<img alt="../../../_images/56eea43c40e5821b1bbf0ad7882be5988af8512a2060096585eea1b05ea4eb06.png" src="../../../_images/56eea43c40e5821b1bbf0ad7882be5988af8512a2060096585eea1b05ea4eb06.png" />
 </div>
 </div>
 </section>
@@ -1013,18 +1062,19 @@ f(\bsig_{n+1}) &amp;= \sigma_{\text{eq},n+1} - \sigma_0 - H p_n - H\Delta p = 0\
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elastoplastic-behavior">Elastoplastic behavior</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#predictor-corrector-algorithm-for-constitutive-behavior-integration">Predictor-corrector algorithm for constitutive behavior integration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#internal-state-variables-and-quadrature-elements">Internal state variables and <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> elements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-problem-and-custom-newton-raphson-procedure">Global problem and custom Newton-Raphson procedure</a></li>
 </ul>
@@ -1071,8 +1121,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

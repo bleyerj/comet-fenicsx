@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Linear Buckling Analysis of a 3D solid &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Linear buckling analysis of a 3D solid &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,27 +64,34 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Homogenization" href="../../homogenization/contents.html" />
+    <link rel="next" title="Bloch-wave analysis of a phononic crystal plate" href="../bloch_waves/bloch_waves.html" />
     <link rel="prev" title="Eigenvalue problems" href="../contents.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Eigenvalue problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -369,7 +430,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Linear Buckling Analysis of a 3D solid </h1>
+    <h1>Linear buckling analysis of a 3D solid </h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -378,12 +439,12 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometrically-nonlinear-elasticity">Geometrically Nonlinear Elasticity</a></li>
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometrically-nonlinear-elasticity">Geometrically nonlinear elasticity</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium-and-stability-conditions">Equilibrium and stability conditions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bifurcation-point">Bifurcation point</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-buckling-analysis">Linear buckling analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fenicsx-implementation">FEniCSx implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fenicsx-implementation">FEniCSx implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-geometry">Defining the geometry</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-the-pre-stressed-state-bu-0">Solving for the pre-stressed state <span class="math notranslate nohighlight">\(\bu_0\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forming-the-geometric-stiffness-matrix-and-the-buckling-eigenvalue-problem">Forming the geometric stiffness matrix and the buckling eigenvalue problem</a></li>
@@ -403,7 +464,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="linear-buckling-analysis-of-a-3d-solid">
-<h1>Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#linear-buckling-analysis-of-a-3d-solid" title="Link to this heading">#</a></h1>
+<h1>Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#linear-buckling-analysis-of-a-3d-solid" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
 <p>In this numerical tour, we will demonstrate how to compute the buckling modes of a three-dimensional elastic solid under a conservative loading. The critical buckling loads and buckling modes are obtained by solving a generalized Hermitian eigenvalue problem using <code class="docutils literal notranslate"><span class="pre">slepc4py</span></code>.<span class="math notranslate nohighlight">\(\newcommand{\bq}{\boldsymbol{q}}
@@ -413,9 +474,11 @@
 \newcommand{\be}{\boldsymbol{e}}
 \newcommand{\beps}{\boldsymbol{\varepsilon}}
 \newcommand{\bsig}{\boldsymbol{\sigma}}
+\newcommand{\tr}{\text{tr}\,}
 \newcommand{\T}{^{\text{T}}}\)</span></p>
 </div>
-<a class="reference internal image-reference" href="../../../_images/eigenmodes_cross.gif"><img alt="../../../_images/eigenmodes_cross.gif" class="align-center" src="../../../_images/eigenmodes_cross.gif" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/eigenmodes_cross.gif"><img alt="../../../_images/eigenmodes_cross.gif" class="align-center" src="../../../_images/eigenmodes_cross.gif" style="width: 600px;" />
+</a>
 <div class="coauthors admonition">
 <p class="admonition-title">Coauthors</p>
 <p>This tour has been written with the help of:</p>
@@ -432,8 +495,8 @@
 </ul>
 </div>
 <section id="geometrically-nonlinear-elasticity">
-<h2>Geometrically Nonlinear Elasticity<a class="headerlink" href="#geometrically-nonlinear-elasticity" title="Link to this heading">#</a></h2>
-<p>To formulate the buckling problem, we must consider a general geometrically nonlinear framework. More precisely, we will consider the case of small-strain/large displacements that are expected in typical buckling analysis. For more details on the theoretical formulation, the reader can refer to <span id="id1">[<a class="reference internal" href="#id14" title="Quoc Son Nguyen. Stability and nonlinear solid mechanics. Wiley, 2000.">Nguyen, 2000</a>]</span>.</p>
+<h2>Geometrically nonlinear elasticity<a class="headerlink" href="#geometrically-nonlinear-elasticity" title="Link to this heading">#</a></h2>
+<p>To formulate the buckling problem, we must consider a general geometrically nonlinear framework. More precisely, we will consider the case of small-strain/large displacements that are expected in typical buckling analysis. For more details on the theoretical formulation, the reader can refer to <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id14" title="Quoc Son Nguyen. Stability and nonlinear solid mechanics. Wiley, 2000.">Nguyen, 2000</a>]</span>.</p>
 <p>We consider the Green-Lagrange strain tensor <span class="math notranslate nohighlight">\(\be\)</span> defined as:</p>
 <div class="math notranslate nohighlight">
 \[e_{ij}  = \frac{1}{2} (u_{i,j} + u_{j,i}) + \frac{1}{2} u_{k,i}u_{k,j}\]</div>
@@ -473,27 +536,27 @@
 <h2>Bifurcation point<a class="headerlink" href="#bifurcation-point" title="Link to this heading">#</a></h2>
 <p>A given equilibrium solution <span class="math notranslate nohighlight">\(\lambda^c, \bu^c=\bu(\lambda^c)\)</span> is a bifurcation point if the second variation vanishes for some <span class="math notranslate nohighlight">\(\delta\bu\)</span>. <span class="math notranslate nohighlight">\(\lambda^c\)</span> defines the bifurcation load and <span class="math notranslate nohighlight">\(\delta\bu\)</span> the bifurcation mode. Hence, we have:</p>
 <div class="math notranslate nohighlight" id="equation-bifurcation-equilibrium">
-<span class="eqno">(31)<a class="headerlink" href="#equation-bifurcation-equilibrium" title="Link to this equation">#</a></span>\[\int_\Omega ((\beps(\delta\bv) + \bq(\bu^c,\delta\bv)):\mathbb{C}:(\beps(\delta\bu) + \bq(\bu^c,\delta\bu)) + \be(\bu^c):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0\]</div>
+<span class="eqno">(34)<a class="headerlink" href="#equation-bifurcation-equilibrium" title="Link to this equation">#</a></span>\[\int_\Omega ((\beps(\delta\bv) + \bq(\bu^c,\delta\bv)):\mathbb{C}:(\beps(\delta\bu) + \bq(\bu^c,\delta\bu)) + \be(\bu^c):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0\]</div>
 </section>
 <section id="linear-buckling-analysis">
 <h2>Linear buckling analysis<a class="headerlink" href="#linear-buckling-analysis" title="Link to this heading">#</a></h2>
-<p>When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain <span class="math notranslate nohighlight">\(\be(\bu^c)\)</span> can be replaced by the linearized strain <span class="math notranslate nohighlight">\(\beps(\bu^c)\)</span> in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, the small displacement solution also depends linearly on it. We therefore have <span class="math notranslate nohighlight">\(\bu^c= \lambda^c\bu_0\)</span> and the bifurcation condition <a class="reference internal" href="#equation-bifurcation-equilibrium">(31)</a> becomes:</p>
+<p>When performing a linear buckling analysis, we look for bifurcation points on the fundamental equilibrium branch obtained by a small displacement assumption. As a result, in the above bifurcation equation the quadratic contribution in the first term can be neglected and the Green-Lagrange strain <span class="math notranslate nohighlight">\(\be(\bu^c)\)</span> can be replaced by the linearized strain <span class="math notranslate nohighlight">\(\beps(\bu^c)\)</span> in the second term. Besides, in the small-displacement assumption, if the loading depends linearly on the load parameter <span class="math notranslate nohighlight">\(\lambda\)</span>, the small displacement solution also depends linearly on it. We therefore have <span class="math notranslate nohighlight">\(\bu^c= \lambda^c\bu_0\)</span> and the bifurcation condition <a class="reference internal" href="#equation-bifurcation-equilibrium">(34)</a> becomes:</p>
 <div class="math notranslate nohighlight">
 \[
 \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
 \]</div>
-<p>After, introducing the initial pre-stress <span class="math notranslate nohighlight">\(\bsig_0 = \mathbb{C}:\beps(\bu_0)\)</span>, the last term can be rewritten as <span class="math notranslate nohighlight">\(\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T\)</span> so that:</p>
+<p>After, introducing the initial pre-stress <span class="math notranslate nohighlight">\(\bsig_0 = \mathbb{C}:\beps(\bu_0)\)</span>, the last term can be rewritten as <span class="math notranslate nohighlight">\(\bsig_0:\bq(\delta\bv,\delta\bu) = \tr(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T\)</span> so that:</p>
 <div class="math notranslate nohighlight" id="equation-buckling-weak-form">
-<span class="eqno">(32)<a class="headerlink" href="#equation-buckling-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T)d\Omega = 0\]</div>
+<span class="eqno">(35)<a class="headerlink" href="#equation-buckling-weak-form" title="Link to this equation">#</a></span>\[\int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\tr((\nabla \delta \bv) \bsig_0 (\nabla \delta\bu))\T)d\Omega = 0\]</div>
 <p>We recognize here a linear eigenvalue problem where the first term corresponds to the classical linear elasticity bilinear form and the second term is an additional contribution depending on the pre-stressed state <span class="math notranslate nohighlight">\(\bu_0\)</span>. Transforming this variational problem into matrix notations yields:</p>
 <div class="math notranslate nohighlight">
 \[
-[\mathbf{K}]+\lambda[\mathbf{K}_G(\bu_0)]=0
+\left([\mathbf{K}]+\lambda[\mathbf{K}_G(\bu_0)]\right)\{U\}=0
 \]</div>
-<p>where <span class="math notranslate nohighlight">\([\mathbf{K}]\)</span> is the classical linear elastic stiffness matrix and <span class="math notranslate nohighlight">\([\mathbf{K}_G(\bu_0)]\)</span> the so-called <em>geometrical stiffness</em> matrix.</p>
+<p>where <span class="math notranslate nohighlight">\([\mathbf{K}]\)</span> is the classical linear elastic stiffness matrix and <span class="math notranslate nohighlight">\([\mathbf{K}_G(\bu_0)]\)</span> the so-called <em>geometric stiffness</em> matrix.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>In the present case, the geometric stiffness matrix is associated with a symmetric form. It is however indefinite, as the pre-stress can be positive or negative. In the case of follower forces i.e. forces for which the direction and/or intensity depends on the geometric configuration of the solid, typically pressure forces, such forces contribute to the geometric through an additional term which must be accounted for, see for instance <span id="id2">[<a class="reference internal" href="#id15" title="HD Hibbit. Some follower forces and load stiffness. International Journal for Numerical Methods in Engineering, 14(6):937–941, 1979.">Hibbit, 1979</a>]</span>. In some particular cases, it may turn out that the resulting geometric stiffness matrix ends up being unsymmetric.</p>
+<p>In the present case, the geometric stiffness matrix is associated with a symmetric form. It is however indefinite, as the pre-stress can be positive or negative. In the case of follower forces i.e. forces for which the direction and/or intensity depends on the geometric configuration of the solid, typically pressure forces, such forces contribute to the geometric stiffness through an additional term which must be accounted for, see for instance <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id15" title="HD Hibbit. Some follower forces and load stiffness. International Journal for Numerical Methods in Engineering, 14(6):937–941, 1979.">Hibbit, 1979</a>]</span>. In some particular cases, it may turn out that the resulting geometric stiffness matrix ends up being unsymmetric.</p>
 </div>
 </section>
 <section id="fenicsx-implementation">
@@ -505,14 +568,13 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">petsc4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">PETSc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">slepc4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">SLEPc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">plot</span><span class="p">,</span> <span class="n">default_scalar_type</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearProblem</span><span class="p">,</span> <span class="n">assemble_matrix</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">eigenvalue_solver</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_GEP_shiftinvert</span><span class="p">,</span> <span class="n">EPS_get_spectrum</span>
 
-<span class="n">L</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.03</span>
+<span class="n">L</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.03</span>
 <span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">,</span> <span class="n">Nz</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span>
 
 <span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_box</span><span class="p">(</span>
@@ -598,12 +660,16 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Solution of the trivial problem</span>
 <span class="n">problem</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">}</span>
+    <span class="n">a</span><span class="p">,</span>
+    <span class="n">l</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;prestress_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">u</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 
 <span class="c1"># Stiffness matrix</span>
-<span class="n">K</span> <span class="o">=</span> <span class="n">assemble_matrix</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">assemble_matrix</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">K</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -623,13 +689,13 @@ One can equivalently compute the prestress resulting from a displacement control
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kgform</span> <span class="o">=</span> <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">du</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
 
-<span class="n">KG</span> <span class="o">=</span> <span class="n">assemble_matrix</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">kgform</span><span class="p">),</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">diagonal</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">KG</span> <span class="o">=</span> <span class="n">assemble_matrix</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">kgform</span><span class="p">),</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">diag</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">KG</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>After having formed the geometric stiffness matrix, we will use <code class="docutils literal notranslate"><span class="pre">slepc4py</span></code> to solve a generalized eigenvalue problem <span class="math notranslate nohighlight">\(\mathbf{Ax}=\lambda \mathbf{Bx}\)</span> with here <span class="math notranslate nohighlight">\(\mathbf{A}=\mathbf{K}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{B}=-\mathbf{K}_G\)</span>. Function defined in <a class="reference download internal" download="" href="../../../_downloads/c2e9542cfdfdda85029ded731c9fb154/eigenvalue_solver.py"><code class="xref download docutils literal notranslate"><span class="pre">eigenvalue_solver.py</span></code></a> allow to define the eigenvalue problem, set up parameters, monitor the resolution and extract the resulting eigenpairs. Here, our problem is of type <code class="docutils literal notranslate"><span class="pre">GHEP</span></code> (Generalized Hermitian eigenproblem).</p>
+<p>After having formed the geometric stiffness matrix, we will use <code class="docutils literal notranslate"><span class="pre">slepc4py</span></code> to solve a generalized eigenvalue problem <span class="math notranslate nohighlight">\(\mathbf{Ax}=\lambda \mathbf{Bx}\)</span> with here <span class="math notranslate nohighlight">\(\mathbf{A}=\mathbf{K}\)</span> and the assembled <code class="docutils literal notranslate"><span class="pre">KG</span></code> is <span class="math notranslate nohighlight">\(\mathbf{B}\)</span>. The functions defined in <a class="reference download internal" download="" href="../../../_downloads/c2e9542cfdfdda85029ded731c9fb154/eigenvalue_solver.py"><code class="xref download docutils literal notranslate"><span class="pre">eigenvalue_solver.py</span></code></a> allow to define the eigenvalue problem, set up parameters, monitor the resolution and extract the resulting eigenpairs. Here, our problem is of type <code class="docutils literal notranslate"><span class="pre">GHEP</span></code> (Generalized Hermitian eigenproblem).</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>We use a shift-and-invert transform i.e. instead of solving <span class="math notranslate nohighlight">\(\mathbf{Ax}=\lambda \mathbf{Bx}\)</span>, we will solve</p>
@@ -670,25 +736,26 @@ One can equivalently compute the prestress resulting from a displacement control
 ***  SLEPc Iterations...   ***
 ******************************
 Iter. | Conv. | Max. error
-    1 |     5 | 2.3e-11
-    2 |     8 | 1.6e-12
+    1 |     5 | 2.0e-11
+    2 |     7 | 1.0e-12
 
 ******************************
 *** SLEPc Solution Results ***
 ******************************
 Iteration number: 2
-Converged eigenpairs: 8
+Converged eigenpairs: 7
 
 Converged eigval.  Error 
 ----------------- -------
- 1.68e-01             2.9e-13
- 4.97e-01             9.5e-14
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1.68e-01             3.0e-13
+ 4.97e-01             9.8e-14
  9.88e-01             4.9e-14
  1.50e+00             1.5e-14
  1.64e+00             3.0e-14
  2.46e+00             2.0e-14
  3.43e+00             1.4e-14
- 4.39e+00             5.6e-15
 </pre></div>
 </div>
 </div>
@@ -696,13 +763,13 @@ Converged eigval.  Error
 </section>
 <section id="validation-against-beam-theory-solution">
 <h3>Validation against beam theory solution<a class="headerlink" href="#validation-against-beam-theory-solution" title="Link to this heading">#</a></h3>
-<p>Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.</p>
+<p>Finally, we validate our implementation by comparing the buckling loads obtained with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.</p>
 <div class="tip dropdown admonition">
 <p class="admonition-title">Beam theory buckling loads</p>
 <p>For a straight beam under uniform compression force <span class="math notranslate nohighlight">\(F_0\)</span>, the linearized bending equilibrium equation around the pre-stressed state reads:</p>
 <div class="math notranslate nohighlight">
 \[M'(x)+\lambda F_0\theta(x) + Q(x)=0\]</div>
-<p>where <span class="math notranslate nohighlight">\(\theta(x)=v'(x)\)</span> is the beam rotation, <span class="math notranslate nohighlight">\(v(x)\)</span> the beam vertical deflection and <span class="math notranslate nohighlight">\(Q(x)\)</span> the shear force. Here, <span class="math notranslate nohighlight">\(Q(x)=\text{cte}\)</span>. Thus injecting the linear elastic relation <span class="math notranslate nohighlight">\(M(x)=EIv''(x)\)</span> and differentiating one, one obtains:</p>
+<p>where <span class="math notranslate nohighlight">\(\theta(x)=v'(x)\)</span> is the beam rotation, <span class="math notranslate nohighlight">\(v(x)\)</span> the beam vertical deflection and <span class="math notranslate nohighlight">\(Q(x)\)</span> the shear force. Here, <span class="math notranslate nohighlight">\(Q(x)=\text{const}\)</span>. Thus injecting the linear elastic relation <span class="math notranslate nohighlight">\(M(x)=EIv''(x)\)</span> and differentiating once, one obtains:</p>
 <div class="math notranslate nohighlight">
 \[
 EI v^{(4)}(x)+\lambda F_0v''(x)=0
@@ -739,7 +806,7 @@ A\cos(kL)+B\sin(kL) &amp;=0
 \[
 \alpha_1 \approx 1.4303\pi,\quad \alpha_2 \approx 2.4509\pi,\quad \alpha_3 \approx 3.4709\pi,\quad \alpha_n \approx \left(n + \frac{1}{2}\right)\pi
 \]</div>
-<p>Finally, the buckling load are given by:</p>
+<p>Finally, the buckling loads are given by:</p>
 <div class="math notranslate nohighlight">
 \[
 \lambda_n F_0 = \alpha_n^2\dfrac{EI}{L^2}
@@ -750,21 +817,21 @@ A\cos(kL)+B\sin(kL) &amp;=0
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Analytical beam theory solution</span>
 <span class="c1"># F_cr,n = alpha_n^2*EI/L^2</span>
 <span class="c1"># where alpha_n are solutions to tan(alpha) = alpha</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4303</span><span class="p">,</span> <span class="mf">2.4509</span><span class="p">,</span> <span class="mf">3.4709</span><span class="p">]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
-<span class="n">I</span> <span class="o">=</span> <span class="n">b</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">12</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.4303</span><span class="p">,</span> <span class="mf">2.4590</span><span class="p">,</span> <span class="mf">3.4709</span><span class="p">]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">)])</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+<span class="n">I</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">h</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">12</span>
 <span class="n">S</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="n">h</span>
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N_eig</span><span class="p">):</span>
     <span class="n">critical_load_an</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">E</span> <span class="o">*</span> <span class="n">I</span> <span class="o">/</span> <span class="n">N0</span> <span class="o">/</span> <span class="n">S</span><span class="p">)</span> <span class="o">/</span> <span class="n">L</span><span class="o">**</span><span class="mi">2</span>
     <span class="nb">print</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Critical load factor </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">eigval</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> FE | </span><span class="si">{</span><span class="n">critical_load_an</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> Beam&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;Critical load factor </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">eigval</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">real</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> FE | </span><span class="si">{</span><span class="n">critical_load_an</span><span class="si">:</span><span class="s2">.5f</span><span class="si">}</span><span class="s2"> Beam&quot;</span>
     <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Critical load factor 1: 0.16796 FE | 0.16826 Beam
-Critical load factor 2: 0.49696 FE | 0.49405 Beam
+Critical load factor 2: 0.49696 FE | 0.49732 Beam
 Critical load factor 3: 0.98789 FE | 0.99084 Beam
 Critical load factor 4: 1.50009 FE | 1.66550 Beam
 Critical load factor 5: 1.64249 FE | 2.48796 Beam
@@ -773,7 +840,7 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
 </div>
 </div>
 </div>
-<p>We can see that the computed 3D buckling loads are vey close to the analytical solution of the beam theory. This is further confirmed when plotting the computed eigenmodes with <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
+<p>We can see that the computed 3D buckling loads are very close to the analytical solution of the beam theory. This is further confirmed when plotting the computed eigenmodes with <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
@@ -789,13 +856,13 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
 <span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span> <span class="o">=</span> <span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">u_grid</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="n">u_topology</span><span class="p">,</span> <span class="n">u_cell_types</span><span class="p">,</span> <span class="n">u_geometry</span><span class="p">)</span>
 
-<span class="c1"># Plot the first 3 eigenmodes</span>
+<span class="c1"># Plot the first eigenmodes</span>
 <span class="n">pl</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">i</span> <span class="o">//</span> <span class="mi">3</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">3</span><span class="p">)</span>
     <span class="n">eigenmode</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;eigenmode_</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">pl</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Eigenmode </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;Eigenmode </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">eigen_vector</span> <span class="o">=</span> <span class="n">eigvec_r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
@@ -810,7 +877,7 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/91bd779cef19267513b8eb6271a8434ad04a2a00dc79a59d57a50f21e6390dd9.png" src="../../../_images/91bd779cef19267513b8eb6271a8434ad04a2a00dc79a59d57a50f21e6390dd9.png" />
+<img alt="../../../_images/31db77868bccbcdd47b234b07c0b4c390494b44b8b1d71d39802b28ace4d6592.png" src="../../../_images/31db77868bccbcdd47b234b07c0b4c390494b44b8b1d71d39802b28ace4d6592.png" />
 </div>
 </div>
 </section>
@@ -872,11 +939,11 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
       </div>
     </a>
     <a class="right-next"
-       href="../../homogenization/contents.html"
+       href="../bloch_waves/bloch_waves.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Homogenization</p>
+        <p class="prev-next-title">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -891,17 +958,18 @@ Critical load factor 6: 2.45533 FE | 3.47492 Beam
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometrically-nonlinear-elasticity">Geometrically Nonlinear Elasticity</a></li>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometrically-nonlinear-elasticity">Geometrically nonlinear elasticity</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium-and-stability-conditions">Equilibrium and stability conditions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bifurcation-point">Bifurcation point</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-buckling-analysis">Linear buckling analysis</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fenicsx-implementation">FEniCSx implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fenicsx-implementation">FEniCSx implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defining-the-geometry">Defining the geometry</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-the-pre-stressed-state-bu-0">Solving for the pre-stressed state <span class="math notranslate nohighlight">\(\bu_0\)</span></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forming-the-geometric-stiffness-matrix-and-the-buckling-eigenvalue-problem">Forming the geometric stiffness matrix and the buckling eigenvalue problem</a></li>
@@ -950,8 +1018,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

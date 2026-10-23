@@ -1,0 +1,1080 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Topology optimization with Helmholtz filtering and projection &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tours/optimization/topology_optimization/topology_optimization';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Marking facets with geometrical functions" href="../../../tips/mark_facets/mark_facets.html" />
+    <link rel="prev" title="Form finding of a gridshell with the force density method" href="../form_finding/form_finding.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html">Linear elasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/hyperelasticity/hyperelasticity.html">Hyperelasticity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro/plates/plates.html">Reissner-Mindlin plates</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tours</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../linear_problems/contents.html">Linear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../interfaces/intrinsic_czm/intrinsic_czm.html">Cohesive zone modeling of debonding and bulk fracture <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interfaces/czm_interface_only/czm_interface_only.html">Cohesive zone modeling restricted to an interface <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../beams/contents.html">Beams</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/linear_truss/linear_truss.html">Linear elastic 2D truss <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/beams_3D/beams_3D.html">Elastic 3D beam structures <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam.html">Nonlinear beam model in finite rotations <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../beams/finite_rotation_nonlinear_beam/rotation_parametrization_description.html">A module for rotation parametrization</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Optimization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Tips and tricks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mark_facets/mark_facets.html">Marking facets with geometrical functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/import_msh/import_msh.html">Importing a <code class="docutils literal notranslate"><span class="pre">.msh</span></code> file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html">Create a piecewise constant field for spatially varying properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/mass_lumping/mass_lumping.html">Lumping a mass matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/quadrature_schemes/quadrature_schemes.html">Quadrature schemes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tips/computing_reactions/computing_reactions.html">Computing consistent reaction forces</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bleyerj/comet-fenicsx/edit/main/tours/optimization/topology_optimization/topology_optimization.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Topology optimization with Helmholtz filtering and projection </h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compliance-minimization">Compliance minimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-by-filtering-and-projection">Regularization by filtering and projection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis">Sensitivity analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality-criteria-update">Optimality criteria update</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#helmholtz-filter">Helmholtz filter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Optimality criteria update</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-loop">Optimization loop</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="topology-optimization-with-helmholtz-filtering-and-projection">
+<h1>Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#topology-optimization-with-helmholtz-filtering-and-projection" title="Link to this heading">#</a></h1>
+<div class="objectives admonition">
+<p class="admonition-title">Objectives</p>
+<p>This tour solves the classical compliance minimization problem of topology optimization with the SIMP method. The density field is regularized with a Helmholtz-type PDE filter and then projected with a smoothed Heaviside function to obtain a black-and-white design. We show how to compute the sensitivities through the filter and the projection and how to update the design with an optimality criteria method.
+<span class="math notranslate nohighlight">\(\newcommand{\bu}{\boldsymbol{u}}
+\newcommand{\bv}{\boldsymbol{v}}
+\newcommand{\bt}{\boldsymbol{t}}
+\newcommand{\beps}{\boldsymbol{\varepsilon}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\dOm}{\,\text{d}\Omega}
+\newcommand{\dS}{\,\text{d}S}\)</span></p>
+</div>
+<a class="reference internal image-reference" href="../../../_images/topology_optimization.gif"><img alt="../../../_images/topology_optimization.gif" class="align-center" src="../../../_images/topology_optimization.gif" style="width: 700px;" />
+</a>
+<div class="download admonition">
+<p class="admonition-title">Download sources</p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../../../_downloads/c16330f28b6e2eb8c020e2ad8070b25f/topology_optimization.py"><code class="xref download docutils literal notranslate"><span class="pre">Python</span> <span class="pre">script</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../../../_downloads/5f486f123d23f3ee71c04bc774654fa1/topology_optimization.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p></li>
+</ul>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>This tour revisits the legacy FEniCS tour on <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/topology_optimization/simp_topology_optimization.html">topology optimization using the SIMP method</a>, which considers the same problem without filtering or projection.</p>
+</div>
+<section id="problem-position">
+<h2>Problem position<a class="headerlink" href="#problem-position" title="Link to this heading">#</a></h2>
+<section id="compliance-minimization">
+<h3>Compliance minimization<a class="headerlink" href="#compliance-minimization" title="Link to this heading">#</a></h3>
+<p>We look for the stiffest structure which can be built inside a design domain <span class="math notranslate nohighlight">\(\Omega\)</span> with a prescribed volume of material <span class="math notranslate nohighlight">\(V_\text{max}=f_V|\Omega|\)</span>, where <span class="math notranslate nohighlight">\(f_V\)</span> is the target volume fraction. The structure is clamped on a part of its boundary and loaded by surface tractions <span class="math notranslate nohighlight">\(\bt\)</span> on another part <span class="math notranslate nohighlight">\(\Gamma_\text{N}\)</span>. Its stiffness is measured by the <em>compliance</em>, i.e. the work of external forces <span class="math notranslate nohighlight">\(C = \int_{\Gamma_\text{N}} \bt\cdot\bu \dS\)</span>, which we seek to minimize.</p>
+<p>Following the SIMP (Solid Isotropic Material with Penalization) approach <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id36" title="Martin P. Bendsøe and Ole Sigmund. Topology Optimization: Theory, Methods, and Applications. Springer, Berlin, Heidelberg, 2004. doi:10.1007/978-3-662-05086-6.">Bendsøe and Sigmund, 2004</a>]</span>, the material distribution is described by a density field <span class="math notranslate nohighlight">\(\overline{\rho}(\boldsymbol{x})\in[0;1]\)</span> and the Young modulus is interpolated as:</p>
+<div class="math notranslate nohighlight" id="equation-simp">
+<span class="eqno">(64)<a class="headerlink" href="#equation-simp" title="Link to this equation">#</a></span>\[E(\overline{\rho}) = E_\text{min} + \overline{\rho}^p(E_0-E_\text{min})\]</div>
+<p>where <span class="math notranslate nohighlight">\(E_0\)</span> is the Young modulus of the solid phase and <span class="math notranslate nohighlight">\(E_\text{min} \ll E_0\)</span> is a small residual stiffness which prevents the stiffness matrix from becoming singular in void regions. The penalization exponent <span class="math notranslate nohighlight">\(p&gt;1\)</span> (typically <span class="math notranslate nohighlight">\(p=3\)</span>) makes intermediate densities uneconomical, as they provide little stiffness for their cost in volume. The optimization problem reads:</p>
+<div class="math notranslate nohighlight" id="equation-compliance-pb">
+<span class="eqno">(65)<a class="headerlink" href="#equation-compliance-pb" title="Link to this equation">#</a></span>\[\begin{split}\begin{array}{rl}
+\displaystyle\min_{\rho} &amp; C(\rho) = \displaystyle\int_{\Gamma_\text{N}} \bt\cdot\bu \dS\\
+\text{s.t.} &amp; \displaystyle\int_\Omega E(\overline{\rho})\,\CC_1:\beps(\bu):\beps(\bv)\dOm = \int_{\Gamma_\text{N}} \bt\cdot\bv \dS \quad \forall \bv\\
+&amp; V(\rho) = \displaystyle\int_\Omega \overline{\rho}\dOm \leq f_V|\Omega| \\
+&amp; 0 \leq \rho \leq 1
+\end{array}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\CC_1\)</span> is the isotropic elasticity tensor with unit Young modulus and Poisson ratio <span class="math notranslate nohighlight">\(\nu\)</span>.</p>
+</section>
+<section id="regularization-by-filtering-and-projection">
+<h3>Regularization by filtering and projection<a class="headerlink" href="#regularization-by-filtering-and-projection" title="Link to this heading">#</a></h3>
+<p>The design variable <span class="math notranslate nohighlight">\(\rho\)</span> is piecewise constant on the mesh. Without regularization, the problem is ill-posed: the solution depends on the mesh, finer meshes producing ever finer structural members, and checkerboard patterns of alternating solid and void elements appear. A classical remedy is to <em>filter</em> the design variable, which imposes a minimum length scale on the design. Here, we use the PDE filter of <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id38" title="Boyan S. Lazarov and Ole Sigmund. Filters in topology optimization based on Helmholtz-type differential equations. International Journal for Numerical Methods in Engineering, 86(6):765–781, 2011. doi:10.1002/nme.3072.">Lazarov and Sigmund, 2011</a>]</span>, in which the filtered density <span class="math notranslate nohighlight">\(\widetilde{\rho}\)</span> is the solution of a Helmholtz-type equation:</p>
+<div class="math notranslate nohighlight" id="equation-helmholtz">
+<span class="eqno">(66)<a class="headerlink" href="#equation-helmholtz" title="Link to this equation">#</a></span>\[-r^2\Delta \widetilde{\rho} + \widetilde{\rho} = \rho \quad \text{in } \Omega, \qquad \nabla\widetilde{\rho}\cdot\boldsymbol{n} = 0 \quad \text{on } \partial\Omega\]</div>
+<p>The length parameter <span class="math notranslate nohighlight">\(r\)</span> is related to the radius <span class="math notranslate nohighlight">\(R\)</span> of the classical convolution-based density filter by <span class="math notranslate nohighlight">\(r = R/(2\sqrt{3})\)</span>. This filter only requires solving a linear PDE with the same mesh and finite element tools as the mechanical problem, which makes it very convenient in a finite element framework.</p>
+<p>Filtering smears the interfaces between solid and void over a distance of order <span class="math notranslate nohighlight">\(R\)</span>, so that filtered designs contain gray regions. To recover a black-and-white design, the filtered density is <em>projected</em> with a smoothed Heaviside function <span class="bibtex-citation" id="id3">[<a class="reference internal" href="#id39" title="Fengwen Wang, Boyan Stefanov Lazarov, and Ole Sigmund. On projection methods, convergence and robust formulations in topology optimization. Structural and Multidisciplinary Optimization, 43(6):767–784, 2011. doi:10.1007/s00158-010-0602-y.">Wang <em>et al.</em>, 2011</a>]</span>:</p>
+<div class="math notranslate nohighlight" id="equation-projection">
+<span class="eqno">(67)<a class="headerlink" href="#equation-projection" title="Link to this equation">#</a></span>\[\overline{\rho} = H_\beta(\widetilde{\rho}) = \dfrac{\tanh(\beta\eta) + \tanh(\beta(\widetilde{\rho}-\eta))}{\tanh(\beta\eta) + \tanh(\beta(1-\eta))}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\eta\)</span> is a threshold, here <span class="math notranslate nohighlight">\(\eta = 1/2\)</span>, and <span class="math notranslate nohighlight">\(\beta\)</span> controls the sharpness of the projection. For <span class="math notranslate nohighlight">\(\beta\to 0\)</span>, <span class="math notranslate nohighlight">\(H_\beta\)</span> tends to the identity, while it tends to a step function for <span class="math notranslate nohighlight">\(\beta\to\infty\)</span>. Since a sharp projection makes the optimization problem highly nonlinear, <span class="math notranslate nohighlight">\(\beta\)</span> is progressively increased during the optimization (<em>continuation</em>). The projected density <span class="math notranslate nohighlight">\(\overline{\rho}\)</span>, used in <a class="reference internal" href="#equation-simp">(64)</a> and in the volume constraint, is called the <em>physical</em> density.</p>
+<p>We therefore work with three density fields:</p>
+<ul class="simple">
+<li><p>the design variable <span class="math notranslate nohighlight">\(\rho\)</span>, discretized with piecewise constant (<code class="docutils literal notranslate"><span class="pre">&quot;DG&quot;</span></code> of degree 0) functions;</p></li>
+<li><p>the filtered density <span class="math notranslate nohighlight">\(\widetilde{\rho}\)</span>, discretized with continuous piecewise linear functions;</p></li>
+<li><p>the physical density <span class="math notranslate nohighlight">\(\overline{\rho} = H_\beta(\widetilde{\rho})\)</span>, which is never stored but directly used as a UFL expression in the forms.</p></li>
+</ul>
+</section>
+<section id="sensitivity-analysis">
+<h3>Sensitivity analysis<a class="headerlink" href="#sensitivity-analysis" title="Link to this heading">#</a></h3>
+<p>Gradient-based optimization requires the derivatives of the compliance and of the volume with respect to the design variables. Since the loading does not depend on the design, the compliance problem is self-adjoint and the derivative of the compliance with respect to the physical density is given by:</p>
+<div class="math notranslate nohighlight" id="equation-compliance-sensitivity">
+<span class="eqno">(68)<a class="headerlink" href="#equation-compliance-sensitivity" title="Link to this equation">#</a></span>\[\dfrac{\partial C}{\partial\overline{\rho}}\cdot\delta\overline{\rho} = -\int_\Omega E'(\overline{\rho})\,\delta\overline{\rho}\;\CC_1:\beps(\bu):\beps(\bu)\dOm\]</div>
+<p>With <span class="math notranslate nohighlight">\(\delta\overline{\rho} = H'_\beta(\widetilde{\rho})\,\delta\widetilde{\rho}\)</span>, the derivative with respect to the filtered density is a linear form in <span class="math notranslate nohighlight">\(\delta\widetilde{\rho}\)</span> which is obtained automatically with <code class="docutils literal notranslate"><span class="pre">ufl.derivative</span></code>.</p>
+<p>The last step goes through the filter. After discretization, the weak form of <a class="reference internal" href="#equation-helmholtz">(66)</a> reads <span class="math notranslate nohighlight">\([\mathbf{A}]\{\widetilde{\rho}\} = [\mathbf{B}]\{\rho\}\)</span>, where <span class="math notranslate nohighlight">\([\mathbf{A}]\)</span> is the matrix associated with the bilinear form <span class="math notranslate nohighlight">\(\int_\Omega (r^2\nabla\widetilde{\rho}\cdot\nabla q + \widetilde{\rho} q)\dOm\)</span> and <span class="math notranslate nohighlight">\([\mathbf{B}]\)</span> is the mixed mass matrix associated with <span class="math notranslate nohighlight">\(\int_\Omega \rho\, q\dOm\)</span>. For any function <span class="math notranslate nohighlight">\(J\)</span>, the chain rule then gives:</p>
+<div class="math notranslate nohighlight" id="equation-filter-sensitivity">
+<span class="eqno">(69)<a class="headerlink" href="#equation-filter-sensitivity" title="Link to this equation">#</a></span>\[\left\{\dfrac{\partial J}{\partial \rho}\right\} = [\mathbf{B}]^\text{T}[\mathbf{A}]^{-1}\left\{\dfrac{\partial J}{\partial \widetilde{\rho}}\right\}\]</div>
+<p>since <span class="math notranslate nohighlight">\([\mathbf{A}]\)</span> is symmetric. In practice, we solve the filter problem with <span class="math notranslate nohighlight">\(\{\partial J/\partial \widetilde{\rho}\}\)</span> as a right-hand side, which gives a field <span class="math notranslate nohighlight">\(\lambda\)</span>, and the product with <span class="math notranslate nohighlight">\([\mathbf{B}]^\text{T}\)</span> amounts to integrating <span class="math notranslate nohighlight">\(\lambda\)</span> over each cell: <span class="math notranslate nohighlight">\(\partial J/\partial \rho_e = \int_{\Omega_e}\lambda\dOm\)</span>.</p>
+</section>
+<section id="optimality-criteria-update">
+<h3>Optimality criteria update<a class="headerlink" href="#optimality-criteria-update" title="Link to this heading">#</a></h3>
+<p>The design is updated with the optimality criteria (OC) method <span class="bibtex-citation" id="id4">[<a class="reference internal" href="#id40" title="Erik Andreassen, Anders Clausen, Mattias Schevenels, Boyan S. Lazarov, and Ole Sigmund. Efficient topology optimization in MATLAB using 88 lines of code. Structural and Multidisciplinary Optimization, 43(1):1–16, 2011. doi:10.1007/s00158-010-0594-7.">Andreassen <em>et al.</em>, 2011</a>, <a class="reference internal" href="#id36" title="Martin P. Bendsøe and Ole Sigmund. Topology Optimization: Theory, Methods, and Applications. Springer, Berlin, Heidelberg, 2004. doi:10.1007/978-3-662-05086-6.">Bendsøe and Sigmund, 2004</a>]</span>. In each cell <span class="math notranslate nohighlight">\(e\)</span>, the new density is given by:</p>
+<div class="math notranslate nohighlight" id="equation-oc-update">
+<span class="eqno">(70)<a class="headerlink" href="#equation-oc-update" title="Link to this equation">#</a></span>\[\rho_e^\text{new} = \min\left\{\min(1, \rho_e + m),\; \max\left\{\max(0, \rho_e - m),\; \rho_e\left(-\dfrac{\partial C/\partial \rho_e}{\ell\, \partial V/\partial \rho_e}\right)^{1/2}\right\}\right\}\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> is a move limit and <span class="math notranslate nohighlight">\(\ell\)</span> is a Lagrange multiplier, found by bisection such that the new physical design satisfies the volume constraint. Since the physical density depends on the design variables through the filter, each bisection step requires a filter solve. This is inexpensive since the filter matrix is factorized once and for all.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the legacy version of this tour, the densities were updated with a closed-form formula derived from an alternate minimization algorithm <span class="bibtex-citation" id="id5">[<a class="reference internal" href="#id37" title="Grégoire Allaire. Conception optimale de structures. Volume 58 of Mathématiques et Applications. Springer, Berlin, Heidelberg, 2007.">Allaire, 2007</a>]</span>. This update relies on the fact that the problem is local in the density variable, which is no longer the case once the density is filtered. We therefore use the sensitivity-based OC update instead.</p>
+</div>
+</section>
+</section>
+<section id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<p>We first import the relevant modules and define the problem parameters. We consider the same cantilever beam as in the legacy tour, of length <span class="math notranslate nohighlight">\(L=4\)</span> and height <span class="math notranslate nohighlight">\(H=1\)</span>. The beam is clamped on its left end and loaded by a uniform downward traction on a segment of length <span class="math notranslate nohighlight">\(0.1\)</span> at the middle of its right end. The target volume fraction is <span class="math notranslate nohighlight">\(f_V=0.4\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolyCollection</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">petsc4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">PETSc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">mesh</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearProblem</span>
+
+<span class="n">comm</span> <span class="o">=</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span>
+
+<span class="n">L</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.0</span>  <span class="c1"># beam dimensions</span>
+<span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">50</span>  <span class="c1"># number of elements</span>
+<span class="n">vol_frac</span> <span class="o">=</span> <span class="mf">0.4</span>  <span class="c1"># target volume fraction</span>
+
+<span class="n">E0</span><span class="p">,</span> <span class="n">Emin</span><span class="p">,</span> <span class="n">nu</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">,</span> <span class="mf">0.3</span>  <span class="c1"># material properties</span>
+<span class="n">penal</span> <span class="o">=</span> <span class="mf">3.0</span>  <span class="c1"># SIMP penalization exponent</span>
+<span class="n">r_filter</span> <span class="o">=</span> <span class="mf">0.04</span>  <span class="c1"># Helmholtz filter length (R = 2*sqrt(3)*r ~ 7 elements)</span>
+<span class="n">eta</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># projection threshold</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use a structured mesh of quadrilaterals so that each element corresponds to one design variable. The displacement is discretized with quadratic Lagrange elements.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_rectangle</span><span class="p">(</span>
+    <span class="n">comm</span><span class="p">,</span> <span class="p">[(</span><span class="o">-</span><span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="p">(</span><span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">H</span><span class="p">)],</span> <span class="p">[</span><span class="n">Nx</span><span class="p">,</span> <span class="n">Ny</span><span class="p">],</span> <span class="n">cell_type</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">CellType</span><span class="o">.</span><span class="n">quadrilateral</span>
+<span class="p">)</span>
+<span class="n">gdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span>
+<span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+
+<span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Lagrange&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>  <span class="c1"># displacement</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>  <span class="c1"># design variable</span>
+<span class="n">V_rho</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Lagrange&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># filtered density</span>
+
+<span class="n">rho</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Design&quot;</span><span class="p">)</span>
+<span class="n">rho_tilde</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_rho</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Filtered_density&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The projection parameter <span class="math notranslate nohighlight">\(\beta\)</span> is defined as a <code class="docutils literal notranslate"><span class="pre">fem.Constant</span></code> so that it can be updated during the continuation without recompiling the forms. The physical density <a class="reference internal" href="#equation-projection">(67)</a> and the SIMP interpolation <a class="reference internal" href="#equation-simp">(64)</a> are pure UFL expressions of the filtered density.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">beta</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">projection</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">eta</span><span class="p">)</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">eta</span><span class="p">)))</span> <span class="o">/</span> <span class="p">(</span>
+        <span class="n">ufl</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">eta</span><span class="p">)</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">eta</span><span class="p">))</span>
+    <span class="p">)</span>
+
+
+<span class="n">rho_bar</span> <span class="o">=</span> <span class="n">projection</span><span class="p">(</span><span class="n">rho_tilde</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">Emin</span> <span class="o">+</span> <span class="n">rho_bar</span><span class="o">**</span><span class="n">penal</span> <span class="o">*</span> <span class="p">(</span><span class="n">E0</span> <span class="o">-</span> <span class="n">Emin</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sigma</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">E</span><span class="p">):</span>
+    <span class="n">lmbda</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">E</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">lmbda</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">tr</span><span class="p">(</span><span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Identity</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">mu</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define the boundary conditions and the loading. Since the forms involve the non-polynomial projection function, we fix the quadrature degree. It is important to use the same quadrature rule in the stiffness matrix and in the sensitivity forms so that the computed sensitivities are the exact derivatives of the discrete compliance.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">left_facets</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">locate_entities_boundary</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">left_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">left_facets</span><span class="p">)</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">gdim</span><span class="p">),</span> <span class="n">left_dofs</span><span class="p">,</span> <span class="n">V</span><span class="p">)]</span>
+
+<span class="n">load_facets</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">locate_entities_boundary</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span>
+    <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">H</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.05</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">facet_tags</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">meshtags</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">load_facets</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">load_facets</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;ds&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">facet_tags</span><span class="p">)</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">})</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The elasticity problem is defined once and for all, since the stiffness matrix is automatically reassembled with the current density at each call to <code class="docutils literal notranslate"><span class="pre">solve</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Displacement&quot;</span><span class="p">)</span>
+<span class="n">du</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">E</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span>
+<span class="n">ell</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="o">*</span> <span class="n">ds</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">elasticity_problem</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span>
+    <span class="n">a</span><span class="p">,</span>
+    <span class="n">ell</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;elasticity_&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We now define the compliance and the volume fraction, as well as their derivatives <a class="reference internal" href="#equation-compliance-sensitivity">(68)</a> with respect to the filtered density. The latter are obtained with <code class="docutils literal notranslate"><span class="pre">ufl.derivative</span></code> which differentiates through the projection function. We also define a measure of non-discreteness <span class="math notranslate nohighlight">\(M_\text{nd} = \frac{4}{|\Omega|}\int_\Omega \overline{\rho}(1-\overline{\rho})\dOm\)</span>, which vanishes for a black-and-white design and is equal to <span class="math notranslate nohighlight">\(1\)</span> for a uniform gray design <span class="math notranslate nohighlight">\(\overline{\rho}=1/2\)</span> <span class="bibtex-citation" id="id6">[<a class="reference internal" href="#id39" title="Fengwen Wang, Boyan Stefanov Lazarov, and Ole Sigmund. On projection methods, convergence and robust formulations in topology optimization. Structural and Multidisciplinary Optimization, 43(6):767–784, 2011. doi:10.1007/s00158-010-0602-y.">Wang <em>et al.</em>, 2011</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">area</span> <span class="o">=</span> <span class="n">L</span> <span class="o">*</span> <span class="n">H</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V_rho</span><span class="p">)</span>
+
+<span class="n">compliance</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="o">*</span> <span class="n">ds</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">dcompliance</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
+    <span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">derivative</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">inner</span><span class="p">(</span><span class="n">sigma</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">E</span><span class="p">),</span> <span class="n">epsilon</span><span class="p">(</span><span class="n">u</span><span class="p">))</span> <span class="o">*</span> <span class="n">dx</span><span class="p">,</span> <span class="n">rho_tilde</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">rho_bar</span> <span class="o">/</span> <span class="n">area</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+<span class="n">dvolume</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">derivative</span><span class="p">(</span><span class="n">rho_bar</span> <span class="o">/</span> <span class="n">area</span> <span class="o">*</span> <span class="n">dx</span><span class="p">,</span> <span class="n">rho_tilde</span><span class="p">,</span> <span class="n">q</span><span class="p">))</span>
+<span class="n">non_discreteness</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">rho_bar</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho_bar</span><span class="p">)</span> <span class="o">/</span> <span class="n">area</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">assemble_scalar</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">form</span><span class="p">),</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">SUM</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="helmholtz-filter">
+<h3>Helmholtz filter<a class="headerlink" href="#helmholtz-filter" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">HelmholtzFilter</span></code> class implements the weak form of <a class="reference internal" href="#equation-helmholtz">(66)</a> and the corresponding sensitivity filtering <a class="reference internal" href="#equation-filter-sensitivity">(69)</a>. The filter matrix <span class="math notranslate nohighlight">\([\mathbf{A}]\)</span> does not depend on the design. It is assembled and factorized only once, so that each filter application only requires a forward and backward substitution. No boundary condition is needed since the homogeneous Neumann condition is natural.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">HelmholtzFilter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helmholtz PDE filter mapping a DG-0 design rho onto a P1 filtered density.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rho</span><span class="p">,</span> <span class="n">rho_tilde</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho_tilde</span> <span class="o">=</span> <span class="n">rho_tilde</span>
+        <span class="n">V_rho</span> <span class="o">=</span> <span class="n">rho_tilde</span><span class="o">.</span><span class="n">function_space</span>
+        <span class="n">p_</span><span class="p">,</span> <span class="n">q_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunction</span><span class="p">(</span><span class="n">V_rho</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">V_rho</span><span class="p">)</span>
+        <span class="n">A_form</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
+            <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">p_</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">q_</span><span class="p">))</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span> <span class="o">+</span> <span class="n">p_</span> <span class="o">*</span> <span class="n">q_</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_matrix</span><span class="p">(</span><span class="n">A_form</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">assemble</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">KSP</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">comm</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">setOperators</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;preonly&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setType</span><span class="p">(</span><span class="s2">&quot;lu&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">getPC</span><span class="p">()</span><span class="o">.</span><span class="n">setFactorSolverType</span><span class="p">(</span><span class="s2">&quot;mumps&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">L</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">rho</span> <span class="o">*</span> <span class="n">q_</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">create_vector</span><span class="p">(</span><span class="n">V_rho</span><span class="p">)</span>
+
+        <span class="c1"># form computing the product with B^T, i.e. integrating lambda over each cell</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmbda</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_rho</span><span class="p">)</span>
+        <span class="n">w_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunction</span><span class="p">(</span><span class="n">rho</span><span class="o">.</span><span class="n">function_space</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">BT_lambda</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lmbda</span> <span class="o">*</span> <span class="n">w_</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the filtered density from the current design.&quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">localForm</span><span class="p">()</span> <span class="k">as</span> <span class="n">b_local</span><span class="p">:</span>
+            <span class="n">b_local</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">L</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">REVERSE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rho_tilde</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rho_tilde</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">sensitivity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dJ_form</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute dJ/drho from the linear form dJ/drho_tilde.&quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="n">dJ_form</span><span class="p">)</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">ghostUpdate</span><span class="p">(</span><span class="n">addv</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">InsertMode</span><span class="o">.</span><span class="n">ADD</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">PETSc</span><span class="o">.</span><span class="n">ScatterMode</span><span class="o">.</span><span class="n">REVERSE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lmbda</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">petsc_vec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lmbda</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+        <span class="n">g</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">BT_lambda</span><span class="p">)</span><span class="o">.</span><span class="n">array</span>
+
+
+<span class="n">helmholtz_filter</span> <span class="o">=</span> <span class="n">HelmholtzFilter</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">rho_tilde</span><span class="p">,</span> <span class="n">r_filter</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id7">
+<h3>Optimality criteria update<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>The OC update <a class="reference internal" href="#equation-oc-update">(70)</a> is performed on the locally owned design variables. The Lagrange multiplier is found by bisection, each step filtering the candidate design and evaluating its volume. The function returns the maximum change of the design variables.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_cells</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">dofmap</span><span class="o">.</span><span class="n">index_map</span><span class="o">.</span><span class="n">size_local</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">oc_update</span><span class="p">(</span><span class="n">dC</span><span class="p">,</span> <span class="n">dV</span><span class="p">,</span> <span class="n">move</span><span class="p">):</span>
+    <span class="n">rho_old</span> <span class="o">=</span> <span class="n">rho</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:</span><span class="n">num_cells</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="o">-</span><span class="n">dC</span><span class="p">[:</span><span class="n">num_cells</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">dV</span><span class="p">[:</span><span class="n">num_cells</span><span class="p">],</span> <span class="mf">1e-30</span><span class="p">))</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">rho_old</span> <span class="o">-</span> <span class="n">move</span><span class="p">)</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">rho_old</span> <span class="o">+</span> <span class="n">move</span><span class="p">)</span>
+    <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1e9</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>  <span class="c1"># bisection on the Lagrange multiplier</span>
+        <span class="n">lmid</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span><span class="p">)</span>
+        <span class="n">rho</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:</span><span class="n">num_cells</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rho_old</span> <span class="o">*</span> <span class="n">B</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">lmid</span><span class="p">),</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
+        <span class="n">rho</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
+        <span class="n">helmholtz_filter</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">assemble_scalar</span><span class="p">(</span><span class="n">volume</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">vol_frac</span><span class="p">:</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="n">lmid</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">l2</span> <span class="o">=</span> <span class="n">lmid</span>
+        <span class="k">if</span> <span class="n">l2</span> <span class="o">-</span> <span class="n">l1</span> <span class="o">&lt;</span> <span class="mf">1e-4</span> <span class="o">*</span> <span class="p">(</span><span class="n">l1</span> <span class="o">+</span> <span class="n">l2</span><span class="p">):</span>
+            <span class="k">break</span>
+    <span class="n">change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">rho</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:</span><span class="n">num_cells</span><span class="p">]</span> <span class="o">-</span> <span class="n">rho_old</span><span class="p">),</span> <span class="n">initial</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">comm</span><span class="o">.</span><span class="n">allreduce</span><span class="p">(</span><span class="n">change</span><span class="p">,</span> <span class="n">op</span><span class="o">=</span><span class="n">MPI</span><span class="o">.</span><span class="n">MAX</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="optimization-loop">
+<h3>Optimization loop<a class="headerlink" href="#optimization-loop" title="Link to this heading">#</a></h3>
+<p>We start from a uniform design satisfying the volume constraint. The projection parameter <span class="math notranslate nohighlight">\(\beta\)</span> is doubled from <span class="math notranslate nohighlight">\(1\)</span> to <span class="math notranslate nohighlight">\(32\)</span> every <span class="math notranslate nohighlight">\(40\)</span> iterations, or earlier if the design change becomes small. As <span class="math notranslate nohighlight">\(\beta\)</span> increases, a small change of the design variables produces a large change of the physical density. We therefore reduce the move limit for large values of <span class="math notranslate nohighlight">\(\beta\)</span> to avoid oscillations of the design. At the end of each continuation step, the physical density is interpolated on the <code class="docutils literal notranslate"><span class="pre">&quot;DG&quot;</span></code> space for visualization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">betas</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
+<span class="n">num_iter_per_beta</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">tol</span> <span class="o">=</span> <span class="mf">0.01</span>
+
+<span class="n">rho_bar_cells</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Physical_density&quot;</span><span class="p">)</span>
+<span class="n">rho_bar_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">rho_bar</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
+<span class="n">snapshots</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">rho</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">vol_frac</span>
+<span class="n">helmholtz_filter</span><span class="o">.</span><span class="n">apply</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">beta_value</span> <span class="ow">in</span> <span class="n">betas</span><span class="p">:</span>
+    <span class="n">beta</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">beta_value</span>
+    <span class="n">move</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="k">if</span> <span class="n">beta_value</span> <span class="o">&lt;</span> <span class="mi">8</span> <span class="k">else</span> <span class="mf">0.05</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iter_per_beta</span><span class="p">):</span>
+        <span class="n">elasticity_problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">assemble_scalar</span><span class="p">(</span><span class="n">compliance</span><span class="p">)</span>
+        <span class="n">dC</span> <span class="o">=</span> <span class="n">helmholtz_filter</span><span class="o">.</span><span class="n">sensitivity</span><span class="p">(</span><span class="n">dcompliance</span><span class="p">)</span>
+        <span class="n">dV</span> <span class="o">=</span> <span class="n">helmholtz_filter</span><span class="o">.</span><span class="n">sensitivity</span><span class="p">(</span><span class="n">dvolume</span><span class="p">)</span>
+        <span class="n">change</span> <span class="o">=</span> <span class="n">oc_update</span><span class="p">(</span><span class="n">dC</span><span class="p">,</span> <span class="n">dV</span><span class="p">,</span> <span class="n">move</span><span class="p">)</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">beta_value</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">assemble_scalar</span><span class="p">(</span><span class="n">non_discreteness</span><span class="p">),</span> <span class="n">change</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">change</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">rho_bar_cells</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">rho_bar_expr</span><span class="p">)</span>
+    <span class="n">snapshots</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rho_bar_cells</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">comm</span><span class="o">.</span><span class="n">rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;beta = </span><span class="si">{</span><span class="n">beta_value</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span><span class="si">:</span><span class="s2">3d</span><span class="si">}</span><span class="s2"> iterations, compliance </span><span class="si">{</span><span class="n">C</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;non-discreteness </span><span class="si">{</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>beta =  1:  40 iterations, compliance 3.9438, non-discreteness 48.3%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>beta =  2:  80 iterations, compliance 3.6291, non-discreteness 42.1%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>beta =  4: 120 iterations, compliance 3.1415, non-discreteness 30.2%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>beta =  8: 160 iterations, compliance 2.7356, non-discreteness 15.9%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>beta = 16: 200 iterations, compliance 2.5611, non-discreteness 7.7%
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>beta = 32: 240 iterations, compliance 2.4901, non-discreteness 3.9%
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<p>We plot the physical density obtained at the end of each continuation step. The filtered design obtained with <span class="math notranslate nohighlight">\(\beta=1\)</span> contains large gray regions. As <span class="math notranslate nohighlight">\(\beta\)</span> increases, the projection progressively sharpens the interfaces and the final design is almost black and white. Note also that the compliance decreases along the continuation since the stiffness of intermediate densities is penalized by the SIMP interpolation.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># quadrilateral vertices in counter-clockwise order for plotting</span>
+<span class="n">cells</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dofmaps</span><span class="p">[</span><span class="mi">0</span><span class="p">][:</span><span class="n">num_cells</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
+<span class="n">polygons</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">cells</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">cell_dofs</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">dofmap</span><span class="o">.</span><span class="n">list</span><span class="p">[:</span><span class="n">num_cells</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">beta_value</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">,</span> <span class="n">betas</span><span class="p">,</span> <span class="n">snapshots</span><span class="p">):</span>
+    <span class="n">collection</span> <span class="o">=</span> <span class="n">PolyCollection</span><span class="p">(</span>
+        <span class="n">polygons</span><span class="p">,</span> <span class="n">array</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="n">cell_dofs</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray_r&quot;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s2">&quot;face&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">L</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">&quot;equal&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">rf</span><span class="s2">&quot;$\beta = </span><span class="si">{</span><span class="n">beta_value</span><span class="si">}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../../_images/7e81c1a5c2622e906e00c6a889bcd567f3c73850ef9f5e09e13e905fafcf1ff1.png" src="../../../_images/7e81c1a5c2622e906e00c6a889bcd567f3c73850ef9f5e09e13e905fafcf1ff1.png" />
+</div>
+</div>
+<p>Finally, we plot the evolution of the compliance and of the measure of non-discreteness during the iterations. The vertical lines indicate the iterations at which <span class="math notranslate nohighlight">\(\beta\)</span> is doubled. Each increase of <span class="math notranslate nohighlight">\(\beta\)</span> produces a jump of both quantities, followed by a convergence towards a new, crisper design.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">iterations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">beta_changes</span> <span class="o">=</span> <span class="n">iterations</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">history</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="n">history</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;-C0&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Compliance&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">history</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;-C3&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Non-discreteness $M_\text</span><span class="si">{nd}</span><span class="s2">$ [%]&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Iteration&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">beta_changes</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<img alt="../../../_images/501da30e22455248524b55adedb449463797ea8d78252aafafdfb55234b8a1c0.png" src="../../../_images/501da30e22455248524b55adedb449463797ea8d78252aafafdfb55234b8a1c0.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The design obtained with this approach is a local optimum, which depends on the initial design, the filter radius and the continuation strategy. Besides, the minimum length scale imposed by the filter is no longer guaranteed after a sharp projection, since thin members can be obtained by thresholding a smoothly varying filtered field. Robust formulations based on eroded and dilated designs impose a minimum length scale on both the solid and void phases <span class="bibtex-citation" id="id8">[<a class="reference internal" href="#id39" title="Fengwen Wang, Boyan Stefanov Lazarov, and Ole Sigmund. On projection methods, convergence and robust formulations in topology optimization. Structural and Multidisciplinary Optimization, 43(6):767–784, 2011. doi:10.1007/s00158-010-0602-y.">Wang <em>et al.</em>, 2011</a>]</span>.</p>
+</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<div class="docutils container" id="id9">
+<div role="list" class="citation-list">
+<div class="citation" id="id37" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">All07</a><span class="fn-bracket">]</span></span>
+<p>Grégoire Allaire. <em>Conception optimale de structures</em>. Volume 58 of Mathématiques et Applications. Springer, Berlin, Heidelberg, 2007.</p>
+</div>
+<div class="citation" id="id40" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">ACS+11</a><span class="fn-bracket">]</span></span>
+<p>Erik Andreassen, Anders Clausen, Mattias Schevenels, Boyan S. Lazarov, and Ole Sigmund. Efficient topology optimization in MATLAB using 88 lines of code. <em>Structural and Multidisciplinary Optimization</em>, 43(1):1–16, 2011. <a class="reference external" href="https://doi.org/10.1007/s00158-010-0594-7">doi:10.1007/s00158-010-0594-7</a>.</p>
+</div>
+<div class="citation" id="id36" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>BendsoeS04<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id4">2</a>)</span>
+<p>Martin P. Bendsøe and Ole Sigmund. <em>Topology Optimization: Theory, Methods, and Applications</em>. Springer, Berlin, Heidelberg, 2004. <a class="reference external" href="https://doi.org/10.1007/978-3-662-05086-6">doi:10.1007/978-3-662-05086-6</a>.</p>
+</div>
+<div class="citation" id="id38" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">LS11</a><span class="fn-bracket">]</span></span>
+<p>Boyan S. Lazarov and Ole Sigmund. Filters in topology optimization based on Helmholtz-type differential equations. <em>International Journal for Numerical Methods in Engineering</em>, 86(6):765–781, 2011. <a class="reference external" href="https://doi.org/10.1002/nme.3072">doi:10.1002/nme.3072</a>.</p>
+</div>
+<div class="citation" id="id39" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>WLS11<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id3">1</a>,<a role="doc-backlink" href="#id6">2</a>,<a role="doc-backlink" href="#id8">3</a>)</span>
+<p>Fengwen Wang, Boyan Stefanov Lazarov, and Ole Sigmund. On projection methods, convergence and robust formulations in topology optimization. <em>Structural and Multidisciplinary Optimization</em>, 43(6):767–784, 2011. <a class="reference external" href="https://doi.org/10.1007/s00158-010-0602-y">doi:10.1007/s00158-010-0602-y</a>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tours/optimization/topology_optimization"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../form_finding/form_finding.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../../tips/mark_facets/mark_facets.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Marking facets with geometrical functions</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compliance-minimization">Compliance minimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-by-filtering-and-projection">Regularization by filtering and projection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sensitivity-analysis">Sensitivity analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimality-criteria-update">Optimality criteria update</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#helmholtz-filter">Helmholtz filter</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Optimality criteria update</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimization-loop">Optimization loop</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Jeremy Bleyer
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

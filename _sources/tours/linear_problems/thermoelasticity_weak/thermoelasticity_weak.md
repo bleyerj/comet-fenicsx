@@ -1,13 +1,13 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3
+  display_name: fenicsx-v0.11
   language: python
   name: python3
 ---
@@ -100,7 +100,9 @@ bcT = [
 
 
 # solve problem
-problem = fem.petsc.LinearProblem(aT, LT, u=Delta_T, bcs=bcT)
+problem = fem.petsc.LinearProblem(
+    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal_"
+)
 problem.solve()
 ```
 
@@ -177,7 +179,9 @@ First, the self-weight loading is deactivated, only thermal stresses are compute
 
 ```{code-cell} ipython3
 u = fem.Function(Vu, name="Displacement")
-problem = fem.petsc.LinearProblem(aM, LM, u=u, bcs=bcu)
+problem = fem.petsc.LinearProblem(
+    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical_"
+)
 problem.solve()
 ```
 

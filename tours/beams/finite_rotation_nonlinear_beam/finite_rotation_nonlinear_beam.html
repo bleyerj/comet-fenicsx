@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Nonlinear beam model in finite rotations &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Nonlinear beam model in finite rotations &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,6 +64,7 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/beams/finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="A module for rotation parametrization" href="rotation_parametrization_description.html" />
@@ -71,20 +72,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,14 +439,14 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-finite-rotations">Handling finite rotations</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-finite-rotations">Handling finite rotations</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-parametrization">Choosing a parametrization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-reminder-on-rotation-matrices">A reminder on rotation matrices</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-small-rotation-case">The small rotation case</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-beam-model-formulation">Nonlinear beam model formulation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-beam-model-formulation">Nonlinear beam model formulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-kinematics-and-strain-measures">Beam kinematics and strain measures</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stress-measures-and-elastic-constitutive-relation">Stress measures and elastic constitutive relation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-form">Residual form</a></li>
@@ -421,7 +482,7 @@
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>This tour expands upon the work of <span id="id1">[<a class="reference internal" href="#id22" title="M. Morandini. Handling of finite rotations in dolfin. In Proceedings of the FEniCS Conference. 2017. doi:10.6084/m9.figshare.5086369.">Morandini, 2017</a>]</span>. Contrary to this implementation which required in-depth implementations of conditional UFL expression and custom assembly procedure, we adopt a slightly different discretization strategy which alleviates the problem encountered in this previous implementation.</p>
+<p>This tour expands upon the work of <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id22" title="M. Morandini. Handling of finite rotations in dolfin. In Proceedings of the FEniCS Conference. 2017. doi:10.6084/m9.figshare.5086369.">Morandini, 2017</a>]</span>. Contrary to this implementation which required in-depth implementations of conditional UFL expressions and a custom assembly procedure, we adopt a slightly different discretization strategy which alleviates the problems encountered in this previous implementation.</p>
 </div>
 <p>The following animation illustrates how an initially horizontal beam, subject to a concentrated moment and horizontal transversal force, rolls up on itself several times. Note here that self-contact is not taken into account.<span class="math notranslate nohighlight">\(\newcommand{\bA}{\boldsymbol{A}}
 \newcommand{\bR}{\boldsymbol{R}}
@@ -437,7 +498,6 @@
 \newcommand{\bP}{\boldsymbol{P}}
 \newcommand{\bM}{\boldsymbol{M}}
 \newcommand{\bC}{\boldsymbol{C}}
-\newcommand{\bR}{\boldsymbol{R}}
 \newcommand{\bI}{\boldsymbol{I}}
 \newcommand{\T}{^\text{T}}
 \newcommand{\btheta}{\boldsymbol{\theta}}
@@ -451,7 +511,8 @@
 \newcommand{\axial}{\operatorname{axial}}
 \renewcommand{\skew}{\operatorname{skew}}
 \newcommand{\dx}{\,\text{dx}}\)</span></p>
-<a class="reference internal image-reference" href="../../../_images/helical_beam.gif"><img alt="../../../_images/helical_beam.gif" class="align-center" src="../../../_images/helical_beam.gif" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/helical_beam.gif"><img alt="../../../_images/helical_beam.gif" class="align-center" src="../../../_images/helical_beam.gif" style="width: 600px;" />
+</a>
 <section id="handling-finite-rotations">
 <h2>Handling finite rotations<a class="headerlink" href="#handling-finite-rotations" title="Link to this heading">#</a></h2>
 <section id="choosing-a-parametrization">
@@ -461,17 +522,17 @@
 <li><p>vectorial parametrizations</p></li>
 <li><p>Euler-angle parametrizations</p></li>
 <li><p>quaternion parametrizations</p></li>
-<li><p>cosine direction parametrizations…</p></li>
+<li><p>direction cosine parametrizations…</p></li>
 </ul>
-<p>In all of these methods, a rotation matrix is parametrized by a finite set of parameters: e.g. 3 for vectorial and Euler angle parametrizations, 4 for quaternion parametrizations, 9 for cosine direction, etc. Each of these methods will have some sort of singularity in the parametrization as the mapping can never be bijective. As a result, all methods possess some advantages and some drawbacks, either on the theoretical or computational point of view.</p>
-<p>In this tour, we make use of vectorial parametrizations which have the advantage of being based on a parameter, namely the rotation vector <span class="math notranslate nohighlight">\(\btheta\)</span>, which behaves as a Cartesian 3D vector. We refer to <span id="id2">[<a class="reference internal" href="#id19" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> for an excellent and unified presentation of the vectorial parametrization. Implementation is provided in <a class="reference download internal" download="" href="../../../_downloads/780009711d2abf779a8c74af4b77740f/rotation_parametrization.py"><code class="xref download docutils literal notranslate"><span class="pre">rotation_parametrization.py</span></code></a> described in the following document <a class="reference internal" href="rotation_parametrization_description.html"><span class="std std-doc">A module for rotation parametrization</span></a>.</p>
+<p>In all of these methods, a rotation matrix is parametrized by a finite set of parameters: e.g. 3 for vectorial and Euler angle parametrizations, 4 for quaternion parametrizations, 9 for direction cosine, etc. Each of these methods will have some sort of singularity in the parametrization as the mapping can never be bijective. As a result, all methods possess some advantages and some drawbacks, from either a theoretical or computational point of view.</p>
+<p>In this tour, we make use of vectorial parametrizations which have the advantage of being based on a parameter, namely the rotation vector <span class="math notranslate nohighlight">\(\btheta\)</span>, which behaves as a Cartesian 3D vector. We refer to <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id19" title="Olivier A Bauchau and Lorenzo Trainelli. The vectorial parameterization of rotation. Nonlinear dynamics, 32:71–92, 2003. doi:10.1023/A:1024265401576.">Bauchau and Trainelli, 2003</a>]</span> for an excellent and unified presentation of the vectorial parametrization. Implementation is provided in <a class="reference download internal" download="" href="../../../_downloads/780009711d2abf779a8c74af4b77740f/rotation_parametrization.py"><code class="xref download docutils literal notranslate"><span class="pre">rotation_parametrization.py</span></code></a> described in the following document <a class="reference internal" href="rotation_parametrization_description.html"><span class="std std-doc">A module for rotation parametrization</span></a>.</p>
 </section>
 <section id="a-reminder-on-rotation-matrices">
 <h3>A reminder on rotation matrices<a class="headerlink" href="#a-reminder-on-rotation-matrices" title="Link to this heading">#</a></h3>
 <p>A rotation can be described by a unit rotation axis <span class="math notranslate nohighlight">\(\bu\)</span> and a rotation angle <span class="math notranslate nohighlight">\(\varphi\)</span>, thus defining a rotation vector <span class="math notranslate nohighlight">\(\btheta=\varphi\bu\)</span>. The link with the rotation matrix <span class="math notranslate nohighlight">\(\bR\)</span> is given by the well-known Euler-Rodrigues formula:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
-\bR = \bI + \dfrac{\sin\varphi}{\varphi}\bP + \left(\dfrac{\sin(\varphi/2)}{\varphi/2}\right)^2\bP^2
+\bR = \bI + \dfrac{\sin\varphi}{\varphi}\bP + \dfrac{1}{2}\left(\dfrac{\sin(\varphi/2)}{\varphi/2}\right)^2\bP^2
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(\bP = \skew(\btheta)\)</span> where <span class="math notranslate nohighlight">\(\skew\)</span> defines the skew-symmetric matrix associated with the cross-product operation of a vector, that is:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -479,8 +540,8 @@
 \skew(\ba)\bb &amp;= \ba \times \bb \quad \forall \bb \\
 \skew(\ba) &amp;= \begin{bmatrix} 0 &amp; -a_3 &amp; a_2\\ a_3 &amp; 0 &amp; -a_1 \\ -a_2 &amp; a_1 &amp; 0 \end{bmatrix}
 \end{align*}\]</div>
-<p>We also introduce <span class="math notranslate nohighlight">\(\axial(\bA)=\ba\)</span> the inverse operation associated to a skew-symmetric matrix <span class="math notranslate nohighlight">\(\bA\)</span> the corresponding vector <span class="math notranslate nohighlight">\(\ba\)</span> such that <span class="math notranslate nohighlight">\(\bA=\skew(\ba)\)</span>. We also have that <span class="math notranslate nohighlight">\(\axial(\bR\bA\bR\T)=\bR\ba\)</span> when <span class="math notranslate nohighlight">\(\bR\)</span> is a rotation matrix.</p>
-<p>For any rotation matrix <span class="math notranslate nohighlight">\(\bR\)</span>, we have <span class="math notranslate nohighlight">\(\dot{\overline{\bR\T\bR}} = \dot\bR\T\bR +  \bR\T\dot\bR=0\)</span> from which we deduce that <span class="math notranslate nohighlight">\(\bTheta=\bR\T\dot\bR\)</span> is skew-symmetric. We denote by <span class="math notranslate nohighlight">\(\bvartheta = \axial(\bTheta)\)</span> the so-called spatial spin vector associated with the rotation matrix. The link between the spin vector and the time derivative of the rotation vector is given by the rotation curvature matrix <span class="math notranslate nohighlight">\(\bH\)</span>:</p>
+<p>We also introduce <span class="math notranslate nohighlight">\(\axial(\bA)=\ba\)</span> the inverse operation, which associates with a skew-symmetric matrix <span class="math notranslate nohighlight">\(\bA\)</span> the vector <span class="math notranslate nohighlight">\(\ba\)</span> such that <span class="math notranslate nohighlight">\(\bA=\skew(\ba)\)</span>. We also have that <span class="math notranslate nohighlight">\(\axial(\bR\bA\bR\T)=\bR\ba\)</span> when <span class="math notranslate nohighlight">\(\bR\)</span> is a rotation matrix.</p>
+<p>For any rotation matrix <span class="math notranslate nohighlight">\(\bR\)</span>, we have <span class="math notranslate nohighlight">\(\dot{\overline{\bR\T\bR}} = \dot\bR\T\bR +  \bR\T\dot\bR=0\)</span> from which we deduce that <span class="math notranslate nohighlight">\(\bTheta=\bR\T\dot\bR\)</span> is skew-symmetric. We denote by <span class="math notranslate nohighlight">\(\bvartheta = \axial(\bTheta)\)</span> the so-called material spin vector associated with the rotation matrix. The link between the spin vector and the time derivative of the rotation vector is given by the rotation curvature matrix <span class="math notranslate nohighlight">\(\bH\)</span>:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 \bvartheta = \bH\T\dot\btheta
@@ -491,7 +552,7 @@
 <p>For small rotations i.e. <span class="math notranslate nohighlight">\(\|\btheta\|=\varphi \ll 1\)</span>, we have <span class="math notranslate nohighlight">\(\bR \approx \bI + \bP\)</span>. As a result:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
-\dot\bR = \dot\bP = \bR\T\bTheta
+\dot\bR = \dot\bP = \bR\bTheta
 \end{equation*}\]</div>
 <p>we have, at first order, <span class="math notranslate nohighlight">\(\bTheta \approx \dot\bP\)</span> and thus <span class="math notranslate nohighlight">\(\bvartheta \approx \dot\btheta\)</span> and <span class="math notranslate nohighlight">\(\bH\approx\bI\)</span>.</p>
 </section>
@@ -500,12 +561,12 @@
 <h2>Nonlinear beam model formulation<a class="headerlink" href="#nonlinear-beam-model-formulation" title="Link to this heading">#</a></h2>
 <section id="beam-kinematics-and-strain-measures">
 <h3>Beam kinematics and strain measures<a class="headerlink" href="#beam-kinematics-and-strain-measures" title="Link to this heading">#</a></h3>
-<p>Following the notations from <span id="id3">[<a class="reference internal" href="#id21" title="Domenico Magisano, Leonardo Leonetti, Antonio Madeo, and Giovanni Garcea. A large rotation finite element analysis of 3d beams by incremental rotation vector and exact strain measure with all the desirable features. Computer Methods in Applied Mechanics and Engineering, 361:112811, 2020. doi:10.1016/j.cma.2019.112811.">Magisano <em>et al.</em>, 2020</a>]</span>, we consider a nonlinear Timoshenko beam model which is described by the position  <span class="math notranslate nohighlight">\(\br_0(s)\)</span> of the beam axis in the reference undeformed configuration <span class="math notranslate nohighlight">\(\mathcal{L}_0\)</span> where <span class="math notranslate nohighlight">\(s\)</span> is the beam curvilinear coordinate. The reference configuration <span class="math notranslate nohighlight">\(\mathcal{L}_0\)</span> is also described by a triad of unit material vectors <span class="math notranslate nohighlight">\(\bG_i(s)\)</span> representing the beam axis <span class="math notranslate nohighlight">\(\bG_1\)</span> and the cross-section principal axis <span class="math notranslate nohighlight">\(\bG_2,\bG_3\)</span>. Note that <span class="math notranslate nohighlight">\(\bG_1\)</span> is equal to the unit tangent vector:</p>
+<p>Following the notations from <span class="bibtex-citation" id="id3">[<a class="reference internal" href="#id21" title="Domenico Magisano, Leonardo Leonetti, Antonio Madeo, and Giovanni Garcea. A large rotation finite element analysis of 3d beams by incremental rotation vector and exact strain measure with all the desirable features. Computer Methods in Applied Mechanics and Engineering, 361:112811, 2020. doi:10.1016/j.cma.2019.112811.">Magisano <em>et al.</em>, 2020</a>]</span>, we consider a nonlinear Timoshenko beam model which is described by the position  <span class="math notranslate nohighlight">\(\br_0(s)\)</span> of the beam axis in the reference undeformed configuration <span class="math notranslate nohighlight">\(\mathcal{L}_0\)</span> where <span class="math notranslate nohighlight">\(s\)</span> is the beam curvilinear coordinate. The reference configuration <span class="math notranslate nohighlight">\(\mathcal{L}_0\)</span> is also described by a triad of unit material vectors <span class="math notranslate nohighlight">\(\bG_i(s)\)</span> representing the beam axis <span class="math notranslate nohighlight">\(\bG_1\)</span> and the cross-section principal axes <span class="math notranslate nohighlight">\(\bG_2,\bG_3\)</span>. Note that <span class="math notranslate nohighlight">\(\bG_1\)</span> is equal to the unit tangent vector:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 \bG_1(s)=\dfrac{d\br_0}{ds}(s)
 \end{equation*}\]</div>
-<p>The material vectors triad can be equivalently described by a rotation matrix <span class="math notranslate nohighlight">\(\bR_0(s)\)</span> which sends the initial cartesian frame <span class="math notranslate nohighlight">\(\be_i\)</span> to the material triad <span class="math notranslate nohighlight">\(\bG_i(s)\)</span> i.e.</p>
+<p>The material vectors triad can be equivalently described by a rotation matrix <span class="math notranslate nohighlight">\(\bR_0(s)\)</span> which sends the initial Cartesian frame <span class="math notranslate nohighlight">\(\be_i\)</span> to the material triad <span class="math notranslate nohighlight">\(\bG_i(s)\)</span> i.e.</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 \bR_0(s) = \bG_i(s)\otimes \be_i
@@ -552,7 +613,7 @@
 \bN &amp;= \bC_N\bepsilon = \begin{bmatrix} ES &amp; 0 &amp; 0 \\ 0 &amp; \mu S_2^* &amp; 0 \\ 0 &amp; 0 &amp; \mu S_3^* \end{bmatrix}\bepsilon \\
 \bM &amp;= \bC_M\bchi = \begin{bmatrix} \mu J &amp; 0 &amp; 0 \\ 0 &amp; EI_2 &amp; 0 \\ 0 &amp; 0 &amp; EI_3 \end{bmatrix}\bchi
 \end{align*}\]</div>
-<p>where <span class="math notranslate nohighlight">\(S\)</span> is the beam cross-section, <span class="math notranslate nohighlight">\(E,\mu\)</span> the Young and shear moduli, <span class="math notranslate nohighlight">\(S_2^*,S_3^*\)</span> the reduced cross-sections accounting for shear reduction coefficients (see <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/cross_section_analysis/cross_section_analysis.html">this tour</a>), <span class="math notranslate nohighlight">\(J\)</span> the torsional inertia and <span class="math notranslate nohighlight">\(I_2,I_3\)</span> the area moment of inertia.</p>
+<p>where <span class="math notranslate nohighlight">\(S\)</span> is the beam cross-section area, <span class="math notranslate nohighlight">\(E,\mu\)</span> the Young and shear moduli, <span class="math notranslate nohighlight">\(S_2^*,S_3^*\)</span> the reduced cross-sections accounting for shear reduction coefficients (see <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/cross_section_analysis/cross_section_analysis.html">this tour</a>), <span class="math notranslate nohighlight">\(J\)</span> the torsional inertia and <span class="math notranslate nohighlight">\(I_2,I_3\)</span> the area moments of inertia.</p>
 <p>The beam hyperelastic energy is then given by:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
@@ -579,7 +640,7 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 </section>
 <section id="incremental-formulation">
 <h2>Incremental formulation<a class="headerlink" href="#incremental-formulation" title="Link to this heading">#</a></h2>
-<p>As mentioned previously, any rotation parametrization will encounter singularity issues for large rotation angles (e.g. <span class="math notranslate nohighlight">\(\pi\)</span> or <span class="math notranslate nohighlight">\(2\pi\)</span> depending on the chosen parametrization). The previous formulation will therefore be unable to solve problems in which the solution experiences rotation angles of such amplitudes. As an alternative, it is possible to solve only, for a given load step, for the incremental displacement and rotation with respect to the known equilibrium from the previous converged load step. Positions and material triad orientations must therefore be updated at the end of every load step. With such an approach, singularity issues will only encountered if the incremental rotation is too large, which is not a strong requirement in practice.</p>
+<p>As mentioned previously, any rotation parametrization will encounter singularity issues for large rotation angles (e.g. <span class="math notranslate nohighlight">\(\pi\)</span> or <span class="math notranslate nohighlight">\(2\pi\)</span> depending on the chosen parametrization). The previous formulation will therefore be unable to solve problems in which the solution experiences rotation angles of such amplitudes. As an alternative, it is possible to solve only, for a given load step, for the incremental displacement and rotation with respect to the known equilibrium from the previous converged load step. Positions and material triad orientations must therefore be updated at the end of every load step. With such an approach, singularity issues will only be encountered if the incremental rotation is too large, which is not a strong requirement in practice.</p>
 <p>In this <code class="docutils literal notranslate"><span class="pre">incremental</span></code> approach, let us consider that <span class="math notranslate nohighlight">\(\bu\)</span> and <span class="math notranslate nohighlight">\(\btheta\)</span> now represent the displacement and rotation vector increments with respect to a known configuration at load step <span class="math notranslate nohighlight">\(n\)</span>. The sought configuration at load step <span class="math notranslate nohighlight">\(n+1\)</span> is obtained from:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
@@ -589,17 +650,17 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 <p>Regarding the strain measures, we have:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{align*}
-\bepsilon_{n+1} &amp;=\bR_n\T\bR(\btheta)\T(\bu_{,s}+\br_{n,s}) - \br_{n,s} \\
+\bepsilon_{n+1} &amp;=\bR_n\T\bR(\btheta)\T(\bu_{,s}+\br_{n,s}) - \bG_1 \\
 \bchi_{n+1} &amp;= \axial( \bR_n\T\bR(\btheta)\T(\bR(\btheta)\bR_n)_{,s}) \\
 &amp;= \axial( \bR_n\T\bR_{n,s}) + \axial(\bR_n\T\bTheta_{,s}\bR_n) \\
 &amp;= \bchi_n + \bR_n\T\axial(\bTheta_{,s}) \\
 &amp;= \bchi_n + \bR_n\T\bH\T\btheta_{,s}
 \end{align*}\]</div>
-<p>In the following implementation, we will store the curvature strain and the rotation matrix of the previous time step as functions defined on a suitable function space (DG-0 for instance). As discussed in <span id="id4">[<a class="reference internal" href="#id21" title="Domenico Magisano, Leonardo Leonetti, Antonio Madeo, and Giovanni Garcea. A large rotation finite element analysis of 3d beams by incremental rotation vector and exact strain measure with all the desirable features. Computer Methods in Applied Mechanics and Engineering, 361:112811, 2020. doi:10.1016/j.cma.2019.112811.">Magisano <em>et al.</em>, 2020</a>]</span> such kind of choice results in a path-dependent solution due to the non-linear nature of the group of rotations. Several strategies can be considered to alleviate or suppress such lack of objectivity. In the following, we chose to ignore this issue, the effects of which diminish upon load step and mesh refinement.</p>
+<p>In the following implementation, we will store the curvature strain and the rotation matrix of the previous load step as functions defined on a suitable function space (DG-0 for instance). As discussed in <span class="bibtex-citation" id="id4">[<a class="reference internal" href="#id21" title="Domenico Magisano, Leonardo Leonetti, Antonio Madeo, and Giovanni Garcea. A large rotation finite element analysis of 3d beams by incremental rotation vector and exact strain measure with all the desirable features. Computer Methods in Applied Mechanics and Engineering, 361:112811, 2020. doi:10.1016/j.cma.2019.112811.">Magisano <em>et al.</em>, 2020</a>]</span> such kind of choice results in a path-dependent solution due to the non-linear nature of the group of rotations. Several strategies can be considered to alleviate or suppress such lack of objectivity. In the following, we choose to ignore this issue, the effects of which diminish upon load step and mesh refinement.</p>
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
-<p>We first import the relevant module and functions. In particular, we import the <code class="docutils literal notranslate"><span class="pre">ExponentialMap</span></code> parametrization of rotations from the <code class="docutils literal notranslate"><span class="pre">rotation_parametrization.py</span></code> module. We then define the mesh of a rectilinear beam along the global X axis.</p>
+<p>We first import the relevant modules and functions. In particular, we import the <code class="docutils literal notranslate"><span class="pre">ExponentialMap</span></code> parametrization of rotations from the <code class="docutils literal notranslate"><span class="pre">rotation_parametrization.py</span></code> module. We then define the mesh of a rectilinear beam along the global X axis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -610,9 +671,8 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 <span class="kn">from</span><span class="w"> </span><span class="nn">petsc4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">PETSc</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">basix</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">nls</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">fem</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.nls.petsc</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rotation_parametrization</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExponentialMap</span>
 </pre></div>
 </div>
@@ -670,8 +730,8 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 <span class="n">cells</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
 
 <span class="c1"># Use ufl.Mesh to generate custom mesh</span>
-<span class="n">_mesh</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Mesh</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;Lagrange&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>
-<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">_mesh</span><span class="p">)</span>
+<span class="n">ufl_mesh</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Mesh</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;Lagrange&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,)))</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">ufl_mesh</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">left_end</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -687,15 +747,10 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 </div>
 </div>
 </div>
-<p>We now define the geometric and material properties of the beam cross-section as well as the loading corresponding to those investigated in <span id="id5">[<a class="reference internal" href="#id20" title="Adnan Ibrahimbegović, Francois Frey, and Ivica Kožar. Computational aspects of vector-like parametrization of three-dimensional finite rotations. International Journal for Numerical Methods in Engineering, 38(21):3653–3673, 1995. doi:10.1002/nme.1620382107.">Ibrahimbegović <em>et al.</em>, 1995</a>]</span>. The loading consists of an externally applied concentrated bending moment <span class="math notranslate nohighlight">\(\boldsymbol{m}(t)=-M_\text{max}t\be_y\)</span> and concentrated load <span class="math notranslate nohighlight">\(\boldsymbol{f}(t)=F_\text{max} t \be_y\)</span> applied in 400 load steps. Finally, we specify the method resolution relying either on the <code class="docutils literal notranslate"><span class="pre">total</span></code> rotation vector or on the <code class="docutils literal notranslate"><span class="pre">incremental</span></code> rotation vector, as discussed before.</p>
+<p>We now define the geometric and material properties of the beam cross-section as well as the loading corresponding to those investigated in <span class="bibtex-citation" id="id5">[<a class="reference internal" href="#id20" title="Adnan Ibrahimbegović, Francois Frey, and Ivica Kožar. Computational aspects of vector-like parametrization of three-dimensional finite rotations. International Journal for Numerical Methods in Engineering, 38(21):3653–3673, 1995. doi:10.1002/nme.1620382107.">Ibrahimbegović <em>et al.</em>, 1995</a>]</span>. The loading consists of an externally applied concentrated bending moment <span class="math notranslate nohighlight">\(\boldsymbol{m}(t)=-M_\text{max}t\be_y\)</span> and concentrated load <span class="math notranslate nohighlight">\(\boldsymbol{f}(t)=F_\text{max} t \be_y\)</span> applied in 400 load steps. Finally, we specify the resolution method relying either on the <code class="docutils literal notranslate"><span class="pre">total</span></code> rotation vector or on the <code class="docutils literal notranslate"><span class="pre">incremental</span></code> rotation vector, as discussed before.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Geometrical properties</span>
-<span class="n">radius</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
-<span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">4</span> <span class="o">/</span> <span class="mi">4</span>
-
-<span class="c1"># Stiffness moduli</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stiffness moduli</span>
 <span class="n">ES</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">)</span>
 <span class="n">GS</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">1e4</span><span class="p">)</span>
 <span class="n">GS_2</span> <span class="o">=</span> <span class="n">GS</span>
@@ -719,7 +774,7 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 </div>
 </div>
 </div>
-<p>We then define a mixed function space consisting of a <span class="math notranslate nohighlight">\(P_2\)</span> displacement vector and <span class="math notranslate nohighlight">\(P_1\)</span> rotation parameter vector. We will also need a DG-0 function space for keeping track of the previous rotation matrix <span class="math notranslate nohighlight">\(\bR_n\)</span> (named <code class="docutils literal notranslate"><span class="pre">R_old</span></code>) as well as the previous curvature strain <span class="math notranslate nohighlight">\(\bchi_n\)</span> for implementing the <code class="docutils literal notranslate"><span class="pre">incremental</span></code> approach. In the following, the previous rotation matrix <code class="docutils literal notranslate"><span class="pre">R_old</span></code> must be interpolated to the identity matrix. We also keep track of the total displacement vector.</p>
+<p>We then define a mixed function space consisting of a <span class="math notranslate nohighlight">\(P_2\)</span> displacement vector and <span class="math notranslate nohighlight">\(P_1\)</span> rotation parameter vector. We will also need a DG-0 function space for keeping track of the previous rotation matrix <span class="math notranslate nohighlight">\(\bR_n\)</span> (named <code class="docutils literal notranslate"><span class="pre">R_old</span></code>) as well as the previous curvature strain <span class="math notranslate nohighlight">\(\bchi_n\)</span> for implementing the <code class="docutils literal notranslate"><span class="pre">incremental</span></code> approach. In the following, the previous rotation matrix <code class="docutils literal notranslate"><span class="pre">R_old</span></code> must be initialized to the identity matrix. We also keep track of the total displacement vector.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ue</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,))</span>
@@ -745,11 +800,6 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
 
 
 <span class="n">R_old</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">Identity</span><span class="p">)</span>
-
-
-<span class="n">vtk</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">,</span> <span class="s2">&quot;results/helical_beam_rot.pvd&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
-<span class="n">vtk</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">R_old</span><span class="p">)</span>
-<span class="n">vtk</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
 <span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)))</span>
 <span class="n">curv_old</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Previous_curvature_strain&quot;</span><span class="p">)</span>
@@ -789,10 +839,10 @@ W_\text{ext}(\widehat{\bu},\widehat{\btheta}) = \int_{\mathcal{L}} \left(\mathca
     <span class="n">curv</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
 <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;incremental&quot;</span><span class="p">:</span>
     <span class="n">R_new</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">R_old</span>
-    <span class="n">R_new_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">R_new</span><span class="p">,</span> <span class="n">VR</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+    <span class="n">R_new_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">R_new</span><span class="p">,</span> <span class="n">VR</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
     <span class="n">defo</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_new</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">t0</span> <span class="o">+</span> <span class="n">tgrad</span><span class="p">(</span><span class="n">total_displ</span> <span class="o">+</span> <span class="n">u</span><span class="p">))</span> <span class="o">-</span> <span class="n">t0</span>
     <span class="n">curv</span> <span class="o">=</span> <span class="n">curv_old</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_old</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span>
-    <span class="n">curv_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">curv</span><span class="p">,</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+    <span class="n">curv_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">curv</span><span class="p">,</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
 
 <span class="n">C_N</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">ES</span><span class="p">,</span> <span class="n">GS_2</span><span class="p">,</span> <span class="n">GS_3</span><span class="p">]))</span>
 <span class="n">C_M</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">GJ</span><span class="p">,</span> <span class="n">EI_2</span><span class="p">,</span> <span class="n">EI_3</span><span class="p">]))</span>
@@ -826,23 +876,24 @@ We are now in position to define the beam elastic energy as well as the nonlinea
 <span class="n">u0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
 <span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">left_dofs</span><span class="p">)]</span>
 
-<span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">NonlinearProblem</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
-
-<span class="n">solver</span> <span class="o">=</span> <span class="n">nls</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">NewtonSolver</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">comm</span><span class="p">,</span> <span class="n">problem</span><span class="p">)</span>
-<span class="c1"># Set Newton solver options</span>
-<span class="n">solver</span><span class="o">.</span><span class="n">atol</span> <span class="o">=</span> <span class="mf">1e-6</span>
-<span class="n">solver</span><span class="o">.</span><span class="n">rtol</span> <span class="o">=</span> <span class="mf">1e-6</span>
-<span class="n">solver</span><span class="o">.</span><span class="n">convergence_criterion</span> <span class="o">=</span> <span class="s2">&quot;residual&quot;</span>
-<span class="n">solver</span><span class="o">.</span><span class="n">max_it</span> <span class="o">=</span> <span class="mi">100</span>
-
-<span class="n">ksp</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">krylov_solver</span>
-<span class="n">opts</span> <span class="o">=</span> <span class="n">PETSc</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
-<span class="n">option_prefix</span> <span class="o">=</span> <span class="n">ksp</span><span class="o">.</span><span class="n">getOptionsPrefix</span><span class="p">()</span>
-<span class="n">opts</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option_prefix</span><span class="si">}</span><span class="s2">ksp_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;preonly&quot;</span>
-<span class="n">opts</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option_prefix</span><span class="si">}</span><span class="s2">ksp_rtol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0e-6</span>
-<span class="n">opts</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option_prefix</span><span class="si">}</span><span class="s2">pc_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;lu&quot;</span>
-<span class="n">opts</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">option_prefix</span><span class="si">}</span><span class="s2">pc_factor_mat_solver_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;mumps&quot;</span>
-<span class="n">ksp</span><span class="o">.</span><span class="n">setFromOptions</span><span class="p">()</span>
+<span class="n">petsc_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;snes_type&quot;</span><span class="p">:</span> <span class="s2">&quot;newtonls&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;snes_linesearch_type&quot;</span><span class="p">:</span> <span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;snes_atol&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="s2">&quot;snes_rtol&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="s2">&quot;snes_stol&quot;</span><span class="p">:</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">NonlinearProblem</span><span class="p">(</span>
+    <span class="n">residual</span><span class="p">,</span>
+    <span class="n">J</span><span class="o">=</span><span class="n">tangent_form</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="n">petsc_options</span><span class="p">,</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;beam_&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -860,8 +911,7 @@ We are now in position to define the beam elastic energy as well as the nonlinea
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Increment </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">Nsteps</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">load</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">t</span>
 
-    <span class="n">num_its</span><span class="p">,</span> <span class="n">converged</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="n">converged</span>
+    <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 
     <span class="n">v</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">scatter_forward</span><span class="p">()</span>
 
@@ -1849,19 +1899,20 @@ AB1kYXRhAAAAAQAAAABMYXZmNjAuMTYuMTAw
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-finite-rotations">Handling finite rotations</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-finite-rotations">Handling finite rotations</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-a-parametrization">Choosing a parametrization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-reminder-on-rotation-matrices">A reminder on rotation matrices</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-small-rotation-case">The small rotation case</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-beam-model-formulation">Nonlinear beam model formulation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-beam-model-formulation">Nonlinear beam model formulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-kinematics-and-strain-measures">Beam kinematics and strain measures</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stress-measures-and-elastic-constitutive-relation">Stress measures and elastic constitutive relation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#residual-form">Residual form</a></li>
@@ -1911,8 +1962,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

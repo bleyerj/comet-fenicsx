@@ -1,59 +1,75 @@
 Traceback (most recent call last):
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/home/bleyerj/.local/lib/python3.11/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1314, in execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 1323, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
     return loop.run_until_complete(inner)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/usr/lib/python3.12/asyncio/base_events.py", line 687, in run_until_complete
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/asyncio/base_events.py", line 654, in run_until_complete
     return future.result()
            ^^^^^^^^^^^^^^^
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 709, in async_execute
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 709, in async_execute
     await self.async_execute_cell(
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 1062, in async_execute_cell
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 1062, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/home/bleyerj/.local/lib/python3.12/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
+  File "/home/bleyerj/miniconda3/envs/fenicsx-v0.11/lib/python3.11/site-packages/nbclient/client.py", line 918, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-deg_quad = 2  # quadrature degree for internal state variable representation
-W0e = ufl.FiniteElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    quad_scheme="default",
+gmsh.initialize()
+gdim = 2
+model_rank = 0
+if MPI.COMM_WORLD.rank == 0:
+    gmsh.option.setNumber("General.Terminal", 0)  # to disable meshing info
+    gmsh.model.add("Model")
+
+    geom = gmsh.model.geo
+    center = geom.add_point(0, 0, 0)
+    p1 = geom.add_point(Ri, 0, 0)
+    p2 = geom.add_point(Re, 0, 0)
+    p3 = geom.add_point(0, Re, 0)
+    p4 = geom.add_point(0, Ri, 0)
+
+    x_radius = geom.add_line(p1, p2)
+    outer_circ = geom.add_circle_arc(p2, center, p3)
+    y_radius = geom.add_line(p3, p4)
+    inner_circ = geom.add_circle_arc(p4, center, p1)
+
+    boundary = geom.add_curve_loop([x_radius, outer_circ, y_radius, inner_circ])
+    surf = geom.add_plane_surface([boundary])
+
+    geom.synchronize()
+
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMin", hsize)
+    gmsh.option.setNumber("Mesh.CharacteristicLengthMax", hsize)
+
+    gmsh.model.addPhysicalGroup(gdim, [surf], 1)
+    gmsh.model.addPhysicalGroup(gdim - 1, [x_radius], 1, name="bottom")
+    gmsh.model.addPhysicalGroup(gdim - 1, [y_radius], 2, name="left")
+    gmsh.model.addPhysicalGroup(gdim - 1, [inner_circ], 3, name="inner")
+
+    gmsh.model.mesh.generate(gdim)
+
+domain, _, facets = io.gmshio.model_to_mesh(
+    gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
 )
-We = ufl.VectorElement(
-    "Quadrature",
-    domain.ufl_cell(),
-    degree=deg_quad,
-    dim=4,
-    quad_scheme="default",
-)
-W = fem.functionspace(domain, We)
-W0 = fem.functionspace(domain, W0e)
+gmsh.finalize()
 ------------------
 
 
-[0;31m---------------------------------------------------------------------------[0m
-[0;31mAttributeError[0m                            Traceback (most recent call last)
-Cell [0;32mIn[5], line 2[0m
-[1;32m      1[0m deg_quad [38;5;241m=[39m [38;5;241m2[39m  [38;5;66;03m# quadrature degree for internal state variable representation[39;00m
-[0;32m----> 2[0m W0e [38;5;241m=[39m [43mufl[49m[38;5;241;43m.[39;49m[43mFiniteElement[49m(
-[1;32m      3[0m     [38;5;124m"[39m[38;5;124mQuadrature[39m[38;5;124m"[39m,
-[1;32m      4[0m     domain[38;5;241m.[39mufl_cell(),
-[1;32m      5[0m     degree[38;5;241m=[39mdeg_quad,
-[1;32m      6[0m     quad_scheme[38;5;241m=[39m[38;5;124m"[39m[38;5;124mdefault[39m[38;5;124m"[39m,
-[1;32m      7[0m )
-[1;32m      8[0m We [38;5;241m=[39m ufl[38;5;241m.[39mVectorElement(
-[1;32m      9[0m     [38;5;124m"[39m[38;5;124mQuadrature[39m[38;5;124m"[39m,
-[1;32m     10[0m     domain[38;5;241m.[39mufl_cell(),
-[0;32m   (...)[0m
-[1;32m     13[0m     quad_scheme[38;5;241m=[39m[38;5;124m"[39m[38;5;124mdefault[39m[38;5;124m"[39m,
-[1;32m     14[0m )
-[1;32m     15[0m W [38;5;241m=[39m fem[38;5;241m.[39mfunctionspace(domain, We)
+[31m---------------------------------------------------------------------------[39m
+[31mAttributeError[39m                            Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 35[39m
+[32m     31[39m     gmsh.model.addPhysicalGroup(gdim - [32m1[39m, [inner_circ], [32m3[39m, name=[33m"inner"[39m)
+[32m     32[39m 
+[32m     33[39m     gmsh.model.mesh.generate(gdim)
+[32m     34[39m 
+[32m---> [39m[32m35[39m domain, _, facets = io.gmshio.model_to_mesh(
+[32m     36[39m     gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
+[32m     37[39m )
+[32m     38[39m gmsh.finalize()
 
-[0;31mAttributeError[0m: module 'ufl' has no attribute 'FiniteElement'
+[31mAttributeError[39m: module 'dolfinx.io' has no attribute 'gmshio'
 

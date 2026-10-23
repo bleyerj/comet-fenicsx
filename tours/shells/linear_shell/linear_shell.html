@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Linear shell model &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Linear shell model &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,6 +64,7 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/shells/linear_shell/linear_shell';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Generating a shell model with the Gmsh Python API" href="../I_beam_gmsh/I_beam_gmsh.html" />
@@ -71,20 +72,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Shells</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,14 +439,14 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation">Formulation</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation">Formulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shell-kinematics-and-3d-linearized-strain">Shell kinematics and 3D linearized strain</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-energy-density">Elastic energy density</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stress-resultant-constitutive-equations">Stress-resultant constitutive equations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-statements-and-physical-parameters">Import statements and physical parameters</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-local-tangent-frame">Computing a local tangent frame</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-space-choice-and-strain-measures">Function space choice and strain measures</a></li>
@@ -425,7 +486,6 @@
 \newcommand{\bepsilon}{\boldsymbol{\epsilon}}
 \newcommand{\bgamma}{\boldsymbol{\gamma}}
 \newcommand{\bchi}{\boldsymbol{\kappa}}
-\newcommand{\bX}{\boldsymbol{X}}
 \newcommand{\bxi}{\boldsymbol{\xi}}
 \newcommand{\ba}{\boldsymbol{a}}
 \newcommand{\be}{\boldsymbol{e}}
@@ -439,8 +499,7 @@
 \newcommand{\bN}{\boldsymbol{N}}
 \newcommand{\bQ}{\boldsymbol{Q}}
 \newcommand{\bR}{\boldsymbol{R}}
-\newcommand{\bV}{\boldsymbol{V}}
-\newcommand{\be}{\boldsymbol{e}}\)</span></p>
+\newcommand{\bV}{\boldsymbol{V}}\)</span></p>
 </div>
 <div class="coauthors admonition">
 <p class="admonition-title">Acknowledgements</p>
@@ -454,9 +513,9 @@
 <li><p><a class="reference download internal" download="" href="../../../_downloads/57e0cd6ab1bc45c44544632e9de6ea38/linear_shell.zip"><code class="xref download docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">sources</span> <span class="pre">files</span></code></a></p></li>
 </ul>
 </div>
-<p>Implementing a shell model in <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> is not necessarily straightforward due to the different behavior in the shell normal and tangential directions. In the <a class="reference external" href="https://github.com/FEniCS-Shells/fenicsx-shells">FEniCSx-Shells</a> project <span id="id1">[<a class="reference internal" href="#id12" title="Jack S Hale, Matteo Brunetti, Stéphane PA Bordas, and Corrado Maurini. Simple and extensible plate and shell finite element models through automatic code generation tools. Computers &amp; Structures, 209:163–181, 2018. doi:10.1016/j.compstruc.2018.08.001.">Hale <em>et al.</em>, 2018</a>]</span>, the shell surface is described by a mapping between a parametric 2D domain and the shell initial stress-free configuration. This approach makes it impossible to tackle non-manifold surfaces or closed surfaces for which the mapping would exhibit singularities.</p>
-<p>In the present implementation, we will instead work directly with the shell surface (either manifold or non-manifold) described as an assembly of planar facets. In this respect, the approach will bear important similarities with the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/beams_3D/beams_3D.html">Elastic 3D beam structures</a>. In particular, we will take advantage of <code class="docutils literal notranslate"><span class="pre">UFL</span></code> ability to compute gradients over a manifold.</p>
-<p>Regarding the interpolation spaces, we will use a <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code> mixed space for displacements and rotations, i.e. the same choice as in the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/reissner_mindlin_crouzeix_raviart/reissner_mindlin_CR.html">Locking-free Reissner-Mindlin plate with Crouzeix-Raviart interpolation</a> tour. The present shell model will therefore be a small-displacement version of the nonlinear shell model developed in <span id="id2">[<a class="reference internal" href="#id11" title="EMB Campello, PM Pimenta, and P Wriggers. A triangular finite shell element based on a fully nonlinear shell formulation. Computational mechanics, 31(6):505–518, 2003. doi:10.1007/s00466-003-0458-8.">Campello <em>et al.</em>, 2003</a>]</span>.</p>
+<p>Implementing a shell model in <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> is not necessarily straightforward due to the different behavior in the shell normal and tangential directions. In the <a class="reference external" href="https://github.com/FEniCS-Shells/fenicsx-shells">FEniCSx-Shells</a> project <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id12" title="Jack S Hale, Matteo Brunetti, Stéphane PA Bordas, and Corrado Maurini. Simple and extensible plate and shell finite element models through automatic code generation tools. Computers &amp; Structures, 209:163–181, 2018. doi:10.1016/j.compstruc.2018.08.001.">Hale <em>et al.</em>, 2018</a>]</span>, the shell surface is described by a mapping between a parametric 2D domain and the shell initial stress-free configuration. This approach makes it impossible to tackle non-manifold surfaces or closed surfaces for which the mapping would exhibit singularities.</p>
+<p>In the present implementation, we will instead work directly with the shell surface (either manifold or non-manifold) described as an assembly of planar facets. In this respect, the approach will bear important similarities with the <a class="reference internal" href="../../beams/beams_3D/beams_3D.html"><span class="std std-doc">Elastic 3D beam structures</span></a>. In particular, we will take advantage of <code class="docutils literal notranslate"><span class="pre">UFL</span></code> ability to compute gradients over a manifold.</p>
+<p>Regarding the interpolation spaces, we will use a <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code> mixed space for displacements and rotations, i.e. the same choice as in the <a class="reference external" href="https://comet-fenics.readthedocs.io/en/latest/demo/reissner_mindlin_crouzeix_raviart/reissner_mindlin_CR.html">Locking-free Reissner-Mindlin plate with Crouzeix-Raviart interpolation</a> tour. The present shell model will therefore be a small-displacement version of the nonlinear shell model developed in <span class="bibtex-citation" id="id2">[<a class="reference internal" href="#id11" title="EMB Campello, PM Pimenta, and P Wriggers. A triangular finite shell element based on a fully nonlinear shell formulation. Computational mechanics, 31(6):505–518, 2003. doi:10.1007/s00466-003-0458-8.">Campello <em>et al.</em>, 2003</a>]</span>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>For the mesh generation, we refer to the <a class="reference internal" href="../I_beam_gmsh/I_beam_gmsh.html"><span class="std std-doc">Generating a shell model with the Gmsh Python API </span></a> tour.</p>
@@ -470,10 +529,10 @@
 \[
 \bX(\bxi,\zeta) = \bxi + \zeta \be_3 \quad \text{with } \zeta \in [-h/2;h/2]
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(h\)</span> is the shell thickness</p>
+<p>where <span class="math notranslate nohighlight">\(h\)</span> is the shell thickness.</p>
 <p>The shell kinematics will be described by its mid-surface displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the infinitesimal rotation vector <span class="math notranslate nohighlight">\(\btheta\)</span> of its director. The new normal director is <span class="math notranslate nohighlight">\(\ba_3 = \bR(\btheta)\be_3 = \be_3+\btheta\times\be_3\)</span> with <span class="math notranslate nohighlight">\(\bR\)</span> the infinitesimal rotation matrix associated with <span class="math notranslate nohighlight">\(\btheta\)</span>. Neglecting any thickness change in the shell kinematics, the material point <span class="math notranslate nohighlight">\(\bx\)</span> in the deformed configuration associated with <span class="math notranslate nohighlight">\(\bX\)</span> will then be given by:</p>
 <div class="math notranslate nohighlight" id="equation-kinematics">
-<span class="eqno">(48)<a class="headerlink" href="#equation-kinematics" title="Link to this equation">#</a></span>\[\bx = \bxi + \bu(\bxi) + \zeta\ba_3 = \bxi + \bu(\bxi) + \zeta(\be_3+\btheta(\bxi)\times\be_3)\]</div>
+<span class="eqno">(54)<a class="headerlink" href="#equation-kinematics" title="Link to this equation">#</a></span>\[\bx = \bxi + \bu(\bxi) + \zeta\ba_3 = \bxi + \bu(\bxi) + \zeta(\be_3+\btheta(\bxi)\times\be_3)\]</div>
 <p>Differentiating with respect to <span class="math notranslate nohighlight">\(\bX\)</span>, we get:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -484,16 +543,16 @@ d\bx &amp;= d\bxi + \nabla\bu\cdot d\bxi + \zeta(\nabla\btheta\cdot d\bxi)\times
 \end{split}\]</div>
 <p>where we retained only up to first order terms in <span class="math notranslate nohighlight">\(\bu,\btheta\)</span>. The 3D deformation gradient is then given by:</p>
 <div class="math notranslate nohighlight" id="equation-defo-gradient">
-<span class="eqno">(49)<a class="headerlink" href="#equation-defo-gradient" title="Link to this equation">#</a></span>\[\bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3\]</div>
-<p>where we introduced the in-plane gradient  (i.e. the gradient with respect to the shell local tangent plane <span class="math notranslate nohighlight">\((\be_1,\be_2)\)</span>) as follows <span class="math notranslate nohighlight">\(\tgrad\bv = \partial_1\bv \otimes \be_1+ \partial_2\bv \otimes \be_2\)</span>. More generally, we will use the following notation <span class="math notranslate nohighlight">\(\utilde{\bv} = v_1\be_1+v_2\be_2\)</span> to denote the in-plane part of <span class="math notranslate nohighlight">\(\bv\)</span>.</p>
+<span class="eqno">(55)<a class="headerlink" href="#equation-defo-gradient" title="Link to this equation">#</a></span>\[\bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3\]</div>
+<p>where we introduced the in-plane gradient (i.e. the gradient with respect to the shell local tangent plane <span class="math notranslate nohighlight">\((\be_1,\be_2)\)</span>) as follows <span class="math notranslate nohighlight">\(\tgrad\bv = \partial_1\bv \otimes \be_1+ \partial_2\bv \otimes \be_2\)</span>. More generally, we will use the following notation <span class="math notranslate nohighlight">\(\utilde{\bv} = v_1\be_1+v_2\be_2\)</span> to denote the in-plane part of <span class="math notranslate nohighlight">\(\bv\)</span>.</p>
 <p>The linearized strain tensor is then given by:</p>
 <div class="math notranslate nohighlight">
 \[
 \bvarepsilon = \sym\left(\tgrad\bu - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3 \right) +  \epsilon(\zeta) \be_3\otimes\be_3
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\sym\)</span> denotes the symmetrized part of a tensor and where we added an incompatible out-of-plane strain <span class="math notranslate nohighlight">\(\epsilon(\zeta)\)</span> which will enable to enforce a plane-stress constraint. The 3D strain can be split into its in-plane components <span class="math notranslate nohighlight">\(\utilde{\utilde{\bvarepsilon}}\)</span>, out-of-plane shear components <span class="math notranslate nohighlight">\(\bgamma = 2\utilde{\bvarepsilon}_3\)</span> and out-of-plane transverse components <span class="math notranslate nohighlight">\(\varepsilon_{33}\)</span>:</p>
+<p>where <span class="math notranslate nohighlight">\(\sym\)</span> denotes the symmetrized part of a tensor and where we added an incompatible out-of-plane strain <span class="math notranslate nohighlight">\(\epsilon(\zeta)\)</span> which makes it possible to enforce a plane-stress constraint. The 3D strain can be split into its in-plane components <span class="math notranslate nohighlight">\(\utilde{\utilde{\bvarepsilon}}\)</span>, out-of-plane shear components <span class="math notranslate nohighlight">\(\bgamma = 2\utilde{\bvarepsilon}_3\)</span> and out-of-plane transverse components <span class="math notranslate nohighlight">\(\varepsilon_{33}\)</span>:</p>
 <div class="math notranslate nohighlight" id="equation-strains">
-<span class="eqno">(50)<a class="headerlink" href="#equation-strains" title="Link to this equation">#</a></span>\[\begin{split}\uttilde{\bvarepsilon} &amp;= \sym\left(\tgrad\utilde{\bu} - \zeta \be_3\times \tgrad\btheta \right)= \boldsymbol{\epsilon} - \zeta \bchi \\
+<span class="eqno">(56)<a class="headerlink" href="#equation-strains" title="Link to this equation">#</a></span>\[\begin{split}\uttilde{\bvarepsilon} &amp;= \sym\left(\tgrad\utilde{\bu} - \zeta \be_3\times \tgrad\btheta \right)= \boldsymbol{\epsilon} - \zeta \bchi \\
 \bgamma &amp;= \tgrad u_3 - \be_3\times\btheta\\
 \varepsilon_{33} &amp;= \epsilon(\zeta)\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\bepsilon=\sym(\tgrad\utilde{\bu})\)</span> is the membrane strain and <span class="math notranslate nohighlight">\(\bchi = \sym(\be_3\times \tgrad\btheta)\)</span> the bending curvature. We see that we recover the definition of the curvature and shear strain of the Reissner-Mindlin plate model, see <a class="reference internal" href="../../../intro/plates/plates.html"><span class="std std-doc">Reissner-Mindlin plates</span></a> for more details.</p>
@@ -510,7 +569,7 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 &amp;= \bN:\bepsilon + \bM:\bchi + \bQ\cdot\bgamma + \int_{-h/2}^{h/2} \sigma_{33}\epsilon(\zeta)d\zeta
 \end{align*}
 \end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\bN\)</span> is the shell membrane tensor, <span class="math notranslate nohighlight">\(\bM\)</span> the bending moment tensor and <span class="math notranslate nohighlight">\(\bQ\)</span> the shear force vector appearing in duality with <span class="math notranslate nohighlight">\(\bepsilon,\bchi,\bgamma\)</span> respectively. The out-of-plane stress <span class="math notranslate nohighlight">\(\sigma_{33}\)</span> appears in duality with the out-of-plane strain <span class="math notranslate nohighlight">\(\epsilon(\zeta)\)</span>. The latter is in fact a purely local variable which can be locally eliminated to enforce the plane stress condition <span class="math notranslate nohighlight">\(\sigma_{33}=0\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(\bN\)</span> is the membrane force tensor, <span class="math notranslate nohighlight">\(\bM\)</span> the bending moment tensor and <span class="math notranslate nohighlight">\(\bQ\)</span> the shear force vector appearing in duality with <span class="math notranslate nohighlight">\(\bepsilon,\bchi,\bgamma\)</span> respectively. The out-of-plane stress <span class="math notranslate nohighlight">\(\sigma_{33}\)</span> appears in duality with the out-of-plane strain <span class="math notranslate nohighlight">\(\epsilon(\zeta)\)</span>. The latter is in fact a purely local variable which can be locally eliminated to enforce the plane stress condition <span class="math notranslate nohighlight">\(\sigma_{33}=0\)</span>.</p>
 <p>Indeed, the shell free energy density can be defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
@@ -521,23 +580,23 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 <p>When minimizing this energy over the shell degrees of freedom, the minimization over <span class="math notranslate nohighlight">\(\epsilon\)</span> is in fact local and we can replace the above free-energy by its plane-stress counterpart:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
-\begin{array}{rl}\Psi_\text{ps} &amp;= \displaystyle{\int_{-h/2}^{h/2} \inf_{\epsilon(z)}\psi(\bvarepsilon) d\zeta}\\
+\begin{array}{rl}\Psi_\text{ps} &amp;= \displaystyle{\int_{-h/2}^{h/2} \inf_{\epsilon(\zeta)}\psi(\bvarepsilon) d\zeta}\\
 &amp; =\displaystyle{\int_{-h/2}^{h/2}\left(\psi_\text{ps}(\uttilde{\bvarepsilon}) + \dfrac{1}{2}\mu \bgamma^2\right) d\zeta  }
 \end{array}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\psi_\text{ps}\)</span> is the elastic strain energy density for a 2D plane-stress material:</p>
 <div class="math notranslate nohighlight" id="equation-strain-energy">
-<span class="eqno">(51)<a class="headerlink" href="#equation-strain-energy" title="Link to this equation">#</a></span>\[\psi_\text{ps}(\uttilde{\bvarepsilon}) = \frac{1}{2}\left(\lambda_\text{ps} (\tr\uttilde{\bvarepsilon})^2 + 2\mu \uttilde{\bvarepsilon}:\uttilde{\bvarepsilon}\right)\]</div>
+<span class="eqno">(57)<a class="headerlink" href="#equation-strain-energy" title="Link to this equation">#</a></span>\[\psi_\text{ps}(\uttilde{\bvarepsilon}) = \frac{1}{2}\left(\lambda_\text{ps} (\tr\uttilde{\bvarepsilon})^2 + 2\mu \uttilde{\bvarepsilon}:\uttilde{\bvarepsilon}\right)\]</div>
 <p>with the plane-stress pseudo Lamé coefficient (see the <a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html"><span class="std std-doc">Isotropic and orthotropic plane stress elasticity </span></a> tour):</p>
 <div class="math notranslate nohighlight">
 \[
 \lambda_\text{ps} = \dfrac{2\lambda\mu}{\lambda+2\mu}
 \]</div>
-<p>Taking the derivative of the strain energy <a class="reference internal" href="#equation-strain-energy">(51)</a> with respect to the 3D strain components gives the local 3D stress-strain constitutive relation:</p>
+<p>Taking the derivative of the strain energy <a class="reference internal" href="#equation-strain-energy">(57)</a> with respect to the 3D strain components gives the local 3D stress-strain constitutive relation:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \begin{align*}
-\uttilde{\bsig} &amp;= \lambda_\text{ps} \tr(\uttilde{\bvarepsilon})\mathbf{1} + 2\mu \bvarepsilon = \mathbb{C}_\text{ps}:\uttilde{\bvarepsilon} \\
+\uttilde{\bsig} &amp;= \lambda_\text{ps} \tr(\uttilde{\bvarepsilon})\mathbf{1} + 2\mu \uttilde{\bvarepsilon} = \mathbb{C}_\text{ps}:\uttilde{\bvarepsilon} \\
 \utilde{\bsig}_{3} &amp;= \mu \bgamma \\
 \sigma_{33} &amp;= 0
 \end{align*}
@@ -546,9 +605,9 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 </section>
 <section id="stress-resultant-constitutive-equations">
 <h3>Stress-resultant constitutive equations<a class="headerlink" href="#stress-resultant-constitutive-equations" title="Link to this heading">#</a></h3>
-<p>Plugging relations <a class="reference internal" href="#equation-strains">(50)</a> into the previous 3D constitutive relation yields the following stress-resultant equations, assuming a homogeneous shell across the thickness:</p>
+<p>Plugging relations <a class="reference internal" href="#equation-strains">(56)</a> into the previous 3D constitutive relation yields the following stress-resultant equations, assuming a homogeneous shell across the thickness:</p>
 <div class="math notranslate nohighlight" id="equation-shells-constitutive-equations">
-<span class="eqno">(52)<a class="headerlink" href="#equation-shells-constitutive-equations" title="Link to this equation">#</a></span>\[\begin{split}\bN &amp;= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
+<span class="eqno">(58)<a class="headerlink" href="#equation-shells-constitutive-equations" title="Link to this equation">#</a></span>\[\begin{split}\bN &amp;= \int_{-h/2}^{h/2} \uttilde{\bsig} d\zeta = \int_{-h/2}^{h/2} \mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = h\mathbb{C}_\text{ps}:\boldsymbol{\epsilon} \\
 \bM &amp;= \int_{-h/2}^{h/2} (-\zeta)\uttilde{\bsig} d\zeta = \int_{-h/2}^{h/2} (-\zeta)\mathbb{C}_\text{ps}:(\boldsymbol{\epsilon} - \zeta \bchi) d\zeta = \dfrac{h^3}{12}\mathbb{C}_\text{ps}:\boldsymbol{\bchi}\\
 \bQ &amp;= \int_{-h/2}^{h/2} \utilde{\bsig}_3 d \zeta = \mu h \bgamma\end{split}\]</div>
 <div class="admonition note">
@@ -571,10 +630,13 @@ w_\text{def} &amp;= \int_{-h/2}^{h/2} \bsig:\bvarepsilon d\zeta \\
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">basix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">plot</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">plot</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
 
-<span class="n">domain</span><span class="p">,</span> <span class="n">markers</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">read_from_msh</span><span class="p">(</span><span class="s2">&quot;I_beam.msh&quot;</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">)</span>
+<span class="n">mesh_data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">read_from_msh</span><span class="p">(</span><span class="s2">&quot;I_beam.msh&quot;</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">mesh</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">cell_tags</span>
+<span class="n">facets</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">facet_tags</span>
 
 <span class="n">gdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">dim</span>
 <span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
@@ -601,7 +663,7 @@ Geometrical dimension = 3
 Topological dimension = 2
 </pre></div>
 </div>
-<img alt="../../../_images/cd82b6e203ea342364ad715fd8232cd736fc134244ba021ea2a0b13fba43454b.png" src="../../../_images/cd82b6e203ea342364ad715fd8232cd736fc134244ba021ea2a0b13fba43454b.png" />
+<img alt="../../../_images/1d496e909f308ec1d85941461e6741f9be999ef0dde5c230bb2642b00a85a47f.png" src="../../../_images/1d496e909f308ec1d85941461e6741f9be999ef0dde5c230bb2642b00a85a47f.png" />
 </div>
 </div>
 <p>We then define the corresponding physical parameters. In particular, we consider here a uniformly distributed loading of unit intensity along the downward global <span class="math notranslate nohighlight">\(Z\)</span> direction and of intensity 0.2 along the <span class="math notranslate nohighlight">\(Y\)</span> direction perpendicular to the arch plane in order to induce a combined bending and twisting deflection mode.</p>
@@ -659,12 +721,12 @@ Topological dimension = 2
 <span class="n">V0</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">VT</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
 
 <span class="n">frame</span> <span class="o">=</span> <span class="n">local_frame</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span>
-<span class="n">basis_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">VT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Basis_vector_e</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gdim</span><span class="p">)]</span>
+<span class="n">basis_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">VT</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Basis_vector_e</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gdim</span><span class="p">)]</span>
 <span class="n">e1</span><span class="p">,</span> <span class="n">e2</span><span class="p">,</span> <span class="n">e3</span> <span class="o">=</span> <span class="n">basis_vectors</span>
 
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gdim</span><span class="p">):</span>
-    <span class="n">e_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+    <span class="n">e_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">frame</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
     <span class="n">basis_vectors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">e_exp</span><span class="p">)</span>
 
 
@@ -679,15 +741,20 @@ Topological dimension = 2
 </div>
 </div>
 <p>The local frame is plotted with <code class="docutils literal notranslate"><span class="pre">Paraview</span></code> as <code class="docutils literal notranslate"><span class="pre">DG0</span></code> Functions since we use planar facets with affine triangles. We can check that the orientation is indeed consistent with what has been defined (<span class="math notranslate nohighlight">\(\be_1\)</span> in blue, <span class="math notranslate nohighlight">\(\be_2\)</span> in green, <span class="math notranslate nohighlight">\(\be_3\)</span> in red).</p>
-<a class="reference internal image-reference" href="../../../_images/local_frame.png"><img alt="../../../_images/local_frame.png" class="align-center" src="../../../_images/local_frame.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/local_frame.png"><img alt="../../../_images/local_frame.png" class="align-center" src="../../../_images/local_frame.png" style="width: 600px;" />
+</a>
 </section>
 <section id="function-space-choice-and-strain-measures">
 <h3>Function space choice and strain measures<a class="headerlink" href="#function-space-choice-and-strain-measures" title="Link to this heading">#</a></h3>
 <p>We now use the aforementioned <code class="docutils literal notranslate"><span class="pre">P2/CR</span></code> interpolation for the displacement <span class="math notranslate nohighlight">\(\bu\)</span> and the rotation <span class="math notranslate nohighlight">\(\btheta\)</span> variables using a mixed element.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ue</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,))</span>  <span class="c1"># displacement finite element</span>
-<span class="n">Te</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span><span class="s2">&quot;CR&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,))</span> <span class="c1"># rotation finite element</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Ue</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span>
+    <span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,)</span>
+<span class="p">)</span>  <span class="c1"># displacement finite element</span>
+<span class="n">Te</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">element</span><span class="p">(</span>
+    <span class="s2">&quot;CR&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">gdim</span><span class="p">,)</span>
+<span class="p">)</span>  <span class="c1"># rotation finite element</span>
 <span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">mixed_element</span><span class="p">([</span><span class="n">Ue</span><span class="p">,</span> <span class="n">Te</span><span class="p">]))</span>
 
 <span class="n">v</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V</span><span class="p">)</span>
@@ -725,7 +792,7 @@ Topological dimension = 2
 </div>
 </div>
 </div>
-<p>We then extract gradient of the in-plane displacement <span class="math notranslate nohighlight">\(\tilde\nabla\tilde\bu\)</span> and define the membrane strain <span class="math notranslate nohighlight">\(\bepsilon\)</span> as its symmetric part. We similarly define the bending curvature <span class="math notranslate nohighlight">\(\bchi\)</span> and shear strain <span class="math notranslate nohighlight">\(\bgamma\)</span> as defined in <a class="reference internal" href="#equation-strains">(50)</a>. We also define directional derivatives in a <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> for later use.</p>
+<p>We then extract the gradient of the in-plane displacement <span class="math notranslate nohighlight">\(\tilde\nabla\tilde\bu\)</span> and define the membrane strain <span class="math notranslate nohighlight">\(\bepsilon\)</span> as its symmetric part. We similarly define the bending curvature <span class="math notranslate nohighlight">\(\bchi\)</span> and shear strain <span class="math notranslate nohighlight">\(\bgamma\)</span> as defined in <a class="reference internal" href="#equation-strains">(56)</a>. We also define directional derivatives along a <code class="docutils literal notranslate"><span class="pre">TestFunction</span></code> for later use.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">t_gu</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">P_plane</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">t_grad</span><span class="p">(</span><span class="n">u</span><span class="p">))</span>
@@ -744,7 +811,7 @@ Topological dimension = 2
 </section>
 <section id="stress-measures">
 <h3>Stress measures<a class="headerlink" href="#stress-measures" title="Link to this heading">#</a></h3>
-<p>We now define the corresponding stress measure using the plane stress linear elastic constitutive laws <a class="reference internal" href="#equation-shells-constitutive-equations">(52)</a>.</p>
+<p>We now define the corresponding stress measure using the plane stress linear elastic constitutive laws <a class="reference internal" href="#equation-shells-constitutive-equations">(58)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plane_stress_elasticity</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
@@ -763,14 +830,14 @@ Topological dimension = 2
 <h3>Drilling rotation stabilization<a class="headerlink" href="#drilling-rotation-stabilization" title="Link to this heading">#</a></h3>
 <p>A classical problem in shell models involving 6 degrees of freedom (3D rotation) is the absence of any constraint on the drilling rotation <span class="math notranslate nohighlight">\(\theta_3=\btheta\cdot\be_3\)</span>. However, this degree of freedom is necessary to tackle non-smooth junctions
 between planar shell facets which have a different normal vector. In our implementation, we propose to add an additional quadratic energy penalizing the drilling strain, as commonly done for elastic shells.</p>
-<p>The drilling strain is obtained from the skew symmetric in-plane component of the transformation gradient <span class="math notranslate nohighlight">\(\bF\)</span> and the drilling rotation:</p>
+<p>The drilling strain is obtained from the skew-symmetric in-plane component of the transformation gradient <span class="math notranslate nohighlight">\(\bF\)</span> and the drilling rotation:</p>
 <div class="math notranslate nohighlight">
 \[
 \varpi = \dfrac{1}{2}(u_{1,2}-u_{2,1})+\theta_3
 \]</div>
 <p>We consider an additional drilling contribution to the work of deformation given by:</p>
 <div class="math notranslate nohighlight" id="equation-drilling-stabilization">
-<span class="eqno">(53)<a class="headerlink" href="#equation-drilling-stabilization" title="Link to this equation">#</a></span>\[w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2\]</div>
+<span class="eqno">(59)<a class="headerlink" href="#equation-drilling-stabilization" title="Link to this equation">#</a></span>\[w_\text{def,drilling} = \dfrac{E h^3}{2h_\text{cell}^2} \varpi^2\]</div>
 <p>where the drilling stiffness <span class="math notranslate nohighlight">\(\dfrac{E h^3}{h_\text{cell}^2}\)</span> is the usually recommended value in the literature with <span class="math notranslate nohighlight">\(h_\text{cell}\)</span> being the local mesh size which we can obtain from <code class="docutils literal notranslate"><span class="pre">ufl.CellDiameter</span></code>. We can observe that the drilling stiffness is equal to the typical membrane stiffness <span class="math notranslate nohighlight">\(Eh\)</span> times the non-dimensional factor <span class="math notranslate nohighlight">\(\left(\dfrac{h}{h_\text{cell}}\right)^2\)</span>. As the mesh size goes to zero, the drilling stiffness becomes increasingly larger.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -787,7 +854,7 @@ between planar shell facets which have a different normal vector. In our impleme
 </section>
 <section id="boundary-conditions-and-resolution">
 <h3>Boundary conditions and resolution<a class="headerlink" href="#boundary-conditions-and-resolution" title="Link to this heading">#</a></h3>
-<p>We then account for fixed supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.</p>
+<p>We then account for pinned supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Vu</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
@@ -810,7 +877,12 @@ between planar shell facets which have a different normal vector. In our impleme
 <span class="n">Wext</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">u_</span><span class="p">)</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
 
 <span class="n">problem</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">(</span>
-    <span class="n">a</span><span class="p">,</span> <span class="n">Wext</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">v</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">}</span>
+    <span class="n">a</span><span class="p">,</span>
+    <span class="n">Wext</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">v</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;shell_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 </pre></div>
@@ -839,7 +911,8 @@ between planar shell facets which have a different normal vector. In our impleme
 </div>
 </div>
 <p>which yields the following deformed configuration (2000 times amplification):</p>
-<a class="reference internal image-reference" href="../../../_images/deformed_configuration.png"><img alt="../../../_images/deformed_configuration.png" class="align-center" src="../../../_images/deformed_configuration.png" style="width: 800px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/deformed_configuration.png"><img alt="../../../_images/deformed_configuration.png" class="align-center" src="../../../_images/deformed_configuration.png" style="width: 800px;" />
+</a>
 </section>
 </section>
 <section id="references">
@@ -918,19 +991,20 @@ between planar shell facets which have a different normal vector. In our impleme
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation">Formulation</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation">Formulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shell-kinematics-and-3d-linearized-strain">Shell kinematics and 3D linearized strain</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#elastic-energy-density">Elastic energy density</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#stress-resultant-constitutive-equations">Stress-resultant constitutive equations</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-statements-and-physical-parameters">Import statements and physical parameters</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-a-local-tangent-frame">Computing a local tangent frame</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-space-choice-and-strain-measures">Function space choice and strain measures</a></li>
@@ -981,8 +1055,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

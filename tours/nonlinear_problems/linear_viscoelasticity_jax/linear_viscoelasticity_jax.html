@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Linear viscoelasticity with JAX &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Linear viscoelasticity with JAX &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,27 +64,34 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Localized 1D solutions in phase-field approach to brittle fracture" href="../bound_constrained/bound_constrained.html" />
+    <link rel="next" title="Bound-constrained problems: localized damage and obstacle problem" href="../bound_constrained/bound_constrained.html" />
     <link rel="prev" title="Elasto-plastic analysis of a 2D von Mises material" href="../plasticity/plasticity.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Nonlinear problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,18 +439,18 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-constitutive-models-in-fenics">Nonlinear constitutive models in FEniCS</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-constitutive-models-in-fenicsx">Nonlinear constitutive models in FEniCSx</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automation-and-high-performance-computation-using-jax">Automation and high-performance computation using JAX</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-viscoelastic-behavior">Linear viscoelastic behavior</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-viscoelastic-behavior">Linear viscoelastic behavior</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rheological-formulation">1D rheological formulation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-generalization">3D generalization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-integration">Time-integration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-integration">Time integration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quadrature-functions">Quadrature functions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation-of-the-constitutive-equation">JAX implementation of the constitutive equation</a><ul class="nav section-nav flex-column">
@@ -420,7 +481,7 @@
 <h1>Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#linear-viscoelasticity-with-jax" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
-<p>This demo shows how to implement a nonlinear constitutive model, specifically a linear viscoelastic behavior. We rely on a manual Python-based implementation of the constitutive update at each quadrature point. To improve computational efficiency of evaluating a Python function while looping over all quadrature points, we leverage Just-In-Time compilation and automatic vectorization provided by the <a class="reference external" href="https://jax.readthedocs.io">JAX library</a>. In addition, consistent tangent operator are automatically derived using JAX Automatic Differentiation.
+<p>This demo shows how to implement a generic (possibly nonlinear) constitutive model, illustrated on linear viscoelasticity. We rely on a manual Python-based implementation of the constitutive update at each quadrature point. To improve computational efficiency of evaluating a Python function while looping over all quadrature points, we leverage Just-In-Time compilation and automatic vectorization provided by the <a class="reference external" href="https://docs.jax.dev">JAX library</a>. In addition, the consistent tangent operator is automatically derived using JAX Automatic Differentiation.
 <span class="math notranslate nohighlight">\(\newcommand{\bsig}{\boldsymbol{\sigma}}
 \newcommand{\beps}{\boldsymbol{\varepsilon}}
 \newcommand{\bepsv}{\boldsymbol{\varepsilon}^\text{v}}
@@ -436,7 +497,8 @@
 \newcommand{\Neumann}{{\partial \Omega_\text{N}}}
 \newcommand{\Dirichlet}{{\partial \Omega_\text{D}}}\)</span></p>
 </div>
-<a class="reference internal image-reference" href="../../../_images/jax_framework.png"><img alt="../../../_images/jax_framework.png" class="align-center" src="../../../_images/jax_framework.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="../../../_images/jax_framework.png"><img alt="../../../_images/jax_framework.png" class="align-center" src="../../../_images/jax_framework.png" style="width: 600px;" />
+</a>
 <div class="download admonition">
 <p class="admonition-title">Download sources</p>
 <ul class="simple">
@@ -449,17 +511,23 @@
 <p class="admonition-title">See also</p>
 <p>For more details about JAX-based implementation of constitutive equations, we refer to:</p>
 <ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">jaxmat</span></code> library:</p>
+<ul>
+<li><p><a class="reference external" href="https://erc-automatix.github.io/jaxmat">Online documentation</a></p></li>
+<li><p>Repository <a class="github reference external" href="https://github.com/erc-automatix/jaxmat">erc-automatix/jaxmat</a></p></li>
+</ul>
+</li>
 <li><p>the <code class="docutils literal notranslate"><span class="pre">dolfinx_materials</span></code> library:</p>
 <ul>
 <li><p><a class="reference external" href="https://bleyerj.github.io/dolfinx_materials">Online documentation</a></p></li>
 <li><p>Repository <a class="github reference external" href="https://github.com/bleyerj/dolfinx_materials">bleyerj/dolfinx_materials</a></p></li>
 </ul>
 </li>
-<li><p>Andrey’s Latyshev work at <a class="github reference external" href="https://github.com/a-latyshev/dolfinx-external-operator">a-latyshev/dolfinx-external-operator</a>.</p></li>
+<li><p>Andrey Latyshev’s work at <a class="github reference external" href="https://github.com/a-latyshev/dolfinx-external-operator">a-latyshev/dolfinx-external-operator</a>.</p></li>
 </ul>
 </div>
-<section id="nonlinear-constitutive-models-in-fenics">
-<h2>Nonlinear constitutive models in FEniCS<a class="headerlink" href="#nonlinear-constitutive-models-in-fenics" title="Link to this heading">#</a></h2>
+<section id="nonlinear-constitutive-models-in-fenicsx">
+<h2>Nonlinear constitutive models in FEniCSx<a class="headerlink" href="#nonlinear-constitutive-models-in-fenicsx" title="Link to this heading">#</a></h2>
 <p>Although this tour considers <strong>linear</strong> viscoelasticity, we will treat the problem as involving a general nonlinear constitutive behavior. The latter will be implemented explicitly using Python, mimicking a generic black-box material library. In this case, the stress <span class="math notranslate nohighlight">\(\bsig\)</span> is evaluated as a nonlinear function of the total strain <span class="math notranslate nohighlight">\(\beps\)</span>, yielding the following nonlinear variational problem:</p>
 <div class="math notranslate nohighlight" id="equation-nonlinear-variational-model">
 <span class="eqno">(23)<a class="headerlink" href="#equation-nonlinear-variational-model" title="Link to this equation">#</a></span>\[\int_{\Omega} \bsig(\beps):\nabla^s \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_{\partial \Omega_\text{N}} \bT\cdot\bv \dS \quad \forall\bv \in V\]</div>
@@ -472,14 +540,14 @@
 </div>
 <section id="automation-and-high-performance-computation-using-jax">
 <h3>Automation and high-performance computation using JAX<a class="headerlink" href="#automation-and-high-performance-computation-using-jax" title="Link to this heading">#</a></h3>
-<p>The present approach will involve looping over all quadrature points to evaluate the constitutive behavior locally. This approach is obviously computationally inefficient due to the Python loop. To solve this issue, we will rely on the <a class="reference external" href="https://jax.readthedocs.io">JAX library</a>.</p>
-<p><img alt="" src="https://jax.readthedocs.io/en/latest/_static/jax_logo_250px.png" /></p>
+<p>The present approach will involve looping over all quadrature points to evaluate the constitutive behavior locally. This approach is obviously computationally inefficient due to the Python loop. To solve this issue, we will rely on the <a class="reference external" href="https://docs.jax.dev">JAX library</a>.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/jax-ml/jax/main/images/jax_logo_250px.png" /></p>
 <p>JAX is a Python library for accelerated (GPU) array computation and program transformation, designed for high-performance numerical computing and large-scale machine learning. Its key features of interest here involve:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/01-jax-basics.html">Accelerated <code class="docutils literal notranslate"><span class="pre">numpy</span></code>/<code class="docutils literal notranslate"><span class="pre">scipy</span></code> functions</a></p></li>
-<li><p><a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/04-advanced-autodiff.html">Automatic Differentiation</a>, see also the <a class="reference external" href="https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html">AutoDiff Cookbook</a></p></li>
-<li><p><a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/02-jitting.html">Just-In-Time compilation</a> using <code class="docutils literal notranslate"><span class="pre">jax.jit</span></code></p></li>
-<li><p><a class="reference external" href="https://jax.readthedocs.io/en/latest/jax-101/03-vectorization.html">Automatic Vectorization</a> using <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code></p></li>
+<li><p><a class="reference external" href="https://docs.jax.dev/en/latest/key-concepts.html">Accelerated <code class="docutils literal notranslate"><span class="pre">numpy</span></code>/<code class="docutils literal notranslate"><span class="pre">scipy</span></code> functions</a></p></li>
+<li><p><a class="reference external" href="https://docs.jax.dev/en/latest/automatic-differentiation.html">Automatic Differentiation</a>, see also the <a class="reference external" href="https://docs.jax.dev/en/latest/notebooks/autodiff_cookbook.html">AutoDiff Cookbook</a></p></li>
+<li><p><a class="reference external" href="https://docs.jax.dev/en/latest/jit-compilation.html">Just-In-Time compilation</a> using <code class="docutils literal notranslate"><span class="pre">jax.jit</span></code></p></li>
+<li><p><a class="reference external" href="https://docs.jax.dev/en/latest/automatic-vectorization.html">Automatic Vectorization</a> using <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code></p></li>
 </ul>
 </section>
 </section>
@@ -488,8 +556,9 @@
 <p>In this numerical tour, we consider a simple linear viscoelastic behavior, the Standard Linear Solid model, which encompasses the case of a Maxwell and a Kelvin-Voigt model. The formulation can also be quite easily extended to a generalized Maxwell model.</p>
 <section id="d-rheological-formulation">
 <h3>1D rheological formulation<a class="headerlink" href="#d-rheological-formulation" title="Link to this heading">#</a></h3>
-<p>The Linear Standard Solid model consists of a spring of stiffness <span class="math notranslate nohighlight">\(E_0\)</span> in parallel to a Maxwell arm (spring of stiffness <span class="math notranslate nohighlight">\(E_1\)</span> in series with a dashpot of viscosity <span class="math notranslate nohighlight">\(\eta_1\)</span>).</p>
-<a class="reference internal image-reference" href="../../../_images/1D_rheological_model.png"><img alt="../../../_images/1D_rheological_model.png" class="align-center" src="../../../_images/1D_rheological_model.png" style="width: 300px;" /></a>
+<p>The Standard Linear Solid model consists of a spring of stiffness <span class="math notranslate nohighlight">\(E_0\)</span> in parallel to a Maxwell arm (spring of stiffness <span class="math notranslate nohighlight">\(E_1\)</span> in series with a dashpot of viscosity <span class="math notranslate nohighlight">\(\eta_1\)</span>).</p>
+<a class="reference internal image-reference" href="../../../_images/1D_rheological_model.png"><img alt="../../../_images/1D_rheological_model.png" class="align-center" src="../../../_images/1D_rheological_model.png" style="width: 300px;" />
+</a>
 <p>The uniaxial stress for this rheological model can be decomposed as the sum of a reversible and an irreversible stress:</p>
 <div class="math notranslate nohighlight">
 \[\sigma = E_0\varepsilon + E_1(\varepsilon-\epsv)\]</div>
@@ -516,15 +585,15 @@
 <h3>3D generalization<a class="headerlink" href="#d-generalization" title="Link to this heading">#</a></h3>
 <p>For the 3D case, isotropic viscoelasticity is characterized by two elastic moduli (resp. two viscosities, or equivalently two relaxation times) for each spring (resp. dashpot) element of the 1D model. Here, we will restrict to a simpler case in which one modulus is common to all elements (similar Poisson ratio for all elements), that is:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{align}
-\boldsymbol{\sigma} = E_0\mathbb{c}:\boldsymbol{\varepsilon} + E_1\mathbb{c}:(\boldsymbol{\varepsilon}-\bepsv) \\
-\dot{\boldsymbol{\varepsilon}}^\text{v} = \dfrac{E_1}{\eta_1}\mathbb{c}:(\boldsymbol{\varepsilon}-\bepsv)
-\end{align}\end{split}\]</div>
+\[\begin{split}\begin{align*}
+\boldsymbol{\sigma} &amp;= E_0\mathbb{c}:\boldsymbol{\varepsilon} + E_1\mathbb{c}:(\boldsymbol{\varepsilon}-\bepsv) \\
+\dot{\boldsymbol{\varepsilon}}^\text{v} &amp;= \dfrac{E_1}{\eta_1}(\boldsymbol{\varepsilon}-\bepsv)
+\end{align*}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\mathbb{c} = \dfrac{\nu}{1-\nu^2}\mathbf{1}\otimes\mathbf{1} + \dfrac{1}{1+\nu}\mathbb{I}\)</span> for plane stress with <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> and <span class="math notranslate nohighlight">\(\mathbb{I}\)</span> being respectively the 2nd and 4th order identity tensors and <span class="math notranslate nohighlight">\(\nu\)</span> being the Poisson ratio.</p>
 </section>
 <section id="time-integration">
-<h3>Time-integration<a class="headerlink" href="#time-integration" title="Link to this heading">#</a></h3>
-<p>There exist many possible choices of discrete time integration for the linear viscoelastic evolution equations, see <span id="id1">[<a class="reference internal" href="#id12" title="Joonas Sorvari and Jari Hämäläinen. Time integration in linear viscoelasticity—a comparative study. Mechanics of Time-Dependent Materials, 14:307–328, 2010.">Sorvari and Hämäläinen, 2010</a>]</span> for a review. In the following, we choose a semi-analytical method which considers the exact solution of the ODE <a class="reference internal" href="#equation-viscous-stress-evolution">(26)</a> between time <span class="math notranslate nohighlight">\(t_n\)</span> and <span class="math notranslate nohighlight">\(t_{n+1}=t_n+\Delta t\)</span>:</p>
+<h3>Time integration<a class="headerlink" href="#time-integration" title="Link to this heading">#</a></h3>
+<p>There exist many possible choices of discrete time integration for the linear viscoelastic evolution equations, see <span class="bibtex-citation" id="id1">[<a class="reference internal" href="#id12" title="Joonas Sorvari and Jari Hämäläinen. Time integration in linear viscoelasticity—a comparative study. Mechanics of Time-Dependent Materials, 14:307–328, 2010.">Sorvari and Hämäläinen, 2010</a>]</span> for a review. In the following, we choose a semi-analytical method which considers the exact solution of the ODE <a class="reference internal" href="#equation-viscous-stress-evolution">(26)</a> between time <span class="math notranslate nohighlight">\(t_n\)</span> and <span class="math notranslate nohighlight">\(t_{n+1}=t_n+\Delta t\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 \sigv(t_{n+1}) = e^{-\Delta t/\tau}\sigv(t_n) + E_1\int_{t_n}^{t_{n+1}}e^{-(t_{n+1}-t)/\tau}\dot\varepsilon(t)\dt
@@ -603,7 +672,7 @@
 <span class="n">uD_y0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_uy</span><span class="p">)</span>
 <span class="n">uD_y</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V_uy</span><span class="p">)</span>
 <span class="n">epsr</span> <span class="o">=</span> <span class="mf">1e-3</span>
-<span class="n">uD_y</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">epsr</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span>
+<span class="n">uD_y</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">epsr</span> <span class="o">*</span> <span class="n">height</span>
 <span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">uD_x0</span><span class="p">,</span> <span class="n">left_dofs</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
     <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">uD_y0</span><span class="p">,</span> <span class="n">bot_dofs</span><span class="p">,</span> <span class="n">V</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
@@ -628,7 +697,7 @@
     <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">value_shape</span><span class="o">=</span><span class="p">(</span><span class="n">vdim</span><span class="p">,),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span>
 <span class="p">)</span>
 <span class="n">WTe</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">quadrature_element</span><span class="p">(</span>
-    <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">value_shape</span><span class="o">=</span><span class="p">(</span><span class="n">vdim</span><span class="p">,</span><span class="n">vdim</span><span class="p">),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">value_shape</span><span class="o">=</span><span class="p">(</span><span class="n">vdim</span><span class="p">,</span> <span class="n">vdim</span><span class="p">),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="n">deg_quad</span>
 <span class="p">)</span>
 <span class="n">W</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">We</span><span class="p">)</span>
 <span class="n">WT</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">WTe</span><span class="p">)</span>
@@ -649,18 +718,18 @@
 </div>
 </div>
 </div>
-<p>We now define the nonlinear residual and associated tangent bilinear form of the corresponding problem. Note that since the stress <code class="docutils literal notranslate"><span class="pre">sig</span></code> is stored as a vector, we use the Mandel representation for defining the (virtual) strain</p>
+<p>We now define the nonlinear residual and associated tangent bilinear form of the corresponding problem. Note that since the stress <code class="docutils literal notranslate"><span class="pre">sig</span></code> is stored as a vector, we use the Mandel representation for defining the (virtual) strain.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">eps_Mandel</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">sym</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
 
 
 <span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span>
     <span class="s2">&quot;dx&quot;</span><span class="p">,</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
-    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="n">deg_quad</span><span class="p">,</span> <span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
+    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="n">deg_quad</span><span class="p">,</span> <span class="s2">&quot;quadrature_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">},</span>
 <span class="p">)</span>
 <span class="n">Residual</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">eps_Mandel</span><span class="p">(</span><span class="n">u_</span><span class="p">),</span> <span class="n">sig</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span>
 <span class="n">tangent_form</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">eps_Mandel</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Ct</span><span class="p">,</span> <span class="n">eps_Mandel</span><span class="p">(</span><span class="n">u_</span><span class="p">)))</span> <span class="o">*</span> <span class="n">dx</span>
@@ -668,16 +737,15 @@
 </div>
 </div>
 </div>
-<p>Now, we extract the total number of quadrature points and define the <code class="docutils literal notranslate"><span class="pre">fem.Expression</span></code> corresponding to the total strain <code class="docutils literal notranslate"><span class="pre">esp_Mandel(u)</span></code> to perform the evaluation at all quadrature points.</p>
+<p>Now, we extract the total number of quadrature points and define the <code class="docutils literal notranslate"><span class="pre">fem.Expression</span></code> corresponding to the total strain <code class="docutils literal notranslate"><span class="pre">eps_Mandel(u)</span></code> to perform the evaluation at all quadrature points. The latter are the interpolation points of the <code class="docutils literal notranslate"><span class="pre">Quadrature</span></code> element.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">basix_celltype</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">basix</span><span class="o">.</span><span class="n">CellType</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">cell_type</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="n">quadrature_points</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">make_quadrature</span><span class="p">(</span><span class="n">basix_celltype</span><span class="p">,</span> <span class="n">deg_quad</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">quadrature_points</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span>
 
 <span class="n">map_c</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
 <span class="n">num_cells</span> <span class="o">=</span> <span class="n">map_c</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">map_c</span><span class="o">.</span><span class="n">num_ghosts</span>
 <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-<span class="n">ngauss</span> <span class="o">=</span> <span class="n">num_cells</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+<span class="n">ngauss</span> <span class="o">=</span> <span class="n">num_cells</span> <span class="o">*</span> <span class="n">quadrature_points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="n">eps_expr</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">eps_Mandel</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">quadrature_points</span><span class="p">)</span>
 
@@ -705,7 +773,7 @@
     <span class="n">tau</span> <span class="o">=</span> <span class="n">mat_prop</span><span class="p">[</span><span class="s2">&quot;tau&quot;</span><span class="p">]</span>
     <span class="n">E1</span> <span class="o">=</span> <span class="n">eta</span> <span class="o">/</span> <span class="n">tau</span>
 
-    <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">nu</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">]])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">nu</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">nu</span><span class="p">]])</span>
     <span class="n">C0</span> <span class="o">=</span> <span class="n">E0</span> <span class="o">*</span> <span class="n">c</span>
     <span class="n">C1</span> <span class="o">=</span> <span class="n">E1</span> <span class="o">*</span> <span class="n">c</span>
 
@@ -723,7 +791,7 @@
 </section>
 <section id="tangent-operator-with-automatic-differentiation">
 <h4>Tangent operator with Automatic Differentiation<a class="headerlink" href="#tangent-operator-with-automatic-differentiation" title="Link to this heading">#</a></h4>
-<p>The constitutive equation should also return the algorithmic tangent operator <span class="math notranslate nohighlight">\(\mathbf{C}_\text{tang} = \dfrac{\text{d} \bsig}{\text{d}\beps}\)</span>. Although the latter is extremely easy to compute in the present case, we show how to use JAX’s Automatic Differentiation capabilities to derive it automatically. We rely on the <code class="docutils literal notranslate"><span class="pre">jax.jacfwd</span></code> function which computes the jacobian of the <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> function with respect to argument <code class="docutils literal notranslate"><span class="pre">argnums=0</span></code>, namely <span class="math notranslate nohighlight">\(\Delta \beps\)</span> here. The computation is done using forward-mode automatic differentiation, although here the tangent operator is of square shape so that there should be no significant difference with backward-mode. Finally, <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> also returns <code class="docutils literal notranslate"><span class="pre">state</span></code> as an auxiliary output. This is specified explicitly with <code class="docutils literal notranslate"><span class="pre">has_aux=True</span></code> which indicates that the function returns a pair where the first element is considered the output of the mathematical function to be differentiated and the second element is auxiliary data. In this case, the output of <code class="docutils literal notranslate"><span class="pre">jacfwd</span></code> is <code class="docutils literal notranslate"><span class="pre">(jacobian,</span> <span class="pre">state)</span></code>.</p>
+<p>The constitutive equation should also return the algorithmic tangent operator <span class="math notranslate nohighlight">\(\mathbf{C}_\text{tang} = \dfrac{\text{d} \bsig}{\text{d}\beps}\)</span>. Although the latter is extremely easy to compute in the present case, we show how to use JAX’s Automatic Differentiation capabilities to derive it automatically. We rely on the <code class="docutils literal notranslate"><span class="pre">jax.jacfwd</span></code> function which computes the Jacobian of the <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> function with respect to argument <code class="docutils literal notranslate"><span class="pre">argnums=0</span></code>, namely <span class="math notranslate nohighlight">\(\Delta \beps\)</span> here. The computation is done using forward-mode automatic differentiation, although here the tangent operator is of square shape so that there should be no significant difference with backward-mode. Finally, <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> also returns <code class="docutils literal notranslate"><span class="pre">state</span></code> as an auxiliary output. This is specified explicitly with <code class="docutils literal notranslate"><span class="pre">has_aux=True</span></code> which indicates that the function returns a pair where the first element is considered the output of the mathematical function to be differentiated and the second element is auxiliary data. In this case, the output of <code class="docutils literal notranslate"><span class="pre">jacfwd</span></code> is <code class="docutils literal notranslate"><span class="pre">(jacobian,</span> <span class="pre">state)</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tangent_operator_and_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jacfwd</span><span class="p">(</span>
@@ -736,7 +804,7 @@
 </section>
 <section id="jit-and-automatic-vectorization">
 <h4>JIT and automatic vectorization<a class="headerlink" href="#jit-and-automatic-vectorization" title="Link to this heading">#</a></h4>
-<p>Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> function in vectorized form to work on a batch of strain-like quantities of shape <code class="docutils literal notranslate"><span class="pre">(3,num_gauss)</span></code> where <code class="docutils literal notranslate"><span class="pre">num_gauss</span></code> is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to automatically transform a function into an efficient vectorized form using <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code>. Applying this vectorization to the <code class="docutils literal notranslate"><span class="pre">tangent_operator_and_state</span></code> function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (<code class="docutils literal notranslate"><span class="pre">dt</span></code> is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.</p>
+<p>Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the <code class="docutils literal notranslate"><span class="pre">local_constitutive_update</span></code> function in vectorized form to work on a batch of strain-like quantities of shape <code class="docutils literal notranslate"><span class="pre">(num_gauss,</span> <span class="pre">3)</span></code> where <code class="docutils literal notranslate"><span class="pre">num_gauss</span></code> is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to automatically transform a function into an efficient vectorized form using <code class="docutils literal notranslate"><span class="pre">jax.vmap</span></code>. Applying this vectorization to the <code class="docutils literal notranslate"><span class="pre">tangent_operator_and_state</span></code> function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (<code class="docutils literal notranslate"><span class="pre">dt</span></code> is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">batched_constitutive_update</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span>
@@ -775,7 +843,7 @@
 </section>
 <section id="custom-newton-solver">
 <h3>Custom Newton solver<a class="headerlink" href="#custom-newton-solver" title="Link to this heading">#</a></h3>
-<p>We now define a custom Newton solver defined in the <a class="reference download internal" download="" href="../../../_downloads/1d9925fc2f3fd576a7ea5981d4bcdd4b/solvers.py"><code class="xref download docutils literal notranslate"><span class="pre">solvers.py</span></code></a> module. The solver first relies on a <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> which is the same custom <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> implementation which was described in the <a class="reference internal" href="../plasticity/plasticity.html"><span class="std std-doc">Elasto-plastic analysis of a 2D von Mises material </span></a> demo. The latter works in particular with the iteration correction field <code class="docutils literal notranslate"><span class="pre">du</span></code> as the main unknown and solves the Newton system:</p>
+<p>We now use the custom Newton solver defined in the <a class="reference download internal" download="" href="../../../_downloads/1d9925fc2f3fd576a7ea5981d4bcdd4b/solvers.py"><code class="xref download docutils literal notranslate"><span class="pre">solvers.py</span></code></a> module. The solver first relies on a <code class="docutils literal notranslate"><span class="pre">CustomLinearProblem</span></code> which is the same custom <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> implementation which was described in the <a class="reference internal" href="../plasticity/plasticity.html"><span class="std std-doc">Elasto-plastic analysis of a 2D von Mises material </span></a> demo. The latter works in particular with the iteration correction field <code class="docutils literal notranslate"><span class="pre">du</span></code> as the main unknown and solves the Newton system:</p>
 <div class="math notranslate nohighlight">
 \[[\mathbf{K}_\text{tang}]\{\delta U\} = -\{\text{Res}\}\]</div>
 <div class="cell docutils container">
@@ -790,12 +858,13 @@
         <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">,</span>
     <span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;viscoelasticity_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Then, we define the <code class="docutils literal notranslate"><span class="pre">CustomNewtonSolver</span></code> which is a standard Newton method made for solving the previous system described in <code class="docutils literal notranslate"><span class="pre">tangent_problem</span></code>. The main difference is that such a solver implements a callback function <code class="docutils literal notranslate"><span class="pre">CustomNewtonSolver.callback</span></code> which takes as arguments the unknown field <code class="docutils literal notranslate"><span class="pre">u</span></code> and a list of other additional arguments. Here, the callback is provided to be the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function defined earlier.</p>
+<p>Then, we define the <code class="docutils literal notranslate"><span class="pre">CustomNewtonSolver</span></code> which is a standard Newton method made for solving the previous system described in <code class="docutils literal notranslate"><span class="pre">tangent_problem</span></code>. The main difference is that such a solver implements a callback function <code class="docutils literal notranslate"><span class="pre">CustomNewtonSolver.callback</span></code> which takes as arguments the unknown field <code class="docutils literal notranslate"><span class="pre">u</span></code> and a list of other additional arguments. Here, the callback is provided to be the <code class="docutils literal notranslate"><span class="pre">constitutive_update</span></code> function defined earlier. Since the imposed displacement on the top boundary is non-zero, the current displacement <code class="docutils literal notranslate"><span class="pre">u</span></code> is passed when assembling the Newton system right-hand side so that the iteration correction <code class="docutils literal notranslate"><span class="pre">du</span></code> satisfies <span class="math notranslate nohighlight">\(\delta u = u_D - u\)</span> on the Dirichlet boundary.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newton</span> <span class="o">=</span> <span class="n">CustomNewtonSolver</span><span class="p">(</span><span class="n">tangent_problem</span><span class="p">)</span>
@@ -812,12 +881,10 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Nincr</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">time_steps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
 <span class="c1"># we set all functions to zero before entering the loop in case we would like to reexecute this code cell</span>
-<span class="n">sig</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">epsv</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
-<span class="n">u</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">[</span><span class="n">sig</span><span class="p">,</span> <span class="n">epsv</span><span class="p">,</span> <span class="n">epsv_old</span><span class="p">,</span> <span class="n">eps_old</span><span class="p">,</span> <span class="n">u</span><span class="p">]:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
@@ -828,8 +895,8 @@
     <span class="k">assert</span> <span class="n">converged</span><span class="p">,</span> <span class="s2">&quot;Solver did not converge.&quot;</span>
 
     <span class="c1"># Update the previous total and viscous strain</span>
-    <span class="n">eps_old</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">eval_at_quadrature_points</span><span class="p">(</span><span class="n">eps_expr</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-    <span class="n">epsv</span><span class="o">.</span><span class="n">vector</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">epsv_old</span><span class="o">.</span><span class="n">vector</span><span class="p">)</span>
+    <span class="n">eps_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">eval_at_quadrature_points</span><span class="p">(</span><span class="n">eps_expr</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">epsv_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">epsv</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span>
 
     <span class="c1"># Post-processing</span>
     <span class="n">epsv_values</span> <span class="o">=</span> <span class="n">epsv</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ngauss</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -840,12 +907,29 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>E1021 16:47:22.327015   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 2.76GiB (2967470080 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327056   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 2.49GiB (2670723072 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327073   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 2.24GiB (2403650816 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327089   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 2.01GiB (2163285760 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327106   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 1.81GiB (1946957312 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327122   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 1.63GiB (1752261632 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327140   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 1.47GiB (1577035520 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327159   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 1.32GiB (1419332096 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327182   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 1.19GiB (1277399040 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327204   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 1.07GiB (1149659136 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327222   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 986.76MiB (1034693376 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327237   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 888.08MiB (931224064 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+E1021 16:47:22.327252   26864 cuda_executor.cc:1182] [0] Failed to allocate device memory of 799.28MiB (838101760 bytes): RESOURCE_EXHAUSTED: : CUDA_ERROR_OUT_OF_MEMORY: out of memory
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
 <section id="results">
 <h2>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
-<p>We check that the solution we obtain corresponds to the exact solution of the recovery test given by:</p>
+<p>We check that the solution we obtain corresponds to the exact solution of the relaxation test given by:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{align*}
 \epsv_{yy}(t) &amp;= \varepsilon_r(1- \exp(-t/\tau))\\
@@ -880,40 +964,56 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/49a0366b6547f088d636cf97b333a0a905eccd1dd63f254c596fe20b6e30c8b7.png" src="../../../_images/49a0366b6547f088d636cf97b333a0a905eccd1dd63f254c596fe20b6e30c8b7.png" />
-<img alt="../../../_images/ec918176da95997801ed3c39bceb06bc751c3e7a18c3676c0d956ca978272f4d.png" src="../../../_images/ec918176da95997801ed3c39bceb06bc751c3e7a18c3676c0d956ca978272f4d.png" />
+<img alt="../../../_images/baba4bcc012254dbc84e243c47b2691edf41e95d9264256dca9f0c3333360819.png" src="../../../_images/baba4bcc012254dbc84e243c47b2691edf41e95d9264256dca9f0c3333360819.png" />
+<img alt="../../../_images/608cdaf32731fce6b2e80d837878c32c7e0c76eafefab3b7329272f3ab3fdac5.png" src="../../../_images/608cdaf32731fce6b2e80d837878c32c7e0c76eafefab3b7329272f3ab3fdac5.png" />
 </div>
 </div>
-<p>The FE solution matches indeed the exact solution as seen above. The instantaneous stress is <span class="math notranslate nohighlight">\(\sigma_{yy}(t=0^+) = (E_0+E_1)\varepsilon_r = 90\)</span> MPa whereas the long-term stress is given by <span class="math notranslate nohighlight">\(\sigma_{yy}(t=\infty) = E_0\varepsilon_r = 70\)</span> MPa.</p>
+<p>The FE solution matches indeed the exact solution as seen above. The small shift observed at early times is a consequence of the mid-point rule used in the time integration: the instantaneous strain jump imposed during the first time step is treated as if it occurred at mid-step, so that the discrete solution coincides with the exact one delayed by <span class="math notranslate nohighlight">\(\Delta t/2\)</span>. The instantaneous stress is <span class="math notranslate nohighlight">\(\sigma_{yy}(t=0^+) = (E_0+E_1)\varepsilon_r = 90\)</span> MPa whereas the long-term stress is given by <span class="math notranslate nohighlight">\(\sigma_{yy}(t=\infty) = E_0\varepsilon_r = 70\)</span> MPa.</p>
 <p>Finally, we look at the timings to check that the call to the constitutive equation is negligible compared to the time spent solving global linear systems when problems are sufficiently large.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">common</span>
 
-<span class="n">common</span><span class="o">.</span><span class="n">list_timings</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="p">[</span><span class="n">common</span><span class="o">.</span><span class="n">TimingType</span><span class="o">.</span><span class="n">wall</span><span class="p">])</span>
+<span class="n">common</span><span class="o">.</span><span class="n">list_timings</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[MPI_MAX] Summary of timings                                                |  reps  wall avg  wall tot
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[MPI_MAX] Summary of timings (s)                                            |  reps       avg       tot
 -------------------------------------------------------------------------------------------------------
-Build dofmap data                                                           |     5  0.000000  0.000000
-Build sparsity                                                              |     1  0.000000  0.000000
-Compute dof reordering map                                                  |     5  0.000000  0.000000
-Compute entities of dim = 1                                                 |     1  0.000000  0.000000
-Compute local part of mesh dual graph                                       |     1  0.000000  0.000000
-Compute local-to-local map                                                  |     1  0.000000  0.000000
-Compute-local-to-global links for global/local adjacency list               |     1  0.000000  0.000000
-Constitutive update                                                         |   149  0.001477  0.220000
-Distribute row-wise data (scalable)                                         |     1  0.000000  0.000000
-GPS: create_level_structure                                                 |     2  0.000000  0.000000
-Gibbs-Poole-Stockmeyer ordering                                             |     1  0.000000  0.000000
-Init dofmap from element dofmap                                             |     5  0.000000  0.000000
-Nonlinear solve                                                             |    50  0.036600  1.830000
-SparsityPattern::finalize                                                   |     1  0.000000  0.000000
-Topology: create                                                            |     1  0.000000  0.000000
-Topology: determine shared index ownership                                  |     1  0.000000  0.000000
-Topology: determine vertex ownership groups (owned, undetermined, unowned)  |     1  0.000000  0.000000
+Compute entities by key matching: number entities                           |     1  0.000084  0.000084
+Compute entities of dim = 1                                                 |     1  0.000463  0.000463
+Compute ghost indices                                                       |     1  0.000050  0.000050
+Compute local part of mesh dual graph (mixed)                               |     1  0.000380  0.000380
+Compute local-to-local map                                                  |     1  0.000021  0.000021
+Compute-local-to-global links for global/local adjacency list               |     1  0.000003  0.000003
+Constitutive update                                                         |    51  0.013504  0.688704
+Distribute row-wise data (scalable)                            
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>             |     1  0.000023  0.000023
+Dofmap builder: build dofmap data                                           |     5  0.000133  0.000665
+Dofmap builder: compute dof reordering map                                  |     5  0.000003  0.000016
+Dofmap builder: get dofmap global indices                                   |     5  0.000094  0.000471
+Dofmap builder: init dofmap from element dofmap                             |     5  0.000026  0.000129
+GPS: create_level_structure                                                 |     2  0.000004  0.000007
+Gibbs-Poole-Stockmeyer ordering                                             |     1  0.000038  0.000038
+Nonlinear solve                                                             |    50  0.014435  0.721764
+SparsityPattern::finalize                                                   |     1  0.000236  0.000236
+Threaded part                                                               |     1  0.000317  0.000317
+Topology: 0                                                                 |     1  0.000002  0.000002
+Topology: 1                                                                 |     1  0.000085  0.000085
+Topology: 2                                                                 |     1  0.000003  0.000003
+Topology: 3                                                                 |     1  0.000082  0.000082
+Topology: 4                                                                 |     1  0.000058  0.000058
+Topology: 5                                                                 |     1  0.000012  0.000012
+Topology: 6                                                                 |     1  0.000011  0.000011
+Topology: 7                                                                 |     1  0.000066  0.000066
+Topology: create                                                            |     1  0.000334  0.000334
+Topology: determine shared index ownership                                  |     1  0.000069  0.000069
+Topology: determine vertex ownership groups (owned, undetermined, unowned)  |     1  0.000014  0.000014
+[Apply lifting]                                                             |    51  0.000075  0.003803
+[Assemble Matrix]                                                           |    52  0.000091  0.004751
 </pre></div>
 </div>
 </div>
@@ -976,7 +1076,7 @@ Topology: determine vertex ownership groups (owned, undetermined, unowned)  |   
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></p>
+        <p class="prev-next-title">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -991,23 +1091,24 @@ Topology: determine vertex ownership groups (owned, undetermined, unowned)  |   
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-constitutive-models-in-fenics">Nonlinear constitutive models in FEniCS</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#nonlinear-constitutive-models-in-fenicsx">Nonlinear constitutive models in FEniCSx</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automation-and-high-performance-computation-using-jax">Automation and high-performance computation using JAX</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-viscoelastic-behavior">Linear viscoelastic behavior</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-viscoelastic-behavior">Linear viscoelastic behavior</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rheological-formulation">1D rheological formulation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-generalization">3D generalization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-integration">Time-integration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-integration">Time integration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-position">Problem position</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#quadrature-functions">Quadrature functions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation-of-the-constitutive-equation">JAX implementation of the constitutive equation</a><ul class="nav section-nav flex-column">
@@ -1064,8 +1165,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

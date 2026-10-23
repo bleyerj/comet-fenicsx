@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Cohesive zone modeling restricted to an interface &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Cohesive zone modeling restricted to an interface &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,6 +64,7 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/interfaces/czm_interface_only/czm_interface_only';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Beams" href="../../beams/contents.html" />
@@ -71,20 +72,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../contents.html">Interfaces</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,14 +439,14 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-and-subdomains">Mesh and subdomains</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-map-and-integration-measures">Entity map and integration measures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-maps-and-integration-measures">Entity maps and integration measures</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-form-definition">Weak form definition</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-conditions">Boundary conditions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-stepping">Load-stepping</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results</a></li>
@@ -404,17 +465,14 @@
 <h1>Cohesive zone modeling restricted to an interface <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span><a class="headerlink" href="#cohesive-zone-modeling-restricted-to-an-interface" title="Link to this heading">#</a></h1>
 <div class="objectives admonition">
 <p class="admonition-title">Objectives</p>
-<p>This tutorial demonstrates how to formulate a cohesive zone model (CZM) involving two subdomains connected by a cohesive interface. Contrary to the previous tour on <a class="reference internal" href="../intrinsic_czm/intrinsic_czm.html"><span class="std std-doc">Cohesive zone modeling of debonding and bulk fracture </span></a> which uses a Discontinuous Galerkin formulation everywhere (<em>case (a)</em>), discontinuities modeled as CZM are here considered at the interface only. This prevents from the use of a single continuous functions space across the whole mesh and requires instead to work with <strong>disconnected submeshes</strong> and mixed Continuous Galerkin interpolation (<em>case (b)</em>).<span class="math notranslate nohighlight">\(
+<p>This tutorial demonstrates how to formulate a cohesive zone model (CZM) involving two subdomains connected by a cohesive interface. Contrary to the previous tour on <a class="reference internal" href="../intrinsic_czm/intrinsic_czm.html"><span class="std std-doc">Cohesive zone modeling of debonding and bulk fracture </span></a> which uses a Discontinuous Galerkin formulation everywhere (<em>case (a)</em>), discontinuities modeled as CZM are here considered at the interface only. This prevents the use of a single continuous function space across the whole mesh and requires instead working with <strong>disconnected submeshes</strong> and mixed Continuous Galerkin interpolation (<em>case (b)</em>).<span class="math notranslate nohighlight">\(
 \newcommand{\bu}{\boldsymbol{u}}
 \newcommand{\bv}{\boldsymbol{v}}
 \newcommand{\bn}{\boldsymbol{n}}
 \newcommand{\jump}[1]{[\![#1]\!]}\)</span></p>
 </div>
-<a class="reference internal image-reference" href="../../../_images/CZM_mesh.svg"><img alt="../../../_images/CZM_mesh.svg" class="align-center" src="../../../_images/CZM_mesh.svg" style="width: 800px;" /></a>
-<div class="admonition attention">
-<p class="admonition-title">Attention</p>
-<p>This tour requires version <code class="docutils literal notranslate"><span class="pre">0.9.0</span></code> of FEniCSx.</p>
-</div>
+<a class="reference internal image-reference" href="../../../_images/CZM_mesh.svg"><img alt="../../../_images/CZM_mesh.svg" class="align-center" src="../../../_images/CZM_mesh.svg" style="width: 800px;" />
+</a>
 <div class="download admonition">
 <p class="admonition-title">Download sources</p>
 <ul class="simple">
@@ -446,10 +504,10 @@
 </section>
 <section id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
-<p>For this problem, we need many utility functions which are implemented in a complementary <a class="reference download internal" download="" href="../../../_downloads/b77019cdf7149cc95c41531ce09d4ab7/utils.py"><code class="xref download docutils literal notranslate"><span class="pre">utils.py</span></code></a> module.</p>
+<p>All the mixed-domain features needed for this tour, such as entity maps, transfer of mesh tags to submeshes, interpolation between a submesh and its parent mesh or the resolution of block linear systems, are directly available in <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code>. We only define two small helper functions along the way.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">clear_output</span><span class="p">,</span> <span class="n">HTML</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">clear_output</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
@@ -457,15 +515,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">basix</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">create_piecewise_constant_field</span><span class="p">,</span>
-    <span class="n">BlockedLinearProblem</span><span class="p">,</span>
-    <span class="n">interface_int_entities</span><span class="p">,</span>
-    <span class="n">transfer_meshtags_to_submesh</span><span class="p">,</span>
-    <span class="n">interpolate_submesh_to_parent</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearProblem</span>
 </pre></div>
 </div>
 </div>
@@ -513,13 +565,13 @@
         <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
 
     <span class="n">partitioner</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">cpp</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">create_cell_partitioner</span><span class="p">(</span>
-        <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">GhostMode</span><span class="o">.</span><span class="n">shared_facet</span>
+        <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">GhostMode</span><span class="o">.</span><span class="n">shared_facet</span><span class="p">,</span> <span class="mi">2</span>
     <span class="p">)</span>
-    <span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
+    <span class="n">mesh_data</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span>
         <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span><span class="p">,</span> <span class="n">partitioner</span><span class="o">=</span><span class="n">partitioner</span>
     <span class="p">)</span>
     <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">facets</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mesh_data</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">cell_tags</span><span class="p">,</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">facet_tags</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -545,7 +597,7 @@
 </div>
 </div>
 </div>
-<p>We define three submeshes: two submeshes (of codim. 0) corresponding to the matrix and inclusion 2D domains and one submesh (of codim. 1) corresponding to the facet restriction on the interface.</p>
+<p>We define three submeshes: two submeshes (of codim. 0) corresponding to the matrix and inclusion 2D domains and one submesh (of codim. 1) corresponding to the facet restriction on the interface. Besides the submesh itself, <code class="docutils literal notranslate"><span class="pre">dolfinx.mesh.create_submesh</span></code> returns <code class="docutils literal notranslate"><span class="pre">EntityMap</span></code> objects relating the cells (resp. the vertices) of the submesh to the corresponding entities of the parent mesh <code class="docutils literal notranslate"><span class="pre">domain</span></code>. For the interface submesh, the cells of <code class="docutils literal notranslate"><span class="pre">interface_mesh</span></code> are thus related to facets of <code class="docutils literal notranslate"><span class="pre">domain</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subdomain2</span><span class="p">,</span> <span class="n">subdomain2_cell_map</span><span class="p">,</span> <span class="n">subdomain2_vertex_map</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">create_submesh</span><span class="p">(</span>
@@ -564,7 +616,8 @@
 <p>Each submesh is plotted individually:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">grid1</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">dolfinx</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">subdomain1</span><span class="p">))</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">grid1</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gold&quot;</span><span class="p">)</span>
 <span class="n">grid2</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span><span class="o">*</span><span class="n">dolfinx</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">vtk_mesh</span><span class="p">(</span><span class="n">subdomain2</span><span class="p">))</span>
@@ -578,72 +631,70 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/afa8d86ca623b5b7d41f0b30cc567a8076190ba3e4ef5deb9c43aee5da8e8458.png" src="../../../_images/afa8d86ca623b5b7d41f0b30cc567a8076190ba3e4ef5deb9c43aee5da8e8458.png" />
+<img alt="../../../_images/1b350fe8a449a7ee5c01584d02f3eb89569cb2b644c3a37272d7ef2263ea98e5.png" src="../../../_images/1b350fe8a449a7ee5c01584d02f3eb89569cb2b644c3a37272d7ef2263ea98e5.png" />
 </div>
 </div>
-<p>Now that we have defined submeshes, we need to transfer (facets) meshtags from those defined on the original domain to their subdomain counterpart.</p>
+<p>Now that we have defined submeshes, we need to transfer the facet mesh tags defined on the parent domain to their submesh counterparts. This is done with <code class="docutils literal notranslate"><span class="pre">dolfinx.mesh.transfer_meshtags_to_submesh</span></code>, which uses the vertex and cell entity maps of each submesh.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subdomain1_facet_tags</span><span class="p">,</span> <span class="n">subdomain1_facet_map</span> <span class="o">=</span> <span class="n">transfer_meshtags_to_submesh</span><span class="p">(</span>
-    <span class="n">domain</span><span class="p">,</span> <span class="n">facets</span><span class="p">,</span> <span class="n">subdomain1</span><span class="p">,</span> <span class="n">subdomain1_vertex_map</span><span class="p">,</span> <span class="n">subdomain1_cell_map</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">subdomain1_facet_tags</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">transfer_meshtags_to_submesh</span><span class="p">(</span>
+    <span class="n">facets</span><span class="p">,</span> <span class="n">subdomain1</span><span class="p">,</span> <span class="n">subdomain1_vertex_map</span><span class="p">,</span> <span class="n">subdomain1_cell_map</span>
 <span class="p">)</span>
-<span class="n">subdomain2_facet_tags</span><span class="p">,</span> <span class="n">subdomain2_facet_map</span> <span class="o">=</span> <span class="n">transfer_meshtags_to_submesh</span><span class="p">(</span>
-    <span class="n">domain</span><span class="p">,</span> <span class="n">facets</span><span class="p">,</span> <span class="n">subdomain2</span><span class="p">,</span> <span class="n">subdomain2_vertex_map</span><span class="p">,</span> <span class="n">subdomain2_cell_map</span>
+<span class="n">subdomain2_facet_tags</span> <span class="o">=</span> <span class="n">dolfinx</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">transfer_meshtags_to_submesh</span><span class="p">(</span>
+    <span class="n">facets</span><span class="p">,</span> <span class="n">subdomain2</span><span class="p">,</span> <span class="n">subdomain2_vertex_map</span><span class="p">,</span> <span class="n">subdomain2_cell_map</span>
 <span class="p">)</span>
+<span class="n">subdomain1</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
+<span class="n">subdomain2</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="entity-map-and-integration-measures">
-<h3>Entity map and integration measures<a class="headerlink" href="#entity-map-and-integration-measures" title="Link to this heading">#</a></h3>
-<p>Similarly to the previous CZM tour, <em>entity maps</em> must be defined to link integration of quantities defined on the subdomains.</p>
+<section id="entity-maps-and-integration-measures">
+<h3>Entity maps and integration measures<a class="headerlink" href="#entity-maps-and-integration-measures" title="Link to this heading">#</a></h3>
+<p>Similarly to the previous CZM tour, <em>entity maps</em> are required to assemble forms involving functions defined on a different mesh than the integration domain. Here, all forms will be integrated over the parent <code class="docutils literal notranslate"><span class="pre">domain</span></code> while the unknown displacements and the interfacial damage live on the three submeshes. The <code class="docutils literal notranslate"><span class="pre">EntityMap</span></code> objects returned by <code class="docutils literal notranslate"><span class="pre">create_submesh</span></code> are passed directly to the forms through the <code class="docutils literal notranslate"><span class="pre">entity_maps</span></code> argument.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cell_imap</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">tdim</span><span class="p">)</span>
-<span class="n">num_cells</span> <span class="o">=</span> <span class="n">cell_imap</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">cell_imap</span><span class="o">.</span><span class="n">num_ghosts</span>
-<span class="n">domain_to_subdomain1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_cells</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-<span class="n">domain_to_subdomain1</span><span class="p">[</span><span class="n">subdomain1_cell_map</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">subdomain1_cell_map</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span>
-<span class="p">)</span>
-<span class="n">domain_to_subdomain2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_cells</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-<span class="n">domain_to_subdomain2</span><span class="p">[</span><span class="n">subdomain2_cell_map</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">subdomain2_cell_map</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span>
-<span class="p">)</span>
-
-<span class="n">subdomain1</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
-<span class="n">subdomain2</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">fdim</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
-
-<span class="n">facet_imap</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">facets</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
-<span class="n">num_facets</span> <span class="o">=</span> <span class="n">facet_imap</span><span class="o">.</span><span class="n">size_local</span> <span class="o">+</span> <span class="n">facet_imap</span><span class="o">.</span><span class="n">num_ghosts</span>
-<span class="n">domain_to_interface</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">num_facets</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">domain_to_interface</span><span class="p">[</span><span class="n">interface_cell_map</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">interface_cell_map</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entity_maps</span> <span class="o">=</span> <span class="p">[</span><span class="n">interface_cell_map</span><span class="p">,</span> <span class="n">subdomain1_cell_map</span><span class="p">,</span> <span class="n">subdomain2_cell_map</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Before setting up the <code class="docutils literal notranslate"><span class="pre">entity_maps</span></code> dictionary, we need a specific treatment for integrating terms on the interface. The <code class="docutils literal notranslate"><span class="pre">interface_int_integration</span></code> manually defines integration quantities on the interface. Besides, interface terms seen from one specific subdomain only exist on one side. As the assembler complains about this, there is a specific tweak to map cells from one side of the interface to the other side, thereby modifying the <code class="docutils literal notranslate"><span class="pre">domain_to_subdomain</span></code> maps. Moreover, we also consistently switch the orientation of the facets so that cells in subdomain 1 correspond to the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> side of the interface and cells in subdomain 2 to the <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> side.</p>
+<p>Integrating terms on the interface requires a specific treatment. Indeed, the interface is a set of interior facets of <code class="docutils literal notranslate"><span class="pre">domain</span></code>, each of them being shared by one cell of subdomain 1 and one cell of subdomain 2. For an interior facet integral, these two cells correspond to the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> sides of the facet, but their ordering is arbitrary. We must therefore define the integration entities manually, i.e. a list of <code class="docutils literal notranslate"><span class="pre">(cell,</span> <span class="pre">local</span> <span class="pre">facet</span> <span class="pre">index)</span></code> pairs for both sides of each interface facet. These are first computed with <code class="docutils literal notranslate"><span class="pre">fem.compute_integration_domains</span></code> and then reordered so that cells of subdomain 1 always correspond to the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> side and cells of subdomain 2 to the <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> side. Functions defined on subdomain 1 (resp. 2) must therefore only be restricted to the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> (resp. <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code>) side in the interface forms.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Having a correct facet orientation does not really impact the results here as we do not distinguish between positive and negative opening of the cohesive zone in the formulation of the <code class="docutils literal notranslate"><span class="pre">effective_opening</span></code>. In case one wants to distinguish between positive and negative opening, an inconsistent facet orientation would produce incorrect results.</p>
-<a class="reference internal image-reference" href="../../../_images/facet_orientation.png"><img alt="../../../_images/facet_orientation.png" class="align-center" src="../../../_images/facet_orientation.png" style="width: 700px;" /></a>
+<p>Having a consistent facet orientation does not really impact the results here as we do not distinguish between positive and negative opening of the cohesive zone in the formulation of the <code class="docutils literal notranslate"><span class="pre">effective_opening</span></code>. In case one wants to distinguish between positive and negative opening, an inconsistent facet orientation would produce incorrect results.</p>
+<a class="reference internal image-reference" href="../../../_images/facet_orientation.png"><img alt="../../../_images/facet_orientation.png" class="align-center" src="../../../_images/facet_orientation.png" style="width: 700px;" />
+</a>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">interface_entities</span><span class="p">,</span> <span class="n">domain_to_subdomain1</span><span class="p">,</span> <span class="n">domain_to_subdomain2</span> <span class="o">=</span> <span class="n">interface_int_entities</span><span class="p">(</span>
-    <span class="n">domain</span><span class="p">,</span> <span class="n">interface_facets</span><span class="p">,</span> <span class="n">domain_to_subdomain1</span><span class="p">,</span> <span class="n">domain_to_subdomain2</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">interface_int_entities</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">interface_facets</span><span class="p">,</span> <span class="n">plus_cells</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Integration entities of an interface between two subdomains.</span>
 
-<span class="n">entity_maps</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">interface_mesh</span><span class="p">:</span> <span class="n">domain_to_interface</span><span class="p">,</span>
-    <span class="n">subdomain1</span><span class="p">:</span> <span class="n">domain_to_subdomain1</span><span class="p">,</span>
-    <span class="n">subdomain2</span><span class="p">:</span> <span class="n">domain_to_subdomain2</span><span class="p">,</span>
-<span class="p">}</span>
+<span class="sd">    Returns the list of (cell, local facet index) pairs on both sides of</span>
+<span class="sd">    each interface facet, ordered such that cells in `plus_cells`</span>
+<span class="sd">    correspond to the &quot;+&quot; side.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tdim</span> <span class="o">=</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tdim</span><span class="p">)</span>
+    <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">create_connectivity</span><span class="p">(</span><span class="n">tdim</span><span class="p">,</span> <span class="n">tdim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">compute_integration_domains</span><span class="p">(</span>
+        <span class="n">fem</span><span class="o">.</span><span class="n">IntegralType</span><span class="o">.</span><span class="n">interior_facet</span><span class="p">,</span> <span class="n">domain</span><span class="o">.</span><span class="n">topology</span><span class="p">,</span> <span class="n">interface_facets</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="n">swap</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">entities</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">plus_cells</span><span class="p">)</span>
+    <span class="n">entities</span><span class="p">[</span><span class="n">swap</span><span class="p">]</span> <span class="o">=</span> <span class="n">entities</span><span class="p">[</span><span class="n">swap</span><span class="p">][:,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">entities</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+
+<span class="n">interface_entities</span> <span class="o">=</span> <span class="n">interface_int_entities</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">interface_facets</span><span class="p">,</span> <span class="n">cells</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">MATRIX_TAG</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We are now in position to define the various integration measures. The key point here is that the <code class="docutils literal notranslate"><span class="pre">dInt</span></code> interface measure is defined using prescribed integration entities which have been defined earlier. This is done by passing them to <code class="docutils literal notranslate"><span class="pre">subdomain_data</span></code> as follows.</p>
+<p>We are now in position to define the various integration measures. The key point here is that the <code class="docutils literal notranslate"><span class="pre">dInt</span></code> interface measure is defined using the prescribed integration entities computed above. This is done by passing them to <code class="docutils literal notranslate"><span class="pre">subdomain_data</span></code> as follows.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dx</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">Measure</span><span class="p">(</span><span class="s2">&quot;dx&quot;</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span> <span class="n">subdomain_data</span><span class="o">=</span><span class="n">cells</span><span class="p">)</span>
@@ -662,8 +713,8 @@
 <p>We can check that the length of the interface is properly computed.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gamma</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dInt</span><span class="p">,</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Check that Gamma is such that </span><span class="si">{</span><span class="n">Gamma</span><span class="si">}</span><span class="s2"> ~ </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">radius</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gamma</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dInt</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Check that Gamma is such that </span><span class="si">{</span><span class="n">Gamma</span><span class="si">}</span><span class="s2"> ~ </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">radius</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -676,10 +727,23 @@
 </section>
 <section id="weak-form-definition">
 <h3>Weak form definition<a class="headerlink" href="#weak-form-definition" title="Link to this heading">#</a></h3>
-<p>We generate a piecewise constant field of elastic properties, as in the previous tour.</p>
+<p>We generate piecewise constant fields of elastic properties, as in the previous tour, see also <a class="reference internal" href="../../../tips/piecewise_constant_field/piecewise_constant_field.html"><span class="std std-doc">Create a piecewise constant field for spatially varying properties</span></a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">E</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="p">{</span><span class="n">MATRIX_TAG</span><span class="p">:</span> <span class="mf">3.09e3</span><span class="p">,</span> <span class="n">INCL_TAG</span><span class="p">:</span> <span class="mf">10e3</span><span class="p">})</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_piecewise_constant_field</span><span class="p">(</span>
+    <span class="n">domain</span><span class="p">,</span> <span class="n">cell_markers</span><span class="p">,</span> <span class="n">property_dict</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a DG-0 field taking constant values {tag: value} on each subdomain.&quot;&quot;&quot;</span>
+    <span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">k</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">default_value</span>
+    <span class="k">for</span> <span class="n">tag</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">property_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">cells</span> <span class="o">=</span> <span class="n">cell_markers</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+        <span class="n">k</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">cells</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">k</span>
+
+
+<span class="n">E</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="p">{</span><span class="n">MATRIX_TAG</span><span class="p">:</span> <span class="mf">3.09e3</span><span class="p">,</span> <span class="n">INCL_TAG</span><span class="p">:</span> <span class="mf">10e3</span><span class="p">})</span>
 <span class="n">nu</span> <span class="o">=</span> <span class="n">create_piecewise_constant_field</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="p">{</span><span class="n">MATRIX_TAG</span><span class="p">:</span> <span class="mf">0.25</span><span class="p">,</span> <span class="n">INCL_TAG</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">})</span>
 <span class="n">mu</span> <span class="o">=</span> <span class="n">E</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">nu</span><span class="p">))</span>
 <span class="n">lmbda</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">nu</span> <span class="o">/</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">nu</span><span class="p">))</span>
@@ -723,7 +787,7 @@
 </div>
 </div>
 </div>
-<p>In the previous tour, it was possible to use <code class="docutils literal notranslate"><span class="pre">ufl.jump</span></code> to define <span class="math notranslate nohighlight">\(\jump{\bu}\)</span>. Here, we need to define it manually from two displacement fields <code class="docutils literal notranslate"><span class="pre">u1</span></code> and <code class="docutils literal notranslate"><span class="pre">u2</span></code> which live on two different subdomains. Here, we define <span class="math notranslate nohighlight">\(\jump{\bu} = \bu^{(2)} - \bu^{(1)}\)</span> where <span class="math notranslate nohighlight">\((1)\)</span> denotes subdomain 1 (the matrix) and <span class="math notranslate nohighlight">\((2)\)</span> denotes subdomain 2 (the inclusions). Note that we need to restrict quantities since we work with a facet measure. Although only one side exist for each subdomain, cells of a given subdomain from one side have been mapped to the other side, as discussed before. As a result, it does not really matter which side is used here. For consistency, we use the the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> side for subdomain 1 and the <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> side for subdomain 2.</p>
+<p>In the previous tour, it was possible to use <code class="docutils literal notranslate"><span class="pre">ufl.jump</span></code> to define <span class="math notranslate nohighlight">\(\jump{\bu}\)</span>. Here, we need to define it manually from two displacement fields <code class="docutils literal notranslate"><span class="pre">u1</span></code> and <code class="docutils literal notranslate"><span class="pre">u2</span></code> which live on two different subdomains. Here, we define <span class="math notranslate nohighlight">\(\jump{\bu} = \bu^{(2)} - \bu^{(1)}\)</span> where <span class="math notranslate nohighlight">\((1)\)</span> denotes subdomain 1 (the matrix) and <span class="math notranslate nohighlight">\((2)\)</span> denotes subdomain 2 (the inclusions). Note that we need to restrict quantities since we work with a facet measure. Since each subdomain only exists on one side of the interface, the restriction is imposed by the ordering of the integration entities: we must use the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> side for subdomain 1 and the <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> side for subdomain 2.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jump</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">):</span>
@@ -732,7 +796,7 @@
 </div>
 </div>
 </div>
-<p>We now define the relevant function spaces. As hinted before, the unknown <span class="math notranslate nohighlight">\(\bu\)</span> will consist of two displacements <span class="math notranslate nohighlight">\((\bu^{(1)},\bu^{(2)})\)</span> respectively belonging to a continuous Lagrange space defined on subdomains 1 and 2. We use a <code class="docutils literal notranslate"><span class="pre">MixedFunctionSpace</span></code> for this, meaning that we will end up with a block system. For easier post-processing, the computed displacement will be stored as a <code class="docutils literal notranslate"><span class="pre">DG</span></code> function, with jumps being non zero only at the interface.</p>
+<p>We now define the relevant function spaces. As hinted before, the unknown <span class="math notranslate nohighlight">\(\bu\)</span> will consist of two displacements <span class="math notranslate nohighlight">\((\bu^{(1)},\bu^{(2)})\)</span> respectively belonging to a continuous Lagrange space defined on subdomains 1 and 2. We use a <code class="docutils literal notranslate"><span class="pre">MixedFunctionSpace</span></code> for this, meaning that we will end up with a block system.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V1</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">subdomain1</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;Lagrange&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">tdim</span><span class="p">,)))</span>
@@ -746,7 +810,7 @@
 </div>
 </div>
 </div>
-<p>For easier post-processing, the computed displacement will be stored as a <code class="docutils literal notranslate"><span class="pre">DG</span></code> function, with jumps being non zero only at the interface. This space will not be used for defining the weak forms.</p>
+<p>For easier post-processing, the computed displacement will be stored as a <code class="docutils literal notranslate"><span class="pre">DG</span></code> function, with jumps being non-zero only at the interface. This space will not be used for defining the weak forms.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">tdim</span><span class="p">,)))</span>  <span class="c1"># for post-processing only</span>
@@ -766,7 +830,7 @@
 </div>
 </div>
 </div>
-<p>We can now define the expression for the interfacial damage based on the effective opening <span class="math notranslate nohighlight">\(\delta\)</span>. The latter involves <span class="math notranslate nohighlight">\(\jump{\bu}\)</span> and the interface normal. Since <span class="math notranslate nohighlight">\(\jump{\bu} = \bu^{(2)} - \bu^{(1)}\)</span> , we need the normal <span class="math notranslate nohighlight">\(\bn^{(1)\to(2)}\)</span> from subdomain 1 to subdomain 2. This is <code class="docutils literal notranslate"><span class="pre">n(&quot;+&quot;)</span></code> since subdomain 1 is on <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> side of the interface and the facet normal points outwards the cell.</p>
+<p>We can now define the expression for the interfacial damage based on the effective opening <span class="math notranslate nohighlight">\(\delta\)</span>. The latter involves <span class="math notranslate nohighlight">\(\jump{\bu}\)</span> and the interface normal. Since <span class="math notranslate nohighlight">\(\jump{\bu} = \bu^{(2)} - \bu^{(1)}\)</span>, we need the normal <span class="math notranslate nohighlight">\(\bn^{(1)\to(2)}\)</span> from subdomain 1 to subdomain 2. This is <code class="docutils literal notranslate"><span class="pre">n(&quot;+&quot;)</span></code> since subdomain 1 is on the <code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> side of the interface and the facet normal points outwards the cell.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n1_to_2</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetNormal</span><span class="p">(</span><span class="n">domain</span><span class="p">)(</span><span class="s2">&quot;+&quot;</span><span class="p">)</span>
@@ -790,20 +854,20 @@
 </div>
 </div>
 </div>
-<p>Finally, we use <code class="docutils literal notranslate"><span class="pre">ufl.extract_blocks</span></code> to obtain the different blocks <span class="math notranslate nohighlight">\(\begin{bmatrix} \text{a}_{11} &amp; \text{a}_{12}\\ \text{a}_{21} &amp; \text{a}_{22}\end{bmatrix}\)</span> of the bilinear form associated with <span class="math notranslate nohighlight">\(\bu^{(1)}\)</span> and <span class="math notranslate nohighlight">\(\bu^{(2)}\)</span>. The blocked forms are then compiled by providing the entity maps.</p>
+<p>Finally, we use <code class="docutils literal notranslate"><span class="pre">ufl.extract_blocks</span></code> to obtain the different blocks <span class="math notranslate nohighlight">\(\begin{bmatrix} \text{a}_{11} &amp; \text{a}_{12}\\ \text{a}_{21} &amp; \text{a}_{22}\end{bmatrix}\)</span> of the bilinear form associated with <span class="math notranslate nohighlight">\(\bu^{(1)}\)</span> and <span class="math notranslate nohighlight">\(\bu^{(2)}\)</span>. These blocks will be compiled when defining the linear problem below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_blocked_compiled</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">extract_blocks</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">)</span>
-<span class="n">L_blocked_compiled</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">extract_blocks</span><span class="p">(</span><span class="n">L</span><span class="p">),</span> <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_blocks</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">extract_blocks</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="n">L_blocks</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">extract_blocks</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>As in the previous tour, we need to evaluate expressions that live on the facet mesh. We follow the same approach as discussed in details in <a class="reference internal" href="../intrinsic_czm/intrinsic_czm.html#facet-expressions-interpolation"><span class="std std-ref">Facet expressions interpolation</span></a>.</p>
+<p>As in the previous tour, we need to evaluate expressions that live on the facet mesh. We follow the same approach as discussed in detail in <a class="reference internal" href="../intrinsic_czm/intrinsic_czm.html#facet-expressions-interpolation"><span class="std std-ref">Facet expressions interpolation</span></a>. Since <code class="docutils literal notranslate"><span class="pre">d_expr</span></code> involves functions defined on the interface mesh and on both subdomains, all entity maps are passed to the corresponding form.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q_p</span> <span class="o">=</span> <span class="n">V_int</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">()</span>
-<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">q_p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q_p</span> <span class="o">=</span> <span class="n">V_int</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">q_p</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dolfinx</span><span class="o">.</span><span class="n">default_scalar_type</span><span class="p">)</span>
 <span class="n">q_el</span> <span class="o">=</span> <span class="n">basix</span><span class="o">.</span><span class="n">ufl</span><span class="o">.</span><span class="n">quadrature_element</span><span class="p">(</span>
     <span class="n">interface_mesh</span><span class="o">.</span><span class="n">basix_cell</span><span class="p">(),</span> <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="n">points</span><span class="o">=</span><span class="n">q_p</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span>
 <span class="p">)</span>
@@ -813,7 +877,7 @@
     <span class="s2">&quot;dS&quot;</span><span class="p">,</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
     <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;quadrature_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
         <span class="s2">&quot;quadrature_points&quot;</span><span class="p">:</span> <span class="n">q_p</span><span class="p">,</span>
         <span class="s2">&quot;quadrature_weights&quot;</span><span class="p">:</span> <span class="n">weights</span><span class="p">,</span>
     <span class="p">},</span>
@@ -822,7 +886,7 @@
 <span class="p">)</span>
 
 <span class="n">facet_interp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
-    <span class="mi">1</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetArea</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span> <span class="o">*</span> <span class="n">d_expr</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">q_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dS_custom</span><span class="p">,</span>
+    <span class="mi">1</span> <span class="o">/</span> <span class="n">ufl</span><span class="o">.</span><span class="n">FacetArea</span><span class="p">(</span><span class="n">domain</span><span class="p">)(</span><span class="s2">&quot;+&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="n">d_expr</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="n">q_</span><span class="p">)</span> <span class="o">*</span> <span class="n">dS_custom</span><span class="p">,</span>
     <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
@@ -836,8 +900,10 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Uimp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
-<span class="n">left_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">subdomain1_facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">right_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">subdomain1_facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">left_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span><span class="n">V1</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">subdomain1_facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">LEFT_TAG</span><span class="p">))</span>
+<span class="n">right_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_topological</span><span class="p">(</span>
+    <span class="n">V1</span><span class="p">,</span> <span class="n">fdim</span><span class="p">,</span> <span class="n">subdomain1_facet_tags</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">RIGHT_TAG</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tdim</span><span class="p">,)),</span> <span class="n">left_dofs</span><span class="p">,</span> <span class="n">V1</span><span class="p">),</span>
@@ -847,13 +913,12 @@
 </div>
 </div>
 </div>
-<p>The imposed displacement is initialized with unitary values so as to define the virtual displacement fields <code class="docutils literal notranslate"><span class="pre">v_reac</span></code> to be used for measuring the reaction force on the boundary in a consistent manner based on the equilibrium residual <span class="math notranslate nohighlight">\(a(\bu,\bv_\text{read})-L(\bv_\text{reac})\)</span>.</p>
+<p>The imposed displacement is initialized with unitary values so as to define the virtual displacement fields <code class="docutils literal notranslate"><span class="pre">v_reac1</span></code> and <code class="docutils literal notranslate"><span class="pre">v_reac2</span></code> to be used for measuring the reaction force on the boundary in a consistent manner based on the equilibrium residual <span class="math notranslate nohighlight">\(a(\bu,\bv_\text{reac})-L(\bv_\text{reac})\)</span>. Since boundary conditions only involve subdomain 1, <code class="docutils literal notranslate"><span class="pre">v_reac2</span></code> is simply zero.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v_reac1</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V1</span><span class="p">)</span>
 <span class="n">fem</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="n">v_reac1</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
 <span class="n">v_reac2</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V2</span><span class="p">)</span>
-<span class="n">fem</span><span class="o">.</span><span class="n">set_bc</span><span class="p">(</span><span class="n">v_reac2</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">bcs</span><span class="p">)</span>
 <span class="n">virtual_work_form</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">form</span><span class="p">(</span>
     <span class="n">ufl</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">L</span><span class="p">,</span> <span class="p">{</span><span class="n">du1</span><span class="p">:</span> <span class="n">u1</span><span class="p">,</span> <span class="n">du2</span><span class="p">:</span> <span class="n">u2</span><span class="p">,</span> <span class="n">v1</span><span class="p">:</span> <span class="n">v_reac1</span><span class="p">,</span> <span class="n">v2</span><span class="p">:</span> <span class="n">v_reac2</span><span class="p">}),</span>
     <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">,</span>
@@ -862,44 +927,53 @@
 </div>
 </div>
 </div>
-<p>The linear problem associated with resolution of displacement at fixed damage is now defined outside the load-stepping loop. Since we use a mixed function space, we obtain a block linear system and therefore implement a custom class in <a class="reference download internal" download="" href="../../../_downloads/b77019cdf7149cc95c41531ce09d4ab7/utils.py"><code class="xref download docutils literal notranslate"><span class="pre">utils.py</span></code></a> for repeatedly solving a blocked linear variational problem. The latter expects blocked compiled linear and bilinear forms and a list of functions in which to store the results. The solver can be parametrized using PETSc options.</p>
+<p>The linear problem associated with the computation of the displacement at fixed damage is now defined outside the load-stepping loop. Since we use a mixed function space, we obtain a block linear system. <code class="docutils literal notranslate"><span class="pre">LinearProblem</span></code> directly supports such block problems: it expects the blocks of the bilinear and linear forms, the list of functions in which to store the solution and the entity maps. By default, the different blocks are assembled into a single PETSc matrix which is then factorized with MUMPS.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">BlockedLinearProblem</span><span class="p">(</span>
-    <span class="n">a_blocked_compiled</span><span class="p">,</span>
-    <span class="n">L_blocked_compiled</span><span class="p">,</span>
-    <span class="p">[</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">],</span>
-    <span class="n">bcs</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem</span> <span class="o">=</span> <span class="n">LinearProblem</span><span class="p">(</span>
+    <span class="n">a_blocks</span><span class="p">,</span>
+    <span class="n">L_blocks</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="p">[</span><span class="n">u1</span><span class="p">,</span> <span class="n">u2</span><span class="p">],</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">entity_maps</span><span class="o">=</span><span class="n">entity_maps</span><span class="p">,</span>
     <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span>
         <span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pc_factor_mat_solver_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mumps&quot;</span><span class="p">,</span>
     <span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;czm_interface_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="resolution">
-<h3>Resolution<a class="headerlink" href="#resolution" title="Link to this heading">#</a></h3>
-<p>The fixed-point resolution scheme is implemented as before. The main difference here lies in the post-processing steps. Data in <code class="docutils literal notranslate"><span class="pre">u1</span></code> and <code class="docutils literal notranslate"><span class="pre">u2</span></code> fields are transferred to a parent function <code class="docutils literal notranslate"><span class="pre">u</span></code> defined as a <code class="docutils literal notranslate"><span class="pre">DG</span></code> function on the parent mesh. We thus have a single displacement field in Paraview which presents jumps at the interface only.</p>
+<section id="load-stepping">
+<h3>Load-stepping<a class="headerlink" href="#load-stepping" title="Link to this heading">#</a></h3>
+<p>The fixed-point resolution scheme is implemented as before. The main difference here lies in the post-processing steps. Data in <code class="docutils literal notranslate"><span class="pre">u1</span></code> and <code class="docutils literal notranslate"><span class="pre">u2</span></code> fields are transferred to a parent function <code class="docutils literal notranslate"><span class="pre">u</span></code> defined as a <code class="docutils literal notranslate"><span class="pre">DG</span></code> function on the parent mesh. We thus have a single displacement field in ParaView which presents jumps at the interface only. This interpolation from a submesh to its parent mesh is performed with <code class="docutils literal notranslate"><span class="pre">u.interpolate(u1,</span> <span class="pre">cells0=...,</span> <span class="pre">cells1=...)</span></code> where <code class="docutils literal notranslate"><span class="pre">cells0</span></code> are the submesh cells and <code class="docutils literal notranslate"><span class="pre">cells1</span></code> the corresponding cells of the parent mesh, as given by the cell entity map.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Nincr</span> <span class="o">=</span> <span class="mi">40</span>
-<span class="n">loading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">submesh_to_parent_cells</span><span class="p">(</span><span class="n">submesh</span><span class="p">,</span> <span class="n">cell_map</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Submesh cells and their corresponding cells in the parent mesh.&quot;&quot;&quot;</span>
+    <span class="n">num_cells</span> <span class="o">=</span> <span class="n">submesh</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">index_map</span><span class="p">(</span><span class="n">submesh</span><span class="o">.</span><span class="n">topology</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">size_local</span>
+    <span class="n">sub_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">num_cells</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sub_cells</span><span class="p">,</span> <span class="n">cell_map</span><span class="o">.</span><span class="n">sub_topology_to_topology</span><span class="p">(</span><span class="n">sub_cells</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
+
+<span class="n">cells1_sub</span><span class="p">,</span> <span class="n">cells1_parent</span> <span class="o">=</span> <span class="n">submesh_to_parent_cells</span><span class="p">(</span><span class="n">subdomain1</span><span class="p">,</span> <span class="n">subdomain1_cell_map</span><span class="p">)</span>
+<span class="n">cells2_sub</span><span class="p">,</span> <span class="n">cells2_parent</span> <span class="o">=</span> <span class="n">submesh_to_parent_cells</span><span class="p">(</span><span class="n">subdomain2</span><span class="p">,</span> <span class="n">subdomain2_cell_map</span><span class="p">)</span>
+
+<span class="n">Nincr</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">loading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">,</span> <span class="n">Nincr</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
 <span class="n">Niter_max</span> <span class="o">=</span> <span class="mi">200</span>
 <span class="n">tol</span> <span class="o">=</span> <span class="mf">1e-4</span>
-<span class="n">damage_results</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
 <span class="n">Force</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">]</span>
 <span class="n">iterations</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-
-<span class="n">out_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="s2">&quot;results/czm.pvd&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">VTKFile</span><span class="p">(</span><span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="s2">&quot;results/czm.pvd&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">loading</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Load step&quot;</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Load step </span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">loading</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">Uimp</span><span class="o">.</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
     <span class="n">nRes</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
@@ -914,23 +988,21 @@
         <span class="p">)</span>
         <span class="n">d_old</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
         <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Iteration </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2"> | Residual: </span><span class="si">{</span><span class="n">nRes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;    Iteration </span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> | Residual: </span><span class="si">{</span><span class="n">nRes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">nRes</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">break</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;Fixed-point solver did not converge in less than </span><span class="si">{}</span><span class="s2"> iterations&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">Niter_max</span>
-            <span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Fixed-point solver did not converge within </span><span class="si">{</span><span class="n">Niter_max</span><span class="si">}</span><span class="s2"> iterations&quot;</span>
         <span class="p">)</span>
     <span class="n">iterations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
     <span class="n">d_prev</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="p">[:]</span>
 
     <span class="n">Force</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fem</span><span class="o">.</span><span class="n">assemble_scalar</span><span class="p">(</span><span class="n">virtual_work_form</span><span class="p">))</span>
 
-    <span class="c1"># We interpolate both u1 and u2 into u for easier visualization with Paraview</span>
-    <span class="n">interpolate_submesh_to_parent</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">u1</span><span class="p">,</span> <span class="n">subdomain1_cell_map</span><span class="p">)</span>
-    <span class="n">interpolate_submesh_to_parent</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">subdomain2_cell_map</span><span class="p">)</span>
+    <span class="c1"># We interpolate both u1 and u2 into u for easier visualization with ParaView</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">cells0</span><span class="o">=</span><span class="n">cells1_sub</span><span class="p">,</span> <span class="n">cells1</span><span class="o">=</span><span class="n">cells1_parent</span><span class="p">)</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">u2</span><span class="p">,</span> <span class="n">cells0</span><span class="o">=</span><span class="n">cells2_sub</span><span class="p">,</span> <span class="n">cells1</span><span class="o">=</span><span class="n">cells2_parent</span><span class="p">)</span>
     <span class="n">out_file</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">out_file</span><span class="o">.</span><span class="n">write_function</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -940,13 +1012,23 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Load step 40
-    Iteration 1 | Residual: 0.0017254351652441127
-    Iteration 2 | Residual: 0.0011040370652327075
-    Iteration 3 | Residual: 0.0005350765053613515
-    Iteration 4 | Residual: 0.0002469718862936469
-    Iteration 5 | Residual: 0.00011296609431889798
-    Iteration 6 | Residual: 5.1586582223290735e-05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Load step 40/40
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Iteration  1 | Residual: 0.0017254351652393554
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Iteration  2 | Residual: 0.0011040370652304885
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Iteration  3 | Residual: 0.0005350765053504328
+    Iteration  4 | Residual: 0.00024697188628834975
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Iteration  5 | Residual: 0.00011296609434632562
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Iteration  6 | Residual: 5.158658221154628e-05
 </pre></div>
 </div>
 </div>
@@ -967,7 +1049,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../../_images/dbecdaa575b030f88fd521b142308ba91e82ec4cdca66a3bde7319a8ec19c168.png" src="../../../_images/dbecdaa575b030f88fd521b142308ba91e82ec4cdca66a3bde7319a8ec19c168.png" />
+<img alt="../../../_images/297d13de5c4ecc81a8520ab4b557572753180208e16f97ca28817297d526044b.png" src="../../../_images/297d13de5c4ecc81a8520ab4b557572753180208e16f97ca28817297d526044b.png" />
 </div>
 </div>
 </section>
@@ -1032,19 +1114,20 @@
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mesh-and-subdomains">Mesh and subdomains</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-map-and-integration-measures">Entity map and integration measures</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#entity-maps-and-integration-measures">Entity maps and integration measures</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-form-definition">Weak form definition</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#boundary-conditions">Boundary conditions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution">Resolution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-stepping">Load-stepping</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Results</a></li>
@@ -1089,8 +1172,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Axisymmetric formulation for elastic structures of revolution {far}`star`
 #
 # ```{admonition} Objectives
@@ -50,15 +53,15 @@
 # :width: 400px
 # ```
 #
-#  We will consider a solid of revolution around a fixed axis $(Oz)$, the loading, boundary conditions and material properties being also invariant with respect to a rotation along the symmetry axis. The solid cross-section in a plane $\theta=\text{cst}$ will be represented by a two-dimensional domain $\omega$. With such a 2D mesh, the first spatial variable (`x[0]` in `UFL`) will represent the radial coordinate $r$ whereas the second spatial variable (`x[1]`) will denote the axial variable $z$.
+# We will consider a solid of revolution around a fixed axis $(Oz)$, the loading, boundary conditions and material properties being also invariant with respect to a rotation along the symmetry axis. The solid cross-section in a plane $\theta=\text{cst}$ will be represented by a two-dimensional domain $\omega$. With such a 2D mesh, the first spatial variable (`x[0]` in `UFL`) will represent the radial coordinate $r$ whereas the second spatial variable (`x[1]`) will denote the axial variable $z$.
 #
 # ## Problem position
 #
-# We will investigate here the case of a hollow hemisphere of inner (resp. outer) radius $R_i$ (resp. $R_e$). We impose an external pressure on the outer radius boundary. Due to the revolution symmetry, the 2D cross-section corresponds to a quarter of a hollow cylinder.
+# We will investigate here the case of a hollow hemisphere of inner (resp. outer) radius $R_i$ (resp. $R_e$). We impose an external pressure on the outer radius boundary. Due to the revolution symmetry, the 2D cross-section corresponds to a quarter annulus.
 #
 # We first import the relevant modules.
 
-# +
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -72,11 +75,11 @@ hsize = 0.2
 
 Re = 11.0
 Ri = 9.0
-# -
 
+# %% [markdown]
 # The domain is created and meshed using the `Gmsh` Python API.
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 gmsh.initialize()
 gmsh.option.setNumber("General.Terminal", 0)  # to disable meshing info
 gdim = 2
@@ -111,12 +114,13 @@ gmsh.model.addPhysicalGroup(gdim - 1, [outer_circ], 3, name="outer")
 
 gmsh.model.mesh.generate(gdim)
 
-domain, _, facets = io.gmshio.model_to_mesh(
-    gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim
-)
+mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 gmsh.finalize()
-# -
 
+# %% [markdown]
 # ## Definition of axisymmetric strains and stresses
 #
 # For axisymmetric conditions, the unknown displacement field is of the form:
@@ -139,7 +143,7 @@ gmsh.finalize()
 # We could also express the strain components in the form of a vector of size 4 in alternative of the 3D tensor representation implemented below.
 # ```
 
-# +
+# %%
 x = ufl.SpatialCoordinate(domain)
 
 
@@ -155,11 +159,10 @@ def eps(v):
     )
 
 
-# -
-
+# %% [markdown]
 # The linear elastic constitutive equation giving the stress `sigma` is written using 3D tensors:
 
-# +
+# %%
 E = fem.Constant(domain, 1e5)
 nu = fem.Constant(domain, 0.3)
 mu = E / 2 / (1 + nu)
@@ -170,8 +173,7 @@ def sigma(v):
     return lmbda * ufl.tr(eps(v)) * ufl.Identity(3) + 2.0 * mu * eps(v)
 
 
-# -
-
+# %% [markdown]
 # ## Weak formulation
 #
 # The rest of the formulation is similar to the 2D elastic case with a small difference in the integration measure. Indeed, the virtual work principle reads as:
@@ -195,14 +197,14 @@ def sigma(v):
 # where the $2\pi$ constants arising from the integration on $\theta$ have been cancelled on both sides. As a result, the bilinear and linear form are similar to the plane 2D case with the exception of the additional $r$ term in the integration measures.
 #
 # ```{warning}
-# Some terms in the integrand, e.g. the strain $\beps$, contain terms exhibiting a $\dfrac{1}{r}$ singularity at $r=0$. In practice, there should not be any issue regarding such a singularity since integrals are evaluated approximately using quadrature rules. Integrands are then evaluated at quadrature points which usually lie inside strictly inside the element (default scheme). For non-classical quadrature, such as vertex schemes or GLL points, you may have some trouble with such singular terms.
+# Some terms in the integrand, e.g. the strain $\beps$, contain terms exhibiting a $\dfrac{1}{r}$ singularity at $r=0$. In practice, there should not be any issue regarding such a singularity since integrals are evaluated approximately using quadrature rules. Integrands are then evaluated at quadrature points which usually lie strictly inside the element (default scheme). For non-classical quadrature, such as vertex schemes or GLL points, you may have some trouble with such singular terms.
 # ```
 #
 # ## Resolution
 #
-# The final formulation is therefore pretty straightforward. Since a uniform pressure loading is applied on the outer boundary, we will also need the exterior normal vector to define the work of external forces form.
+# The final formulation is therefore pretty straightforward. Since a uniform pressure loading is applied on the outer boundary, we will also need the exterior normal vector to define the linear form of external work.
 
-# +
+# %%
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
 dx = ufl.Measure("dx", domain=domain)
 
@@ -216,15 +218,15 @@ a_form = ufl.inner(sigma(du), eps(u_)) * x[0] * dx
 L_form = ufl.inner(-p * n, u_) * x[0] * ds(3)
 
 u = fem.Function(V, name="Displacement")
-# -
 
+# %% [markdown]
 # We apply smooth contact conditions on the vertical $r=0$ (facet tag `2`) and the horizontal $z=0$ (facet tag `1`) boundaries.
 
-# +
+# %%
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
-top_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2))
+left_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2))
 
 # used for post-processing
 bottom_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(1))[1]
@@ -232,27 +234,29 @@ bottom_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find
 u0x = fem.Function(Vx)
 u0y = fem.Function(Vy)
 bcs = [
-    fem.dirichletbc(u0x, top_dofsx, V.sub(0)),
+    fem.dirichletbc(u0x, left_dofsx, V.sub(0)),
     fem.dirichletbc(u0y, bottom_dofsy, V.sub(1)),
 ]
 
 # solve problem
-problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
+problem = fem.petsc.LinearProblem(
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="axisymmetric_"
+)
 problem.solve()
-# -
 
+# %% [markdown]
 # For this specific case, we can compare to the classical solution of a hollow sphere under external pressure with a purely radial displacement given by:
 #
 # $$
-# u_r(r) = -\dfrac{R_e^3}{R_e^3-R_i^3}\left((1 − 2\nu)r + (1 + \nu)\dfrac{R_i^3}{2r^2}\right)\dfrac{p}{E},
+# u_r(r) = -\dfrac{R_e^3}{R_e^3-R_i^3}\left((1 - 2\nu)r + (1 + \nu)\dfrac{R_i^3}{2r^2}\right)\dfrac{p}{E},
 # \quad u_z=0
 # $$
 #
 # We extract the radial displacement dofs on the bottom boundary and compare with the analytical solution.
 
-# +
+# %%
 ur = u.sub(0).collapse()
-ur_FEM = ur.vector.array[bottom_dofsx]
+ur_FEM = ur.x.array[bottom_dofsx]
 
 r = Vx.tabulate_dof_coordinates()[bottom_dofsx, 0]
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Quadrature schemes &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Quadrature schemes &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -62,6 +62,7 @@
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tips/quadrature_schemes/quadrature_schemes';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Computing consistent reaction forces" href="../computing_reactions/computing_reactions.html" />
@@ -69,20 +70,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -108,7 +115,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -147,8 +198,8 @@
       
     
     
-    <img src="../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -181,26 +232,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tours/linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../tours/nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -216,12 +272,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tours/shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../tours/optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tours/optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -330,7 +391,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -354,7 +415,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -376,15 +437,15 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-quadrature-rule">2D Quadrature rule</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-quadrature-rule">2D Quadrature rule</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-quadrature-rule">Default quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-jacobi-quadrature-rule">Gauss-Jacobi quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-legendre-lobatto-quadrature-rule">Gauss-Legendre-Lobatto quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xiao-gimbutas-quadrature-rule">Xiao-Gimbutas quadrature rule</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rules">3D rules</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rules">3D rules</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Default quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Gauss-Jacobi quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Gauss-Legendre-Lobatto quadrature rule</a></li>
@@ -427,7 +488,7 @@
 <span class="n">all_cell_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">,</span> <span class="n">CellType</span><span class="o">.</span><span class="n">quadrilateral</span><span class="p">]</span>
 <span class="n">degrees</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">quad_rules</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">default</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
     <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gauss_jacobi</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
     <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gll</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">quadrilateral</span><span class="p">]),</span>
     <span class="n">QuadratureType</span><span class="o">.</span><span class="n">xiao_gimbutas</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">triangle</span><span class="p">]),</span>
@@ -437,10 +498,10 @@
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_quad_points_2D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
@@ -484,16 +545,16 @@
 <h3>Default quadrature rule<a class="headerlink" href="#default-quadrature-rule" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_2D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">default</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4b63f344d1f6b06fc4ce87619c245c0d794367226b80566930bf96a2eb332972.png" src="../../_images/4b63f344d1f6b06fc4ce87619c245c0d794367226b80566930bf96a2eb332972.png" />
-<img alt="../../_images/563e968d92d4b857daa11989b42244cc769c56feea7a45a311fc277f6c1a371e.png" src="../../_images/563e968d92d4b857daa11989b42244cc769c56feea7a45a311fc277f6c1a371e.png" />
-<img alt="../../_images/7710490499c070a7cb4e25c190919eeb218a31b88194636894a1a27d72fa9ea4.png" src="../../_images/7710490499c070a7cb4e25c190919eeb218a31b88194636894a1a27d72fa9ea4.png" />
-<img alt="../../_images/96b41093cc6bc6b159dfa59ba5ba172f9275a77628628d71b20b5cec07578e4b.png" src="../../_images/96b41093cc6bc6b159dfa59ba5ba172f9275a77628628d71b20b5cec07578e4b.png" />
-<img alt="../../_images/b8cbff56d2c159f32e10a0e109d3bbabc75ec62ec53ddc3eca8aeb24d1f5c947.png" src="../../_images/b8cbff56d2c159f32e10a0e109d3bbabc75ec62ec53ddc3eca8aeb24d1f5c947.png" />
+<img alt="../../_images/9dfb39649049578eb282f3c773f39c0edbbcfa05bb6b19725b1ef4680a31b236.png" src="../../_images/9dfb39649049578eb282f3c773f39c0edbbcfa05bb6b19725b1ef4680a31b236.png" />
+<img alt="../../_images/90dc01f225727d711be417128397863ec61db7842d20742b0ff7f600490cc286.png" src="../../_images/90dc01f225727d711be417128397863ec61db7842d20742b0ff7f600490cc286.png" />
+<img alt="../../_images/914761134a036f7af5adc1d223ef91104effcab3ffc468b62898a6280a022ee7.png" src="../../_images/914761134a036f7af5adc1d223ef91104effcab3ffc468b62898a6280a022ee7.png" />
+<img alt="../../_images/51bf6cc7833369ef060e1cc3232402b0d909fbcb9150228dd39adff669a179f4.png" src="../../_images/51bf6cc7833369ef060e1cc3232402b0d909fbcb9150228dd39adff669a179f4.png" />
+<img alt="../../_images/44239c7eae65aa09fcb8b03515762f15b27b23774127bf8b4db4155fe4d29d51.png" src="../../_images/44239c7eae65aa09fcb8b03515762f15b27b23774127bf8b4db4155fe4d29d51.png" />
 </div>
 </div>
 </section>
@@ -506,11 +567,11 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4250e0f77d65e0eeadc0d3e849f562854de56abfa9afd12b0efa67f10e930252.png" src="../../_images/4250e0f77d65e0eeadc0d3e849f562854de56abfa9afd12b0efa67f10e930252.png" />
-<img alt="../../_images/abcd94f9b1b3fbc9fc970452059fcddab4a4f57fc761bb42b5a08f09a64d6f79.png" src="../../_images/abcd94f9b1b3fbc9fc970452059fcddab4a4f57fc761bb42b5a08f09a64d6f79.png" />
-<img alt="../../_images/dbcfc58d7698e1a176015dd0a6dd3d18cb09b2c4d7e7696cf99116259a9d25e4.png" src="../../_images/dbcfc58d7698e1a176015dd0a6dd3d18cb09b2c4d7e7696cf99116259a9d25e4.png" />
-<img alt="../../_images/f8253b434ec948ee1423d488e177edc3eceb6bf0999a9d968f7692785f2c0290.png" src="../../_images/f8253b434ec948ee1423d488e177edc3eceb6bf0999a9d968f7692785f2c0290.png" />
-<img alt="../../_images/d27f08eeb142598b14fae775b085b930354cad141275bd45f555279c7d3cad7e.png" src="../../_images/d27f08eeb142598b14fae775b085b930354cad141275bd45f555279c7d3cad7e.png" />
+<img alt="../../_images/9254e8ef22a0b1ce617e82210d50e951aab94ab95130c0dbcb0248e6ae0f4a5e.png" src="../../_images/9254e8ef22a0b1ce617e82210d50e951aab94ab95130c0dbcb0248e6ae0f4a5e.png" />
+<img alt="../../_images/e43fda017c5fd139f15f9120e3e1d4a27327ff4d13b38b6bb1c3d48a2e8abbc5.png" src="../../_images/e43fda017c5fd139f15f9120e3e1d4a27327ff4d13b38b6bb1c3d48a2e8abbc5.png" />
+<img alt="../../_images/a7bf57854453b0f895cde12816ccce85501da4d837a17d2fc67d84b109f44dca.png" src="../../_images/a7bf57854453b0f895cde12816ccce85501da4d837a17d2fc67d84b109f44dca.png" />
+<img alt="../../_images/6ecf5eedfccca4c4a5892ef8f5926371ddc4bdbd5e25fc78651ca3ca362e72b1.png" src="../../_images/6ecf5eedfccca4c4a5892ef8f5926371ddc4bdbd5e25fc78651ca3ca362e72b1.png" />
+<img alt="../../_images/a6d69bd3811259deb2d46e370ff88ecd93713f43d63d2bdde70f639577b3edf6.png" src="../../_images/a6d69bd3811259deb2d46e370ff88ecd93713f43d63d2bdde70f639577b3edf6.png" />
 </div>
 </div>
 </section>
@@ -523,11 +584,11 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/ad3005dad51bdb1408faf3ddd40fc2da4fec68b289b7e71c7623d0318cac258d.png" src="../../_images/ad3005dad51bdb1408faf3ddd40fc2da4fec68b289b7e71c7623d0318cac258d.png" />
-<img alt="../../_images/d279e0fde72f27d093ea7d23df3398d18a38c0c370fc717b0aec1bc5dbe3a24c.png" src="../../_images/d279e0fde72f27d093ea7d23df3398d18a38c0c370fc717b0aec1bc5dbe3a24c.png" />
-<img alt="../../_images/81c2bc3d70b0c71243e22fc862de234252ef325d53fe76c049419720fc3d8a49.png" src="../../_images/81c2bc3d70b0c71243e22fc862de234252ef325d53fe76c049419720fc3d8a49.png" />
-<img alt="../../_images/2aa069b86e56058931ef364e5543c5b35aa6a96ffbca6a369288f9d1adc0aa44.png" src="../../_images/2aa069b86e56058931ef364e5543c5b35aa6a96ffbca6a369288f9d1adc0aa44.png" />
-<img alt="../../_images/3583acb8b180a4da2e90705ff7ac3c3f444abe3344412c797053a56fda48b1fb.png" src="../../_images/3583acb8b180a4da2e90705ff7ac3c3f444abe3344412c797053a56fda48b1fb.png" />
+<img alt="../../_images/fc20664e29df45b99a106fd6e85c2474a7bbd67242d9756ba4fbf091f747c10b.png" src="../../_images/fc20664e29df45b99a106fd6e85c2474a7bbd67242d9756ba4fbf091f747c10b.png" />
+<img alt="../../_images/68d4f6df4ea4bedfb730ff45cfcab327fc7c0887aef6bf568b3c5c8d4dc37ea8.png" src="../../_images/68d4f6df4ea4bedfb730ff45cfcab327fc7c0887aef6bf568b3c5c8d4dc37ea8.png" />
+<img alt="../../_images/bfe8afa5c9747b34181b5de2084e7d5e94f80ada4a7482645857635ac1123bd7.png" src="../../_images/bfe8afa5c9747b34181b5de2084e7d5e94f80ada4a7482645857635ac1123bd7.png" />
+<img alt="../../_images/7c6765901b9e9e5aa952880be0da635b0f8d43ac1333ece5a0885e4ad1293b05.png" src="../../_images/7c6765901b9e9e5aa952880be0da635b0f8d43ac1333ece5a0885e4ad1293b05.png" />
+<img alt="../../_images/6c3bad85a6db9026a69d7cc07bf325acc08c87ef95c246484f8ee77eb3cc90b9.png" src="../../_images/6c3bad85a6db9026a69d7cc07bf325acc08c87ef95c246484f8ee77eb3cc90b9.png" />
 </div>
 </div>
 </section>
@@ -540,10 +601,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0f706c4d570fb9a4f0e4f9e529fce1e32551071687bf9b42f845e82bb1e5a7c2.png" src="../../_images/0f706c4d570fb9a4f0e4f9e529fce1e32551071687bf9b42f845e82bb1e5a7c2.png" />
-<img alt="../../_images/54fc46b6479cd8b810935dd1a41de2d04785ad4be36a2fb32460b610529e1aca.png" src="../../_images/54fc46b6479cd8b810935dd1a41de2d04785ad4be36a2fb32460b610529e1aca.png" />
-<img alt="../../_images/158a378440b90c6b9a5110233aa266dd56af9310a8955c8285a97bfd2b9c70ed.png" src="../../_images/158a378440b90c6b9a5110233aa266dd56af9310a8955c8285a97bfd2b9c70ed.png" />
-<img alt="../../_images/e93655a28ce78d64b3c8eaa4d222d259f6eb69a871bf5a401329fb411224863e.png" src="../../_images/e93655a28ce78d64b3c8eaa4d222d259f6eb69a871bf5a401329fb411224863e.png" />
+<img alt="../../_images/b81b2f17f24b8c090ec00c5cebf5712aea21b02dfce6248b696f1458bf15d9a8.png" src="../../_images/b81b2f17f24b8c090ec00c5cebf5712aea21b02dfce6248b696f1458bf15d9a8.png" />
+<img alt="../../_images/17204fa653bc9b2da2a879c6e894ff9242eef451cbab9fb4598fc6a70e2175ab.png" src="../../_images/17204fa653bc9b2da2a879c6e894ff9242eef451cbab9fb4598fc6a70e2175ab.png" />
+<img alt="../../_images/916eb43949578793fb3e99ce67fded270796246c6c915a01100c62c17ab910c1.png" src="../../_images/916eb43949578793fb3e99ce67fded270796246c6c915a01100c62c17ab910c1.png" />
+<img alt="../../_images/666295fcff7e4df83d98a2bc4f9bee3e7453c1fcc1a4d85a78c74830cf722141.png" src="../../_images/666295fcff7e4df83d98a2bc4f9bee3e7453c1fcc1a4d85a78c74830cf722141.png" />
 </div>
 </div>
 </section>
@@ -565,7 +626,7 @@
 <span class="n">all_cell_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">tetrahedron</span><span class="p">,</span> <span class="n">CellType</span><span class="o">.</span><span class="n">hexahedron</span><span class="p">]</span>
 <span class="n">degrees</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">quad_rules</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
+    <span class="n">QuadratureType</span><span class="o">.</span><span class="n">default</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
     <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gauss_jacobi</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="n">all_cell_types</span><span class="p">),</span>
     <span class="n">QuadratureType</span><span class="o">.</span><span class="n">gll</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">,</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">hexahedron</span><span class="p">]),</span>
     <span class="n">QuadratureType</span><span class="o">.</span><span class="n">xiao_gimbutas</span><span class="p">:</span> <span class="p">(</span><span class="n">degrees</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="p">[</span><span class="n">CellType</span><span class="o">.</span><span class="n">tetrahedron</span><span class="p">]),</span>
@@ -575,10 +636,10 @@
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_quad_points_3D</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">cell_type</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">plotter</span><span class="p">):</span>
@@ -641,16 +702,16 @@
 <h3>Default quadrature rule<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">Default</span><span class="p">,</span> <span class="s2">&quot;C3&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_quadrature_rule_3D</span><span class="p">(</span><span class="n">QuadratureType</span><span class="o">.</span><span class="n">default</span><span class="p">,</span> <span class="s2">&quot;C3&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/6a23341c925457400f116558bf40f1484def05dc76476f29907e2ccbb19fd381.png" src="../../_images/6a23341c925457400f116558bf40f1484def05dc76476f29907e2ccbb19fd381.png" />
-<img alt="../../_images/1d939a9ea7a5443494485ad541d52be902a25c777ca3c2e57fb701877b6f505f.png" src="../../_images/1d939a9ea7a5443494485ad541d52be902a25c777ca3c2e57fb701877b6f505f.png" />
-<img alt="../../_images/daa2f884c2d26b797521d3d4914360d4c7bb6cbbcc9e1ac33bd5dc8603efeb2d.png" src="../../_images/daa2f884c2d26b797521d3d4914360d4c7bb6cbbcc9e1ac33bd5dc8603efeb2d.png" />
-<img alt="../../_images/8a0cecd2fd502073ee2d9029cc2f6bbf0b2c8c1c25a36d64c600b6cdd653d5d2.png" src="../../_images/8a0cecd2fd502073ee2d9029cc2f6bbf0b2c8c1c25a36d64c600b6cdd653d5d2.png" />
-<img alt="../../_images/57f4bb3a5fd3d6a90174754f48b7018ff8aaa0e156675b0f496655a70cbabe1c.png" src="../../_images/57f4bb3a5fd3d6a90174754f48b7018ff8aaa0e156675b0f496655a70cbabe1c.png" />
+<img alt="../../_images/6e254dd2ddf2d1b3b8a74cc852fc298e447a9c581581646feb3317060261f243.png" src="../../_images/6e254dd2ddf2d1b3b8a74cc852fc298e447a9c581581646feb3317060261f243.png" />
+<img alt="../../_images/3ff82925668f2925966d0e46288f5eaeb3b821088e3d7512a10486503da3d967.png" src="../../_images/3ff82925668f2925966d0e46288f5eaeb3b821088e3d7512a10486503da3d967.png" />
+<img alt="../../_images/776717e75319ff197988e6df64a819e7ac0ac94f28b7c3d70bffc19aa86f67a9.png" src="../../_images/776717e75319ff197988e6df64a819e7ac0ac94f28b7c3d70bffc19aa86f67a9.png" />
+<img alt="../../_images/75bbc9e7c1c89fb83fccf8af997fd65880658bee7fa967afcedb8949fe5f7978.png" src="../../_images/75bbc9e7c1c89fb83fccf8af997fd65880658bee7fa967afcedb8949fe5f7978.png" />
+<img alt="../../_images/1e8023dff437cb6e699dcca1ea78a76eb1fc3f14457cc18c59e88c02317f9288.png" src="../../_images/1e8023dff437cb6e699dcca1ea78a76eb1fc3f14457cc18c59e88c02317f9288.png" />
 </div>
 </div>
 </section>
@@ -663,11 +724,11 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3a77c786b706069d17dd08a60bea38ed1e788c86109cf5aead781ac68bc2d1fc.png" src="../../_images/3a77c786b706069d17dd08a60bea38ed1e788c86109cf5aead781ac68bc2d1fc.png" />
-<img alt="../../_images/0b8afc4476eab3a0d7dc90484597f3db946ff0a9e66affff1cfa0132d111bcb8.png" src="../../_images/0b8afc4476eab3a0d7dc90484597f3db946ff0a9e66affff1cfa0132d111bcb8.png" />
-<img alt="../../_images/d938027c88665b8879c05ce4b28eda3922eb28029633a98c07948949b3ea6ee6.png" src="../../_images/d938027c88665b8879c05ce4b28eda3922eb28029633a98c07948949b3ea6ee6.png" />
-<img alt="../../_images/56620153c30de41fe92fc837d13fe031ae3b4e9505dd4605410511be5f742ce5.png" src="../../_images/56620153c30de41fe92fc837d13fe031ae3b4e9505dd4605410511be5f742ce5.png" />
-<img alt="../../_images/64ef4d00999bc9f3912e9e798d7ecc415500f89fd851f8721106cbcfe0e6b5cf.png" src="../../_images/64ef4d00999bc9f3912e9e798d7ecc415500f89fd851f8721106cbcfe0e6b5cf.png" />
+<img alt="../../_images/e1a956aca65393e0731b79ca38f34948d54678e33c7ed090409332a52bc71acf.png" src="../../_images/e1a956aca65393e0731b79ca38f34948d54678e33c7ed090409332a52bc71acf.png" />
+<img alt="../../_images/f7eccc9eb92b5e15215b68d22acf1b750467f713f0a2ee42cb7c9414aa384e4d.png" src="../../_images/f7eccc9eb92b5e15215b68d22acf1b750467f713f0a2ee42cb7c9414aa384e4d.png" />
+<img alt="../../_images/c23506aa2a679177c04aae98aa735dbdecf59e2e6f3f8c3d628004931112bd19.png" src="../../_images/c23506aa2a679177c04aae98aa735dbdecf59e2e6f3f8c3d628004931112bd19.png" />
+<img alt="../../_images/fd71e4703929036c3218da4fec86878065c44fec9de1e3cdd9de3b4feaabca7b.png" src="../../_images/fd71e4703929036c3218da4fec86878065c44fec9de1e3cdd9de3b4feaabca7b.png" />
+<img alt="../../_images/fda03decca041612318e83b238d045857ac7a8361f695b15dc29ca43d96cd745.png" src="../../_images/fda03decca041612318e83b238d045857ac7a8361f695b15dc29ca43d96cd745.png" />
 </div>
 </div>
 </section>
@@ -680,11 +741,11 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/1642be917148615ee681c13f682c1fc202d64679c4c7dfa16bbad9576c771463.png" src="../../_images/1642be917148615ee681c13f682c1fc202d64679c4c7dfa16bbad9576c771463.png" />
-<img alt="../../_images/97f0ae4f1ebf604687246cc95dfd206339068641a9a9919d4fffda1605bfecfa.png" src="../../_images/97f0ae4f1ebf604687246cc95dfd206339068641a9a9919d4fffda1605bfecfa.png" />
-<img alt="../../_images/eb79a25d431da0810af06a329de663bb1026f8875144e1384c3ad819b465d44d.png" src="../../_images/eb79a25d431da0810af06a329de663bb1026f8875144e1384c3ad819b465d44d.png" />
-<img alt="../../_images/ed18f0389088361af16d3b7634fd7684ad84d49e373f7552bda8f4896bc0bbce.png" src="../../_images/ed18f0389088361af16d3b7634fd7684ad84d49e373f7552bda8f4896bc0bbce.png" />
-<img alt="../../_images/061746172f2dc05cfccbac43971929436e91220b63289786ce5bae3a27d6c98d.png" src="../../_images/061746172f2dc05cfccbac43971929436e91220b63289786ce5bae3a27d6c98d.png" />
+<img alt="../../_images/42bbe4e39ee32e587c3d78f9b68c3df98453a8754bc42b30bcdc56ffdee10292.png" src="../../_images/42bbe4e39ee32e587c3d78f9b68c3df98453a8754bc42b30bcdc56ffdee10292.png" />
+<img alt="../../_images/b0b5083879e3971b451ddbc125c4007fb871c459b6e8d19c476ba7ef46a1383e.png" src="../../_images/b0b5083879e3971b451ddbc125c4007fb871c459b6e8d19c476ba7ef46a1383e.png" />
+<img alt="../../_images/114dcffd0636200e4e7a47586b3eb272f81dff63f1f7a09f7200c0b70460ae9d.png" src="../../_images/114dcffd0636200e4e7a47586b3eb272f81dff63f1f7a09f7200c0b70460ae9d.png" />
+<img alt="../../_images/90d47475d1b96700b8c27f09ba53f3ee13cb003c39d214924b492aed2c4d054d.png" src="../../_images/90d47475d1b96700b8c27f09ba53f3ee13cb003c39d214924b492aed2c4d054d.png" />
+<img alt="../../_images/f3bfe425c27beb92b19de725fec946d7edf8884b98602157c419b31e1f6c97cf.png" src="../../_images/f3bfe425c27beb92b19de725fec946d7edf8884b98602157c419b31e1f6c97cf.png" />
 </div>
 </div>
 </section>
@@ -697,10 +758,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b7090f38ffed3d979d628c4de1b96f0327a7ef0005d239771c2591e2a40932bd.png" src="../../_images/b7090f38ffed3d979d628c4de1b96f0327a7ef0005d239771c2591e2a40932bd.png" />
-<img alt="../../_images/97e749a8cfb82f17410f7cbb4a83c83ef2f003c8b60308982b6d8fb9803b35fd.png" src="../../_images/97e749a8cfb82f17410f7cbb4a83c83ef2f003c8b60308982b6d8fb9803b35fd.png" />
-<img alt="../../_images/6b7f3dd7ff69a0c0e8813faaca880edfa24d1c607b1a1517384c7a6e2f54682b.png" src="../../_images/6b7f3dd7ff69a0c0e8813faaca880edfa24d1c607b1a1517384c7a6e2f54682b.png" />
-<img alt="../../_images/c835289d713d5eb02cfdcafa20a486e30b043be951783fc6e54519ef37370bb9.png" src="../../_images/c835289d713d5eb02cfdcafa20a486e30b043be951783fc6e54519ef37370bb9.png" />
+<img alt="../../_images/b037f91b82e991c410a3075f847601c0a6286a20082907efe626d334560d4ff8.png" src="../../_images/b037f91b82e991c410a3075f847601c0a6286a20082907efe626d334560d4ff8.png" />
+<img alt="../../_images/5388531612afc8ae77c6be5611f3a0f7fb94a52e5999de3f652f5074336a6fd4.png" src="../../_images/5388531612afc8ae77c6be5611f3a0f7fb94a52e5999de3f652f5074336a6fd4.png" />
+<img alt="../../_images/c485302cd6897dac27f31e5cb799a4b3c7b482271e96faaec043fb836a523d28.png" src="../../_images/c485302cd6897dac27f31e5cb799a4b3c7b482271e96faaec043fb836a523d28.png" />
+<img alt="../../_images/c99999b5a9a9146242cc6edcc7714569f15706df63b189e658215ace0f6e1b10.png" src="../../_images/c99999b5a9a9146242cc6edcc7714569f15706df63b189e658215ace0f6e1b10.png" />
 </div>
 </div>
 </section>
@@ -766,20 +827,21 @@
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-quadrature-rule">2D Quadrature rule</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-quadrature-rule">2D Quadrature rule</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#default-quadrature-rule">Default quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-jacobi-quadrature-rule">Gauss-Jacobi quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-legendre-lobatto-quadrature-rule">Gauss-Legendre-Lobatto quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#xiao-gimbutas-quadrature-rule">Xiao-Gimbutas quadrature rule</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rules">3D rules</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#d-rules">3D rules</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Default quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Gauss-Jacobi quadrature rule</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Gauss-Legendre-Lobatto quadrature rule</a></li>
@@ -827,8 +889,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

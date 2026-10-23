@@ -1,13 +1,13 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3 (ipykernel)
+  display_name: fenicsx-v0.11
   language: python
   name: python3
 ---
@@ -41,12 +41,12 @@ $\newcommand{\bsig}{\boldsymbol{\sigma}}
 ```
 
 ```{seealso}
-The [Linear Elasticity introduction tour](/intro/linear_elasticity/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
+The [Linear Elasticity introduction tour](/intro/linear_elasticity/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspects of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
 ```
 
 ## Variational formulation
 
-We first recall that the variational formulation associated to the linear elastic case reads:
+We first recall that the variational formulation associated with the linear elastic case reads:
 
 Find $\bu \in V$ such that:
 
@@ -54,7 +54,7 @@ $$
 \int_\Omega \nabla^\text{s}\bu:\CC:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
 $$
 
-where $\bv$ is the test function, $\boldsymbol{f}$ the body and $\bT$ the contact forces. $\CC$ is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field $\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)$, it relates the stress $\bsig$ to the strain $\beps$ using the linear elastic constitutive relation:
+where $\bv$ is the test function, $\boldsymbol{f}$ the body and $\bT$ the contact forces. $\CC$ is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field $\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu\T)$, it relates the stress $\bsig$ to the strain $\beps$ using the linear elastic constitutive relation:
 \begin{equation*}
 \bsig = \CC:\beps
 \end{equation*}
@@ -113,13 +113,13 @@ or the Mandel (or Kelvin) convention:
 \{\varepsilon\} &= \begin{Bmatrix} \varepsilon_{xx} & \varepsilon_{yy} & \sqrt{2}\varepsilon_{xy} \end{Bmatrix}\T \tag{Mandel}\\
 \{\sigma\} &= \begin{Bmatrix} \sigma_{xx} & \sigma_{yy} & \sqrt{2}\sigma_{xy} \end{Bmatrix}\T\\
 \end{align*}
-In both cases, the $2$ or $\sqrt{2}$ in front of the shear components is introduced so that, in both cases, the vectorial dot product equals to the tensorial inner product:
+In both cases, the $2$ or $\sqrt{2}$ in front of the shear components is introduced so that the vectorial dot product equals the tensorial inner product:
 \begin{equation*}
 \{\sigma\}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
 \end{equation*}
 
 ```{tip}
-The presence of a factor 2 in strain-like quantities and its absence in stress-like quantities can be the source of numerous mistakes. We suggest to use the safer Mandel representation which is a one-to-one mapping between a symmetric second-rank tensor and its vectorial representation, irrespectively of the nature of the underlying physical quantity. Besides, the Mandel notation preserves the norm of the corresponding tensor.
+The presence of a factor 2 in strain-like quantities and its absence in stress-like quantities can be the source of numerous mistakes. We suggest using the safer Mandel representation which is a one-to-one mapping between a symmetric second-rank tensor and its vectorial representation, irrespective of the nature of the underlying physical quantity. Besides, the Mandel notation preserves the norm of the corresponding tensor.
 ```
 
 In such a vectorial representation, the constitutive equation reads:
@@ -236,7 +236,7 @@ def stress(u, repr="vectorial"):
         return ufl.as_matrix([[sigv[0], sigv[2]], [sigv[2], sigv[1]]])
 ```
 
-With such representations the expressions `ufl.dot(stress(u, "vectorial"), strain(u, "vectorial"))` and `ufl.dot(stress(u, "tensorial"), strain(u, "tensorial"))` are identical.
+With such representations the expressions `ufl.dot(stress(u, "vectorial"), strain(u, "vectorial"))` and `ufl.inner(stress(u, "tensorial"), strain(u, "tensorial"))` are identical.
 
 ## Problem implementation
 
@@ -247,7 +247,7 @@ We now consider the case of a square plate perforated by a circular hole of radi
 ```{code-cell} ipython3
 from mpi4py import MPI
 import gmsh
-from dolfinx.io.gmshio import model_to_mesh
+from dolfinx.io.gmsh import model_to_mesh
 
 L, R = 1.0, 0.1
 h = 0.02
@@ -297,16 +297,19 @@ if mesh_comm.rank == model_rank:
 
     gmsh.model.mesh.generate(gdim)
 
-    domain, cells, facets = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+mesh_data = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 
-    gmsh.finalize()
+gmsh.finalize()
 ```
 
 ```{code-cell} ipython3
 :tags: [hide-input]
 
 import pyvista
-from dolfinx import plot, fem
+from dolfinx import plot
 
 pyvista.set_jupyter_backend("static")
 
@@ -356,12 +359,14 @@ bcs = [
 ]
 
 
-problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
+problem = fem.petsc.LinearProblem(
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="elasticity_"
+)
 problem.solve()
 
 
 V0 = fem.functionspace(domain, ("DG", 0, (3,)))
-sig_exp = fem.Expression(stress(u), V0.element.interpolation_points())
+sig_exp = fem.Expression(stress(u), V0.element.interpolation_points)
 sig = fem.Function(V0, name="Stress")
 sig.interpolate(sig_exp)
 

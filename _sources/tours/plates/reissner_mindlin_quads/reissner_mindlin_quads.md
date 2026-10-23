@@ -1,18 +1,23 @@
 ---
 jupytext:
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.0
+    jupytext_version: 1.19.3
+kernelspec:
+  display_name: fenicsx-v0.11
+  language: python
+  name: python3
 ---
 
-# Shear-locking in thick plate models with quadrilateral elements  {far}`star`
+# Shear locking in thick plate models with quadrilateral elements {far}`star`
 
 ```{admonition} Objectives
 :class: objectives
 
-This tour implements a thick plate Reissner-Mindlin model and discusses the issue of shear-locking in the thin plate limit. We show how to use selective reduced integration to alleviate this issue.
+This tour implements a thick plate Reissner-Mindlin model and discusses the issue of shear locking in the thin plate limit. We show how to use selective reduced integration to alleviate this issue.
 ```
 
 ```{admonition} Download sources
@@ -34,13 +39,11 @@ For more advanced Reissner-Mindlin plate elements, we refer to [FEniCSx-Shells](
 
 ## Introduction
 
-This program solves the Reissner-Mindlin plate equations on the unit square with uniform transverse loading and fully clamped boundary conditions. We will test the use of quadrilateral cells and selective reduced integration (SRI) to remove shear-locking issues in the thin plate limit. Both linear and quadratic interpolation are considered for the transverse deflection $w$ and rotation $\boldsymbol{\theta}$.
-
+This program solves the Reissner-Mindlin plate equations on the unit square with uniform transverse loading and fully clamped boundary conditions. We will test the use of quadrilateral cells and selective reduced integration (SRI) to remove shear locking issues in the thin plate limit. Both linear and quadratic interpolation are considered for the transverse deflection $w$ and rotation $\boldsymbol{\theta}$.
 
 ## Implementation
 
-
-We first create a unit square mesh divided in $N\times N$ quadrilaterals:
+We first create a unit square mesh divided into $N\times N$ quadrilaterals:
 
 ```{code-cell} ipython3
 import numpy as np
@@ -76,8 +79,7 @@ constant value of 1 in the thin plate. This thin plate limit will be used to che
 f = -D / 1.265319087e-3  # with this we have w_Love-Kirchhoff = 1.0
 ```
 
-
-Continuous interpolation using degree $d=\texttt{deg}$ is chosen for both deflection and rotation. Note that when using quadrilaterals, we have different choices of interpolation over the cell. We will not discuss here variants such as `equispaced` or `GLL` variants which mostly differ in the dof location up to $d=3$, see [here for more details](https://defelement.com/elements/lagrange.html). However, already for $d=2$, we may have the choice of using an 8 or a 9-dof quadrilateral.
+Continuous interpolation using degree $d=\texttt{deg}$ is chosen for both deflection and rotation. Note that when using quadrilaterals, we have different choices of interpolation over the cell. We will not discuss here variants such as `equispaced` or `GLL` variants which mostly differ in the dof location for $d\geq 3$, see [here for more details](https://defelement.org/elements/lagrange.html). However, already for $d=2$, we may have the choice of using an 8 or a 9-dof quadrilateral.
 
 `````{grid}
 :gutter: 3
@@ -189,14 +191,19 @@ We then solve for the solution and print the deflection normalized with respect 
 
 ```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
-    a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="plate_",
 )
 problem.solve()
 
 w = u.sub(0).collapse()
 w.name = "Deflection"
 
-print(f"Reissner-Mindlin FE deflection: {max(abs(w.vector.array)):.5f}")
+print(f"Reissner-Mindlin FE deflection: {max(abs(w.x.array)):.5f}")
 ```
 
 ## Results

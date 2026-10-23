@@ -1,11 +1,11 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -182,12 +182,17 @@ bcs = [
 ]
 ```
 
-Finally, a `LinearProblem` object is created based on the variational problem, the boundary conditions and a Function `u` in which we want to store the solution. We can also pass parameters to setup the solver type (here we use a direct LU factorization).
+Finally, a `LinearProblem` object is created based on the variational problem, the boundary conditions and a Function `u` in which we want to store the solution. We can also pass parameters to set up the solver type (here we use a direct LU factorization).
 Results are then stored in a ".pvd" format to be visualized using Paraview for instance.
 
 ```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
-    a, L, u=u_sol, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u_sol,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="linear_elasticity_",
 )
 problem.solve()
 
@@ -212,7 +217,12 @@ bcs2 = [
 ]
 
 problem = fem.petsc.LinearProblem(
-    a, L, u=u_sol, bcs=bcs2, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u_sol,
+    bcs=bcs2,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="linear_elasticity2_",
 )
 problem.solve()
 

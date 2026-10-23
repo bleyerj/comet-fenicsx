@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Elastic 3D beam structures &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Elastic 3D beam structures &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -63,7 +63,11 @@
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"2e4da4d1f40745b8b27f2220bc157e15": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2cb0ea479a5b48b1b1cc40a7a128e606": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "a703f49b1663488e9b1a55d1091765e0": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_2e4da4d1f40745b8b27f2220bc157e15", "placeholder": "\u200b", "style": "IPY_MODEL_2cb0ea479a5b48b1b1cc40a7a128e606", "tabbable": null, "tooltip": null, "value": "<iframe src=\"http://localhost:40941/index.html?ui=P_0x749751172ad0_0&reconnect=auto\" class=\"pyvista\" style=\"width: 100%; height: 600px; border: 1px solid rgb(221,221,221);\" scrolling=\"no\"></iframe>"}}, "bb526edb86644ab4b79bdb3ce1dc56c4": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "58cd690e105d45a395eff42031dcaa33": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "3c0e6d5b144048a69ffaeca1606143fa": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_bb526edb86644ab4b79bdb3ce1dc56c4", "placeholder": "\u200b", "style": "IPY_MODEL_58cd690e105d45a395eff42031dcaa33", "tabbable": null, "tooltip": null, "value": "<iframe src=\"http://localhost:40941/index.html?ui=P_0x749713827010_1&reconnect=auto\" class=\"pyvista\" style=\"width: 100%; height: 600px; border: 1px solid rgb(221,221,221);\" scrolling=\"no\"></iframe>"}}}, "version_major": 2, "version_minor": 0}</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/beams/beams_3D/beams_3D';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Nonlinear beam model in finite rotations" href="../finite_rotation_nonlinear_beam/finite_rotation_nonlinear_beam.html" />
@@ -71,20 +75,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +120,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +203,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +237,31 @@
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.html">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../linear_problems/generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../linear_problems/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +277,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +396,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +420,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,12 +442,11 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-kinematics">Beam kinematics</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constitutive-equations">Constitutive equations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention">Attention</a></li>
 </ul>
             </nav>
         </div>
@@ -414,8 +477,8 @@
 </div>
 <section id="beam-kinematics">
 <h2>Beam kinematics<a class="headerlink" href="#beam-kinematics" title="Link to this heading">#</a></h2>
-<p>The variational formulation for 3D beams requires to distinguish between motion along the beam direction and along both perpendicular directions. These two directions often correspond to principal directions of inertia and distinguish between strong and weak bending directions. The user must therefore specify this local orientation frame throughout the whole structure. In this example, we will first compute the vector <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span> tangent to the beam direction, and two perpendicular directions <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span>. <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> will always be perpendicular to <span class="math notranslate nohighlight">\(t\)</span> and the vertical direction, while <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span> will be such that <span class="math notranslate nohighlight">\((\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)\)</span> is a direct orthonormal frame.</p>
-<p>Classical Euler-Bernoulli beam theory would typically require <span class="math notranslate nohighlight">\(C^1\)</span>-continuous interpolation of the displacement field, using Hermite polynomials for instance. Such discretization scheme is unfortunately not available natively in <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code>. Instead, we will consider a Timoshenko beam model with St-Venant uniform torsion theory for the torsional part. The beam kinematics will then be described by a 3D displacement field <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> and an independent 3D rotation field <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>, that is 6 degrees of freedom at each point. <span class="math notranslate nohighlight">\((u_t,u_1,u_2)\)</span> will respectively denote the displacement components in the section local frame <span class="math notranslate nohighlight">\((\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)\)</span>. Similarly, <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> will denote the section rotations about the two section axes whereas <span class="math notranslate nohighlight">\(\theta_t\)</span> is the twist angle.</p>
+<p>The variational formulation for 3D beams requires distinguishing between motion along the beam direction and along both perpendicular directions. These two directions often correspond to principal directions of inertia and distinguish between strong and weak bending directions. The user must therefore specify this local orientation frame throughout the whole structure. In this example, we will first compute the vector <span class="math notranslate nohighlight">\(\boldsymbol{t}\)</span> tangent to the beam direction, and two perpendicular directions <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span>. <span class="math notranslate nohighlight">\(\boldsymbol{a}_1\)</span> will always be perpendicular to <span class="math notranslate nohighlight">\(t\)</span> and the vertical direction, while <span class="math notranslate nohighlight">\(\boldsymbol{a}_2\)</span> will be such that <span class="math notranslate nohighlight">\((\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)\)</span> is a direct orthonormal frame.</p>
+<p>Classical Euler-Bernoulli beam theory would typically require <span class="math notranslate nohighlight">\(C^1\)</span>-continuous interpolation of the displacement field, using Hermite polynomials for instance. Such a discretization scheme is unfortunately not available natively in <code class="docutils literal notranslate"><span class="pre">dolfinx</span></code>. Instead, we will consider a Timoshenko beam model with Saint-Venant uniform torsion theory for the torsional part. The beam kinematics will then be described by a 3D displacement field <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> and an independent 3D rotation field <span class="math notranslate nohighlight">\(\boldsymbol{\theta}\)</span>, that is 6 degrees of freedom at each point. <span class="math notranslate nohighlight">\((u_t,u_1,u_2)\)</span> will respectively denote the displacement components in the section local frame <span class="math notranslate nohighlight">\((\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)\)</span>. Similarly, <span class="math notranslate nohighlight">\(\theta_1\)</span> and <span class="math notranslate nohighlight">\(\theta_2\)</span> will denote the section rotations about the two section axes whereas <span class="math notranslate nohighlight">\(\theta_t\)</span> is the twist angle.</p>
 <p>The beam strains are given by (straight beam with constant local frame):</p>
 <ul class="simple">
 <li><p>the <strong>normal strain</strong>: <span class="math notranslate nohighlight">\(\delta = \dfrac{d u_t}{ds}\)</span></p></li>
@@ -424,7 +487,7 @@
 <span class="math notranslate nohighlight">\(\gamma_2 = \dfrac{du_2}{ds}+\theta_1\)</span>.</p></li>
 <li><p>the <strong>torsional strain</strong>: <span class="math notranslate nohighlight">\(\omega = \dfrac{d\theta_t}{ds}\)</span>.</p></li>
 </ul>
-<p>where <span class="math notranslate nohighlight">\(\dfrac{dv}{ds} = \nabla v \cdot t\)</span> is the tangential gradient. Associated with these generalized strains are the corresponding generalized stresses:</p>
+<p>where <span class="math notranslate nohighlight">\(\dfrac{dv}{ds} = \nabla v \cdot \boldsymbol{t}\)</span> is the tangential gradient. Associated with these generalized strains are the corresponding generalized stresses:</p>
 <ul class="simple">
 <li><p>the <strong>normal force</strong> <span class="math notranslate nohighlight">\(N\)</span></p></li>
 <li><p>the <strong>bending moments</strong> <span class="math notranslate nohighlight">\(M_1\)</span> and <span class="math notranslate nohighlight">\(M_2\)</span></p></li>
@@ -437,7 +500,7 @@
 <p>The beam constitutive equations (assuming no normal force/bending moment coupling and that <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span> are the principal axes of inertia) read as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin{Bmatrix}
-N \\ Q_1 \\ Q_2 \\ M_T \\ M_1 \\ M_2 
+N \\ Q_1 \\ Q_2 \\ M_T \\ M_1 \\ M_2
 \end{Bmatrix} = \begin{bmatrix}
 ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 0 &amp; GS_1 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
@@ -446,7 +509,7 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 0 &amp; 0 &amp; 0 &amp; 0 &amp; EI_1 &amp; 0\\
 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; EI_2
 \end{bmatrix}\begin{Bmatrix}
-\delta \\ \gamma_1 \\ \gamma_2 \\ \omega \\ \chi_1 \\ \chi_2 
+\delta \\ \gamma_1 \\ \gamma_2 \\ \omega \\ \chi_1 \\ \chi_2
 \end{Bmatrix}\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(S\)</span> is the cross-section area, <span class="math notranslate nohighlight">\(E\)</span> the material Young modulus and <span class="math notranslate nohighlight">\(G\)</span> the shear modulus, <span class="math notranslate nohighlight">\(I_1=\int_S x_2^2 dS\)</span> (resp. <span class="math notranslate nohighlight">\(I_2=\int_S x_1^2 dS\)</span>) are the bending second moment of inertia about axis <span class="math notranslate nohighlight">\(a_1\)</span> (resp. <span class="math notranslate nohighlight">\(a_2\)</span>), <span class="math notranslate nohighlight">\(J\)</span> is the torsion inertia, <span class="math notranslate nohighlight">\(S_1\)</span> (resp. <span class="math notranslate nohighlight">\(S_2\)</span>) is the shear area in direction <span class="math notranslate nohighlight">\(a_1\)</span> (resp. <span class="math notranslate nohighlight">\(a_2\)</span>).</p>
 </section>
@@ -454,7 +517,7 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 <h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Link to this heading">#</a></h2>
 <p>The 3D beam variational formulation finally reads as: Find <span class="math notranslate nohighlight">\((\boldsymbol{u},\boldsymbol{\theta})\in V\)</span> such that:</p>
 <div class="math notranslate nohighlight">
-\[\int_S (N\widehat{\delta}+Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2+M_T\widehat{\omega}+M_1\widehat{\chi}_1+M_2\widehat{\chi}_2)dS = \int \boldsymbol{f}\cdot\widehat{\boldsymbol{u}}dS \quad \forall (\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\in V\]</div>
+\[\int_L (N\widehat{\delta}+Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2+M_T\widehat{\omega}+M_1\widehat{\chi}_1+M_2\widehat{\chi}_2)ds = \int_L \boldsymbol{f}\cdot\widehat{\boldsymbol{u}}ds \quad \forall (\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\in V\]</div>
 <p>where we considered only a distributed loading <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> and where <span class="math notranslate nohighlight">\(\widehat{\delta},\ldots,\widehat{\chi}_2\)</span> are the generalized strains associated with test functions <span class="math notranslate nohighlight">\((\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\)</span>.</p>
 </section>
 <section id="implementation">
@@ -467,18 +530,18 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 <span class="kn">import</span><span class="w"> </span><span class="nn">ufl</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">basix</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">mesh</span><span class="p">,</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">fem</span><span class="p">,</span> <span class="n">io</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dolfinx.fem.petsc</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We generate the mesh (<code class="docutils literal notranslate"><span class="pre">domain</span></code>) using the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API.</p>
+<p>We generate the mesh (<code class="docutils literal notranslate"><span class="pre">domain</span></code>) using the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API by turning a circular dome into an elliptic one.</p>
 <div class="cell tag_hide-input tag_hide-output docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize gmsh</span>
@@ -497,7 +560,7 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
     <span class="n">p1</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">addPoint</span><span class="p">(</span>
-        <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.99</span><span class="o">*</span><span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+        <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.99</span> <span class="o">*</span> <span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
         <span class="mi">0</span><span class="p">,</span>
         <span class="n">h</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">N</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
         <span class="n">d</span><span class="p">,</span>
@@ -520,10 +583,7 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
     <span class="p">)</span>
     <span class="n">in_lines</span> <span class="o">=</span> <span class="n">out</span><span class="p">[::</span><span class="mi">4</span><span class="p">]</span>
 
-<span class="c1"># Coherence (remove duplicate entities and ensure topological consistency)</span>
-<span class="c1"># gmsh.model.occ.dilate(entities, 0.0, 0.0, 0.0, 1, 0.1, 1)</span>
-<span class="c1"># gmsh.model.occ.synchronize()</span>
-<span class="c1"># Save the mesh</span>
+
 <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">remove_all_duplicates</span><span class="p">()</span>
 <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">occ</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
 <span class="n">lines</span> <span class="o">=</span> <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">get_entities</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -531,8 +591,9 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">add_physical_group</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">domain</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmshio</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span><span class="o">/</span><span class="mf">3.</span>
+<span class="n">mesh_data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">MPI</span><span class="o">.</span><span class="n">COMM_WORLD</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">mesh</span>
+<span class="n">domain</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span> <span class="o">/</span> <span class="mf">3.0</span>
 
 <span class="c1"># Finalize gmsh</span>
 <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
@@ -540,12 +601,27 @@ ES &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\
 </div>
 </div>
 </details>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : [  0%] Fragments                                                                                  
+Info    : [ 10%] Fragments                                                                                  
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : [ 20%] Fragments                                                                                  
+Info    : [ 30%] Fragments                                                                                  
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : [ 40%] Fragments                                                                                  
+Info    : [ 50%] Fragments                                                                                  
+Info    : [ 60%] Fragments                                                                                  
+Info    : [ 70%] Fragments - Filling splits of vertices                                                                                
+Info    : [ 80%] Fragments - Splitting faces                                                                                
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : Meshing 1D...
 Info    : [  0%] Meshing curve 23 (Line)
 Info    : [ 10%] Meshing curve 25 (Line)
@@ -629,7 +705,7 @@ Info    : [ 10%] Meshing curve 120 (Circle)
 Info    : [ 10%] Meshing curve 121 (Line)
 Info    : [ 10%] Meshing curve 122 (Circle)
 Info    : [ 10%] Meshing curve 123 (Line)
-Info    : [ 10%] Meshing curve 124 (Circle)
+Info    : [ 20%] Meshing curve 124 (Circle)
 Info    : [ 20%] Meshing curve 125 (Line)
 Info    : [ 20%] Meshing curve 126 (Circle)
 Info    : [ 20%] Meshing curve 127 (Line)
@@ -711,7 +787,7 @@ Info    : [ 20%] Meshing curve 202 (Circle)
 Info    : [ 20%] Meshing curve 203 (Line)
 Info    : [ 20%] Meshing curve 204 (Circle)
 Info    : [ 20%] Meshing curve 205 (Line)
-Info    : [ 20%] Meshing curve 206 (Circle)
+Info    : [ 30%] Meshing curve 206 (Circle)
 Info    : [ 30%] Meshing curve 207 (Line)
 Info    : [ 30%] Meshing curve 208 (Circle)
 Info    : [ 30%] Meshing curve 209 (Line)
@@ -793,7 +869,7 @@ Info    : [ 30%] Meshing curve 284 (Circle)
 Info    : [ 30%] Meshing curve 285 (Line)
 Info    : [ 30%] Meshing curve 286 (Circle)
 Info    : [ 30%] Meshing curve 287 (Line)
-Info    : [ 30%] Meshing curve 288 (Circle)
+Info    : [ 40%] Meshing curve 288 (Circle)
 Info    : [ 40%] Meshing curve 289 (Line)
 Info    : [ 40%] Meshing curve 290 (Circle)
 Info    : [ 40%] Meshing curve 291 (Line)
@@ -875,7 +951,7 @@ Info    : [ 40%] Meshing curve 366 (Circle)
 Info    : [ 40%] Meshing curve 367 (Line)
 Info    : [ 40%] Meshing curve 368 (Circle)
 Info    : [ 40%] Meshing curve 369 (Line)
-Info    : [ 40%] Meshing curve 370 (Circle)
+Info    : [ 50%] Meshing curve 370 (Circle)
 Info    : [ 50%] Meshing curve 371 (Line)
 Info    : [ 50%] Meshing curve 372 (Circle)
 Info    : [ 50%] Meshing curve 373 (Line)
@@ -957,7 +1033,7 @@ Info    : [ 50%] Meshing curve 448 (Circle)
 Info    : [ 50%] Meshing curve 449 (Line)
 Info    : [ 50%] Meshing curve 450 (Circle)
 Info    : [ 50%] Meshing curve 451 (Line)
-Info    : [ 50%] Meshing curve 452 (Circle)
+Info    : [ 60%] Meshing curve 452 (Circle)
 Info    : [ 60%] Meshing curve 453 (Line)
 Info    : [ 60%] Meshing curve 454 (Circle)
 Info    : [ 60%] Meshing curve 455 (Line)
@@ -1039,7 +1115,7 @@ Info    : [ 60%] Meshing curve 530 (Circle)
 Info    : [ 60%] Meshing curve 531 (Line)
 Info    : [ 60%] Meshing curve 532 (Circle)
 Info    : [ 60%] Meshing curve 533 (Line)
-Info    : [ 60%] Meshing curve 534 (Circle)
+Info    : [ 70%] Meshing curve 534 (Circle)
 Info    : [ 70%] Meshing curve 535 (Line)
 Info    : [ 70%] Meshing curve 536 (Circle)
 Info    : [ 70%] Meshing curve 537 (Line)
@@ -1121,7 +1197,7 @@ Info    : [ 70%] Meshing curve 612 (Circle)
 Info    : [ 70%] Meshing curve 613 (Line)
 Info    : [ 70%] Meshing curve 614 (Circle)
 Info    : [ 70%] Meshing curve 615 (Line)
-Info    : [ 70%] Meshing curve 616 (Circle)
+Info    : [ 80%] Meshing curve 616 (Circle)
 Info    : [ 80%] Meshing curve 617 (Line)
 Info    : [ 80%] Meshing curve 618 (Circle)
 Info    : [ 80%] Meshing curve 619 (Line)
@@ -1203,7 +1279,7 @@ Info    : [ 80%] Meshing curve 694 (Circle)
 Info    : [ 80%] Meshing curve 695 (Line)
 Info    : [ 80%] Meshing curve 696 (Circle)
 Info    : [ 80%] Meshing curve 697 (Line)
-Info    : [ 80%] Meshing curve 698 (Circle)
+Info    : [ 90%] Meshing curve 698 (Circle)
 Info    : [ 90%] Meshing curve 699 (Line)
 Info    : [ 90%] Meshing curve 700 (Circle)
 Info    : [ 90%] Meshing curve 701 (Line)
@@ -1285,7 +1361,7 @@ Info    : [ 90%] Meshing curve 776 (Circle)
 Info    : [ 90%] Meshing curve 777 (Line)
 Info    : [ 90%] Meshing curve 778 (Circle)
 Info    : [ 90%] Meshing curve 779 (Line)
-Info    : [ 90%] Meshing curve 780 (Circle)
+Info    : [100%] Meshing curve 780 (Circle)
 Info    : [100%] Meshing curve 781 (Line)
 Info    : [100%] Meshing curve 782 (Circle)
 Info    : [100%] Meshing curve 783 (Line)
@@ -1367,7 +1443,7 @@ Info    : [100%] Meshing curve 858 (Circle)
 Info    : [100%] Meshing curve 859 (Circle)
 Info    : [100%] Meshing curve 860 (Circle)
 Info    : [100%] Meshing curve 861 (Circle)
-Info    : Done meshing 1D (Wall 0.0726813s, CPU 0.081163s)
+Info    : Done meshing 1D (Wall 0.0412191s, CPU 0.042784s)
 Info    : 2200 nodes 3020 elements
 </pre></div>
 </div>
@@ -1417,26 +1493,26 @@ Topological dimension = 1
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">thick</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
-<span class="n">width</span> <span class="o">=</span> <span class="n">thick</span><span class="o">/</span><span class="mi">3</span>
+<span class="n">width</span> <span class="o">=</span> <span class="n">thick</span> <span class="o">/</span> <span class="mi">3</span>
 <span class="n">E</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">70e3</span><span class="p">)</span>
 <span class="n">nu</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
-<span class="n">G</span> <span class="o">=</span> <span class="n">E</span><span class="o">/</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">nu</span><span class="p">)</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">E</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">nu</span><span class="p">)</span>
 <span class="n">rho</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">2.7e-3</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">9.81</span><span class="p">)</span>
 
-<span class="n">S</span> <span class="o">=</span> <span class="n">thick</span><span class="o">*</span><span class="n">width</span>
-<span class="n">ES</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">S</span>
-<span class="n">EI1</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">width</span><span class="o">*</span><span class="n">thick</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="mi">12</span>
-<span class="n">EI2</span> <span class="o">=</span> <span class="n">E</span><span class="o">*</span><span class="n">width</span><span class="o">**</span><span class="mi">3</span><span class="o">*</span><span class="n">thick</span><span class="o">/</span><span class="mi">12</span>
-<span class="n">GJ</span> <span class="o">=</span> <span class="n">G</span><span class="o">*</span><span class="mf">0.26</span><span class="o">*</span><span class="n">thick</span><span class="o">*</span><span class="n">width</span><span class="o">**</span><span class="mi">3</span>
-<span class="n">kappa</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">5.</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span>
-<span class="n">GS1</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="n">S</span>
-<span class="n">GS2</span> <span class="o">=</span> <span class="n">kappa</span><span class="o">*</span><span class="n">G</span><span class="o">*</span><span class="n">S</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">thick</span> <span class="o">*</span> <span class="n">width</span>
+<span class="n">ES</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">S</span>
+<span class="n">EI1</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">width</span> <span class="o">*</span> <span class="n">thick</span><span class="o">**</span><span class="mi">3</span> <span class="o">/</span> <span class="mi">12</span>
+<span class="n">EI2</span> <span class="o">=</span> <span class="n">E</span> <span class="o">*</span> <span class="n">width</span><span class="o">**</span><span class="mi">3</span> <span class="o">*</span> <span class="n">thick</span> <span class="o">/</span> <span class="mi">12</span>
+<span class="n">GJ</span> <span class="o">=</span> <span class="n">G</span> <span class="o">*</span> <span class="mf">0.26</span> <span class="o">*</span> <span class="n">thick</span> <span class="o">*</span> <span class="n">width</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">kappa</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Constant</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="mf">5.0</span> <span class="o">/</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="n">GS1</span> <span class="o">=</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">S</span>
+<span class="n">GS2</span> <span class="o">=</span> <span class="n">kappa</span> <span class="o">*</span> <span class="n">G</span> <span class="o">*</span> <span class="n">S</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We now consider a mixed <span class="math notranslate nohighlight">\(\mathbb{P}_1/\mathbb{P}_1\)</span>-Lagrange interpolation for the displacement and rotation fields. The variational form is built using a function <code class="docutils literal notranslate"><span class="pre">generalized_strains</span></code> giving the vector of six generalized strains as well as a function <code class="docutils literal notranslate"><span class="pre">generalized_stresses</span></code> which computes the dot product of the strains with the above-mentioned constitutive matrix (diagonal here). Note that since the 1D beams are embedded in an ambient 3D space, the gradient operator has shape (3,), we therefore define a tangential gradient operator <code class="docutils literal notranslate"><span class="pre">tgrad</span></code> by taking the dot product with the local tangent vector <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>We now consider a mixed <span class="math notranslate nohighlight">\(\mathbb{P}_1/\mathbb{P}_1\)</span>-Lagrange interpolation for the displacement and rotation fields. The variational form is built using a function <code class="docutils literal notranslate"><span class="pre">generalized_strains</span></code> giving the vector of six generalized strains as well as a function <code class="docutils literal notranslate"><span class="pre">generalized_stresses</span></code> which computes the dot product of the strains with the above-mentioned constitutive matrix (diagonal here). Note that since the 1D beams are embedded in an ambient 3D space, we define a tangential gradient operator <code class="docutils literal notranslate"><span class="pre">tgrad</span></code> by taking the dot product with the local tangent vector <span class="math notranslate nohighlight">\(t\)</span>.</p>
 <p>Finally, similarly to Reissner-Mindlin plates, shear-locking issues might arise in the thin beam limit. To avoid this, reduced integration is performed on the shear part <span class="math notranslate nohighlight">\(Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2\)</span> of the variational form using a one-point rule.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1447,24 +1523,40 @@ Topological dimension = 1
 <span class="n">u_</span><span class="p">,</span> <span class="n">theta_</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TestFunctions</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
 <span class="n">du</span><span class="p">,</span> <span class="n">dtheta</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">TrialFunctions</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">generalized_strains</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span>
-                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">a1</span><span class="p">)</span><span class="o">-</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">a2</span><span class="p">),</span>
-                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">a2</span><span class="p">)</span><span class="o">+</span><span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">a1</span><span class="p">),</span>
-                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span>
-                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">a1</span><span class="p">),</span>
-                      <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">a2</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">a1</span><span class="p">)</span> <span class="o">-</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">a2</span><span class="p">),</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">a2</span><span class="p">)</span> <span class="o">+</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">a1</span><span class="p">),</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">t</span><span class="p">),</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">a1</span><span class="p">),</span>
+            <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tgrad</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">a2</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">generalized_stresses</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">ES</span><span class="p">,</span> <span class="n">GS1</span><span class="p">,</span> <span class="n">GS2</span><span class="p">,</span> <span class="n">GJ</span><span class="p">,</span> <span class="n">EI1</span><span class="p">,</span> <span class="n">EI2</span><span class="p">])),</span> <span class="n">generalized_strains</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+        <span class="n">ufl</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">ES</span><span class="p">,</span> <span class="n">GS1</span><span class="p">,</span> <span class="n">GS2</span><span class="p">,</span> <span class="n">GJ</span><span class="p">,</span> <span class="n">EI1</span><span class="p">,</span> <span class="n">EI2</span><span class="p">])),</span>
+        <span class="n">generalized_strains</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span>
+    <span class="p">)</span>
+
 
 <span class="n">Sig</span> <span class="o">=</span> <span class="n">generalized_stresses</span><span class="p">(</span><span class="n">du</span><span class="p">,</span> <span class="n">dtheta</span><span class="p">)</span>
-<span class="n">Eps_</span> <span class="o">=</span>  <span class="n">generalized_strains</span><span class="p">(</span><span class="n">u_</span><span class="p">,</span> <span class="n">theta_</span><span class="p">)</span>
+<span class="n">Eps_</span> <span class="o">=</span> <span class="n">generalized_strains</span><span class="p">(</span><span class="n">u_</span><span class="p">,</span> <span class="n">theta_</span><span class="p">)</span>
 
-<span class="n">dx_shear</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;default&quot;</span><span class="p">,</span><span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_scheme&quot;</span><span class="p">:</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
-<span class="n">k_form</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">Sig</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">Eps_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">dx</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span> <span class="o">+</span> <span class="p">(</span><span class="n">Sig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">Eps_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">Sig</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">Eps_</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">*</span><span class="n">dx_shear</span>
-<span class="n">l_form</span> <span class="o">=</span> <span class="o">-</span><span class="n">rho</span><span class="o">*</span><span class="n">S</span><span class="o">*</span><span class="n">g</span><span class="o">*</span><span class="n">u_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
+<span class="n">dx_shear</span> <span class="o">=</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;quadrature_degree&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="n">k_form</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">sum</span><span class="p">([</span><span class="n">Sig</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">Eps_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
+    <span class="o">+</span> <span class="p">(</span><span class="n">Sig</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Eps_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Sig</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">Eps_</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">*</span> <span class="n">dx_shear</span>
+<span class="p">)</span>
+<span class="n">l_form</span> <span class="o">=</span> <span class="o">-</span><span class="n">rho</span> <span class="o">*</span> <span class="n">S</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">u_</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">ufl</span><span class="o">.</span><span class="n">dx</span>
 </pre></div>
 </div>
 </div>
@@ -1473,7 +1565,8 @@ Topological dimension = 1
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">bottom</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">)</span>
+
 
 <span class="n">Vu</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
 <span class="n">Vt</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">collapse</span><span class="p">()</span>
@@ -1481,24 +1574,37 @@ Topological dimension = 1
 <span class="n">theta_dofs</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">locate_dofs_geometrical</span><span class="p">((</span><span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">Vt</span><span class="p">),</span> <span class="n">bottom</span><span class="p">)</span>
 <span class="n">u0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vu</span><span class="p">)</span>
 <span class="n">theta0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vt</span><span class="p">)</span>
-<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">u_dofs</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span> <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="n">theta_dofs</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">))]</span>
+<span class="n">bcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">u0</span><span class="p">,</span> <span class="n">u_dofs</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="n">fem</span><span class="o">.</span><span class="n">dirichletbc</span><span class="p">(</span><span class="n">theta0</span><span class="p">,</span> <span class="n">theta_dofs</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+<span class="p">]</span>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Generalized_displacement&quot;</span><span class="p">)</span>
 
 <span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">(</span>
-    <span class="n">k_form</span><span class="p">,</span> <span class="n">l_form</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">}</span>
+    <span class="n">k_form</span><span class="p">,</span>
+    <span class="n">l_form</span><span class="p">,</span>
+    <span class="n">u</span><span class="o">=</span><span class="n">w</span><span class="p">,</span>
+    <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span>
+    <span class="n">petsc_options</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;ksp_type&quot;</span><span class="p">:</span> <span class="s2">&quot;preonly&quot;</span><span class="p">,</span> <span class="s2">&quot;pc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;lu&quot;</span><span class="p">},</span>
+    <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;beam_&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">();</span>
+<span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coefficient(FunctionSpace(Mesh(blocked element (Basix element (P, interval, 1, equispaced, unset, False, float64, []), (3,)), 0), mixed element (blocked element (Basix element (P, interval, 1, gll_warped, unset, False, float64, []), (3,)), blocked element (Basix element (P, interval, 1, gll_warped, unset, False, float64, []), (3,)))), 2)
 </pre></div>
 </div>
 </div>
 </div>
 <p>We finally plot the deflected shape and the bending moment distribution using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.</p>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
@@ -1518,7 +1624,9 @@ Topological dimension = 1
 
 <span class="n">M</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">Vu</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Bending moments (M1,M2)&quot;</span><span class="p">)</span>
 <span class="n">Sig</span> <span class="o">=</span> <span class="n">generalized_stresses</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">w</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">M_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">Sig</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">Sig</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">Vu</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+<span class="n">M_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span>
+    <span class="n">ufl</span><span class="o">.</span><span class="n">as_vector</span><span class="p">([</span><span class="n">Sig</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">Sig</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">Vu</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span>
+<span class="p">)</span>
 <span class="n">M</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">M_exp</span><span class="p">)</span>
 
 <span class="n">grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;Bending_moments&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
@@ -1530,17 +1638,12 @@ Topological dimension = 1
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../../_images/d443abc81964f598c0afdf67c56606584fbf30a3a313e8ac2c42f3d311f808c6.png" src="../../../_images/d443abc81964f598c0afdf67c56606584fbf30a3a313e8ac2c42f3d311f808c6.png" />
-<img alt="../../../_images/b323373370a1421ac67d2b1c135b166fb10ff30d3d2b1db2ed423de841f76ad9.png" src="../../../_images/b323373370a1421ac67d2b1c135b166fb10ff30d3d2b1db2ed423de841f76ad9.png" />
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "a703f49b1663488e9b1a55d1091765e0"}</script><script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "3c0e6d5b144048a69ffaeca1606143fa"}</script></div>
 </div>
-</div>
-</section>
-<section id="attention">
-<h2>Attention<a class="headerlink" href="#attention" title="Link to this heading">#</a></h2>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <ul class="simple">
-<li><p>The <span class="math notranslate nohighlight">\(\mathbb{P}_1-\mathbb{P}_1\)</span> discretization choice made here might be too poor for achieving a decent error with a moderate mesh size. Increasing the order of interpolation, e.g. for the displacement <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> is obviously possible but the integration degree for the reduced integration measure <code class="docutils literal notranslate"><span class="pre">dx_shear</span></code> must be adapted to this case.</p></li>
+<li><p>The <span class="math notranslate nohighlight">\(\mathbb{P}_1/\mathbb{P}_1\)</span> discretization choice made here might be too poor for achieving a decent error with a moderate mesh size. Increasing the order of interpolation, e.g. for the displacement <span class="math notranslate nohighlight">\(\boldsymbol{u}\)</span> is obviously possible but the integration degree for the reduced integration measure <code class="docutils literal notranslate"><span class="pre">dx_shear</span></code> must be adapted to this case.</p></li>
 <li><p>To add concentrated forces, one can use the <code class="docutils literal notranslate"><span class="pre">dS</span></code> measure with appropriate tags or follow the strategy hinted in <a class="reference internal" href="../linear_truss/linear_truss.html"><span class="std std-doc">Linear elastic 2D truss </span></a>.</p></li>
 </ul>
 </div>
@@ -1606,17 +1709,17 @@ Topological dimension = 1
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#beam-kinematics">Beam kinematics</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constitutive-equations">Constitutive equations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attention">Attention</a></li>
 </ul>
   </nav></div>
 
@@ -1658,8 +1761,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>

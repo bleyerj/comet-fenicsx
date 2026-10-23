@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Linear shell model {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -32,7 +35,6 @@
 # \newcommand{\bepsilon}{\boldsymbol{\epsilon}}
 # \newcommand{\bgamma}{\boldsymbol{\gamma}}
 # \newcommand{\bchi}{\boldsymbol{\kappa}}
-# \newcommand{\bX}{\boldsymbol{X}}
 # \newcommand{\bxi}{\boldsymbol{\xi}}
 # \newcommand{\ba}{\boldsymbol{a}}
 # \newcommand{\be}{\boldsymbol{e}}
@@ -46,8 +48,7 @@
 # \newcommand{\bN}{\boldsymbol{N}}
 # \newcommand{\bQ}{\boldsymbol{Q}}
 # \newcommand{\bR}{\boldsymbol{R}}
-# \newcommand{\bV}{\boldsymbol{V}}
-# \newcommand{\be}{\boldsymbol{e}}$
+# \newcommand{\bV}{\boldsymbol{V}}$
 # ```
 #
 # ```{admonition} Acknowledgements
@@ -64,11 +65,11 @@
 # * {Download}`Complete sources files<./linear_shell.zip>`
 # ```
 #
-# # %TODO: update links to new demos when available
+# %TODO: update links to new demos when available
 #
 # Implementing a shell model in `FEniCSx` is not necessarily straightforward due to the different behavior in the shell normal and tangential directions. In the [FEniCSx-Shells](https://github.com/FEniCS-Shells/fenicsx-shells) project {cite:p}`hale2018simple`, the shell surface is described by a mapping between a parametric 2D domain and the shell initial stress-free configuration. This approach makes it impossible to tackle non-manifold surfaces or closed surfaces for which the mapping would exhibit singularities.
 #
-# In the present implementation, we will instead work directly with the shell surface (either manifold or non-manifold) described as an assembly of planar facets. In this respect, the approach will bear important similarities with the [Elastic 3D beam structures](https://comet-fenics.readthedocs.io/en/latest/demo/beams_3D/beams_3D.html). In particular, we will take advantage of `UFL` ability to compute gradients over a manifold.
+# In the present implementation, we will instead work directly with the shell surface (either manifold or non-manifold) described as an assembly of planar facets. In this respect, the approach will bear important similarities with the [Elastic 3D beam structures](/tours/beams/beams_3D/beams_3D.md). In particular, we will take advantage of `UFL` ability to compute gradients over a manifold.
 #
 # Regarding the interpolation spaces, we will use a `P2/CR` mixed space for displacements and rotations, i.e. the same choice as in the [Locking-free Reissner-Mindlin plate with Crouzeix-Raviart interpolation](https://comet-fenics.readthedocs.io/en/latest/demo/reissner_mindlin_crouzeix_raviart/reissner_mindlin_CR.html) tour. The present shell model will therefore be a small-displacement version of the nonlinear shell model developed in {cite:p}`campello2003triangular`.
 #
@@ -87,7 +88,7 @@
 # \bX(\bxi,\zeta) = \bxi + \zeta \be_3 \quad \text{with } \zeta \in [-h/2;h/2]
 # $$
 #
-# where $h$ is the shell thickness
+# where $h$ is the shell thickness.
 #
 # The shell kinematics will be described by its mid-surface displacement $\bu$ and the infinitesimal rotation vector $\btheta$ of its director. The new normal director is $\ba_3 = \bR(\btheta)\be_3 = \be_3+\btheta\times\be_3$ with $\bR$ the infinitesimal rotation matrix associated with $\btheta$. Neglecting any thickness change in the shell kinematics, the material point $\bx$ in the deformed configuration associated with $\bX$ will then be given by:
 #
@@ -114,7 +115,7 @@
 # \bF = \dfrac{d\bx}{d\bX} = \bI + \tgrad\bu  - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3
 # ```
 #
-# where we introduced the in-plane gradient  (i.e. the gradient with respect to the shell local tangent plane $(\be_1,\be_2)$) as follows $\tgrad\bv = \partial_1\bv \otimes \be_1+ \partial_2\bv \otimes \be_2$. More generally, we will use the following notation $\utilde{\bv} = v_1\be_1+v_2\be_2$ to denote the in-plane part of $\bv$.
+# where we introduced the in-plane gradient (i.e. the gradient with respect to the shell local tangent plane $(\be_1,\be_2)$) as follows $\tgrad\bv = \partial_1\bv \otimes \be_1+ \partial_2\bv \otimes \be_2$. More generally, we will use the following notation $\utilde{\bv} = v_1\be_1+v_2\be_2$ to denote the in-plane part of $\bv$.
 #
 # The linearized strain tensor is then given by:
 #
@@ -122,7 +123,7 @@
 # \bvarepsilon = \sym\left(\tgrad\bu - \zeta \be_3\times \tgrad\btheta  - (\be_3\times\btheta)\otimes\be_3 \right) +  \epsilon(\zeta) \be_3\otimes\be_3
 # $$
 #
-# where $\sym$ denotes the symmetrized part of a tensor and where we added an incompatible out-of-plane strain $\epsilon(\zeta)$ which will enable to enforce a plane-stress constraint. The 3D strain can be split into its in-plane components $\utilde{\utilde{\bvarepsilon}}$, out-of-plane shear components $\bgamma = 2\utilde{\bvarepsilon}_3$ and out-of-plane transverse components $\varepsilon_{33}$:
+# where $\sym$ denotes the symmetrized part of a tensor and where we added an incompatible out-of-plane strain $\epsilon(\zeta)$ which makes it possible to enforce a plane-stress constraint. The 3D strain can be split into its in-plane components $\utilde{\utilde{\bvarepsilon}}$, out-of-plane shear components $\bgamma = 2\utilde{\bvarepsilon}_3$ and out-of-plane transverse components $\varepsilon_{33}$:
 #
 # ```{math}
 # :label: strains
@@ -147,7 +148,7 @@
 # \end{align*}
 # $$
 #
-# where $\bN$ is the shell membrane tensor, $\bM$ the bending moment tensor and $\bQ$ the shear force vector appearing in duality with $\bepsilon,\bchi,\bgamma$ respectively. The out-of-plane stress $\sigma_{33}$ appears in duality with the out-of-plane strain $\epsilon(\zeta)$. The latter is in fact a purely local variable which can be locally eliminated to enforce the plane stress condition $\sigma_{33}=0$.
+# where $\bN$ is the membrane force tensor, $\bM$ the bending moment tensor and $\bQ$ the shear force vector appearing in duality with $\bepsilon,\bchi,\bgamma$ respectively. The out-of-plane stress $\sigma_{33}$ appears in duality with the out-of-plane strain $\epsilon(\zeta)$. The latter is in fact a purely local variable which can be locally eliminated to enforce the plane stress condition $\sigma_{33}=0$.
 #
 # Indeed, the shell free energy density can be defined as:
 #
@@ -161,7 +162,7 @@
 # When minimizing this energy over the shell degrees of freedom, the minimization over $\epsilon$ is in fact local and we can replace the above free-energy by its plane-stress counterpart:
 #
 # $$
-# \begin{array}{rl}\Psi_\text{ps} &= \displaystyle{\int_{-h/2}^{h/2} \inf_{\epsilon(z)}\psi(\bvarepsilon) d\zeta}\\
+# \begin{array}{rl}\Psi_\text{ps} &= \displaystyle{\int_{-h/2}^{h/2} \inf_{\epsilon(\zeta)}\psi(\bvarepsilon) d\zeta}\\
 # & =\displaystyle{\int_{-h/2}^{h/2}\left(\psi_\text{ps}(\uttilde{\bvarepsilon}) + \dfrac{1}{2}\mu \bgamma^2\right) d\zeta  }
 # \end{array}
 # $$
@@ -184,7 +185,7 @@
 #
 # $$
 # \begin{align*}
-# \uttilde{\bsig} &= \lambda_\text{ps} \tr(\uttilde{\bvarepsilon})\mathbf{1} + 2\mu \bvarepsilon = \mathbb{C}_\text{ps}:\uttilde{\bvarepsilon} \\
+# \uttilde{\bsig} &= \lambda_\text{ps} \tr(\uttilde{\bvarepsilon})\mathbf{1} + 2\mu \uttilde{\bvarepsilon} = \mathbb{C}_\text{ps}:\uttilde{\bvarepsilon} \\
 # \utilde{\bsig}_{3} &= \mu \bgamma \\
 # \sigma_{33} &= 0
 # \end{align*}
@@ -216,17 +217,20 @@
 #
 # We plot the mesh using `pyvista`.
 
-# +
+# %%
 import numpy as np
 from pathlib import Path
 import pyvista
 from mpi4py import MPI
 import ufl
 import basix
-from dolfinx import mesh, fem, io, plot
+from dolfinx import fem, io, plot
 import dolfinx.fem.petsc
 
-domain, markers, facets = io.gmshio.read_from_msh("I_beam.msh", MPI.COMM_WORLD)
+mesh_data = io.gmsh.read_from_msh("I_beam.msh", MPI.COMM_WORLD)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 
 gdim = domain.geometry.dim
 tdim = domain.topology.dim
@@ -240,11 +244,11 @@ ugrid = pyvista.UnstructuredGrid(*plot.vtk_mesh(domain))
 plotter.add_mesh(ugrid, show_edges=True)
 plotter.show_axes()
 plotter.show()
-# -
 
+# %% [markdown]
 # We then define the corresponding physical parameters. In particular, we consider here a uniformly distributed loading of unit intensity along the downward global $Z$ direction and of intensity 0.2 along the $Y$ direction perpendicular to the arch plane in order to induce a combined bending and twisting deflection mode.
 
-# +
+# %%
 # material parameters
 thick = fem.Constant(domain, 1e-3)
 E = fem.Constant(domain, 210e9)
@@ -257,8 +261,7 @@ lmbda_ps = 2 * lmbda * mu / (lmbda + 2 * mu)
 f = fem.Constant(domain, (0, 0.2, -1))
 
 
-# -
-
+# %% [markdown]
 # ### Computing a local tangent frame
 #
 # We define the `local_frame` function which returns the UFL representation of the local frame  $(\be_1,\be_2,\be_3)$. We first use UFL's `Jacobian` function to retrieve the Jacobian of the mapping from reference cells to spatial coordinates. Contrary to the [FEniCSx-Shells](https://github.com/FEniCS-Shells/fenicsx-shells) approach which uses a global analytical mapping between the reference domain and the shell surface, we use here the reference element mapping of the finite-element method. For a shell, the Jacobian is of size $3\times 2$ with both columns $\bt_1,\bt_2$ being a vector of the local tangent plane. We therefore compute $\be_3$, the normal to the mid-surface from $\bt_1\times \bt_2$. We then have to choose a convention to compute $\be_1,\be_2$, knowing $\be_3$. Our convention is that $\be_1$ lies in the plane orthogonal to $\be_Y$ and $\be_3$. If $\be_3$ happens to be colinear to $\be_Y$, we set $\be_1=\be_Z$. $\be_2$ then follows from $\be_2=\be_3\times\be_1$.
@@ -268,7 +271,7 @@ f = fem.Constant(domain, (0, 0.2, -1))
 # We could have also used one of the two vectors $\bt_1$ or $\bt_2$ to fix one of the in-plane directions. The issue with this choice is that the orientation of these vectors depends on the local ordering of each element. Their variation across the mesh is therefore not smooth. It is more convenient to use some convention to specify a nicely behaved local orientation. Obviously, our choice is only one among many other possibilities.
 # ```
 
-# +
+# %%
 def normalize(v):
     """Normalize a vector to unit norm."""
     return v / ufl.sqrt(ufl.dot(v, v))
@@ -297,12 +300,12 @@ VT = fem.functionspace(domain, ("DG", 0, (gdim,)))
 V0, _ = VT.sub(0).collapse()
 
 frame = local_frame(domain)
-basis_vectors = [fem.Function(VT, name=f"Basis_vector_e{i+1}") for i in range(gdim)]
+basis_vectors = [fem.Function(VT, name=f"Basis_vector_e{i + 1}") for i in range(gdim)]
 e1, e2, e3 = basis_vectors
 
 
 for i in range(gdim):
-    e_exp = fem.Expression(frame[i], V0.element.interpolation_points())
+    e_exp = fem.Expression(frame[i], V0.element.interpolation_points)
     basis_vectors[i].interpolate(e_exp)
 
 
@@ -312,8 +315,8 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
     vtk.write_function(e1, 0.0)
     vtk.write_function(e2, 0.0)
     vtk.write_function(e3, 0.0)
-# -
 
+# %% [markdown]
 # The local frame is plotted with `Paraview` as `DG0` Functions since we use planar facets with affine triangles. We can check that the orientation is indeed consistent with what has been defined ($\be_1$ in blue, $\be_2$ in green, $\be_3$ in red).
 #
 # ```{image} local_frame.png
@@ -325,9 +328,13 @@ with dolfinx.io.VTKFile(MPI.COMM_WORLD, results_folder / "local_frame.pvd", "w")
 #
 # We now use the aforementioned `P2/CR` interpolation for the displacement $\bu$ and the rotation $\btheta$ variables using a mixed element.
 
-# +
-Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))  # displacement finite element
-Te = basix.ufl.element("CR", domain.basix_cell(), 1, shape=(gdim,)) # rotation finite element
+# %%
+Ue = basix.ufl.element(
+    "P", domain.basix_cell(), 2, shape=(gdim,)
+)  # displacement finite element
+Te = basix.ufl.element(
+    "CR", domain.basix_cell(), 1, shape=(gdim,)
+)  # rotation finite element
 V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
 
 v = fem.Function(V)
@@ -338,11 +345,10 @@ u_, theta_ = ufl.split(v_)
 dv = ufl.TrialFunction(V)
 
 
-# -
-
+# %% [markdown]
 # We then define the in-plane projector and the in-plane (tangential) gradient operator ($\tilde\nabla$ above) as follows:
 
-# +
+# %%
 def vstack(vectors):
     """Stack a list of vectors vertically."""
     return ufl.as_matrix([[v[i] for i in range(len(v))] for v in vectors])
@@ -363,11 +369,10 @@ def t_grad(u):
     return ufl.dot(g, P_plane)
 
 
-# -
+# %% [markdown]
+# We then extract the gradient of the in-plane displacement $\tilde\nabla\tilde\bu$ and define the membrane strain $\bepsilon$ as its symmetric part. We similarly define the bending curvature $\bchi$ and shear strain $\bgamma$ as defined in {eq}`strains`. We also define directional derivatives along a `TestFunction` for later use.
 
-# We then extract gradient of the in-plane displacement $\tilde\nabla\tilde\bu$ and define the membrane strain $\bepsilon$ as its symmetric part. We similarly define the bending curvature $\bchi$ and shear strain $\bgamma$ as defined in {eq}`strains`. We also define directional derivatives in a `TestFunction` for later use.
-
-# +
+# %%
 t_gu = ufl.dot(P_plane.T, t_grad(u))
 eps = ufl.sym(t_gu)
 beta = ufl.cross(e3, theta)
@@ -379,13 +384,12 @@ kappa_ = ufl.derivative(kappa, v, v_)
 gamma_ = ufl.derivative(gamma, v, v_)
 
 
-# -
-
+# %% [markdown]
 # ### Stress measures
 #
 # We now define the corresponding stress measure using the plane stress linear elastic constitutive laws {eq}`shells-constitutive-equations`.
 
-# +
+# %%
 def plane_stress_elasticity(e):
     return lmbda_ps * ufl.tr(e) * ufl.Identity(tdim) + 2 * mu * e
 
@@ -393,14 +397,14 @@ def plane_stress_elasticity(e):
 N = thick * plane_stress_elasticity(eps)
 M = thick**3 / 12 * plane_stress_elasticity(kappa)
 Q = mu * thick * gamma
-# -
 
+# %% [markdown]
 # ### Drilling rotation stabilization
 #
 # A classical problem in shell models involving 6 degrees of freedom (3D rotation) is the absence of any constraint on the drilling rotation $\theta_3=\btheta\cdot\be_3$. However, this degree of freedom is necessary to tackle non-smooth junctions
 # between planar shell facets which have a different normal vector. In our implementation, we propose to add an additional quadratic energy penalizing the drilling strain, as commonly done for elastic shells.
 #
-# The drilling strain is obtained from the skew symmetric in-plane component of the transformation gradient $\bF$ and the drilling rotation:
+# The drilling strain is obtained from the skew-symmetric in-plane component of the transformation gradient $\bF$ and the drilling rotation:
 #
 # $$
 # \varpi = \dfrac{1}{2}(u_{1,2}-u_{2,1})+\theta_3
@@ -411,25 +415,25 @@ Q = mu * thick * gamma
 # ```{math}
 # :label: drilling-stabilization
 #
-# w_\text{def,drilling} = \dfrac{E h^3}{h_\text{cell}^2} \varpi^2
+# w_\text{def,drilling} = \dfrac{E h^3}{2h_\text{cell}^2} \varpi^2
 # ```
 #
 # where the drilling stiffness $\dfrac{E h^3}{h_\text{cell}^2}$ is the usually recommended value in the literature with $h_\text{cell}$ being the local mesh size which we can obtain from `ufl.CellDiameter`. We can observe that the drilling stiffness is equal to the typical membrane stiffness $Eh$ times the non-dimensional factor $\left(\dfrac{h}{h_\text{cell}}\right)^2$. As the mesh size goes to zero, the drilling stiffness becomes increasingly larger.
 
-# +
+# %%
 drilling_strain = (t_gu[0, 1] - t_gu[1, 0]) / 2 + ufl.dot(theta, e3)
 drilling_strain_ = ufl.replace(drilling_strain, {v: v_})
 
 h_mesh = ufl.CellDiameter(domain)
 drilling_stiffness = E * thick**3 / h_mesh**2
 drilling_stress = drilling_stiffness * drilling_strain
-# -
 
+# %% [markdown]
 # ### Boundary conditions and resolution
 #
-# We then account for fixed supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.
+# We then account for pinned supports on both ends and finally form the corresponding bilinear form and linear right-hand side form before solving the corresponding system.
 
-# +
+# %%
 Vu, _ = V.sub(0).collapse()
 left_dofs = fem.locate_dofs_topological((V.sub(0), Vu), 1, facets.find(1))
 right_dofs = fem.locate_dofs_topological((V.sub(0), Vu), 1, facets.find(2))
@@ -450,14 +454,19 @@ a = ufl.derivative(Wdef, v, dv)
 Wext = ufl.dot(f, u_) * ufl.dx
 
 problem = dolfinx.fem.petsc.LinearProblem(
-    a, Wext, u=v, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    Wext,
+    u=v,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="shell_",
 )
 problem.solve()
-# -
 
+# %% [markdown]
 # We then output the displacement and rotation fields:
 
-# +
+# %%
 u_out = v.sub(0).collapse()
 u_out.name = "Displacement"
 theta_out = v.sub(1).collapse()
@@ -467,8 +476,8 @@ with io.VTKFile(MPI.COMM_WORLD, results_folder / "displacement.pvd", "w") as vtk
     vtk.write_function(u_out, 0.0)
 with io.VTKFile(MPI.COMM_WORLD, results_folder / "rotation.pvd", "w") as vtk:
     vtk.write_function(theta_out, 0.0)
-# -
 
+# %% [markdown]
 # which yields the following deformed configuration (2000 times amplification):
 #
 # ```{image} deformed_configuration.png

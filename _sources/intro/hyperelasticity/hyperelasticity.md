@@ -1,11 +1,11 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -81,16 +81,15 @@ where $I_1 = \tr(\bC) = \tr(\bF\T\bF)$ and $J = \det\bF$.
 
 ## Implementation
 
-We load the relevant modules and useful functions and setup the corresponding box mesh. In the following, we will use hexahedra of degree 1.
+We load the relevant modules and useful functions and set up the corresponding box mesh. In the following, we will use hexahedra of degree 1.
 
 ```{code-cell} ipython3
 import numpy as np
 import ufl
 
 from mpi4py import MPI
-from dolfinx import fem, io, nls
+from dolfinx import fem, io
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
 from dolfinx.mesh import create_box, CellType
 from ufl import (
     as_matrix,
@@ -185,7 +184,7 @@ x = SpatialCoordinate(mesh)
 theta = fem.Constant(mesh, 0.0)
 Rot = as_matrix([[cos(theta), sin(theta), 0], [-sin(theta), cos(theta), 0], [0, 0, 1]])
 rotation_displ = dot(Rot, x) - x
-rot_expr = fem.Expression(rotation_displ, V.element.interpolation_points())
+rot_expr = fem.Expression(rotation_displ, V.element.interpolation_points)
 ```
 
 Now, we define the global non-linear potential energy. Note that since we have non-linear expressions, we specify to the measure `dx` the desired level of accuracy of the quadrature method. Otherwise, FEniCS may use overly conservative estimates of the required number of quadrature points.
@@ -205,16 +204,22 @@ Residual = derivative(
 Jacobian = derivative(Residual, u, du)
 ```
 
-Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. The latter will also be attached to a nonlinear solver implementing a Newton method.
+Finally, we set up a `NonlinearProblem` instance based on the corresponding residual and jacobian, unknown function and boundary conditions. We also attach to the latter a set of PETSc options defining the SNES nonlinear solver parameters (Newton method here).
 
 ```{code-cell} ipython3
-problem = fem.petsc.NonlinearProblem(Residual, u, bcs)
-
-solver = nls.petsc.NewtonSolver(mesh.comm, problem)
-# Set Newton solver options
-solver.atol = 1e-4
-solver.rtol = 1e-4
-solver.convergence_criterion = "incremental"
+petsc_options = {
+    "snes_type": "newtonls",
+    "snes_linesearch_type": "none",
+    "snes_atol": 1e-8,
+    "snes_rtol": 1e-8,
+    "snes_stol": 1e-8,
+    "ksp_type": "preonly",
+    "pc_type": "lu",
+    "pc_factor_mat_solver_type": "mumps",
+}
+problem = fem.petsc.NonlinearProblem(
+    Residual, u=u, bcs=bcs, petsc_options_prefix="hyperelasticity_"
+)
 ```
 
 We are now in position to write the load-stepping loop which simply updates the value of $\theta$. Since, `rot_expr` is symbolically linked to `theta`, this new value is automatically accounted for when interpolating the imposed top displacement from `rot_expr`.
@@ -227,18 +232,20 @@ out_file = "hyperelasticity.xdmf"
 with io.XDMFFile(mesh.comm, out_file, "w") as xdmf:
     xdmf.write_mesh(mesh)
 
-u.vector.set(0.0)
+u.x.petsc_vec.set(0.0)
 for n, angle in enumerate(np.linspace(0, angle_max, Nsteps + 1)[1:]):
     theta.value = angle
     u_top.interpolate(rot_expr)
 
-    num_its, converged = solver.solve(u)
-    assert converged
+    problem.solve()
+    converged = problem.solver.getConvergedReason()
+    num_its = problem.solver.getIterationNumber()
+    assert converged > 0, f"Solver did not converge with reason {converged}."
 
     u.x.scatter_forward()  # updates ghost values for parallel computations
 
     print(
-        f"Time step {n}, Number of iterations {num_its}, Angle {angle*180/np.pi:.0f} deg."
+        f"Time step {n}, Number of iterations {num_its}, Angle {angle * 180 / np.pi:.0f} deg."
     )
 
     with io.XDMFFile(mesh.comm, out_file, "a") as xdmf:

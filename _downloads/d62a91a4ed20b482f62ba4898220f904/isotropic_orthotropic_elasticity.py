@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
-#     display_name: Python 3 (ipykernel)
+#     display_name: fenicsx-v0.11
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Isotropic and orthotropic plane stress elasticity {far}`star`
 #
 # ```{admonition} Objectives
@@ -41,12 +44,12 @@
 # ```
 #
 # ```{seealso}
-# The [Linear Elasticity introduction tour](/intro/linear_elasticity/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspect of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
+# The [Linear Elasticity introduction tour](/intro/linear_elasticity/linear_elasticity) covers a very similar topic. We refer the reader to this tour for more details on some aspects of the `FEniCSx` implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).
 # ```
 #
 # ## Variational formulation
 #
-# We first recall that the variational formulation associated to the linear elastic case reads:
+# We first recall that the variational formulation associated with the linear elastic case reads:
 #
 # Find $\bu \in V$ such that:
 #
@@ -54,7 +57,7 @@
 # \int_\Omega \nabla^\text{s}\bu:\CC:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
 # $$
 #
-# where $\bv$ is the test function, $\boldsymbol{f}$ the body and $\bT$ the contact forces. $\CC$ is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field $\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)$, it relates the stress $\bsig$ to the strain $\beps$ using the linear elastic constitutive relation:
+# where $\bv$ is the test function, $\boldsymbol{f}$ the body and $\bT$ the contact forces. $\CC$ is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field $\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu\T)$, it relates the stress $\bsig$ to the strain $\beps$ using the linear elastic constitutive relation:
 # \begin{equation*}
 # \bsig = \CC:\beps
 # \end{equation*}
@@ -113,13 +116,13 @@
 # \{\varepsilon\} &= \begin{Bmatrix} \varepsilon_{xx} & \varepsilon_{yy} & \sqrt{2}\varepsilon_{xy} \end{Bmatrix}\T \tag{Mandel}\\
 # \{\sigma\} &= \begin{Bmatrix} \sigma_{xx} & \sigma_{yy} & \sqrt{2}\sigma_{xy} \end{Bmatrix}\T\\
 # \end{align*}
-# In both cases, the $2$ or $\sqrt{2}$ in front of the shear components is introduced so that, in both cases, the vectorial dot product equals to the tensorial inner product:
+# In both cases, the $2$ or $\sqrt{2}$ in front of the shear components is introduced so that the vectorial dot product equals the tensorial inner product:
 # \begin{equation*}
 # \{\sigma\}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
 # \end{equation*}
 #
 # ```{tip}
-# The presence of a factor 2 in strain-like quantities and its absence in stress-like quantities can be the source of numerous mistakes. We suggest to use the safer Mandel representation which is a one-to-one mapping between a symmetric second-rank tensor and its vectorial representation, irrespectively of the nature of the underlying physical quantity. Besides, the Mandel notation preserves the norm of the corresponding tensor.
+# The presence of a factor 2 in strain-like quantities and its absence in stress-like quantities can be the source of numerous mistakes. We suggest using the safer Mandel representation which is a one-to-one mapping between a symmetric second-rank tensor and its vectorial representation, irrespective of the nature of the underlying physical quantity. Besides, the Mandel notation preserves the norm of the corresponding tensor.
 # ```
 #
 # In such a vectorial representation, the constitutive equation reads:
@@ -148,7 +151,7 @@
 # 2\varepsilon_{xy} &= \dfrac{\partial u_x}{\partial y}+ \dfrac{\partial u_y}{\partial x}\\\\
 # \end{align*}
 
-# +
+# %%
 import ufl
 
 
@@ -160,8 +163,7 @@ def strain(u, repr="vectorial"):
         return eps_t
 
 
-# -
-
+# %% [markdown]
 # #### Isotropic plane strain case
 # In the isotropic case the elastic stiffness matrix associated with {eq}`isotropic` becomes:
 # \begin{equation*}
@@ -211,6 +213,7 @@ def strain(u, repr="vectorial"):
 # ```
 # with $E_x, E_y$ being the two Young's moduli in the orthotropy directions, $\nu_{xy}$ the in-plane Poisson ration (with the following relation ensuring the constitutive relation symmetry $\nu_{yx}=\nu_{xy}E_y/E_x$) and $G_{xy}$ being the shear modulus. Again, this relation needs to be inverted to obtain the stiffness matrix.
 
+# %%
 Ex, Ey, nuxy, Gxy = 10.0, 20.0, 0.3, 5.0
 S = ufl.as_matrix(
     [[1.0 / Ex, -nuxy / Ex, 0.0], [-nuxy / Ex, 1.0 / Ey, 0.0], [0.0, 0.0, 1.0 / Gxy]]
@@ -218,6 +221,7 @@ S = ufl.as_matrix(
 C = ufl.inv(S)
 
 
+# %% [markdown]
 # ```{note}
 # Here we used the `ufl.inv` operator to compute the stiffness matrix $\mathbf{C}$. We could also have computed analytically the inverse relation. Note that the `inv` operator is implemented only up to 3x3 matrices. Extension to the 3D case yields 6x6 matrices and therefore requires either analytical inversion or numerical inversion using `Numpy` for instance (assuming that the material parameters are constants).
 # ```
@@ -228,6 +232,7 @@ C = ufl.inv(S)
 #
 # Finally, we can define the stress function `stress`, again using either a vectorial or a tensorial representation, as:
 
+# %%
 def stress(u, repr="vectorial"):
     sigv = ufl.dot(C, strain(u))
     if repr == "vectorial":
@@ -236,7 +241,8 @@ def stress(u, repr="vectorial"):
         return ufl.as_matrix([[sigv[0], sigv[2]], [sigv[2], sigv[1]]])
 
 
-# With such representations the expressions `ufl.dot(stress(u, "vectorial"), strain(u, "vectorial"))` and `ufl.dot(stress(u, "tensorial"), strain(u, "tensorial"))` are identical.
+# %% [markdown]
+# With such representations the expressions `ufl.dot(stress(u, "vectorial"), strain(u, "vectorial"))` and `ufl.inner(stress(u, "tensorial"), strain(u, "tensorial"))` are identical.
 #
 # ## Problem implementation
 #
@@ -244,10 +250,10 @@ def stress(u, repr="vectorial"):
 #
 # We now consider the case of a square plate perforated by a circular hole of radius $R$, the plate dimension is $2L\times 2L$ with $L \gg R$. Loading will consists of a uniform isotropic traction on all boundaries. However, only the top-right quarter of the plate will be considered using appropriate symmetry boundary conditions. We use here the `gmsh` Python API with the Open-Cascade (`occ`) kernel to easily define the problem geometry. Creating entities using constructive solid geometry is very useful for building complex geometry but can lead to difficulties when identifying the resulting object boundaries. Here we use the `getEntitiesInBoundingBox` to identify the corresponding boundaries. Finally, we also set a global mesh size `h`.
 
-# +
+# %%
 from mpi4py import MPI
 import gmsh
-from dolfinx.io.gmshio import model_to_mesh
+from dolfinx.io.gmsh import model_to_mesh
 
 L, R = 1.0, 0.1
 h = 0.02
@@ -297,13 +303,16 @@ if mesh_comm.rank == model_rank:
 
     gmsh.model.mesh.generate(gdim)
 
-    domain, cells, facets = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+mesh_data = model_to_mesh(gmsh.model, mesh_comm, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 
-    gmsh.finalize()
+gmsh.finalize()
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 import pyvista
-from dolfinx import plot, fem
+from dolfinx import plot
 
 pyvista.set_jupyter_backend("static")
 
@@ -316,12 +325,12 @@ p.add_mesh(grid, show_edges=True)
 p.view_xy()
 p.show_axes()
 p.show()
-# -
 
+# %% [markdown]
 # We are now in position to define the variational form which is given by {eq}`weak-form`,
 # the linear form now contains a Neumann term corresponding to a uniform vertical traction $T$ on the right and top boundaries (tag `2` and `3` respectively). On boundaries `1` and `4`, we respectively impose symmetry boundary conditions: $u_y=0$ and $u_x=0$.
 
-# +
+# %%
 from dolfinx import fem, io
 import dolfinx.fem.petsc
 
@@ -353,12 +362,14 @@ bcs = [
 ]
 
 
-problem = fem.petsc.LinearProblem(a_form, L_form, u=u, bcs=bcs)
+problem = fem.petsc.LinearProblem(
+    a_form, L_form, u=u, bcs=bcs, petsc_options_prefix="elasticity_"
+)
 problem.solve()
 
 
 V0 = fem.functionspace(domain, ("DG", 0, (3,)))
-sig_exp = fem.Expression(stress(u), V0.element.interpolation_points())
+sig_exp = fem.Expression(stress(u), V0.element.interpolation_points)
 sig = fem.Function(V0, name="Stress")
 sig.interpolate(sig_exp)
 
@@ -366,8 +377,8 @@ vtk = io.VTKFile(domain.comm, "linear_elasticity.pvd", "w")
 vtk.write_function(u, 0)
 vtk.write_function(sig, 0)
 vtk.close()
-# -
 
+# %% [markdown]
 # ```{image} orthotropic_elasticity.png
 # :alt: Results
 # :class: bg-primary mb-1

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Isotropic and orthotropic plane stress elasticity &#8212; Computational Mechanics Numerical Tours with FEniCSx</title>
+    <title>Isotropic and orthotropic plane stress elasticity &#8212; Numerical Tours of Computational Mechanics with FEniCSx</title>
   
   
   
@@ -27,34 +27,34 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=a3416100" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=d7af76ac" />
   
   <!-- So that users can add custom icons -->
-  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
 
     <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../../_static/design-tabs.js?v=36754332"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -64,6 +64,7 @@
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Axisymmetric formulation for elastic structures of revolution" href="../axisymmetric_elasticity/axisymmetric_elasticity.html" />
@@ -71,20 +72,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
-
+  <body data-default-mode="">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -110,7 +117,51 @@
 </div>
 
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
     </header>
   
 
@@ -149,8 +200,8 @@
       
     
     
-    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
-    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Computational Mechanics Numerical Tours with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-light" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
+    <img src="../../../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Numerical Tours of Computational Mechanics with FEniCSx - Home"/>
   
   
 </a></div>
@@ -183,26 +234,31 @@
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Isotropic and orthotropic plane stress elasticity <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../axisymmetric_elasticity/axisymmetric_elasticity.html">Axisymmetric formulation for elastic structures of revolution <span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../generalized_plane_strain/generalized_plane_strain.html">Generalized plane strain computations using <code class="docutils literal notranslate"><span class="pre">Real</span></code> elements <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../multiphysics/contents.html">Multiphysics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_weak/thermoelasticity_weak.html">Linear thermoelasticity (weak coupling) <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../multiphysics/thermoelasticity_full/thermoelasticity_full.html">Thermo-elastic evolution problem (full coupling) <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../dynamics/contents.html">Dynamics problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time-integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../dynamics/elastodynamics_newmark/elastodynamics_newmark.html">Transient elastodynamics with Newmark time integration <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../nonlinear_problems/contents.html">Nonlinear problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/plasticity/plasticity.html">Elasto-plastic analysis of a 2D von Mises material <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/linear_viscoelasticity_jax/linear_viscoelasticity_jax.html">Linear viscoelasticity with JAX <span class="far fa-star"></span><span class="far fa-star"></span><span class="far fa-star"></span></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Localized 1D solutions in phase-field approach to brittle fracture <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../nonlinear_problems/bound_constrained/bound_constrained.html">Bound-constrained problems: localized damage and obstacle problem <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../eigenvalue_problems/contents.html">Eigenvalue problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear Buckling Analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.html">Linear buckling analysis of a 3D solid <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../eigenvalue_problems/bloch_waves/bloch_waves.html">Bloch-wave analysis of a phononic crystal plate <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../homogenization/contents.html">Homogenization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_elasticity/periodic_elasticity.html">Periodic homogenization of linear elasticity <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../homogenization/periodic_hyperelasticity/periodic_hyperelasticity.html">Finite-strain periodic homogenization of a soft open-cell foam <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../interfaces/contents.html">Interfaces</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -218,12 +274,17 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../plates/contents.html">Plates</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear-locking in thick plate models with quadrilateral elements  <span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plates/reissner_mindlin_quads/reissner_mindlin_quads.html">Shear locking in thick plate models with quadrilateral elements <span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../shells/contents.html">Shells</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/linear_shell/linear_shell.html">Linear shell model <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../shells/I_beam_gmsh/I_beam_gmsh.html">Generating a shell model with the <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> Python API <span class="far fa-star"></span></a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../optimization/contents.html">Optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/form_finding/form_finding.html">Form finding of a gridshell with the force density method <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../optimization/topology_optimization/topology_optimization.html">Topology optimization with Helmholtz filtering and projection <span class="far fa-star"></span><span class="far fa-star"></span></a></li>
 </ul>
 </details></li>
 </ul>
@@ -332,7 +393,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -356,7 +417,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
 </div></div>
@@ -378,8 +439,8 @@
                 <h2> Contents </h2>
             </div>
             <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a><ul class="visible nav section-nav flex-column">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constitutive-relation">Constitutive relation</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isotropic-plane-strain-case">Isotropic plane strain case</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isotropic-plane-stress-case">Isotropic plane stress case</a></li>
@@ -388,7 +449,7 @@
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-implementation">Problem implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-implementation">Problem implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-and-mesh-generation-using-gmsh-api">Geometry and mesh generation using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> API</a></li>
 </ul>
 </li>
@@ -431,17 +492,17 @@
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>The <a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html"><span class="doc std std-doc">Linear Elasticity introduction tour</span></a> covers a very similar topic. We refer the reader to this tour for more details on some aspect of the <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).</p>
+<p>The <a class="reference internal" href="../../../intro/linear_elasticity/linear_elasticity.html"><span class="doc std std-doc">Linear Elasticity introduction tour</span></a> covers a very similar topic. We refer the reader to this tour for more details on some aspects of the <code class="docutils literal notranslate"><span class="pre">FEniCSx</span></code> implementation which will be only briefly recalled here (e.g. UFL operators, boundary conditions, etc.).</p>
 </div>
 <section id="variational-formulation">
 <h2>Variational formulation<a class="headerlink" href="#variational-formulation" title="Link to this heading">#</a></h2>
-<p>We first recall that the variational formulation associated to the linear elastic case reads:</p>
+<p>We first recall that the variational formulation associated with the linear elastic case reads:</p>
 <p>Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:</p>
 <div class="math notranslate nohighlight">
 \[
 \int_\Omega \nabla^\text{s}\bu:\CC:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(\bv\)</span> is the test function, <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> the body and <span class="math notranslate nohighlight">\(\bT\)</span> the contact forces. <span class="math notranslate nohighlight">\(\CC\)</span> is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field <span class="math notranslate nohighlight">\(\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu)\)</span>, it relates the stress <span class="math notranslate nohighlight">\(\bsig\)</span> to the strain <span class="math notranslate nohighlight">\(\beps\)</span> using the linear elastic constitutive relation:</p>
+<p>where <span class="math notranslate nohighlight">\(\bv\)</span> is the test function, <span class="math notranslate nohighlight">\(\boldsymbol{f}\)</span> the body and <span class="math notranslate nohighlight">\(\bT\)</span> the contact forces. <span class="math notranslate nohighlight">\(\CC\)</span> is the fourth-order elastic tensor characterizing the linear elastic behavior. Introducing the linearized strain tensor field <span class="math notranslate nohighlight">\(\beps[\bu] = \nabla^\text{s} \bu = \dfrac{1}{2}(\nabla \bu + \nabla\bu\T)\)</span>, it relates the stress <span class="math notranslate nohighlight">\(\bsig\)</span> to the strain <span class="math notranslate nohighlight">\(\beps\)</span> using the linear elastic constitutive relation:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 \bsig = \CC:\beps
@@ -486,14 +547,14 @@ Find <span class="math notranslate nohighlight">\(\bu \in V\)</span> such that:<
 \{\varepsilon\} &amp;= \begin{Bmatrix} \varepsilon_{xx} &amp; \varepsilon_{yy} &amp; \sqrt{2}\varepsilon_{xy} \end{Bmatrix}\T \tag{Mandel}\\
 \{\sigma\} &amp;= \begin{Bmatrix} \sigma_{xx} &amp; \sigma_{yy} &amp; \sqrt{2}\sigma_{xy} \end{Bmatrix}\T\\
 \end{align*}\]</div>
-<p>In both cases, the <span class="math notranslate nohighlight">\(2\)</span> or <span class="math notranslate nohighlight">\(\sqrt{2}\)</span> in front of the shear components is introduced so that, in both cases, the vectorial dot product equals to the tensorial inner product:</p>
+<p>In both cases, the <span class="math notranslate nohighlight">\(2\)</span> or <span class="math notranslate nohighlight">\(\sqrt{2}\)</span> in front of the shear components is introduced so that the vectorial dot product equals the tensorial inner product:</p>
 <div class="amsmath math notranslate nohighlight">
 \[\begin{equation*}
 \{\sigma\}\T\cdot\{\varepsilon\} = \bsig:\beps = \sigma_{ij}\varepsilon_{ij}
 \end{equation*}\]</div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The presence of a factor 2 in strain-like quantities and its absence in stress-like quantities can be the source of numerous mistakes. We suggest to use the safer Mandel representation which is a one-to-one mapping between a symmetric second-rank tensor and its vectorial representation, irrespectively of the nature of the underlying physical quantity. Besides, the Mandel notation preserves the norm of the corresponding tensor.</p>
+<p>The presence of a factor 2 in strain-like quantities and its absence in stress-like quantities can be the source of numerous mistakes. We suggest using the safer Mandel representation which is a one-to-one mapping between a symmetric second-rank tensor and its vectorial representation, irrespective of the nature of the underlying physical quantity. Besides, the Mandel notation preserves the norm of the corresponding tensor.</p>
 </div>
 <p>In such a vectorial representation, the constitutive equation reads:</p>
 <div class="amsmath math notranslate nohighlight">
@@ -608,7 +669,7 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 </div>
 </div>
 </div>
-<p>With such representations the expressions <code class="docutils literal notranslate"><span class="pre">ufl.dot(stress(u,</span> <span class="pre">&quot;vectorial&quot;),</span> <span class="pre">strain(u,</span> <span class="pre">&quot;vectorial&quot;))</span></code> and <code class="docutils literal notranslate"><span class="pre">ufl.dot(stress(u,</span> <span class="pre">&quot;tensorial&quot;),</span> <span class="pre">strain(u,</span> <span class="pre">&quot;tensorial&quot;))</span></code> are identical.</p>
+<p>With such representations the expressions <code class="docutils literal notranslate"><span class="pre">ufl.dot(stress(u,</span> <span class="pre">&quot;vectorial&quot;),</span> <span class="pre">strain(u,</span> <span class="pre">&quot;vectorial&quot;))</span></code> and <code class="docutils literal notranslate"><span class="pre">ufl.inner(stress(u,</span> <span class="pre">&quot;tensorial&quot;),</span> <span class="pre">strain(u,</span> <span class="pre">&quot;tensorial&quot;))</span></code> are identical.</p>
 </section>
 </section>
 </section>
@@ -621,7 +682,7 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.io.gmshio</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_to_mesh</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx.io.gmsh</span><span class="w"> </span><span class="kn">import</span> <span class="n">model_to_mesh</span>
 
 <span class="n">L</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span>
 <span class="n">h</span> <span class="o">=</span> <span class="mf">0.02</span>
@@ -671,37 +732,50 @@ C_{yyxx} &amp; C_{yyyy} &amp; \sqrt{2}C_{yyxy} \\
 
     <span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">gdim</span><span class="p">)</span>
 
-    <span class="n">domain</span><span class="p">,</span> <span class="n">cells</span><span class="p">,</span> <span class="n">facets</span> <span class="o">=</span> <span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">mesh_comm</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span><span class="p">)</span>
+<span class="n">mesh_data</span> <span class="o">=</span> <span class="n">model_to_mesh</span><span class="p">(</span><span class="n">gmsh</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">mesh_comm</span><span class="p">,</span> <span class="n">model_rank</span><span class="p">,</span> <span class="n">gdim</span><span class="o">=</span><span class="n">gdim</span><span class="p">)</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">mesh</span>
+<span class="n">markers</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">cell_tags</span>
+<span class="n">facets</span> <span class="o">=</span> <span class="n">mesh_data</span><span class="o">.</span><span class="n">facet_tags</span>
 
-    <span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
+<span class="n">gmsh</span><span class="o">.</span><span class="n">finalize</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : Meshing 1D...
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info    : [  0%] Difference                                                                                  
+Info    : [ 10%] Difference                                                                                  
+Info    : [ 20%] Difference                                                                                  
+Info    : [ 30%] Difference                                                                                  
+Info    : [ 40%] Difference                                                                                  
+Info    : [ 50%] Difference                                                                                  
+Info    : [ 70%] Difference                                                                                  
+Info    : [ 80%] Difference                                                                                  
+Info    : [ 90%] Difference                                                                                  
+                                                                                
+Info    : Meshing 1D...
 Info    : [  0%] Meshing curve 1 (Ellipse)
-Info    : [ 20%] Meshing curve 2 (Line)
-Info    : [ 40%] Meshing curve 3 (Line)
-Info    : [ 60%] Meshing curve 4 (Line)
-Info    : [ 80%] Meshing curve 5 (Line)
-Info    : Done meshing 1D (Wall 0.000252123s, CPU 0.000196s)
+Info    : [ 30%] Meshing curve 2 (Line)
+Info    : [ 50%] Meshing curve 3 (Line)
+Info    : [ 70%] Meshing curve 4 (Line)
+Info    : [ 90%] Meshing curve 5 (Line)
+Info    : Done meshing 1D (Wall 0.000258482s, CPU 0.000245s)
 Info    : Meshing 2D...
 Info    : Meshing surface 1 (Plane, Frontal-Delaunay)
-Info    : Done meshing 2D (Wall 0.0478119s, CPU 0.046207s)
+Info    : Done meshing 2D (Wall 0.0484731s, CPU 0.046817s)
 Info    : 3010 nodes 6023 elements
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
-<details class="hide above-input">
+<details class="admonition hide above-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell source</span>
-<span class="expanded">Hide code cell source</span>
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot</span><span class="p">,</span> <span class="n">fem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dolfinx</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot</span>
 
 <span class="n">pyvista</span><span class="o">.</span><span class="n">set_jupyter_backend</span><span class="p">(</span><span class="s2">&quot;static&quot;</span><span class="p">)</span>
 
@@ -719,7 +793,7 @@ Info    : 3010 nodes 6023 elements
 </div>
 </details>
 <div class="cell_output docutils container">
-<img alt="../../../_images/5256abd5a5b2b1f6375e3a7b77f6aa6e4624f0f3d987e96998da513e76be6832.png" src="../../../_images/5256abd5a5b2b1f6375e3a7b77f6aa6e4624f0f3d987e96998da513e76be6832.png" />
+<img alt="../../../_images/4d7795457e2c702df1a15976f5a24a9568a42625817176610febdc8b7ae837a5.png" src="../../../_images/4d7795457e2c702df1a15976f5a24a9568a42625817176610febdc8b7ae837a5.png" />
 </div>
 </div>
 <p>We are now in position to define the variational form which is given by <a class="reference internal" href="#equation-weak-form">(2)</a>,
@@ -757,12 +831,14 @@ the linear form now contains a Neumann term corresponding to a uniform vertical 
 <span class="p">]</span>
 
 
-<span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">(</span><span class="n">a_form</span><span class="p">,</span> <span class="n">L_form</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">)</span>
+<span class="n">problem</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">petsc</span><span class="o">.</span><span class="n">LinearProblem</span><span class="p">(</span>
+    <span class="n">a_form</span><span class="p">,</span> <span class="n">L_form</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="n">u</span><span class="p">,</span> <span class="n">bcs</span><span class="o">=</span><span class="n">bcs</span><span class="p">,</span> <span class="n">petsc_options_prefix</span><span class="o">=</span><span class="s2">&quot;elasticity_&quot;</span>
+<span class="p">)</span>
 <span class="n">problem</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
 
 
 <span class="n">V0</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">functionspace</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;DG&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,)))</span>
-<span class="n">sig_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">stress</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">())</span>
+<span class="n">sig_exp</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Expression</span><span class="p">(</span><span class="n">stress</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">V0</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">interpolation_points</span><span class="p">)</span>
 <span class="n">sig</span> <span class="o">=</span> <span class="n">fem</span><span class="o">.</span><span class="n">Function</span><span class="p">(</span><span class="n">V0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Stress&quot;</span><span class="p">)</span>
 <span class="n">sig</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">sig_exp</span><span class="p">)</span>
 
@@ -774,7 +850,8 @@ the linear form now contains a Neumann term corresponding to a uniform vertical 
 </div>
 </div>
 </div>
-<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/orthotropic_elasticity.png"><img alt="Results" class="bg-primary mb-1 align-center" src="../../../_images/orthotropic_elasticity.png" style="width: 1000px;" /></a>
+<a class="bg-primary mb-1 reference internal image-reference" href="../../../_images/orthotropic_elasticity.png"><img alt="Results" class="bg-primary mb-1 align-center" src="../../../_images/orthotropic_elasticity.png" style="width: 1000px;" />
+</a>
 </section>
 </section>
 </section>
@@ -838,13 +915,14 @@ the linear form now contains a Neumann term corresponding to a uniform vertical 
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a><ul class="visible nav section-nav flex-column">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variational-formulation">Variational formulation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constitutive-relation">Constitutive relation</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isotropic-plane-strain-case">Isotropic plane strain case</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#isotropic-plane-stress-case">Isotropic plane stress case</a></li>
@@ -853,7 +931,7 @@ the linear form now contains a Neumann term corresponding to a uniform vertical 
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-implementation">Problem implementation</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#problem-implementation">Problem implementation</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry-and-mesh-generation-using-gmsh-api">Geometry and mesh generation using <code class="docutils literal notranslate"><span class="pre">Gmsh</span></code> API</a></li>
 </ul>
 </li>
@@ -898,8 +976,8 @@ By Jeremy Bleyer
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
 
   <footer class="bd-footer">
   </footer>
