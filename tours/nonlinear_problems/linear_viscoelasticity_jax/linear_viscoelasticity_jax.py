@@ -16,7 +16,7 @@
 # ```{admonition} Objectives
 # :class: objectives
 #
-# This demo shows how to implement a nonlinear constitutive model, specifically a linear viscoelastic behavior. We rely on a manual Python-based implementation of the constitutive update at each quadrature point. To improve computational efficiency of evaluating a Python function while looping over all quadrature points, we leverage Just-In-Time compilation and automatic vectorization provided by the [JAX library](https://docs.jax.dev). In addition, the consistent tangent operator is automatically derived using JAX Automatic Differentiation.
+# This demo shows how to implement a generic (possibly nonlinear) constitutive model, illustrated on linear viscoelasticity. We rely on a manual Python-based implementation of the constitutive update at each quadrature point. To improve computational efficiency of evaluating a Python function while looping over all quadrature points, we leverage Just-In-Time compilation and automatic vectorization provided by the [JAX library](https://docs.jax.dev). In addition, the consistent tangent operator is automatically derived using JAX Automatic Differentiation.
 # $\newcommand{\bsig}{\boldsymbol{\sigma}}
 # \newcommand{\beps}{\boldsymbol{\varepsilon}}
 # \newcommand{\bepsv}{\boldsymbol{\varepsilon}^\text{v}}
@@ -58,7 +58,7 @@
 # - Andrey Latyshev's work at https://github.com/a-latyshev/dolfinx-external-operator.
 # ```
 #
-# ## Nonlinear constitutive models in FEniCS
+# ## Nonlinear constitutive models in FEniCSx
 #
 # Although this tour considers **linear** viscoelasticity, we will treat the problem as involving a general nonlinear constitutive behavior. The latter will be implemented explicitly using Python, mimicking a generic black-box material library. In this case, the stress $\bsig$ is evaluated as a nonlinear function of the total strain $\beps$, yielding the following nonlinear variational problem:
 #
@@ -142,12 +142,12 @@
 #
 # $$\begin{align*}
 # \boldsymbol{\sigma} &= E_0\mathbb{c}:\boldsymbol{\varepsilon} + E_1\mathbb{c}:(\boldsymbol{\varepsilon}-\bepsv) \\
-# \dot{\boldsymbol{\varepsilon}}^\text{v} &= \dfrac{E_1}{\eta_1}\mathbb{c}:(\boldsymbol{\varepsilon}-\bepsv)
+# \dot{\boldsymbol{\varepsilon}}^\text{v} &= \dfrac{E_1}{\eta_1}(\boldsymbol{\varepsilon}-\bepsv)
 # \end{align*}$$
 #
 # where $\mathbb{c} = \dfrac{\nu}{1-\nu^2}\mathbf{1}\otimes\mathbf{1} + \dfrac{1}{1+\nu}\mathbb{I}$ for plane stress with $\mathbf{1}$ and $\mathbb{I}$ being respectively the 2nd and 4th order identity tensors and $\nu$ being the Poisson ratio.
 #
-# ### Time-integration
+# ### Time integration
 #
 # There exist many possible choices of discrete time integration for the linear viscoelastic evolution equations, see {cite:p}`sorvari2010time` for a review. In the following, we choose a semi-analytical method which considers the exact solution of the ODE {eq}`viscous-stress-evolution` between time $t_n$ and $t_{n+1}=t_n+\Delta t$:
 #
@@ -339,7 +339,7 @@ def local_constitutive_update(deps, eps_old, epsv_old, dt):
 
 # %% [markdown]
 # #### Tangent operator with Automatic Differentiation
-# The constitutive equation should also return the algorithmic tangent operator $\mathbf{C}_\text{tang} = \dfrac{\text{d} \bsig}{\text{d}\beps}$. Although the latter is extremely easy to compute in the present case, we show how to use JAX's Automatic Differentiation capabilities to derive it automatically. We rely on the `jax.jacfwd` function which computes the jacobian of the `local_constitutive_update` function with respect to argument `argnums=0`, namely $\Delta \beps$ here. The computation is done using forward-mode automatic differentiation, although here the tangent operator is of square shape so that there should be no significant difference with backward-mode. Finally, `local_constitutive_update` also returns `state` as an auxiliary output. This is specified explicitly with `has_aux=True` which indicates that the function returns a pair where the first element is considered the output of the mathematical function to be differentiated and the second element is auxiliary data. In this case, the output of `jacfwd` is `(jacobian, state)`.
+# The constitutive equation should also return the algorithmic tangent operator $\mathbf{C}_\text{tang} = \dfrac{\text{d} \bsig}{\text{d}\beps}$. Although the latter is extremely easy to compute in the present case, we show how to use JAX's Automatic Differentiation capabilities to derive it automatically. We rely on the `jax.jacfwd` function which computes the Jacobian of the `local_constitutive_update` function with respect to argument `argnums=0`, namely $\Delta \beps$ here. The computation is done using forward-mode automatic differentiation, although here the tangent operator is of square shape so that there should be no significant difference with backward-mode. Finally, `local_constitutive_update` also returns `state` as an auxiliary output. This is specified explicitly with `has_aux=True` which indicates that the function returns a pair where the first element is considered the output of the mathematical function to be differentiated and the second element is auxiliary data. In this case, the output of `jacfwd` is `(jacobian, state)`.
 
 # %%
 tangent_operator_and_state = jax.jacfwd(
@@ -349,7 +349,7 @@ tangent_operator_and_state = jax.jacfwd(
 # %% [markdown]
 # #### JIT and automatic vectorization
 #
-# Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the `local_constitutive_update` function in vectorized form to work on a batch of strain-like quantities of shape `(3,num_gauss)` where `num_gauss` is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to automatically transform a function into an efficient vectorized form using `jax.vmap`. Applying this vectorization to the `tangent_operator_and_state` function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (`dt` is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.
+# Finally, we will later have to call this function when looping over all quadrature points. Implementing such a loop in pure Python would obviously be extremely inefficient. An alternative would be to rewrite the `local_constitutive_update` function in vectorized form to work on a batch of strain-like quantities of shape `(num_gauss, 3)` where `num_gauss` is the total number of Gauss points. Although this is not particularly difficult to implement in the present case, it requires reimplementing the function which is error-prone and cumbersome in general. Fortunately, JAX provides a way to automatically transform a function into an efficient vectorized form using `jax.vmap`. Applying this vectorization to the `tangent_operator_and_state` function, we simply specify that the batch will take place over axis 0 of the first 3 arguments but not the last one (`dt` is not batched). Finally, the resulting function is also jitted for efficient compilation and execution by the XLA compiler.
 
 # %%
 batched_constitutive_update = jax.jit(
@@ -382,7 +382,7 @@ def constitutive_update(u, sig, eps_old, epsv_old, epsv, dt):
 
 # %% [markdown]
 # ### Custom Newton solver
-# We now define a custom Newton solver defined in the {download}`solvers.py` module. The solver first relies on a `CustomLinearProblem` which is the same custom `LinearProblem` implementation which was described in the [](/tours/nonlinear_problems/plasticity/plasticity.md) demo. The latter works in particular with the iteration correction field `du` as the main unknown and solves the Newton system:
+# We now use the custom Newton solver defined in the {download}`solvers.py` module. The solver first relies on a `CustomLinearProblem` which is the same custom `LinearProblem` implementation which was described in the [](/tours/nonlinear_problems/plasticity/plasticity.md) demo. The latter works in particular with the iteration correction field `du` as the main unknown and solves the Newton system:
 #
 # $$[\mathbf{K}_\text{tang}]\{\delta U\} = -\{\text{Res}\}$$
 

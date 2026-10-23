@@ -251,7 +251,7 @@ We apply smooth contact conditions on the vertical $x=0$ (facet tag `2`) and the
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
-top_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2))
+left_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2))
 
 # used for post-processing
 bottom_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(1))[1]
@@ -259,7 +259,7 @@ bottom_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find
 u0x = fem.Function(Vx)
 u0y = fem.Function(Vy)
 bcs = [
-    fem.dirichletbc(u0x, top_dofsx, V.sub(0)),
+    fem.dirichletbc(u0x, left_dofsx, V.sub(0)),
     fem.dirichletbc(u0y, bottom_dofsy, V.sub(1)),
 ]
 ```

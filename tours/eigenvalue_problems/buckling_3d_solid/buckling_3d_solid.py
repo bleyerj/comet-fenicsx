@@ -15,7 +15,7 @@
 # ---
 
 # %% [markdown]
-# # Linear Buckling Analysis of a 3D solid {far}`star`{far}`star`
+# # Linear buckling analysis of a 3D solid {far}`star`{far}`star`
 #
 #
 # ```{admonition} Objectives
@@ -28,6 +28,7 @@
 # \newcommand{\be}{\boldsymbol{e}}
 # \newcommand{\beps}{\boldsymbol{\varepsilon}}
 # \newcommand{\bsig}{\boldsymbol{\sigma}}
+# \newcommand{\tr}{\text{tr}\,}
 # \newcommand{\T}{^{\text{T}}}$
 # ```
 #
@@ -51,7 +52,7 @@
 # * {Download}`Complete sources files<./buckling_3d_solid.zip>`
 # ```
 #
-# ## Geometrically Nonlinear Elasticity
+# ## Geometrically nonlinear elasticity
 #
 # To formulate the buckling problem, we must consider a general geometrically nonlinear framework. More precisely, we will consider the case of small-strain/large displacements that are expected in typical buckling analysis. For more details on the theoretical formulation, the reader can refer to {cite:p}`nguyen2000stability`.
 #
@@ -116,23 +117,23 @@
 # \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\beps(\bu_0):\mathbb{C}:\bq(\delta\bv,\delta\bu))d\Omega = 0
 # $$
 #
-# After, introducing the initial pre-stress $\bsig_0 = \mathbb{C}:\beps(\bu_0)$, the last term can be rewritten as $\bsig_0:\bq(\delta\bv,\delta\bu) = (\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T$ so that:
+# After, introducing the initial pre-stress $\bsig_0 = \mathbb{C}:\beps(\bu_0)$, the last term can be rewritten as $\bsig_0:\bq(\delta\bv,\delta\bu) = \tr(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T$ so that:
 #
 # ```{math}
 # :label: buckling-weak-form
-# \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c(\nabla \delta \bv) \bsig_0 (\nabla \delta\bu)\T)d\Omega = 0
+# \int_\Omega (\beps(\delta\bv):\mathbb{C}:\beps(\delta\bu)  + \lambda^c\tr((\nabla \delta \bv) \bsig_0 (\nabla \delta\bu))\T)d\Omega = 0
 # ```
 #
 # We recognize here a linear eigenvalue problem where the first term corresponds to the classical linear elasticity bilinear form and the second term is an additional contribution depending on the pre-stressed state $\bu_0$. Transforming this variational problem into matrix notations yields:
 #
 # $$
-# [\mathbf{K}]+\lambda[\mathbf{K}_G(\bu_0)]=0
+# \left([\mathbf{K}]+\lambda[\mathbf{K}_G(\bu_0)]\right)\{U\}=0
 # $$
 #
-# where $[\mathbf{K}]$ is the classical linear elastic stiffness matrix and $[\mathbf{K}_G(\bu_0)]$ the so-called *geometrical stiffness* matrix.
+# where $[\mathbf{K}]$ is the classical linear elastic stiffness matrix and $[\mathbf{K}_G(\bu_0)]$ the so-called *geometric stiffness* matrix.
 #
 # ```{important}
-# In the present case, the geometric stiffness matrix is associated with a symmetric form. It is however indefinite, as the pre-stress can be positive or negative. In the case of follower forces i.e. forces for which the direction and/or intensity depends on the geometric configuration of the solid, typically pressure forces, such forces contribute to the geometric through an additional term which must be accounted for, see for instance {cite:p}`hibbit1979some`. In some particular cases, it may turn out that the resulting geometric stiffness matrix ends up being unsymmetric.
+# In the present case, the geometric stiffness matrix is associated with a symmetric form. It is however indefinite, as the pre-stress can be positive or negative. In the case of follower forces i.e. forces for which the direction and/or intensity depends on the geometric configuration of the solid, typically pressure forces, such forces contribute to the geometric stiffness through an additional term which must be accounted for, see for instance {cite:p}`hibbit1979some`. In some particular cases, it may turn out that the resulting geometric stiffness matrix ends up being unsymmetric.
 # ```
 #
 # ## FEniCSx implementation
@@ -144,14 +145,13 @@
 # %%
 import numpy as np
 from mpi4py import MPI
-from petsc4py import PETSc
 from slepc4py import SLEPc
 import ufl
 from dolfinx import mesh, fem, plot, default_scalar_type
 from dolfinx.fem.petsc import LinearProblem, assemble_matrix
 from eigenvalue_solver import solve_GEP_shiftinvert, EPS_get_spectrum
 
-L, b, h = 1, 0.01, 0.03
+L, h, b = 1, 0.01, 0.03
 Nx, Ny, Nz = 50, 5, 5
 
 domain = mesh.create_box(
@@ -263,7 +263,7 @@ KG = assemble_matrix(fem.form(kgform), bcs=bcs, diag=0)
 KG.assemble()
 
 # %% [markdown]
-# After having formed the geometric stiffness matrix, we will use `slepc4py` to solve a generalized eigenvalue problem $\mathbf{Ax}=\lambda \mathbf{Bx}$ with here $\mathbf{A}=\mathbf{K}$ and $\mathbf{B}=-\mathbf{K}_G$. Function defined in {download}`eigenvalue_solver.py<./eigenvalue_solver.py>` allow to define the eigenvalue problem, set up parameters, monitor the resolution and extract the resulting eigenpairs. Here, our problem is of type `GHEP` (Generalized Hermitian eigenproblem).
+# After having formed the geometric stiffness matrix, we will use `slepc4py` to solve a generalized eigenvalue problem $\mathbf{Ax}=\lambda \mathbf{Bx}$ with here $\mathbf{A}=\mathbf{K}$ and the assembled `KG` is $\mathbf{B}$. The functions defined in {download}`eigenvalue_solver.py<./eigenvalue_solver.py>` allow to define the eigenvalue problem, set up parameters, monitor the resolution and extract the resulting eigenpairs. Here, our problem is of type `GHEP` (Generalized Hermitian eigenproblem).
 #
 # ```{tip}
 # We use a shift-and-invert transform i.e. instead of solving $\mathbf{Ax}=\lambda \mathbf{Bx}$, we will solve
@@ -302,7 +302,7 @@ eigensolver = solve_GEP_shiftinvert(
 # %% [markdown]
 # ### Validation against beam theory solution
 #
-# Finally, we validate our implementation by comparing the buckling loads compared with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.
+# Finally, we validate our implementation by comparing the buckling loads obtained with a 3D model to those obtained from a Euler-Bernoulli beam model (see below). Note that we consider here the buckling modes around the weakest bending axis only which are the most critical with the chosen cross-section.
 #
 # ```{admonition} Beam theory buckling loads
 # :class: tip, dropdown
@@ -310,7 +310,7 @@ eigensolver = solve_GEP_shiftinvert(
 #
 # $$M'(x)+\lambda F_0\theta(x) + Q(x)=0$$
 #
-# where $\theta(x)=v'(x)$ is the beam rotation, $v(x)$ the beam vertical deflection and $Q(x)$ the shear force. Here, $Q(x)=\text{cte}$. Thus injecting the linear elastic relation $M(x)=EIv''(x)$ and differentiating one, one obtains:
+# where $\theta(x)=v'(x)$ is the beam rotation, $v(x)$ the beam vertical deflection and $Q(x)$ the shear force. Here, $Q(x)=\text{const}$. Thus injecting the linear elastic relation $M(x)=EIv''(x)$ and differentiating once, one obtains:
 #
 # $$
 # EI v^{(4)}(x)+\lambda F_0v''(x)=0
@@ -352,7 +352,7 @@ eigensolver = solve_GEP_shiftinvert(
 # \alpha_1 \approx 1.4303\pi,\quad \alpha_2 \approx 2.4509\pi,\quad \alpha_3 \approx 3.4709\pi,\quad \alpha_n \approx \left(n + \frac{1}{2}\right)\pi
 # $$
 #
-# Finally, the buckling load are given by:
+# Finally, the buckling loads are given by:
 #
 # $$
 # \lambda_n F_0 = \alpha_n^2\dfrac{EI}{L^2}
@@ -363,8 +363,8 @@ eigensolver = solve_GEP_shiftinvert(
 # Analytical beam theory solution
 # F_cr,n = alpha_n^2*EI/L^2
 # where alpha_n are solutions to tan(alpha) = alpha
-alpha = np.array([1.4303, 2.4509, 3.4709] + [(n + 1 / 2) for n in range(4, 10)]) * np.pi
-I = b**3 * h / 12
+alpha = np.array([1.4303, 2.4590, 3.4709] + [(n + 1 / 2) for n in range(4, 10)]) * np.pi
+I = b * h**3 / 12
 S = b * h
 
 for i in range(N_eig):
@@ -374,7 +374,7 @@ for i in range(N_eig):
     )
 
 # %% [markdown]
-# We can see that the computed 3D buckling loads are vey close to the analytical solution of the beam theory. This is further confirmed when plotting the computed eigenmodes with `pyvista`.
+# We can see that the computed 3D buckling loads are very close to the analytical solution of the beam theory. This is further confirmed when plotting the computed eigenmodes with `pyvista`.
 
 # %%
 import pyvista
@@ -390,7 +390,7 @@ mesh_grid = pyvista.UnstructuredGrid(mesh_topology, mesh_cell_types, mesh_geomet
 u_topology, u_cell_types, u_geometry = plot.vtk_mesh(V)
 u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry)
 
-# Plot the first 3 eigenmodes
+# Plot the first eigenmodes
 pl = pyvista.Plotter(shape=(2, 3))
 for i in range(6):
     pl.subplot(i // 3, i % 3)

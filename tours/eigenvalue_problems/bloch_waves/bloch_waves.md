@@ -19,7 +19,7 @@ kernelspec:
 
 This tour has been written in collaboration with:
 
-**Felipe Rocha** (University Gustave Eiffel, felipe.figueredo-rocha@u-pec.fr) https://felipefr.github.io/
+**Felipe Rocha** (Université Gustave Eiffel, felipe.figueredo-rocha@u-pec.fr) https://felipefr.github.io/
 ```
 
 ```{admonition} Objectives
@@ -124,8 +124,6 @@ $$
 
 where $\nabla_{\bk}\widehat{\bw} = \nabla\widehat{\bw} + i\,\widehat{\bw}\otimes\bk$ is the *Bloch gradient*. Since the phase factors $e^{i\bk\cdot\bx}$ cancel in the Hermitian products of the weak form, the problem reads:
 
-
-
 > Find $\widehat{\bw} \neq 0$ periodic and $\omega$ such that:
 > ```{math}
 > :label: bloch-eigenproblem
@@ -139,7 +137,7 @@ where $\nabla^\text{s}_{\bk}$ is the symmetric part of the Bloch gradient and th
 
 ### Unit cell and periodic mesh
 
-The unit cell has size $L=1$ and contains four holes of radius $R=0.2$ centered at $(L/4, L/4)$, $(3L/4, L/4)$, $(3L/4, 3L/4)$ and $(L/4, 3L/4)$. The solid has Young's modulus $E=300$, Poisson's ratio $\nu=0.3$ and density $\rho=1$, in arbitrary consistent units. Frequencies are reported in normalized form $\Omega = \omega L/(2\pi c_T)$, where $c_T = \sqrt{\mu/\rho}$ is the shear wave velocity.
+The unit cell has size $L=1$ and contains four holes of radius $R=0.2$ centered at $(L/4, L/4)$, $(3L/4, L/4)$, $(3L/4, 3L/4)$ and $(L/4, 3L/4)$. The solid has Young's modulus $E=300$, Poisson's ratio $\nu=0.3$ and density $\rho=1$, in arbitrary consistent units. Frequencies are reported in normalized form $\bar\omega = \omega L/(2\pi c_T)$, where $c_T = \sqrt{\mu/\rho}$ is the shear wave velocity.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -219,6 +217,10 @@ The four holes are identical and arranged with period $L/2$, so the cell contain
 The periodic unknown $\widehat{\bw}$ is constrained with a `MultiPointConstraint` from `dolfinx_mpc`. Degrees of freedom on the right and top edges (the *slaves*) are expressed in terms of those on the left and bottom edges (the *masters*) by a single map which subtracts $L$ from every coordinate equal to $L$. In particular, the three corners $(L,0)$, $(0,L)$ and $(L,L)$ are all mapped directly onto the origin, so that no slave is constrained twice, see [](/tours/homogenization/periodic_elasticity/periodic_elasticity.md). Contrary to static homogenization problems, we do not fix any degree of freedom: rigid translations are genuine zero-frequency Bloch waves at $\bk=0$.
 
 The periodic constraint does not depend on $\bk$ and is real-valued. We store it as a sparse matrix $[\mathbf{P}]$ such that the full vector of degrees of freedom reads $\{\widehat{w}\} = [\mathbf{P}]\{\widehat{w}_r\}$ in terms of the reduced vector $\{\widehat{w}_r\}$ of non-slave degrees of freedom. The constrained matrices are then $[\mathbf{P}]^\text{T}[\mathbf{K}][\mathbf{P}]$ and $[\mathbf{P}]^\text{T}[\mathbf{M}][\mathbf{P}]$.
+
+```{attention}
+Here we use a real PETSc build which requires us to build explicitly `P`. With a complex PETSc build, `dolfinx_mpc.assemble_matrix` does the reduction itself. One can then use  and SLEPc direclty and run the demo in parallel, avoiding any explicit construction of `P`.
+```
 
 ```{code-cell} ipython3
 def periodic_reduction_matrix(V, L, tol=1e-8):

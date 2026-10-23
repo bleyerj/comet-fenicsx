@@ -16,7 +16,7 @@
 #
 # ```{admonition} Objectives
 # :class: objectives
-# This tutorial demonstrates the formulation of a cohesive fracture model with `FEniCSx`. We adopt an *intrinsic* cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to {cite:p}`hansbo2015discontinuous` for a related work. Other key aspects include:
+# This tour demonstrates the formulation of a cohesive fracture model with `FEniCSx`. We adopt an *intrinsic* cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to {cite:p}`hansbo2015discontinuous` for a related work. Other key aspects include:
 # - Interface submeshes
 # - Interpolation of expressions on facets
 # - Fixed-point resolution strategy
@@ -148,7 +148,7 @@ def draw_frame(i):
     ax.set_xlim(min(loading_cycles), max(loading_cycles))
     ax.set_ylim(0, 1.2)
     ax.set_xlabel(r"Normalized opening $[\![u]\!]/\delta_0$")
-    ax.set_ylabel(r"Normalized traction $T([\![u]\!])/\sigma_0$")
+    ax.set_ylabel(r"Normalized traction $T([\![u]\!])/\sigma_c$")
     lines = [
         ax.plot(loading[: i + 1], T[: i + 1], "-k")[0],
         ax.plot(loading[i], T[i], "oC3")[0],
@@ -195,7 +195,7 @@ from dolfinx.fem.petsc import LinearProblem
 # $$
 # \jump{\bu} = \bu^\oplus - \bu^\ominus
 # $$
-# where $\bn$ is oriented from side $\ominus$ to side $\oplus$. Note that in UFL with `n = FacetNormal(domain)`, this definition of the normal vector $\bn$ therefore corresponds to the restriction on the $\ominus$ side i.e. `n("-")` since `n` points outwards a given cell.
+# where $\bn$ is oriented from side $\ominus$ to side $\oplus$. Note that in UFL with `n = FacetNormal(domain)`, this definition of the normal vector $\bn$ therefore corresponds to the restriction on the $\ominus$ side i.e. `n("-")` since `n` points outwards from a given cell.
 # ```
 #
 # Substituting the elastic constitutive relation and the traction-separation law, the resulting nonlinear problem is given by:
@@ -467,7 +467,7 @@ def T(opening, d):
 #
 # We will also need to compute quantities which live only on the facets of the mesh e.g. the internal variables of the cohesive law (the damage `d` in the present case). The space `V_int` consists of a `"DG"` interpolation of degree 1 (piecewise affine on the facet and discontinuous at the vertices). This choice is made to simplify the visualization of facet fields. To enforce irreversibility of damage evolution, `d_prev` will store the value of interfacial damage at the previous converged increment. Finally, to test convergence of the damage field during the fixed-point iteration scheme, `d_old` will store the value of interfacial damage of the previous iteration.
 #
-# Note that an alternative for `V_int` is to use a quadrature space on the facet mesh such as the space `Q` defined later. However, functions on `Q` can then only be visualized as point clouds, see https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html.
+# Note that an alternative for `V_int` is to use a quadrature space on the facet mesh such as the space `Q` defined later. However, functions on `Q` can then only be visualized as point clouds, see [this for example](https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html).
 
 # %%
 V = fem.functionspace(domain, ("DG", 1, (tdim,)))
@@ -495,6 +495,8 @@ Fext = ufl.dot(f, v) * dx
 
 a_compiled = fem.form(a, entity_maps=[interfaces_cell_map])
 Fext_compiled = fem.form(Fext, entity_maps=[interfaces_cell_map])
+
+residual_form = fem.form((d - d_old) ** 2 * dx_int)
 
 # %% [markdown]
 # (facet:expressions:interpolation)=
@@ -583,7 +585,7 @@ problem = LinearProblem(
 )
 
 # %% [markdown]
-# We will monitor the evolution of total damage over the structure by computing a normalized (or average) value of damage, separating its contribution from the physical interface $\Gamma_\text{int}$ from the internal facets in the bulk matrix $\Gamma_\text{bulk}$.
+# We will monitor the evolution of total damage over the structure by computing a normalized (or average) value of damage, separating the physical interface $\Gamma_\text{int}$ contribution from that of the internal facets in the bulk matrix $\Gamma_\text{bulk}$.
 
 # %%
 interface_damage = fem.form(ufl.avg(d) * dS(INT_TAG), entity_maps=[interfaces_cell_map])
@@ -621,9 +623,7 @@ for i, t in enumerate(loading[1:]):
         # interpolation of damage on facets
         d.x.array[:] = fem.assemble_vector(facet_interp).array
         # normalized residual for convergence check
-        nRes = (
-            np.sqrt((fem.assemble_scalar(fem.form((d - d_old) ** 2 * dx_int)))) / Gamma
-        )
+        nRes = np.sqrt((fem.assemble_scalar(residual_form))) / Gamma
         d_old.x.array[:] = d.x.array[:]
         j += 1
         print(f"    Iteration {j:2d} | Residual: {nRes}")

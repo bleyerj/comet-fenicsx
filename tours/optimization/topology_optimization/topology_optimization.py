@@ -163,7 +163,7 @@ vol_frac = 0.4  # target volume fraction
 
 E0, Emin, nu = 1.0, 1e-9, 0.3  # material properties
 penal = 3.0  # SIMP penalization exponent
-r_filter = 0.04  # Helmholtz filter length (R = 2*sqrt(3)*r ~ 3.5 elements)
+r_filter = 0.04  # Helmholtz filter length (R = 2*sqrt(3)*r ~ 7 elements)
 eta = 0.5  # projection threshold
 
 # %% [markdown]

@@ -187,7 +187,7 @@ bcs = [
 ]
 
 # %% [markdown]
-# Finally, a `LinearProblem` object is created based on the variational problem, the boundary conditions and a Function `u` in which we want to store the solution. We can also pass parameters to setup the solver type (here we use a direct LU factorization).
+# Finally, a `LinearProblem` object is created based on the variational problem, the boundary conditions and a Function `u` in which we want to store the solution. We can also pass parameters to set up the solver type (here we use a direct LU factorization).
 # Results are then stored in a ".pvd" format to be visualized using Paraview for instance.
 
 # %%

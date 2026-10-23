@@ -6,8 +6,11 @@ All tours now run with `dolfinx` v0.11.
 - **Finite-strain periodic homogenization** of a soft open-cell foam (3D, hyperelastic)
 - **Bloch waves** in a periodic medium: dispersion diagram and band gaps of a cell with four holes
 - **Obstacle problem** added to the bound-constrained tour, solved with PETSc TAO and with SNES variational inequality solvers
+- **Form-finding** using the force density method of a funicular gridshell
+- **Topology optimization** tour porting the legacy demo, including now filtering and thresholding
 
-### Main changes for dolfinx v0.11 and previous versions
+### Migration notes towards dolfinx v0.11
+
 - `u.vector` → `u.x.petsc_vec` / `u.x.array`
 - `LinearProblem` now requires `petsc_options_prefix` and solves into its own vector, so custom Newton solvers solve directly into `du.x.petsc_vec`
 - Block linear problems use `LinearProblem` directly (custom `BlockedLinearProblem` removed)
@@ -20,6 +23,7 @@ All tours now run with `dolfinx` v0.11.
 - Periodic homogenization: periodicity constraints applied hierarchically (faces, then edges, then fixed corners) to avoid double constraints, which corrects the local stress fields
 - Viscoelasticity (JAX): shear term of the plane stress stiffness in Mandel notation
 - Bound-constrained tour: the objective is summed over processes, so TAO solves are correct in parallel
+- Missing $2$ factor in fully coupled thermoelasticity demo
 
 ### Citing
 - The landing page now cites the all-versions Zenodo DOI and the FEniCSx references

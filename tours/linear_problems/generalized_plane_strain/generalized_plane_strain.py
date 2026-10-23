@@ -94,7 +94,7 @@
 # \end{equation*}
 # where the tilde notation refers to the in-plane part of the corresponding tensor/vector.
 #
-# However, to fix the out-of-plane strain an additional global balance condition in the $z$-direction must be given. Typical use case are generally concerned with conditions of the form:
+# However, to fix the out-of-plane strain an additional global balance condition in the $z$-direction must be given. Typical use cases are generally concerned with conditions of the form:
 # \begin{equation}
 # F_z = \int_{\Omega}\sigma_{zz} \dOm
 # \label{vert-equilibrium}
@@ -104,7 +104,7 @@
 #
 # ### Weak formulation
 #
-# In the following, we denote by $\bu(x,y) = u(x,y)\be_x+v(x,y)\be_y$ the in-plane displacement and $V$ its corresponding function space. The unknowns of the problem are then $(\bu,\varepsilon_{zz})\in V \times \RR$, justifying the use `Real` function space for discretizing $\varepsilon_{zz}$.
+# In the following, we denote by $\bu(x,y) = u(x,y)\be_x+v(x,y)\be_y$ the in-plane displacement and $V$ its corresponding function space. The unknowns of the problem are then $(\bu,\varepsilon_{zz})\in V \times \RR$, justifying the use of a `Real` function space for discretizing $\varepsilon_{zz}$.
 #
 # Similarly to [](/tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md), the variational form reads here:
 #
@@ -112,13 +112,13 @@
 #
 # \begin{align*}
 # \int_\Omega \uttilde\bsig[u,\varepsilon_{zz}]:\nabla^\text{s} \bv \dOm = \int_\Omega \boldsymbol{f}\cdot\bv \dOm + \int_\Neumann \bT\cdot\bv \dS \quad \forall \bv \in V_0\\
-# \text{and} \int_\Omega \bsig_{zz}[u,\varepsilon_{zz}] \dOm = F_z\\
+# \text{and} \int_\Omega \sigma_{zz}[u,\varepsilon_{zz}] \dOm = F_z\\
 # \end{align*}
 #
 # The last condition can also be written in a weak form using the real test constant $\widehat{\varepsilon}_{zz}$ as:
 # \begin{align*}
-# \int_\Omega \bsig_{zz}[u,\varepsilon_{zz}]\widehat{\varepsilon}_{zz} \dOm &= F_z\widehat{\varepsilon}_{zz} \quad \forall \widehat{\varepsilon}_{zz}\in\RR \\
-# \Rightarrow \quad \int_\Omega \bsig_{zz}[u,\varepsilon_{zz}]\widehat{\varepsilon}_{zz} \dOm &= \int_\Omega \dfrac{F_z}{S}\widehat{\varepsilon}_{zz} \dOm \quad \forall \widehat{\varepsilon}_{zz}\in\RR
+# \int_\Omega \sigma_{zz}[u,\varepsilon_{zz}]\widehat{\varepsilon}_{zz} \dOm &= F_z\widehat{\varepsilon}_{zz} \quad \forall \widehat{\varepsilon}_{zz}\in\RR \\
+# \Rightarrow \quad \int_\Omega \sigma_{zz}[u,\varepsilon_{zz}]\widehat{\varepsilon}_{zz} \dOm &= \int_\Omega \dfrac{F_z}{S}\widehat{\varepsilon}_{zz} \dOm \quad \forall \widehat{\varepsilon}_{zz}\in\RR
 # \end{align*}
 # where $S=|\Omega|$ is the area of the 2D domain.
 #
@@ -244,18 +244,18 @@ S = fem.assemble_scalar(fem.form(1 * dx))
 
 
 a_form = ufl.inner(sigma(du, dezz), eps(u_, ezz_)) * dx
-L_form = Fz / S * ezz_ * dx - ufl.dot(f * x, u_) * dx
+L_form = Fz / S * ezz_ * dx + ufl.dot(f * x, u_) * dx
 a_blocked = ufl.extract_blocks(a_form)
 L_blocked = ufl.extract_blocks(L_form)
 
 # %% [markdown]
-# We apply smooth contact conditions on the vertical $y=0$ (facet tag `2`) and the horizontal $x=0$ (facet tag `1`) boundaries.
+# We apply smooth contact conditions on the vertical $x=0$ (facet tag `2`) and the horizontal $y=0$ (facet tag `1`) boundaries.
 
 # %%
 Vx, _ = V.sub(0).collapse()
 Vy, _ = V.sub(1).collapse()
 bottom_dofsy = fem.locate_dofs_topological((V.sub(1), Vy), gdim - 1, facets.find(1))
-top_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2))
+left_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(2))
 
 # used for post-processing
 bottom_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find(1))[1]
@@ -263,7 +263,7 @@ bottom_dofsx = fem.locate_dofs_topological((V.sub(0), Vx), gdim - 1, facets.find
 u0x = fem.Function(Vx)
 u0y = fem.Function(Vy)
 bcs = [
-    fem.dirichletbc(u0x, top_dofsx, V.sub(0)),
+    fem.dirichletbc(u0x, left_dofsx, V.sub(0)),
     fem.dirichletbc(u0y, bottom_dofsy, V.sub(1)),
 ]
 
@@ -280,7 +280,7 @@ u, ezz = problem.solve()
 # We check that the computed resultant force indeed corresponds to the applied value.
 
 # %%
-print("Vertical strain", ezz)
+print("Vertical strain", ezz.x.array[0])
 print(
     "Computed resultant force",
     fem.assemble_scalar(fem.form(sigma(u, ezz)[2, 2] * dx)),
@@ -307,7 +307,7 @@ components = {"xx": 0, "yy": 4, "xy": 1, "zz": 8}
 for i, comp in enumerate(["xx", "yy", "xy", "zz"]):
     pl = pyvista.Plotter()
     pl.window_size = (400, 400)
-    title = f"Stress-{comp} [MPa]"
+    title = f"Stress-{comp}"
     sig_grid.cell_data[title] = sig.sub(components[comp]).collapse().x.array
     pl.add_mesh(
         sig_grid,

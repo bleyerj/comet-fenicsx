@@ -76,7 +76,7 @@
 #
 # ### Problem position
 #
-# We consider a simple 1D bound constrained problem which arises from the use of *phase-field* or *damage gradient* models of brittle fracture {cite:p}`bourdin2000numerical,pham2011gradient`. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the $\text{AT1}$ model, the fracture energy is written as:
+# We consider a simple 1D bound-constrained problem which arises from the use of *phase-field* or *damage gradient* models of brittle fracture {cite:p}`bourdin2000numerical,pham2011gradient`. In such methods, we simulate the propagation of cracks by minimizing a total energy consisting of an elastic and a fracture energy. When using one of the classical models of the phase-field approach, namely the $\text{AT1}$ model, the fracture energy is written as:
 # ```{math}
 # :label: AT1-Efra
 #
@@ -102,7 +102,7 @@
 #
 # In addition, in order to force localization around a given point, we will impose here the boundary condition $d(x)=d_0$ at $x=0$ where $d_0\in [0;1]$ is given. In this case, we can show that there exists a region $]-D;D[$ where $0 < d(x) < 1$ and with $d(x)=0$ outside. We can show in particular that we must have $d(\pm D) = \dfrac{\partial d}{\partial x}(\pm D) = 0$ at the transition points {cite:p}`pham2011gradient,pham2013onset`.
 #
-# In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective is null, that is:
+# In the inner region, since the bounds are not attained, the optimal solution is characterized by the fact that the first variation of the objective vanishes, that is:
 # \begin{align*}
 # D_d j(d;\widehat{d}) &= 0 \quad \forall \widehat{d}\\
 # \Leftrightarrow \int_{\Omega} \left(\widehat{d} + 2\ell_0^2 \dfrac{\partial d}{\partial x}\dfrac{\partial \widehat{d}}{\partial x}\right)\dOm &= 0 \quad \forall \widehat{d}

@@ -68,7 +68,7 @@ The yield condition is given by:
 
  f(\bsig) = \sqrt{\frac{3}{2}\boldsymbol{s}:\boldsymbol{s}} - \sigma_0 -Hp \leq 0
 ```
-where $\bs = \dev(\bsig)$ is the deviatoric stress and $p$ is the cumulated equivalent plastic strain which is such that $\dot{p} = \sqrt{\frac{2}{3}}\|\dot{\beps}^\text{p}\|$. We also introduce the von Mises equivalent stress:
+where $\bs = \dev(\bsig)$ is the deviatoric stress and $p$ is the cumulative equivalent plastic strain which is such that $\dot{p} = \sqrt{\frac{2}{3}}\|\dot{\beps}^\text{p}\|$. We also introduce the von Mises equivalent stress:
 ```{math}
 \sigeq =  \sqrt{\frac{3}{2}\boldsymbol{s}:\boldsymbol{s}}
 ```
@@ -145,7 +145,7 @@ where $\langle \star \rangle_+$ denotes the positive part of $\star$.
 
 The considered problem is that of a plane strain hollow cylinder of internal (resp. external) radius $R_i$ (resp. $R_e$) under internal uniform pressure $q$.
 
-We start by importing the relevant modules and define some geometrical constants.
+We start by importing the relevant modules and defining some geometrical constants.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -297,7 +297,7 @@ v = ufl.TrialFunction(V)
 u_ = ufl.TestFunction(V)
 ```
 
-Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function `as_3D_tensor` will enable to represent a 4 dimensional vector containing respectively $xx, yy, zz$ and $xy$ components as a 3D tensor:
+Before writing the variational form, we now define some useful functions which will enable performing the constitutive relation update using the return mapping procedure described earlier. First, the strain tensor will be represented in a 3D fashion by appending zeros on the out-of-plane components since, even if the problem is 2D, the plastic constitutive relation will involve out-of-plane plastic strains. The elastic constitutive relation is also defined and a function `as_3D_tensor` makes it possible to represent a 4 dimensional vector containing respectively $xx, yy, zz$ and $xy$ components as a 3D tensor:
 
 ```{code-cell} ipython3
 def eps(v):
@@ -343,7 +343,7 @@ In order to use a Newton-Raphson procedure to resolve global equilibrium, we als
 \CC_{\text{tang}}^{\text{alg}} = \CC - 3\mu\left(\dfrac{3\mu}{3\mu+H}-\beta\right)  \boldsymbol{n}_{\text{elas}} \otimes \boldsymbol{n}_{\text{elas}} - 2\mu\beta\mathbb{Dev}
 ```
 
-where $\mathbb{Dev}$ is the 4th-order tensor associated with the deviatoric operator (note that $\CC_{\text{tang}}^{\text{alg}}=\CC$ for elastic evolution). Contrary to what is done in {cite:p}`logg2012fenicsbook`, we do not store it as the components of a 4th-order tensor but it will suffice keeping track of the normal vector and the $\beta$ parameter related to the plastic strains. We instead define the function `sigma_tang` computing the tangent stress $\bsig_\text{tang} = \CC_{\text{tang}}^{\text{alg}}: \boldsymbol{\varepsilon}$ as follows:
+where $\mathbb{Dev}$ is the 4th-order tensor associated with the deviatoric operator (note that $\CC_{\text{tang}}^{\text{alg}}=\CC$ for elastic evolution). Contrary to what is done in {cite:p}`logg2012fenicsbook`, we do not store it as the components of a 4th-order tensor but it suffices to keep track of the normal vector and the $\beta$ parameter related to the plastic strains. We instead define the function `sigma_tang` computing the tangent stress $\bsig_\text{tang} = \CC_{\text{tang}}^{\text{alg}}: \boldsymbol{\varepsilon}$ as follows:
 
 ```{code-cell} ipython3
 def sigma_tang(eps):
@@ -356,12 +356,12 @@ def sigma_tang(eps):
 ```
 
 ```{attention}
-In this simple case, the stress expression from `constitutive_update` is explicit and can be represented using pure `ufl` expressions. Hence, we could use this nonlinear expression in the nonlinear residual and use automatic differentiation to compute directly the corresponding tangent form. Here, we voluntarily do differently, as a pedagogical way towards more complex constitutive models for which the stress expression is no longer explicit. In these cases, the stress and tangent stiffness have to be formally represented as quadrature points and the `constitutive_update` provides the corresponding values at quadrature points.
+In this simple case, the stress expression from `constitutive_update` is explicit and can be represented using pure `ufl` expressions. Hence, we could use this nonlinear expression in the nonlinear residual and use automatic differentiation to compute directly the corresponding tangent form. Here, we deliberately proceed differently, as a pedagogical way towards more complex constitutive models for which the stress expression is no longer explicit. In these cases, the stress and tangent stiffness have to be formally represented as quadrature functions and the `constitutive_update` provides the corresponding values at quadrature points.
 ```
 
 ### Global problem and custom Newton-Raphson procedure
 
-We now are in position to define the nonlinear residual variational form and the corresponding tangent bilinear form to be used in a global Newton-Raphson scheme. Each iteration will require establishing equilibrium by driving to zero the residual between the internal forces associated with the current stress state `sig` and the external force vector. Because we use `Quadrature` elements a custom integration measure `dx` must be defined to match the quadrature degree and scheme used by the Quadrature elements.
+We are now in position to define the nonlinear residual variational form and the corresponding tangent bilinear form to be used in a global Newton-Raphson scheme. Each iteration will require establishing equilibrium by driving to zero the residual between the internal forces associated with the current stress state `sig` and the external force vector. Because we use `Quadrature` elements a custom integration measure `dx` must be defined to match the quadrature degree and scheme used by the Quadrature elements.
 
 ```{code-cell} ipython3
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets)
@@ -409,7 +409,7 @@ class CustomLinearProblem(fem.petsc.LinearProblem):
         ----------
         u : dolfinx.fem.Function, optional
             For non-zero Dirichlet bcs u_D, use this function to assemble rhs with the value u_D - u_{bc}
-            where u_{bc} is the value of the given u at the corresponding. Typically used for custom Newton methods
+            where u_{bc} is the value of the given u at the corresponding dof. Typically used for custom Newton methods
             with non-zero Dirichlet bcs.
         """
 

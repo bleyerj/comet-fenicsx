@@ -33,9 +33,9 @@ This tour bears similarities with the [](/tours/beams/linear_truss/linear_truss.
 
 ## Beam kinematics
 
-The variational formulation for 3D beams requires to distinguish between motion along the beam direction and along both perpendicular directions. These two directions often correspond to principal directions of inertia and distinguish between strong and weak bending directions. The user must therefore specify this local orientation frame throughout the whole structure. In this example, we will first compute the vector $\boldsymbol{t}$ tangent to the beam direction, and two perpendicular directions $\boldsymbol{a}_1$ and $\boldsymbol{a}_2$. $\boldsymbol{a}_1$ will always be perpendicular to $t$ and the vertical direction, while $\boldsymbol{a}_2$ will be such that $(\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)$ is a direct orthonormal frame.
+The variational formulation for 3D beams requires distinguishing between motion along the beam direction and along both perpendicular directions. These two directions often correspond to principal directions of inertia and distinguish between strong and weak bending directions. The user must therefore specify this local orientation frame throughout the whole structure. In this example, we will first compute the vector $\boldsymbol{t}$ tangent to the beam direction, and two perpendicular directions $\boldsymbol{a}_1$ and $\boldsymbol{a}_2$. $\boldsymbol{a}_1$ will always be perpendicular to $t$ and the vertical direction, while $\boldsymbol{a}_2$ will be such that $(\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)$ is a direct orthonormal frame.
 
-Classical Euler-Bernoulli beam theory would typically require $C^1$-continuous interpolation of the displacement field, using Hermite polynomials for instance. Such discretization scheme is unfortunately not available natively in `dolfinx`. Instead, we will consider a Timoshenko beam model with St-Venant uniform torsion theory for the torsional part. The beam kinematics will then be described by a 3D displacement field $\boldsymbol{u}$ and an independent 3D rotation field $\boldsymbol{\theta}$, that is 6 degrees of freedom at each point. $(u_t,u_1,u_2)$ will respectively denote the displacement components in the section local frame $(\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)$. Similarly, $\theta_1$ and $\theta_2$ will denote the section rotations about the two section axes whereas $\theta_t$ is the twist angle.
+Classical Euler-Bernoulli beam theory would typically require $C^1$-continuous interpolation of the displacement field, using Hermite polynomials for instance. Such a discretization scheme is unfortunately not available natively in `dolfinx`. Instead, we will consider a Timoshenko beam model with Saint-Venant uniform torsion theory for the torsional part. The beam kinematics will then be described by a 3D displacement field $\boldsymbol{u}$ and an independent 3D rotation field $\boldsymbol{\theta}$, that is 6 degrees of freedom at each point. $(u_t,u_1,u_2)$ will respectively denote the displacement components in the section local frame $(\boldsymbol{t}, \boldsymbol{a}_1, \boldsymbol{a}_2)$. Similarly, $\theta_1$ and $\theta_2$ will denote the section rotations about the two section axes whereas $\theta_t$ is the twist angle.
 
 The beam strains are given by (straight beam with constant local frame):
 
@@ -45,7 +45,7 @@ The beam strains are given by (straight beam with constant local frame):
     $\gamma_2 = \dfrac{du_2}{ds}+\theta_1$.
 * the **torsional strain**: $\omega = \dfrac{d\theta_t}{ds}$.
 
-where $\dfrac{dv}{ds} = \nabla v \cdot t$ is the tangential gradient. Associated with these generalized strains are the corresponding generalized stresses:
+where $\dfrac{dv}{ds} = \nabla v \cdot \boldsymbol{t}$ is the tangential gradient. Associated with these generalized strains are the corresponding generalized stresses:
 
 * the **normal force** $N$
 * the **bending moments** $M_1$ and $M_2$
@@ -75,7 +75,7 @@ where $S$ is the cross-section area, $E$ the material Young modulus and $G$ the 
 
 The 3D beam variational formulation finally reads as: Find $(\boldsymbol{u},\boldsymbol{\theta})\in V$ such that:
 
-$$\int_S (N\widehat{\delta}+Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2+M_T\widehat{\omega}+M_1\widehat{\chi}_1+M_2\widehat{\chi}_2)dS = \int \boldsymbol{f}\cdot\widehat{\boldsymbol{u}}dS \quad \forall (\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\in V$$
+$$\int_L (N\widehat{\delta}+Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2+M_T\widehat{\omega}+M_1\widehat{\chi}_1+M_2\widehat{\chi}_2)ds = \int_L \boldsymbol{f}\cdot\widehat{\boldsymbol{u}}ds \quad \forall (\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})\in V$$
 
 where we considered only a distributed loading $\boldsymbol{f}$ and where $\widehat{\delta},\ldots,\widehat{\chi}_2$ are the generalized strains associated with test functions $(\widehat{\boldsymbol{u}},\widehat{\boldsymbol{\theta}})$.
 
@@ -93,7 +93,7 @@ from dolfinx import fem, io
 import dolfinx.fem.petsc
 ```
 
-We generate the mesh (`domain`) using the `Gmsh` Python API.
+We generate the mesh (`domain`) using the `Gmsh` Python API by turning a circular dome into an elliptic one.
 
 ```{code-cell} ipython3
 :tags: [hide-input, hide-output]
@@ -137,10 +137,7 @@ for j in range(1, M + 1):
     )
     in_lines = out[::4]
 
-# Coherence (remove duplicate entities and ensure topological consistency)
-# gmsh.model.occ.dilate(entities, 0.0, 0.0, 0.0, 1, 0.1, 1)
-# gmsh.model.occ.synchronize()
-# Save the mesh
+
 gmsh.model.occ.remove_all_duplicates()
 gmsh.model.occ.synchronize()
 lines = gmsh.model.get_entities(1)
@@ -204,7 +201,7 @@ GS1 = kappa * G * S
 GS2 = kappa * G * S
 ```
 
-We now consider a mixed $\mathbb{P}_1/\mathbb{P}_1$-Lagrange interpolation for the displacement and rotation fields. The variational form is built using a function `generalized_strains` giving the vector of six generalized strains as well as a function `generalized_stresses` which computes the dot product of the strains with the above-mentioned constitutive matrix (diagonal here). Note that since the 1D beams are embedded in an ambient 3D space, the gradient operator has shape (3,), we therefore define a tangential gradient operator `tgrad` by taking the dot product with the local tangent vector $t$.
+We now consider a mixed $\mathbb{P}_1/\mathbb{P}_1$-Lagrange interpolation for the displacement and rotation fields. The variational form is built using a function `generalized_strains` giving the vector of six generalized strains as well as a function `generalized_stresses` which computes the dot product of the strains with the above-mentioned constitutive matrix (diagonal here). Note that since the 1D beams are embedded in an ambient 3D space, we define a tangential gradient operator `tgrad` by taking the dot product with the local tangent vector $t$.
 
 Finally, similarly to Reissner-Mindlin plates, shear-locking issues might arise in the thin beam limit. To avoid this, reduced integration is performed on the shear part $Q_1\widehat{\gamma}_1+Q_2\widehat{\gamma}_2$ of the variational form using a one-point rule.
 
@@ -244,9 +241,7 @@ def generalized_stresses(u, theta):
 Sig = generalized_stresses(du, dtheta)
 Eps_ = generalized_strains(u_, theta_)
 
-dx_shear = ufl.dx(
-    scheme="default", metadata={"quadrature_scheme": "default", "quadrature_degree": 0}
-)
+dx_shear = ufl.dx(metadata={"quadrature_degree": 0})
 k_form = (
     sum([Sig[i] * Eps_[i] * ufl.dx for i in [0, 3, 4, 5]])
     + (Sig[1] * Eps_[1] + Sig[2] * Eps_[2]) * dx_shear
@@ -318,10 +313,8 @@ plotter.add_mesh(grid, show_edges=True, line_width=5, scalars="Bending_moments")
 plotter.show()
 ```
 
-## Attention
-
 ```{attention}
-- The $\mathbb{P}_1-\mathbb{P}_1$ discretization choice made here might be too poor for achieving a decent error with a moderate mesh size. Increasing the order of interpolation, e.g. for the displacement $\boldsymbol{u}$ is obviously possible but the integration degree for the reduced integration measure `dx_shear` must be adapted to this case.
+- The $\mathbb{P}_1/\mathbb{P}_1$ discretization choice made here might be too poor for achieving a decent error with a moderate mesh size. Increasing the order of interpolation, e.g. for the displacement $\boldsymbol{u}$ is obviously possible but the integration degree for the reduced integration measure `dx_shear` must be adapted to this case.
 
 - To add concentrated forces, one can use the `dS` measure with appropriate tags or follow the strategy hinted in [](/tours/beams/linear_truss/linear_truss.md).
 ```

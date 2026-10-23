@@ -129,7 +129,7 @@ The same hierarchy (edge interiors first, then corners fixed by a Dirichlet cond
 
 ### Periodic foam cell
 
-We consider a cell of size $a=1$ with a spherical pore of radius $R=0.6\,a$ centered in the cell. Since $R > a/2$, the pore cuts every face of the cube along a circular window of radius $\sqrt{R^2-a^2/4} \approx 0.33\,a$, through which it connects to the pores of the six neighbouring cells. The remaining solid is an open-cell foam made of curved struts along the cube edges, meeting at the cube vertices.
+We consider a cell of size $a=1$ with a spherical pore of radius $R=0.6\,a$ centered in the cell. Since $R > a/2$, the pore cuts every face of the cube along a circular window of radius $\sqrt{R^2-a^2/4} \approx 0.33\,a$, through which it connects to the pores of the six neighboring cells. The remaining solid is an open-cell foam made of curved struts along the cube edges, meeting at the cube vertices.
 
 Periodic meshing with `gmsh` requires opposite faces with identical topology. We build one octant of the cell, $[0, a/2]^3$ minus the pore, and mirror it with respect to the three mid-planes. The `fragment` operation glues the eight copies into a conforming geometry, and `setPeriodic` makes the surface meshes of opposite faces identical, so that each slave node has a matching master node.
 

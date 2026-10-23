@@ -17,7 +17,7 @@
 # ```{admonition} Objectives
 # :class: objectives
 #
-# This tutorial demonstrates how to formulate a cohesive zone model (CZM) involving two subdomains connected by a cohesive interface. Contrary to the previous tour on [](/tours/interfaces/intrinsic_czm/intrinsic_czm.md) which uses a Discontinuous Galerkin formulation everywhere (*case (a)*), discontinuities modeled as CZM are here considered at the interface only. This prevents the use of a single continuous function space across the whole mesh and requires instead to work with **disconnected submeshes** and mixed Continuous Galerkin interpolation (*case (b)*).$
+# This tutorial demonstrates how to formulate a cohesive zone model (CZM) involving two subdomains connected by a cohesive interface. Contrary to the previous tour on [](/tours/interfaces/intrinsic_czm/intrinsic_czm.md) which uses a Discontinuous Galerkin formulation everywhere (*case (a)*), discontinuities modeled as CZM are here considered at the interface only. This prevents the use of a single continuous function space across the whole mesh and requires instead working with **disconnected submeshes** and mixed Continuous Galerkin interpolation (*case (b)*).$
 # \newcommand{\bu}{\boldsymbol{u}}
 # \newcommand{\bv}{\boldsymbol{v}}
 # \newcommand{\bn}{\boldsymbol{n}}
@@ -164,6 +164,7 @@ interface_mesh, interface_cell_map, _, _ = dolfinx.mesh.create_submesh(
 # Each submesh is plotted individually:
 
 # %%
+pyvista.set_jupyter_backend("static")
 plotter = pyvista.Plotter(off_screen=True)
 grid1 = pyvista.UnstructuredGrid(*dolfinx.plot.vtk_mesh(subdomain1))
 plotter.add_mesh(grid1, show_edges=True, color="gold")
@@ -335,7 +336,7 @@ v1, v2 = ufl.TestFunctions(W)
 du1, du2 = ufl.TrialFunctions(W)
 
 # %% [markdown]
-# For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non zero only at the interface. This space will not be used for defining the weak forms.
+# For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non-zero only at the interface. This space will not be used for defining the weak forms.
 
 # %%
 V = fem.functionspace(domain, ("DG", 1, (tdim,)))  # for post-processing only
@@ -351,7 +352,7 @@ d_prev = fem.Function(V_int, name="Previous_interfacial_damage")
 d_old = fem.Function(V_int, name="Interfacial_damage_old")
 
 # %% [markdown]
-# We can now define the expression for the interfacial damage based on the effective opening $\delta$. The latter involves $\jump{\bu}$ and the interface normal. Since $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$, we need the normal $\bn^{(1)\to(2)}$ from subdomain 1 to subdomain 2. This is `n("+")` since subdomain 1 is on `"+"` side of the interface and the facet normal points outwards the cell.
+# We can now define the expression for the interfacial damage based on the effective opening $\delta$. The latter involves $\jump{\bu}$ and the interface normal. Since $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$, we need the normal $\bn^{(1)\to(2)}$ from subdomain 1 to subdomain 2. This is `n("+")` since subdomain 1 is on the `"+"` side of the interface and the facet normal points outwards the cell.
 
 # %%
 n1_to_2 = ufl.FacetNormal(domain)("+")
@@ -412,8 +413,10 @@ facet_interp = fem.form(
 
 # %%
 Uimp = fem.Constant(domain, (1.0, 0.0))
-left_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(1))
-right_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(2))
+left_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(LEFT_TAG))
+right_dofs = fem.locate_dofs_topological(
+    V1, fdim, subdomain1_facet_tags.find(RIGHT_TAG)
+)
 
 bcs = [
     fem.dirichletbc(np.zeros((tdim,)), left_dofs, V1),

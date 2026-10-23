@@ -237,10 +237,10 @@ def create_piecewise_constant_field(domain, cell_markers, property_dict, name=No
 
 
 E = create_piecewise_constant_field(
-    domain, cells, {1: 50e3, 2: 210e3}, name="YoungModulus"
+    domain, cells, {MATRIX_TAG: 50e3, INCL_TAG: 210e3}, name="YoungModulus"
 )
 nu = create_piecewise_constant_field(
-    domain, cells, {1: 0.2, 2: 0.3}, name="PoissonRatio"
+    domain, cells, {MATRIX_TAG: 0.2, INCL_TAG: 0.3}, name="PoissonRatio"
 )
 
 lmbda = E * nu / (1 + nu) / (1 - 2 * nu)

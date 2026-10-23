@@ -81,7 +81,7 @@ where $I_1 = \tr(\bC) = \tr(\bF\T\bF)$ and $J = \det\bF$.
 
 ## Implementation
 
-We load the relevant modules and useful functions and setup the corresponding box mesh. In the following, we will use hexahedra of degree 1.
+We load the relevant modules and useful functions and set up the corresponding box mesh. In the following, we will use hexahedra of degree 1.
 
 ```{code-cell} ipython3
 import numpy as np

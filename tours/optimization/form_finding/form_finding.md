@@ -40,13 +40,13 @@ This tour builds upon concepts seen in the [](/tours/beams/linear_truss/linear_t
 
 ## Introduction
 
-Shells and gridshells are most efficient when they carry their loads through membrane forces only, without bending. For a given loading, finding such a *funicular* shape is called *form finding*. A classical approach, used by Antoni Gaudí, Heinz Isler or Frei Otto  {cite:p}`liddell2015frei`, relies on hanging models: a net or a fabric hanging under its own weight only works in tension and, once inverted, gives a shape working in pure compression under the same loading.
+Shells and gridshells are most efficient when they carry their loads through membrane forces only, without bending. For a given loading, finding such a *funicular* shape is called *form finding*. A classical approach, used by Antoni Gaudí, Heinz Isler or Frei Otto {cite:p}`liddell2015frei`, relies on hanging models: a net or a fabric hanging under its own weight only works in tension and, once inverted, gives a shape working in pure compression under the same loading.
 
 ```{figure} https://ars.els-cdn.com/content/image/1-s2.0-S2214399815300011-gr2.jpg
 :width: 400px
 :align: center
 
-Final Hanging chain model for Mannheim Multihalle, taken from {cite:p}`liddell2015frei`.
+Hanging chain model of the Mannheim Multihalle, taken from {cite:p}`liddell2015frei`.
 ```
 
 The *force density method* {cite:p}`schek1974force` is a numerical counterpart of these hanging models. It applies to networks of bars connected at nodes, some of which are fixed supports. It is widely used for the design of cable nets, membranes and gridshells, as it reduces form finding to the solution of a linear system.

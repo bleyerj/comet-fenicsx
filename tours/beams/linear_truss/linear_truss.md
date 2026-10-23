@@ -67,7 +67,7 @@ from dolfinx import fem, io, plot
 import dolfinx.fem.petsc
 ```
 
-We create the truss domain with the `Gmsh` Python API. Importantly, we generate a 1D mesh and add physical groups for nodes: `tag=1` for the left and right supports and `tag=2` for the bottom nodes for applied loading.
+We create the truss domain with the `Gmsh` Python API. Importantly, we generate a 1D mesh and add physical groups for nodes: `tag=1` for the loaded bottom nodes and `tag=2`  for the left and right supports.
 
 ```{code-cell} ipython3
 :tags: [hide-input]
@@ -129,8 +129,8 @@ lines = (
 )
 geom.synchronize()
 
-for l in lines:
-    gmsh.model.mesh.set_transfinite_curve(l, 2)
+for ll in lines:
+    gmsh.model.mesh.set_transfinite_curve(ll, 2)
 gmsh.model.add_physical_group(0, bottom_points, 1)
 gmsh.model.add_physical_group(0, [left] + [right], 2)
 gmsh.model.add_physical_group(1, bottom_lines, 1)
@@ -138,7 +138,6 @@ gmsh.model.add_physical_group(
     1, top_lines + vertical_lines + right_diagonal_lines + left_diagonal_lines, 2
 )
 gmsh.model.mesh.generate(dim=1)
-gmsh.write("truss.msh")
 
 mesh_data = io.gmsh.model_to_mesh(gmsh.model, MPI.COMM_WORLD, 0, gdim=2)
 domain = mesh_data.mesh
@@ -155,7 +154,7 @@ tdim = domain.topology.dim
 print(f"Geometrical dimension = {gdim}")
 print(f"Topological dimension = {tdim}")
 
-V = fem.functionspace(domain, ("CG", 1, (gdim,)))
+V = fem.functionspace(domain, ("P", 1, (gdim,)))
 Vv = fem.functionspace(domain, ("DG", 0, (gdim,)))
 ```
 
@@ -172,7 +171,7 @@ t = fem.Function(Vv, name="Tangent_vector")
 t.interpolate(fem.Expression(t_ufl, Vv.element.interpolation_points))
 ```
 
-To apply point loads on the truss nodes, it will be more convenient to define a piecewise linear function `F` and set the corresponding degrees of freedom with the corresponding nodal forces. In this case, we apply vertical downwards concentrated forces of intensity 1 on the bottom nodes which we retrieve from the facet tag `1`. We also retrieve the left and right dofs for applying Dirichlet boundary conditions
+To apply point loads on the truss nodes, it will be more convenient to define a piecewise linear function `F` and set the corresponding degrees of freedom with the corresponding nodal forces. In this case, we apply vertical downwards concentrated forces of intensity 1 on the bottom nodes which we retrieve from the facet tag `1`. We also retrieve the left and right dofs for applying Dirichlet boundary conditions.
 
 ```{code-cell} ipython3
 F = fem.Function(V)
@@ -246,14 +245,11 @@ dx = ufl.Measure("dx", subdomain_data=markers)
 a_form = fem.form(ufl.inner(normal_force(du), strain(u_)) * dx)
 ```
 
-### Concentrated loadings
+### Concentrated loads
 
-To define concentrated loadings, several (undirect) approaches can be used, considering the fact that point measures are not available. A first possibility is to define a distributed loading which when assembled into a global nodal forces vectors approximates the corresponding concentrated loading. A second approach is to assemble an empty nodal force vector and set the corresponding entries to the wanted concentrated loading. Below, we follow this approach. However, it prevents us from using the `LinearProblem` class and we must instead write the assembly and solve steps manually using `petsc4py`.
+To define concentrated loads, several (indirect) approaches can be used, considering the fact that point measures are not available. A first possibility is to define a distributed loading which when assembled into a global nodal force vector approximates the corresponding concentrated loading. A second approach is to assemble an empty nodal force vector and set the corresponding entries to the wanted concentrated loading. Below, we follow this approach. However, it prevents us from using the `LinearProblem` class and we must instead write the assembly and solve steps manually using `petsc4py`.
 
 ```{code-cell} ipython3
-F0 = fem.Constant(domain, np.zeros((gdim,)))
-L_form = fem.form(ufl.dot(F0, u_) * dx)
-
 A = fem.petsc.assemble_matrix(a_form, bcs=bcs)
 A.assemble()
 b = fem.petsc.create_vector(V)
@@ -263,7 +259,7 @@ b.array[:] = F.x.array[:]
 
 ### Solving the problem
 
-We finally setup the linear solver and solve the problem.
+We finally set up the linear solver and solve the problem.
 
 ```{code-cell} ipython3
 solver = PETSc.KSP().create(domain.comm)
@@ -284,7 +280,7 @@ N = fem.Function(V0, name="Normal_force")
 N.interpolate(N_exp)
 ```
 
-AWe plot the resulting normal force on the (scaled) deformed configuration using `pyvista`.
+We plot the resulting normal force on the (scaled) deformed configuration using `pyvista`.
 
 ```{code-cell} ipython3
 :tags: [hide-input]

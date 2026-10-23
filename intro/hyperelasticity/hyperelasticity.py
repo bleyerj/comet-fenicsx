@@ -84,7 +84,7 @@
 #
 # ## Implementation
 #
-# We load the relevant modules and useful functions and setup the corresponding box mesh. In the following, we will use hexahedra of degree 1.
+# We load the relevant modules and useful functions and set up the corresponding box mesh. In the following, we will use hexahedra of degree 1.
 
 # %%
 import numpy as np
