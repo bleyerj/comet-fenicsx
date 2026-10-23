@@ -29,16 +29,12 @@
 # \newcommand{\dS}{\,\text{d}s}$
 # ```
 #
-# ```{image} force_density.png
-# :width: 700px
-# :align: center
-# ```
 #
 # ```{admonition} Download sources
 # :class: download
 #
-# * {Download}`Python script<./force_density.py>`
-# * {Download}`Jupyter notebook<./force_density.ipynb>`
+# * {Download}`Python script<./form_finding.py>`
+# * {Download}`Jupyter notebook<./form_finding.ipynb>`
 # ```
 #
 # ```{seealso}
@@ -302,7 +298,7 @@ for k in range(50):
         break
 
 # %% [markdown]
-# The resulting net hangs below the supports and all bars are in tension. Inverting the vertical coordinate gives the gridshell, in which the bars carry the opposite forces, i.e. pure compression under the same self-weight. Its rise is about $2.5$ for a plan about $8$ across.
+# The resulting net hangs below the supports and all bars are in tension. Inverting the vertical coordinate gives the gridshell, in which the bars carry the opposite forces, i.e. pure compression under the same self-weight. Its rise is about $2.3$ for a plan about $8$ across.
 #
 # ### Newton method
 #
@@ -358,9 +354,13 @@ grid.cell_data["Axial force"] = N.x.array[Q.dofmap.list[:num_bars, 0]]
 bars = grid.extract_surface(algorithm=None).tube(radius=0.04)
 
 plotter = pyvista.Plotter(window_size=(1200, 700))
-plotter.add_mesh(bars, scalars="Axial force", cmap="viridis", clim=(-1.0, 0.0))
+plotter.add_mesh(
+    bars,
+    scalars="Axial force",
+    cmap="viridis",
+)
 plotter.add_mesh(pyvista.Plane(i_size=10, j_size=10), color="lightgray", opacity=0.75)
-plotter.camera_position = [(9.5, -9.5, 4.0), (0, 0, 0.4), (0, 0, 1)]
+plotter.camera_position = [(9.5, -9.5, 5.0), (0, 0, 0.4), (0, 0, 1)]
 plotter.show()
 
 # %% [markdown]

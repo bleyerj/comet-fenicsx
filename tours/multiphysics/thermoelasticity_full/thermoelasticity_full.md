@@ -62,11 +62,10 @@ import gmsh
 from mpi4py import MPI
 import basix
 import ufl
-from dolfinx import fem, mesh, io, nls
+from dolfinx import fem, mesh, io
 from dolfinx.io.gmsh import model_to_mesh
 
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
 ```
 
 The mesh is then defined using the `gmsh` Python API.
@@ -145,7 +144,7 @@ Tref = fem.Function(V_t)
 Tref.x.petsc_vec.set(Tref_value)
 ```
 
-Dirichlet boundary conditions must be defined from the full FunctionSpace `V` using the appropriate subspaces that is `V.sub(0)` for the displacement (and `.sub(0)` or `.sub(1)` for the corresponding x/y component) and `V.sub(1)` for the temperature. Note also that in the following, we will in fact work with the temperature variation $\Theta = T-T_0$ as a field unkwown instead of the total temperature. Hence, the boundary condition on the hole boundary reads indeed as $\Delta T=+10^{\circ}\text{C}$ .
+Dirichlet boundary conditions must be defined from the full FunctionSpace `V` using the appropriate subspaces that is `V.sub(0)` for the displacement (and `.sub(0)` or `.sub(1)` for the corresponding x/y component) and `V.sub(1)` for the temperature. Note also that in the following, we will in fact work with the temperature variation $\Theta = T-T_0$ as a field unknown instead of the total temperature. Hence, the boundary condition on the hole boundary reads indeed as $\Delta T=+10^{\circ}\text{C}$ .
 
 ```{code-cell}
 inner_T_dofs = fem.locate_dofs_topological((V.sub(1), V_t), facets.dim, facets.find(1))
@@ -198,12 +197,12 @@ $$
 where the heat flux is related to the temperature gradient through the isotropic Fourier law: $\boldsymbol{q} = - k\nabla T$ with $k$ being the thermal conductivity. Using the entropy constitutive relation, the weak form of the heat equation reads as:
 
 $$
-\int_{\Omega}\rho T_0 \dot{s}\widehat{T}d\Omega - \int_{\Omega} \boldsymbol{q}\cdot\nabla \widehat{T}d\Omega= -\int_{\partial \Omega} \boldsymbol{q}\cdot\boldsymbol{n} \widehat{T} dS \quad \forall \widehat{T} \in V_T
+\int_{\Omega}\rho T_0 \dot{s}\widehat{T}d\Omega - \int_{\Omega} \boldsymbol{q}\cdot\nabla \widehat{T}d\Omega= -\int_{\partial \Omega} \boldsymbol{q}\cdot\boldsymbol{n} \widehat{T} \dS \quad \forall \widehat{T} \in V_T
 $$
 
 
 $$
-\int_{\Omega}\left(\rho C_{\varepsilon}\dot{T} + \kappa T_0\text{tr}(\dot{\boldsymbol{\varepsilon}})\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T
+\int_{\Omega}\left(\rho C_{\varepsilon}\dot{T} + \kappa T_0\text{tr}(\dot{\boldsymbol{\varepsilon}})\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} \dS \quad \forall \widehat{T} \in V_T
 $$
 
 with $V_T$ being the FunctionSpace for the temperature field.
@@ -213,7 +212,7 @@ The time derivatives are now replaced by an implicit Euler scheme, so that the p
 ```{math}
 :label: thermoelastic-thermal
 
-\int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T
+\int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} \dS \quad \forall \widehat{T} \in V_T
 ```
 
 where $T$ and $\boldsymbol{\varepsilon}$ correspond to the *unknown* fields at the time increment $n+1$. For more details on the time discretization of the heat equation, see also the [Heat equation FEniCS tutorial](https://jsdokken.com/dolfinx-tutorial/chapter2/heat_equation.html).
@@ -258,7 +257,7 @@ kappa = alpha * (3 * lmbda + 2 * mu)
 
 sig = (
     lmbda * ufl.tr(eps(u)) * ufl.Identity(gdim)
-    + mu * eps(u)
+    + 2 * mu * eps(u)
     - kappa * Theta * ufl.Identity(gdim)
 )
 j = -k * ufl.grad(Theta)
@@ -322,8 +321,8 @@ for i, dti in enumerate(np.diff(t)):
     T_out = v.sub(1).collapse()
     T_out.name = "Temperature variation"
 
-    # vtk_d.write_function(u_out, i)
-    # vtk_T.write_function(T_out, i)
+    vtk_d.write_function(u_out, i)
+    vtk_T.write_function(T_out, i)
 
     T_res[:, i + 1] = T_out.x.petsc_vec.array[bottom_T_dofs]
 
@@ -331,7 +330,7 @@ vtk_d.close()
 vtk_T.close()
 ```
 
-At each time increment, the variation of the temperature increase $\Theta$ along a line $(x, y=0)$ is saved in the `T_res` array. This evolution is plotted below. As expected, the temperature gradually increases over time, reaching eventually a uniform value of $+10^{\circ}\text{C}$ over infinitely long waiting time.
+At each time increment, the temperature variation $\Theta$ along a line $(x, y=0)$ is saved in the `T_res` array. This evolution is plotted below. As expected, the temperature gradually increases over time, reaching eventually a uniform value of $+10^{\circ}\text{C}$ over infinitely long waiting time.
 
 ```{code-cell}
 t_plot = t[:: Nincr // 10]

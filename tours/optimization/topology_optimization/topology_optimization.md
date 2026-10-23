@@ -210,14 +210,20 @@ def sigma(v, E):
 We define the boundary conditions and the loading. Since the forms involve the non-polynomial projection function, we fix the quadrature degree. It is important to use the same quadrature rule in the stiffness matrix and in the sensitivity forms so that the computed sensitivities are the exact derivatives of the discrete compliance.
 
 ```{code-cell} ipython3
-left_facets = mesh.locate_entities_boundary(domain, tdim - 1, lambda x: np.isclose(x[0], -L / 2))
+left_facets = mesh.locate_entities_boundary(
+    domain, tdim - 1, lambda x: np.isclose(x[0], -L / 2)
+)
 left_dofs = fem.locate_dofs_topological(V, tdim - 1, left_facets)
 bcs = [fem.dirichletbc(np.zeros(gdim), left_dofs, V)]
 
 load_facets = mesh.locate_entities_boundary(
-    domain, tdim - 1, lambda x: np.isclose(x[0], L / 2) & (np.abs(x[1] - H / 2) <= 0.05 + 1e-8)
+    domain,
+    tdim - 1,
+    lambda x: np.isclose(x[0], L / 2) & (np.abs(x[1] - H / 2) <= 0.05 + 1e-8),
 )
-facet_tags = mesh.meshtags(domain, tdim - 1, np.sort(load_facets), np.ones_like(load_facets))
+facet_tags = mesh.meshtags(
+    domain, tdim - 1, np.sort(load_facets), np.ones_like(load_facets)
+)
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facet_tags)
 dx = ufl.Measure("dx", domain=domain, metadata={"quadrature_degree": 4})
 
@@ -238,7 +244,11 @@ elasticity_problem = LinearProblem(
     ell,
     u=u,
     bcs=bcs,
-    petsc_options={"ksp_type": "preonly", "pc_type": "lu", "pc_factor_mat_solver_type": "mumps"},
+    petsc_options={
+        "ksp_type": "preonly",
+        "pc_type": "lu",
+        "pc_factor_mat_solver_type": "mumps",
+    },
     petsc_options_prefix="elasticity_",
 )
 ```
@@ -250,7 +260,9 @@ area = L * H
 q = ufl.TestFunction(V_rho)
 
 compliance = fem.form(ufl.dot(t, u) * ds(1))
-dcompliance = fem.form(-ufl.derivative(ufl.inner(sigma(u, E), epsilon(u)) * dx, rho_tilde, q))
+dcompliance = fem.form(
+    -ufl.derivative(ufl.inner(sigma(u, E), epsilon(u)) * dx, rho_tilde, q)
+)
 volume = fem.form(rho_bar / area * dx)
 dvolume = fem.form(ufl.derivative(rho_bar / area * dx, rho_tilde, q))
 non_discreteness = fem.form(4 * rho_bar * (1 - rho_bar) / area * dx)
@@ -272,7 +284,9 @@ class HelmholtzFilter:
         self.rho_tilde = rho_tilde
         V_rho = rho_tilde.function_space
         p_, q_ = ufl.TrialFunction(V_rho), ufl.TestFunction(V_rho)
-        A_form = fem.form(r**2 * ufl.dot(ufl.grad(p_), ufl.grad(q_)) * ufl.dx + p_ * q_ * ufl.dx)
+        A_form = fem.form(
+            r**2 * ufl.dot(ufl.grad(p_), ufl.grad(q_)) * ufl.dx + p_ * q_ * ufl.dx
+        )
         self.A = fem.petsc.assemble_matrix(A_form)
         self.A.assemble()
         self.solver = PETSc.KSP().create(comm)

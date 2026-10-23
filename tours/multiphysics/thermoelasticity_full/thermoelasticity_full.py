@@ -258,7 +258,7 @@ kappa = alpha * (3 * lmbda + 2 * mu)
 
 sig = (
     lmbda * ufl.tr(eps(u)) * ufl.Identity(gdim)
-    + mu * eps(u)
+    + 2 * mu * eps(u)
     - kappa * Theta * ufl.Identity(gdim)
 )
 j = -k * ufl.grad(Theta)
