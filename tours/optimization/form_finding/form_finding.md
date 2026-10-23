@@ -30,8 +30,8 @@ $\newcommand{\bx}{\boldsymbol{x}}
 ```{admonition} Download sources
 :class: download
 
-* {Download}`Python script<./force_density.py>`
-* {Download}`Jupyter notebook<./force_density.ipynb>`
+* {Download}`Python script<./form_finding.py>`
+* {Download}`Jupyter notebook<./form_finding.ipynb>`
 ```
 
 ```{seealso}

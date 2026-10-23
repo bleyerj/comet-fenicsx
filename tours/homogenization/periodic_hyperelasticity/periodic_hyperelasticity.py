@@ -2,6 +2,7 @@
 # jupyter:
 #   jupytext:
 #     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
