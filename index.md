@@ -132,6 +132,13 @@ Many of the covered topics are standard and relatively easy to implement. Others
 
       <img src="images/blob.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
+
+      ```{grid-item-card} [**Optimization**]{.pst-color-primary}
+      :link: tours/optimization/contents.html
+
+      <img src="tours/optimization/topology_optimization/topology_optimization.gif" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      ```
+
     ```
 
   ```

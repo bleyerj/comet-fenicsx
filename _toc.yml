@@ -55,6 +55,7 @@ parts:
   - file: tours/optimization/contents
     sections:
     - file: tours/optimization/form_finding/form_finding.md
+    - file: tours/optimization/topology_optimization/topology_optimization.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets/mark_facets.md
