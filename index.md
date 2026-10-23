@@ -85,6 +85,12 @@ Many of the covered topics are standard and relatively easy to implement. Others
       <img src="images/linear_problems.svg" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
+      ```{grid-item-card} [**Multiphysics**]{.pst-color-primary}
+      :link: tours/multiphysics/contents.html
+
+      <img src="images/multiphysics.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      ```
+
       ```{grid-item-card} [**Dynamics problems**]{.pst-color-primary}
       :link: tours/dynamics/contents.html
       

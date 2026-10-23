@@ -48,7 +48,7 @@
 #
 # ```{seealso}
 #
-# Static elastic computation with thermal strains is treated in the [](/tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md) tour.
+# Static elastic computation with thermal strains is treated in the [](/tours/multiphysics/thermoelasticity_weak/thermoelasticity_weak.md) tour.
 # ```
 #
 # ## Problem position
