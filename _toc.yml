@@ -52,6 +52,9 @@ parts:
     sections:
     - file: tours/shells/linear_shell/linear_shell.md
     - file: tours/shells/I_beam_gmsh/I_beam_gmsh.md
+  - file: tours/optimization/contents
+    sections:
+    - file: tours/optimization/form_finding/form_finding.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets/mark_facets.md
