@@ -3,7 +3,7 @@
 
 format: jb-book
 root: index
-title: Numerical tours of Computational Mechanics using FEniCSx
+title: Numerical Tours of Computational Mechanics with FEniCSx
 parts:
 - caption: Introduction
   chapters:
@@ -17,8 +17,10 @@ parts:
     - file: tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md
     - file: tours/linear_problems/axisymmetric_elasticity/axisymmetric_elasticity.md
     - file: tours/linear_problems/generalized_plane_strain/generalized_plane_strain.md
-    - file: tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md
-    - file: tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md
+  - file: tours/multiphysics/contents
+    sections:
+    - file: tours/multiphysics/thermoelasticity_weak/thermoelasticity_weak.md
+    - file: tours/multiphysics/thermoelasticity_full/thermoelasticity_full.md
   - file: tours/dynamics/contents
     sections:
     - file: tours/dynamics/elastodynamics_newmark/elastodynamics_newmark.md
@@ -30,9 +32,11 @@ parts:
   - file: tours/eigenvalue_problems/contents
     sections:
     - file: tours/eigenvalue_problems/buckling_3d_solid/buckling_3d_solid.md
+    - file: tours/eigenvalue_problems/bloch_waves/bloch_waves.md
   - file: tours/homogenization/contents
     sections:
     - file: tours/homogenization/periodic_elasticity/periodic_elasticity.md
+    - file: tours/homogenization/periodic_hyperelasticity/periodic_hyperelasticity.md
   - file: tours/interfaces/contents
     sections:
     - file: tours/interfaces/intrinsic_czm/intrinsic_czm.md
@@ -50,6 +54,10 @@ parts:
     sections:
     - file: tours/shells/linear_shell/linear_shell.md
     - file: tours/shells/I_beam_gmsh/I_beam_gmsh.md
+  - file: tours/optimization/contents
+    sections:
+    - file: tours/optimization/form_finding/form_finding.md
+    - file: tours/optimization/topology_optimization/topology_optimization.md
 - caption: Tips and tricks
   chapters:
   - file: tips/mark_facets/mark_facets.md

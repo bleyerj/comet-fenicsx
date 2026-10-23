@@ -1,13 +1,13 @@
 ---
 jupytext:
   cell_metadata_filter: -all
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   main_language: python
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 ---
 
 # Cohesive zone modeling restricted to an interface {far}`star`{far}`star`{far}`star`
@@ -15,7 +15,7 @@ jupytext:
 ```{admonition} Objectives
 :class: objectives
 
-This tutorial demonstrates how to formulate a cohesive zone model (CZM) involving two subdomains connected by a cohesive interface. Contrary to the previous tour on [](/tours/interfaces/intrinsic_czm/intrinsic_czm.md) which uses a Discontinuous Galerkin formulation everywhere (*case (a)*), discontinuities modeled as CZM are here considered at the interface only. This prevents from the use of a single continuous functions space across the whole mesh and requires instead to work with **disconnected submeshes** and mixed Continuous Galerkin interpolation (*case (b)*).$
+This tutorial demonstrates how to formulate a cohesive zone model (CZM) involving two subdomains connected by a cohesive interface. Contrary to the previous tour on [](/tours/interfaces/intrinsic_czm/intrinsic_czm.md) which uses a Discontinuous Galerkin formulation everywhere (*case (a)*), discontinuities modeled as CZM are here considered at the interface only. This prevents the use of a single continuous function space across the whole mesh and requires instead working with **disconnected submeshes** and mixed Continuous Galerkin interpolation (*case (b)*).$
 \newcommand{\bu}{\boldsymbol{u}}
 \newcommand{\bv}{\boldsymbol{v}}
 \newcommand{\bn}{\boldsymbol{n}}
@@ -25,9 +25,6 @@ This tutorial demonstrates how to formulate a cohesive zone model (CZM) involvin
 ```{image} CZM_mesh.svg
 :width: 800px
 :align: center
-```
-```{attention}
-This tour requires version `0.9.0` of FEniCSx.
 ```
 
 ```{admonition} Download sources
@@ -59,10 +56,10 @@ To do so, we will build a formulation involving the matrix and the inclusion sub
 
 ## Implementation
 
-For this problem, we need many utility functions which are implemented in a complementary {download}`utils.py` module.
+All the mixed-domain features needed for this tour, such as entity maps, transfer of mesh tags to submeshes, interpolation between a submesh and its parent mesh or the resolution of block linear systems, are directly available in `dolfinx`. We only define two small helper functions along the way.
 
 ```{code-cell} ipython3
-from IPython.display import clear_output, HTML
+from IPython.display import clear_output
 import numpy as np
 import matplotlib.pyplot as plt
 import gmsh
@@ -70,15 +67,9 @@ import pyvista
 from mpi4py import MPI
 import ufl
 import basix
+import dolfinx
 from dolfinx import fem, io
-import dolfinx.fem.petsc
-from utils import (
-    create_piecewise_constant_field,
-    BlockedLinearProblem,
-    interface_int_entities,
-    transfer_meshtags_to_submesh,
-    interpolate_submesh_to_parent,
-)
+from dolfinx.fem.petsc import LinearProblem
 ```
 
 ### Mesh and subdomains
@@ -90,8 +81,6 @@ For `gmsh`, there is no discontinuity between the matrix and the inclusion. Elem
 ```
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
@@ -126,13 +115,13 @@ def create_matrix_inclusion_mesh(L, W, R, hsize):
         gmsh.model.mesh.generate(gdim)
 
     partitioner = dolfinx.cpp.mesh.create_cell_partitioner(
-        dolfinx.mesh.GhostMode.shared_facet
+        dolfinx.mesh.GhostMode.shared_facet, 2
     )
-    domain, cells, facets = dolfinx.io.gmshio.model_to_mesh(
+    mesh_data = dolfinx.io.gmsh.model_to_mesh(
         gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim, partitioner=partitioner
     )
     gmsh.finalize()
-    return (domain, cells, facets)
+    return (mesh_data.mesh, mesh_data.cell_tags, mesh_data.facet_tags)
 ```
 
 We first create the mesh and define the different tags for identifying physical domains and interfaces.
@@ -154,7 +143,7 @@ tdim = domain.topology.dim
 fdim = tdim - 1
 ```
 
-We define three submeshes: two submeshes (of codim. 0) corresponding to the matrix and inclusion 2D domains and one submesh (of codim. 1) corresponding to the facet restriction on the interface.
+We define three submeshes: two submeshes (of codim. 0) corresponding to the matrix and inclusion 2D domains and one submesh (of codim. 1) corresponding to the facet restriction on the interface. Besides the submesh itself, `dolfinx.mesh.create_submesh` returns `EntityMap` objects relating the cells (resp. the vertices) of the submesh to the corresponding entities of the parent mesh `domain`. For the interface submesh, the cells of `interface_mesh` are thus related to facets of `domain`.
 
 ```{code-cell} ipython3
 subdomain2, subdomain2_cell_map, subdomain2_vertex_map, _ = dolfinx.mesh.create_submesh(
@@ -171,6 +160,7 @@ interface_mesh, interface_cell_map, _, _ = dolfinx.mesh.create_submesh(
 Each submesh is plotted individually:
 
 ```{code-cell} ipython3
+pyvista.set_jupyter_backend("static")
 plotter = pyvista.Plotter(off_screen=True)
 grid1 = pyvista.UnstructuredGrid(*dolfinx.plot.vtk_mesh(subdomain1))
 plotter.add_mesh(grid1, show_edges=True, color="gold")
@@ -183,65 +173,63 @@ plotter.view_xy()
 plotter.show()
 ```
 
-Now that we have defined submeshes, we need to transfer (facets) meshtags from those defined on the original domain to their subdomain counterpart.
+Now that we have defined submeshes, we need to transfer the facet mesh tags defined on the parent domain to their submesh counterparts. This is done with `dolfinx.mesh.transfer_meshtags_to_submesh`, which uses the vertex and cell entity maps of each submesh.
 
 ```{code-cell} ipython3
-subdomain1_facet_tags, subdomain1_facet_map = transfer_meshtags_to_submesh(
-    domain, facets, subdomain1, subdomain1_vertex_map, subdomain1_cell_map
+subdomain1_facet_tags = dolfinx.mesh.transfer_meshtags_to_submesh(
+    facets, subdomain1, subdomain1_vertex_map, subdomain1_cell_map
 )
-subdomain2_facet_tags, subdomain2_facet_map = transfer_meshtags_to_submesh(
-    domain, facets, subdomain2, subdomain2_vertex_map, subdomain2_cell_map
+subdomain2_facet_tags = dolfinx.mesh.transfer_meshtags_to_submesh(
+    facets, subdomain2, subdomain2_vertex_map, subdomain2_cell_map
 )
-```
-
-### Entity map and integration measures
-
-Similarly to the previous CZM tour, *entity maps* must be defined to link integration of quantities defined on the subdomains.
-
-```{code-cell} ipython3
-cell_imap = domain.topology.index_map(tdim)
-num_cells = cell_imap.size_local + cell_imap.num_ghosts
-domain_to_subdomain1 = np.full(num_cells, -1, dtype=np.int32)
-domain_to_subdomain1[subdomain1_cell_map] = np.arange(
-    len(subdomain1_cell_map), dtype=np.int32
-)
-domain_to_subdomain2 = np.full(num_cells, -1, dtype=np.int32)
-domain_to_subdomain2[subdomain2_cell_map] = np.arange(
-    len(subdomain2_cell_map), dtype=np.int32
-)
-
 subdomain1.topology.create_connectivity(fdim, tdim)
 subdomain2.topology.create_connectivity(fdim, tdim)
-
-facet_imap = domain.topology.index_map(facets.dim)
-num_facets = facet_imap.size_local + facet_imap.num_ghosts
-domain_to_interface = np.full(num_facets, -1)
-domain_to_interface[interface_cell_map] = np.arange(len(interface_cell_map))
 ```
 
-Before setting up the `entity_maps` dictionary, we need a specific treatment for integrating terms on the interface. The `interface_int_integration` manually defines integration quantities on the interface. Besides, interface terms seen from one specific subdomain only exist on one side. As the assembler complains about this, there is a specific tweak to map cells from one side of the interface to the other side, thereby modifying the `domain_to_subdomain` maps. Moreover, we also consistently switch the orientation of the facets so that cells in subdomain 1 correspond to the `"+"` side of the interface and cells in subdomain 2 to the `"-"` side.
+### Entity maps and integration measures
 
-```{note}
-Having a correct facet orientation does not really impact the results here as we do not distinguish between positive and negative opening of the cohesive zone in the formulation of the `effective_opening`. In case one wants to distinguish between positive and negative opening, an inconsistent facet orientation would produce incorrect results.
+Similarly to the previous CZM tour, *entity maps* are required to assemble forms involving functions defined on a different mesh than the integration domain. Here, all forms will be integrated over the parent `domain` while the unknown displacements and the interfacial damage live on the three submeshes. The `EntityMap` objects returned by `create_submesh` are passed directly to the forms through the `entity_maps` argument.
+
+```{code-cell} ipython3
+entity_maps = [interface_cell_map, subdomain1_cell_map, subdomain2_cell_map]
+```
+
+Integrating terms on the interface requires a specific treatment. Indeed, the interface is a set of interior facets of `domain`, each of them being shared by one cell of subdomain 1 and one cell of subdomain 2. For an interior facet integral, these two cells correspond to the `"+"` and `"-"` sides of the facet, but their ordering is arbitrary. We must therefore define the integration entities manually, i.e. a list of `(cell, local facet index)` pairs for both sides of each interface facet. These are first computed with `fem.compute_integration_domains` and then reordered so that cells of subdomain 1 always correspond to the `"+"` side and cells of subdomain 2 to the `"-"` side. Functions defined on subdomain 1 (resp. 2) must therefore only be restricted to the `"+"` (resp. `"-"`) side in the interface forms.
+
+````{note}
+Having a consistent facet orientation does not really impact the results here as we do not distinguish between positive and negative opening of the cohesive zone in the formulation of the `effective_opening`. In case one wants to distinguish between positive and negative opening, an inconsistent facet orientation would produce incorrect results.
 
 ```{image} facet_orientation.png
 :width: 700px
 :align: center
 ```
+````
 
 ```{code-cell} ipython3
-interface_entities, domain_to_subdomain1, domain_to_subdomain2 = interface_int_entities(
-    domain, interface_facets, domain_to_subdomain1, domain_to_subdomain2
-)
+def interface_int_entities(domain, interface_facets, plus_cells):
+    """Integration entities of an interface between two subdomains.
 
-entity_maps = {
-    interface_mesh: domain_to_interface,
-    subdomain1: domain_to_subdomain1,
-    subdomain2: domain_to_subdomain2,
-}
+    Returns the list of (cell, local facet index) pairs on both sides of
+    each interface facet, ordered such that cells in `plus_cells`
+    correspond to the "+" side.
+    """
+    tdim = domain.topology.dim
+    domain.topology.create_connectivity(tdim - 1, tdim)
+    domain.topology.create_connectivity(tdim, tdim - 1)
+    entities = fem.compute_integration_domains(
+        fem.IntegralType.interior_facet, domain.topology, interface_facets
+    ).reshape(-1, 4)
+    swap = ~np.isin(entities[:, 0], plus_cells)
+    entities[swap] = entities[swap][:, [2, 3, 0, 1]]
+    return entities.flatten()
+
+
+interface_entities = interface_int_entities(
+    domain, interface_facets, cells.find(MATRIX_TAG)
+)
 ```
 
-We are now in position to define the various integration measures. The key point here is that the `dInt` interface measure is defined using prescribed integration entities which have been defined earlier. This is done by passing them to `subdomain_data` as follows.
+We are now in position to define the various integration measures. The key point here is that the `dInt` interface measure is defined using the prescribed integration entities computed above. This is done by passing them to `subdomain_data` as follows.
 
 ```{code-cell} ipython3
 dx = ufl.Measure("dx", domain=domain, subdomain_data=cells)
@@ -258,15 +246,28 @@ dInt = ufl.Measure(
 We can check that the length of the interface is properly computed.
 
 ```{code-cell} ipython3
-Gamma = fem.assemble_scalar(fem.form(1 * dInt, entity_maps=entity_maps))
-print(f"Check that Gamma is such that {Gamma} ~ {np.pi*2*radius}")
+Gamma = fem.assemble_scalar(fem.form(1 * dInt))
+print(f"Check that Gamma is such that {Gamma} ~ {np.pi * 2 * radius}")
 ```
 
 ### Weak form definition
 
-We generate a piecewise constant field of elastic properties, as in the previous tour.
+We generate piecewise constant fields of elastic properties, as in the previous tour, see also [](/tips/piecewise_constant_field/piecewise_constant_field.md).
 
 ```{code-cell} ipython3
+def create_piecewise_constant_field(
+    domain, cell_markers, property_dict, name=None, default_value=0
+):
+    """Create a DG-0 field taking constant values {tag: value} on each subdomain."""
+    V0 = fem.functionspace(domain, ("DG", 0))
+    k = fem.Function(V0, name=name)
+    k.x.array[:] = default_value
+    for tag, value in property_dict.items():
+        cells = cell_markers.find(tag)
+        k.x.array[cells] = np.full_like(cells, value, dtype=np.float64)
+    return k
+
+
 E = create_piecewise_constant_field(domain, cells, {MATRIX_TAG: 3.09e3, INCL_TAG: 10e3})
 nu = create_piecewise_constant_field(domain, cells, {MATRIX_TAG: 0.25, INCL_TAG: 0.4})
 mu = E / (2.0 * (1.0 + nu))
@@ -307,14 +308,14 @@ def T(opening, d):
     return K_int * opening
 ```
 
-In the previous tour, it was possible to use `ufl.jump` to define $\jump{\bu}$. Here, we need to define it manually from two displacement fields `u1` and `u2` which live on two different subdomains. Here, we define $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$ where $(1)$ denotes subdomain 1 (the matrix) and $(2)$ denotes subdomain 2 (the inclusions). Note that we need to restrict quantities since we work with a facet measure. Although only one side exist for each subdomain, cells of a given subdomain from one side have been mapped to the other side, as discussed before. As a result, it does not really matter which side is used here. For consistency, we use the the `"+"` side for subdomain 1 and the `"-"` side for subdomain 2.
+In the previous tour, it was possible to use `ufl.jump` to define $\jump{\bu}$. Here, we need to define it manually from two displacement fields `u1` and `u2` which live on two different subdomains. Here, we define $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$ where $(1)$ denotes subdomain 1 (the matrix) and $(2)$ denotes subdomain 2 (the inclusions). Note that we need to restrict quantities since we work with a facet measure. Since each subdomain only exists on one side of the interface, the restriction is imposed by the ordering of the integration entities: we must use the `"+"` side for subdomain 1 and the `"-"` side for subdomain 2.
 
 ```{code-cell} ipython3
 def jump(u1, u2):
     return u2("-") - u1("+")
 ```
 
-We now define the relevant function spaces. As hinted before, the unknown $\bu$ will consist of two displacements $(\bu^{(1)},\bu^{(2)})$ respectively belonging to a continuous Lagrange space defined on subdomains 1 and 2. We use a `MixedFunctionSpace` for this, meaning that we will end up with a block system. For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non zero only at the interface.
+We now define the relevant function spaces. As hinted before, the unknown $\bu$ will consist of two displacements $(\bu^{(1)},\bu^{(2)})$ respectively belonging to a continuous Lagrange space defined on subdomains 1 and 2. We use a `MixedFunctionSpace` for this, meaning that we will end up with a block system.
 
 ```{code-cell} ipython3
 V1 = fem.functionspace(subdomain1, ("Lagrange", 1, (tdim,)))
@@ -326,7 +327,7 @@ v1, v2 = ufl.TestFunctions(W)
 du1, du2 = ufl.TrialFunctions(W)
 ```
 
-For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non zero only at the interface. This space will not be used for defining the weak forms.
+For easier post-processing, the computed displacement will be stored as a `DG` function, with jumps being non-zero only at the interface. This space will not be used for defining the weak forms.
 
 ```{code-cell} ipython3
 V = fem.functionspace(domain, ("DG", 1, (tdim,)))  # for post-processing only
@@ -342,7 +343,7 @@ d_prev = fem.Function(V_int, name="Previous_interfacial_damage")
 d_old = fem.Function(V_int, name="Interfacial_damage_old")
 ```
 
-We can now define the expression for the interfacial damage based on the effective opening $\delta$. The latter involves $\jump{\bu}$ and the interface normal. Since $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$ , we need the normal $\bn^{(1)\to(2)}$ from subdomain 1 to subdomain 2. This is `n("+")` since subdomain 1 is on `"+"` side of the interface and the facet normal points outwards the cell.
+We can now define the expression for the interfacial damage based on the effective opening $\delta$. The latter involves $\jump{\bu}$ and the interface normal. Since $\jump{\bu} = \bu^{(2)} - \bu^{(1)}$, we need the normal $\bn^{(1)\to(2)}$ from subdomain 1 to subdomain 2. This is `n("+")` since subdomain 1 is on the `"+"` side of the interface and the facet normal points outwards the cell.
 
 ```{code-cell} ipython3
 n1_to_2 = ufl.FacetNormal(domain)("+")
@@ -362,18 +363,18 @@ f = fem.Constant(domain, np.zeros((tdim,)))
 L = ufl.dot(f, v1) * dx(1) + ufl.dot(f, v2) * dx(2)
 ```
 
-Finally, we use `ufl.extract_blocks` to obtain the different blocks $\begin{bmatrix} \text{a}_{11} & \text{a}_{12}\\ \text{a}_{21} & \text{a}_{22}\end{bmatrix}$ of the bilinear form associated with $\bu^{(1)}$ and $\bu^{(2)}$. The blocked forms are then compiled by providing the entity maps.
+Finally, we use `ufl.extract_blocks` to obtain the different blocks $\begin{bmatrix} \text{a}_{11} & \text{a}_{12}\\ \text{a}_{21} & \text{a}_{22}\end{bmatrix}$ of the bilinear form associated with $\bu^{(1)}$ and $\bu^{(2)}$. These blocks will be compiled when defining the linear problem below.
 
 ```{code-cell} ipython3
-a_blocked_compiled = fem.form(ufl.extract_blocks(a), entity_maps=entity_maps)
-L_blocked_compiled = fem.form(ufl.extract_blocks(L), entity_maps=entity_maps)
+a_blocks = ufl.extract_blocks(a)
+L_blocks = ufl.extract_blocks(L)
 ```
 
-As in the previous tour, we need to evaluate expressions that live on the facet mesh. We follow the same approach as discussed in details in {ref}`facet:expressions:interpolation`.
+As in the previous tour, we need to evaluate expressions that live on the facet mesh. We follow the same approach as discussed in detail in {ref}`facet:expressions:interpolation`. Since `d_expr` involves functions defined on the interface mesh and on both subdomains, all entity maps are passed to the corresponding form.
 
 ```{code-cell} ipython3
-q_p = V_int.element.interpolation_points()
-weights = np.full(q_p.shape[0], 1.0)
+q_p = V_int.element.interpolation_points
+weights = np.full(q_p.shape[0], 1.0, dtype=dolfinx.default_scalar_type)
 q_el = basix.ufl.quadrature_element(
     interface_mesh.basix_cell(), scheme="custom", points=q_p, weights=weights
 )
@@ -383,7 +384,7 @@ dS_custom = ufl.Measure(
     "dS",
     domain=domain,
     metadata={
-        "quadrature_scheme": "custom",
+        "quadrature_rule": "custom",
         "quadrature_points": q_p,
         "quadrature_weights": weights,
     },
@@ -392,7 +393,7 @@ dS_custom = ufl.Measure(
 )
 
 facet_interp = fem.form(
-    1 / ufl.FacetArea(domain) * d_expr * ufl.avg(q_) * dS_custom,
+    1 / ufl.FacetArea(domain)("+") * d_expr * ufl.avg(q_) * dS_custom,
     entity_maps=entity_maps,
 )
 ```
@@ -403,8 +404,10 @@ Dirichlet boundary conditions are now defined. Note that they involve only subdo
 
 ```{code-cell} ipython3
 Uimp = fem.Constant(domain, (1.0, 0.0))
-left_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(1))
-right_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(2))
+left_dofs = fem.locate_dofs_topological(V1, fdim, subdomain1_facet_tags.find(LEFT_TAG))
+right_dofs = fem.locate_dofs_topological(
+    V1, fdim, subdomain1_facet_tags.find(RIGHT_TAG)
+)
 
 bcs = [
     fem.dirichletbc(np.zeros((tdim,)), left_dofs, V1),
@@ -412,54 +415,62 @@ bcs = [
 ]
 ```
 
-The imposed displacement is initialized with unitary values so as to define the virtual displacement fields `v_reac` to be used for measuring the reaction force on the boundary in a consistent manner based on the equilibrium residual $a(\bu,\bv_\text{read})-L(\bv_\text{reac})$.
+The imposed displacement is initialized with unitary values so as to define the virtual displacement fields `v_reac1` and `v_reac2` to be used for measuring the reaction force on the boundary in a consistent manner based on the equilibrium residual $a(\bu,\bv_\text{reac})-L(\bv_\text{reac})$. Since boundary conditions only involve subdomain 1, `v_reac2` is simply zero.
 
 ```{code-cell} ipython3
 v_reac1 = fem.Function(V1)
 fem.set_bc(v_reac1.x.array, bcs)
 v_reac2 = fem.Function(V2)
-fem.set_bc(v_reac2.x.array, bcs)
 virtual_work_form = fem.form(
     ufl.replace(a - L, {du1: u1, du2: u2, v1: v_reac1, v2: v_reac2}),
     entity_maps=entity_maps,
 )
 ```
 
-The linear problem associated with resolution of displacement at fixed damage is now defined outside the load-stepping loop. Since we use a mixed function space, we obtain a block linear system and therefore implement a custom class in {download}`utils.py` for repeatedly solving a blocked linear variational problem. The latter expects blocked compiled linear and bilinear forms and a list of functions in which to store the results. The solver can be parametrized using PETSc options.
+The linear problem associated with the computation of the displacement at fixed damage is now defined outside the load-stepping loop. Since we use a mixed function space, we obtain a block linear system. `LinearProblem` directly supports such block problems: it expects the blocks of the bilinear and linear forms, the list of functions in which to store the solution and the entity maps. By default, the different blocks are assembled into a single PETSc matrix which is then factorized with MUMPS.
 
 ```{code-cell} ipython3
-problem = BlockedLinearProblem(
-    a_blocked_compiled,
-    L_blocked_compiled,
-    [u1, u2],
-    bcs,
+problem = LinearProblem(
+    a_blocks,
+    L_blocks,
+    u=[u1, u2],
+    bcs=bcs,
+    entity_maps=entity_maps,
     petsc_options={
         "ksp_type": "preonly",
         "pc_type": "lu",
         "pc_factor_mat_solver_type": "mumps",
     },
+    petsc_options_prefix="czm_interface_",
 )
 ```
 
-### Resolution
+### Load-stepping
 
-The fixed-point resolution scheme is implemented as before. The main difference here lies in the post-processing steps. Data in `u1` and `u2` fields are transferred to a parent function `u` defined as a `DG` function on the parent mesh. We thus have a single displacement field in Paraview which presents jumps at the interface only.
+The fixed-point resolution scheme is implemented as before. The main difference here lies in the post-processing steps. Data in `u1` and `u2` fields are transferred to a parent function `u` defined as a `DG` function on the parent mesh. We thus have a single displacement field in ParaView which presents jumps at the interface only. This interpolation from a submesh to its parent mesh is performed with `u.interpolate(u1, cells0=..., cells1=...)` where `cells0` are the submesh cells and `cells1` the corresponding cells of the parent mesh, as given by the cell entity map.
 
 ```{code-cell} ipython3
+def submesh_to_parent_cells(submesh, cell_map):
+    """Submesh cells and their corresponding cells in the parent mesh."""
+    num_cells = submesh.topology.index_map(submesh.topology.dim).size_local
+    sub_cells = np.arange(num_cells, dtype=np.int32)
+    return sub_cells, cell_map.sub_topology_to_topology(sub_cells, inverse=False)
+
+
+cells1_sub, cells1_parent = submesh_to_parent_cells(subdomain1, subdomain1_cell_map)
+cells2_sub, cells2_parent = submesh_to_parent_cells(subdomain2, subdomain2_cell_map)
+
 Nincr = 40
 loading = np.linspace(0, 0.04, Nincr + 1)
 
-
 Niter_max = 200
 tol = 1e-4
-damage_results = [[0.0, 0.0]]
 Force = [0.0]
 iterations = [0]
 
-
-out_file = io.VTKFile(MPI.COMM_WORLD, "results/czm.pvd", "a")
+out_file = io.VTKFile(MPI.COMM_WORLD, "results/czm.pvd", "w")
 for i, t in enumerate(loading[1:]):
-    print("Load step", i + 1)
+    print(f"Load step {i + 1}/{len(loading) - 1}")
     Uimp.value[0] = t
     nRes = 1.0
     j = 0
@@ -474,23 +485,21 @@ for i, t in enumerate(loading[1:]):
         )
         d_old.x.array[:] = d.x.array[:]
         j += 1
-        print(f"    Iteration {j} | Residual: {nRes}")
+        print(f"    Iteration {j:2d} | Residual: {nRes}")
         if nRes < tol:
             break
     else:
         raise ValueError(
-            "Fixed-point solver did not converge in less than {} iterations".format(
-                Niter_max
-            )
+            f"Fixed-point solver did not converge within {Niter_max} iterations"
         )
     iterations.append(j)
     d_prev.x.array[:] = d.x.array[:]
 
     Force.append(fem.assemble_scalar(virtual_work_form))
 
-    # We interpolate both u1 and u2 into u for easier visualization with Paraview
-    interpolate_submesh_to_parent(u, u1, subdomain1_cell_map)
-    interpolate_submesh_to_parent(u, u2, subdomain2_cell_map)
+    # We interpolate both u1 and u2 into u for easier visualization with ParaView
+    u.interpolate(u1, cells0=cells1_sub, cells1=cells1_parent)
+    u.interpolate(u2, cells0=cells2_sub, cells1=cells2_parent)
     out_file.write_function(u, i)
     out_file.write_function(d, i)
     clear_output(wait=True)

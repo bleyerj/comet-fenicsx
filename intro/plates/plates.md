@@ -1,11 +1,11 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -64,16 +64,13 @@ In weak form:
 $$\int_{\Omega} (\bM:\nabla^\text{s}\widehat{\btheta} + \bQ\cdot(\nabla \widehat{w} - \widehat{\btheta}))\text{d}\Omega = \int_{\Omega} f \widehat{w} \text{d}\Omega \quad \forall \widehat{w},\widehat{\btheta}$$
 
 ### Isotropic linear elastic constitutive relation
-
 * Bending/curvature relation:
-
 \begin{align*}
 \begin{Bmatrix}M_{xx}\\ M_{yy} \\M_{xy} \end{Bmatrix} &= \textsf{D} \begin{bmatrix}1 & \nu & 0 \\ \nu & 1 & 0 \\ 0 & 0 & (1-\nu)/2 \end{bmatrix}\begin{Bmatrix}\chi_{xx} \\ \chi_{yy} \\ 2\chi_{xy}  \end{Bmatrix}\\
 \text{ where}\quad \textsf{D} &= \dfrac{E h^3}{12(1-\nu^2)}
 \end{align*}
 
 * Shear strain/stress relation:
-
 \begin{align*}
 \bQ &= \textsf{F}\bgamma\\
 \text{ where}\quad \textsf{F} &= \dfrac{5}{6}\dfrac{E h}{2(1+\nu)}
@@ -195,7 +192,12 @@ $$
 
 ```{code-cell} ipython3
 problem = fem.petsc.LinearProblem(
-    a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="plates_",
 )
 problem.solve()
 
@@ -205,7 +207,7 @@ with io.VTKFile(domain.comm, "plates.xdmf", "w") as vtk:
     vtk.write_function(w)
 
 w_LK = 1.265319087e-3 * -f.value / D.value
-print(f"Reissner-Mindlin deflection: {max(abs(w.vector.array)):.5f}")
+print(f"Reissner-Mindlin deflection: {max(abs(w.x.array)):.5f}")
 print(f"Love-Kirchhoff deflection: {w_LK:.5f}")
 ```
 
@@ -265,9 +267,9 @@ Now we define the form corresponding to the definition of the mass matrix and we
 rho = fem.Constant(domain, 2700.0)
 m_form = rho * thick * ufl.dot(du, u_) * dx
 
-K = fem.petsc.assemble_matrix(fem.form(a), bcs, diagonal=1)
+K = fem.petsc.assemble_matrix(fem.form(a), bcs, diag=1)
 K.assemble()
-M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diagonal=0)
+M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diag=0)
 M.assemble()
 ```
 
@@ -310,7 +312,7 @@ for i in range(2):
         current_index = 3 * i + j
         eigenmode = f"eigenmode_{current_index:02}"
         pl.add_text(
-            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index]))/2/np.pi*1e3:.1f} Hz",
+            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index])) / 2 / np.pi * 1e3:.1f} Hz",
             font_size=10,
         )
         wi = eigvec_r[current_index].sub(0).collapse()

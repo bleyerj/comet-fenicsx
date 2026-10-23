@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Computing consistent reaction forces
 #
 # ```{admonition} Objectives
@@ -47,7 +50,7 @@
 #
 # We first define a standard small strain elasticity problem.
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 import numpy as np
 from mpi4py import MPI
 import ufl
@@ -117,10 +120,12 @@ bcs = [fem.dirichletbc(u_bc, left_dofs)]
 
 u = fem.Function(V, name="Displacement")
 
-problem = dolfinx.fem.petsc.LinearProblem(a, l, bcs, u=u)
+problem = dolfinx.fem.petsc.LinearProblem(
+    a, l, petsc_options_prefix="displacement_", bcs=bcs, u=u
+)
 problem.solve()
-# -
 
+# %% [markdown]
 # ```{seealso}
 # See the [](/tours/linear_problems/isotropic_orthotropic_elasticity/isotropic_orthotropic_elasticity.md) or [](/intro/linear_elasticity/linear_elasticity.md) demos for more details on setting up a linear elasticity problem.
 # ```
@@ -129,7 +134,7 @@ problem.solve()
 #
 # The first, and most widely used, method for computing the above reactions relies on the stress field computed from the obtained displacement `sigma(u)` and perform `assemble_scalar` over the left boundary (measure `ds(1)`). Unfortunately, this procedure does not ensure an exact computation as seen below. Indeed, the stress field, implicitly known only at the quadrature points only is extended to the structure boundary and does not satisfy global equilibrium anymore.
 
-# +
+# %%
 x = ufl.SpatialCoordinate(domain)
 
 Rx = fem.assemble_scalar(fem.form(-sigma(u)[0, 0] * ds(1)))
@@ -147,8 +152,8 @@ print(f"Bending moment Mz = {Mz:.6f}")
 print(f"        (analytic = {H * L**2 / 2 * fy})".format())
 print("-" * 50)
 print("\n")
-# -
 
+# %% [markdown]
 # ## Second method: using the work of internal forces
 #
 # The second approach relies on the virtual work principle (or weak formulation) which writes in the present case:
@@ -183,7 +188,7 @@ print("\n")
 #
 # As regards implementation, the residual is defined using the action of the bilinear form on the displacement solution: `residual = action(a, u) - l`. We then define boundary conditions on the left boundary and apply them to an empty Function `v_reac` to define the required test field $\bv$. We observe that the computed reactions are now exact.
 
-# +
+# %%
 residual = ufl.action(a, u) - l
 
 v_reac = fem.Function(V)
@@ -203,23 +208,23 @@ def y(x):
 
 
 u_bc.sub(0).interpolate(one)
-fem.set_bc(v_reac.vector, bcs)
+fem.set_bc(v_reac.x.petsc_vec, bcs)
 print(f"Horizontal reaction Rx = {fem.assemble_scalar(virtual_work_form):.6f}")
 print(f"             (analytic = {-L * H * fx})")
 print("-" * 50)
 
-u_bc.vector.set(0.0)
-v_reac.vector.set(0.0)
+u_bc.x.petsc_vec.set(0.0)
+v_reac.x.petsc_vec.set(0.0)
 u_bc.sub(1).interpolate(one)
-fem.set_bc(v_reac.vector, bcs)
+fem.set_bc(v_reac.x.petsc_vec, bcs)
 print(f"Vertical reaction Ry = {fem.assemble_scalar(virtual_work_form):.6f}")
 print(f"           (analytic = {-L * H * fy})")
 print("-" * 50)
 
-u_bc.vector.set(0.0)
-v_reac.vector.set(0.0)
+u_bc.x.petsc_vec.set(0.0)
+v_reac.x.petsc_vec.set(0.0)
 u_bc.sub(0).interpolate(y)
-fem.set_bc(v_reac.vector, bcs)
+fem.set_bc(v_reac.x.petsc_vec, bcs)
 print(f"Bending moment Mz = {fem.assemble_scalar(virtual_work_form):.6f}")
 print(f"        (analytic = {H * L**2 / 2 * fy})")
 print("-" * 50)

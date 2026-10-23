@@ -1,17 +1,20 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Reissner-Mindlin plates
 #
 # ```{admonition} Objectives
@@ -81,7 +84,7 @@
 #
 # We first load relevant modules and functions and generate a unit square mesh of triangles.
 
-# +
+# %%
 import numpy as np
 import ufl
 import basix
@@ -101,11 +104,11 @@ N = 10
 domain = create_unit_square(
     MPI.COMM_WORLD, N, N, cell_type=CellType.triangle, diagonal=DiagonalType.crossed
 )
-# -
 
+# %% [markdown]
 # Next we define material properties and functions which will be used for defining the variational formulation.
 
-# +
+# %%
 # material parameters
 thick = 0.05
 E = 210.0e3
@@ -142,11 +145,10 @@ def shear_force(u):
     return F * shear_strain(u)
 
 
-# -
-
+# %% [markdown]
 # Now we define the corresponding function space. Our dofs are $w$ and $\btheta$, so the full function space $V$ will be a **mixed** function space consisting of a scalar subspace related to $w$ and a vectorial subspace related to $\btheta$. We first use a continuous $P^2$ interpolation for $w$ and a continuous $P^1$ interpolation for $\btheta$. We then define the corresponding linear and bilinear forms.
 
-# +
+# %%
 # Definition of function space for U:displacement, T:rotation
 Ue = basix.ufl.element("P", domain.basix_cell(), 2)
 Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(2,))
@@ -167,11 +169,10 @@ a = (
 ) * dx
 
 
-# -
-
+# %% [markdown]
 # Boundary conditions are now defined. We consider a fully clamped boundary. Note that since we are using a mixed function space, we cannnot use the `locate_dofs_geometrical` function. Instead, we locate the facets on the boundary using `dolfinx.mesh.locate_entities_boundary`. Then we locate the dofs on such facets using `locate_dofs_topological`.
 
-# +
+# %%
 # Boundary of the plate
 def border(x):
     return np.logical_or(
@@ -186,17 +187,22 @@ clamped_dofs = fem.locate_dofs_topological(V, facet_dim, clamped_facets)
 
 u0 = fem.Function(V)
 bcs = [fem.dirichletbc(u0, clamped_dofs)]
-# -
 
+# %% [markdown]
 # We now solve the problem and output the result. To get the deflection $w$, we use `u.sub(0).collapse()` to extract a new function living in the corresponding subspace. Note that `u.sub(0)` provides only an indexed view of the $w$ component of `u`. The computed results is compared with the analytical maximum deflection of a clamped Love-Kirchhoff plate:
 #
 # $$
 # w_\text{LK} = 1.265319087.10^{-3} \dfrac{f}{\mathsf{D}}
 # $$
 
-# +
+# %%
 problem = fem.petsc.LinearProblem(
-    a, L, u=u, bcs=bcs, petsc_options={"ksp_type": "preonly", "pc_type": "lu"}
+    a,
+    L,
+    u=u,
+    bcs=bcs,
+    petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="plates_",
 )
 problem.solve()
 
@@ -206,17 +212,17 @@ with io.VTKFile(domain.comm, "plates.xdmf", "w") as vtk:
     vtk.write_function(w)
 
 w_LK = 1.265319087e-3 * -f.value / D.value
-print(f"Reissner-Mindlin deflection: {max(abs(w.vector.array)):.5f}")
+print(f"Reissner-Mindlin deflection: {max(abs(w.x.array)):.5f}")
 print(f"Love-Kirchhoff deflection: {w_LK:.5f}")
-# -
 
+# %% [markdown]
 # ```{warning}
 # This simple formulation may suffer from **shear locking** issues in the thin plate limit. We refer to the various plate tours dedicated to this specific issue for more accurate treatment of plate shear locking.
 # ```
 #
 # We can plot the plate deflection $w$ and the rotation vector $\boldsymbol{\beta} = \boldsymbol{e}_z\times \btheta$ using `pyvista`. $\boldsymbol{\beta}$ represents the axis vector around which the plate is rotating.
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 import pyvista
 from dolfinx import plot
 
@@ -254,26 +260,26 @@ plotter.add_mesh(
 )
 plotter.add_mesh(theta_grid, color="grey", ambient=0.6, opacity=0.5, show_edges=True)
 plotter.show()
-# -
 
+# %% [markdown]
 # ## Modal analysis
 #
 # Now we define the form corresponding to the definition of the mass matrix and we assemble the stiffness and mass forms into corresponding PETSc matrix objects. We use a value of 1 on the diagonal for K and 0 for M for the rows corresponding to the boundary conditions. Doing so, eigenvalues associated to boundary conditions are equal to infinity and will not pollute the low-frequency spectrum.
 
-# +
+# %%
 rho = fem.Constant(domain, 2700.0)
 m_form = rho * thick * ufl.dot(du, u_) * dx
 
-K = fem.petsc.assemble_matrix(fem.form(a), bcs, diagonal=1)
+K = fem.petsc.assemble_matrix(fem.form(a), bcs, diag=1)
 K.assemble()
-M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diagonal=0)
+M = fem.petsc.assemble_matrix(fem.form(m_form), bcs, diag=0)
 M.assemble()
-# -
 
+# %% [markdown]
 # We now use `slepc4py` to define a eigenvalue solver (EPS -- *Eigenvalue Problem Solver* -- in SLEPc vocable) and solve the corresponding generalized eigenvalue problem. Functions defined in {Download}`eigenvalue_solver.py<./eigenvalue_solver.py>`
 # enable to define the corresponding objects, set up the parameters, monitor the resolution and extract the corresponding eigenpairs. Here the problem is of type `GHEP` (Generalized Hermitian eigenproblem) and we use a shift-invert transform to compute the smallest eigenvalues.
 
-# +
+# %%
 from slepc4py import SLEPc
 from eigenvalue_solver import solve_GEP_shiftinvert, EPS_get_spectrum
 
@@ -293,11 +299,11 @@ with io.VTKFile(domain.comm, "plates_eigenvalues.xdmf", "w") as vtk:
         w = eigvec_r[i].sub(0).collapse()
         w.name = "Deflection"
         vtk.write_function(w, i)
-# -
 
+# %% [markdown]
 # The eigenmodes look as follows using `pyvista`:
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 w_grid = pyvista.UnstructuredGrid(w_topology, w_cell_types, w_geometry)
 
 pl = pyvista.Plotter(shape=(2, 3))
@@ -307,7 +313,7 @@ for i in range(2):
         current_index = 3 * i + j
         eigenmode = f"eigenmode_{current_index:02}"
         pl.add_text(
-            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index]))/2/np.pi*1e3:.1f} Hz",
+            f"eigenmode {current_index}, freq. {np.real(np.sqrt(eigval[current_index])) / 2 / np.pi * 1e3:.1f} Hz",
             font_size=10,
         )
         wi = eigvec_r[current_index].sub(0).collapse()

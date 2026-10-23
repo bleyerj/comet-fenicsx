@@ -13,19 +13,24 @@ $\,$
 # Welcome
 
 
-## What is it about ?
+## What is it about?
 
-These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software `FEniCSx`, http://fenicsproject.org.
+These numerical tours will introduce you to a wide variety of topics in computational continuum and structural mechanics using the finite element software [`FEniCSx`](https://fenicsproject.org).
 
-```{important}
-These tours comply with `dolfinx` v.0.8.0.
+````{important}
+These tours are compatible with `dolfinx` v0.11. A suitable environment can be installed from `conda-forge` with:
+
+```bash
+conda create -n fenicsx-0.11 -c conda-forge \
+    fenics-dolfinx=0.11 dolfinx_mpc=0.11 scifem python-gmsh pyvista jax matplotlib
 ```
+````
 
-The book is organized in the following different parts:
+The book is organized in the following parts:
 
 ### Introduction
 
-This part contains a set of short demos to get introduced to `FEniCSx` via basic examples:
+This part contains a set of short demos to get started with `FEniCSx` via basic examples:
 
 ```{grid} 1
 
@@ -57,15 +62,14 @@ This part contains a set of short demos to get introduced to `FEniCSx` via basic
   ```
 
 ```{seealso}
-For another general introduction to `FEniCSx`, we heavily recommend to follow the "official" [FEniCSx tutorial](https://jsdokken.com/dolfinx-tutorial/index.html) by Jørgen S. Dokken.
+For another general introduction to `FEniCSx`, we strongly recommend the "official" [FEniCSx tutorial](https://jsdokken.com/dolfinx-tutorial/index.html) by Jørgen S. Dokken.
 ```
 
 ### Tours
 
-This part is the main body of the book. These numerical tours are intended to complement the existing `FEniCSx` tutorials in the official documentation by focusing on specific applications within the field of computational solid and structural mechanics. The purpose of these tours is to offer users with a background in mechanics a starting point for utilizing `FEniCSx`, using examples familiar to them.
+This part is the main body of the book. These numerical tours are intended to complement the existing `FEniCSx` tutorials in the official documentation by focusing on specific applications within the field of computational solid and structural mechanics. The purpose of these tours is to offer users with a background in mechanics a starting point for using `FEniCSx`, with examples familiar to them.
 
-While many of the covered topics are standard and relatively easy to implement, others, such as structural elements (beams, plates, and shells) or nonlinear constitutive models, present more complexity.
-Other topics will also be more advanced and exploratory and will reflect currently investigated research topics, illustrating the versatility of `FEniCSx` for handling advanced models. The difficulty of each tour will be indicated by the star symbols: {far}`star` = easy, {far}`star`{far}`star`{far}`star` = difficult.
+Many of the covered topics are standard and relatively easy to implement. Others, such as structural elements (beams, plates and shells), nonlinear constitutive models or interface problems, are more involved, and some reflect current research topics, illustrating the versatility of `FEniCSx` for handling advanced models. The difficulty of each tour is indicated by stars, from {far}`star` (easy) to {far}`star`{far}`star`{far}`star` (difficult).
 
 ```{grid} 1
 
@@ -79,6 +83,12 @@ Other topics will also be more advanced and exploratory and will reflect current
       :link: tours/linear_problems/contents.html
 
       <img src="images/linear_problems.svg" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      ```
+
+      ```{grid-item-card} [**Multiphysics**]{.pst-color-primary}
+      :link: tours/multiphysics/contents.html
+
+      <img src="images/multiphysics.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
       ```{grid-item-card} [**Dynamics problems**]{.pst-color-primary}
@@ -102,7 +112,13 @@ Other topics will also be more advanced and exploratory and will reflect current
       ```{grid-item-card} [**Homogenization**]{.pst-color-primary}
       :link: tours/homogenization/contents.html
       
-      <img src="images/inclusions .png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      <img src="images/inclusions.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      ```
+
+      ```{grid-item-card} [**Interfaces**]{.pst-color-primary}
+      :link: tours/interfaces/contents.html
+      
+      <img src="tours/interfaces/intrinsic_czm/intrinsic_czm.gif" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
 
       ```{grid-item-card} [**Beams**]{.pst-color-primary}
@@ -122,6 +138,13 @@ Other topics will also be more advanced and exploratory and will reflect current
 
       <img src="images/blob.png" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
       ```
+
+      ```{grid-item-card} [**Optimization**]{.pst-color-primary}
+      :link: tours/optimization/contents.html
+
+      <img src="tours/optimization/topology_optimization/topology_optimization.gif" alt="logo" loading="lazy" style="max-width: 100%; max-height: 200px; margin-top: 1rem;" />
+      ```
+
     ```
 
   ```
@@ -131,47 +154,101 @@ The previous set of numerical tours based on the legacy `FEniCS` version can be 
 ```
 
 
-### Tips & Tricks
+### Tips and tricks
 
 This part provides code snippets for various small tasks frequently encountered in computational mechanics with `FEniCSx`.
+
+```{grid} 1
+
+  ```{grid-item-card} [**Tips and tricks**]{.h3 .pst-color-primary}
+  :text-align: center
+  :shadow: lg
+
+    ```{grid} 3
+
+      ```{grid-item-card} [**Marking facets**]{.pst-color-primary}
+      :link: tips/mark_facets/mark_facets.html
+
+      Marking facets with geometrical functions
+      ```
+
+      ```{grid-item-card} [**Importing meshes**]{.pst-color-primary}
+      :link: tips/import_msh/import_msh.html
+
+      Importing a `.msh` file generated with `Gmsh`
+      ```
+
+      ```{grid-item-card} [**Piecewise constant fields**]{.pst-color-primary}
+      :link: tips/piecewise_constant_field/piecewise_constant_field.html
+
+      Spatially varying material properties
+      ```
+
+      ```{grid-item-card} [**Mass lumping**]{.pst-color-primary}
+      :link: tips/mass_lumping/mass_lumping.html
+
+      Lumping a mass matrix
+      ```
+
+      ```{grid-item-card} [**Quadrature schemes**]{.pst-color-primary}
+      :link: tips/quadrature_schemes/quadrature_schemes.html
+
+      Choosing quadrature rules and degrees
+      ```
+
+      ```{grid-item-card} [**Reaction forces**]{.pst-color-primary}
+      :link: tips/computing_reactions/computing_reactions.html
+
+      Computing consistent reaction forces
+      ```
+    ```
+
+  ```
 
 
 ## Citing
 
-If you find these demos useful for your research work, please consider citing them using the following Zenodo DOI:
+If you find these tours useful for your research or teaching, please consider citing them using the following Zenodo DOI. This DOI always points to the latest release; the Zenodo page also gives the DOI of each individual release, should you need to refer to a specific version.
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10470942.svg)](https://doi.org/10.5281/zenodo.10470942)
 
-```
+> J. Bleyer, *Numerical tours of Computational Mechanics with FEniCSx*, Zenodo, 2024. https://doi.org/10.5281/zenodo.10470942
+
+```{code-block} bibtex
 @software{bleyer2024comet,
-  author       = {Bleyer, Jeremy},
-  title        = {{Numerical tours of Computational Mechanics with 
-                   FEniCSx}},
-  month        = jan,
-  year         = 2024,
-  publisher    = {Zenodo},
-  version      = {v0.1},
-  doi          = {10.5281/zenodo.10470942},
-  url          = {https://doi.org/10.5281/zenodo.10470942}
+  author    = {Bleyer, Jeremy},
+  title     = {{Numerical tours of Computational Mechanics with FEniCSx}},
+  year      = {2024},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.10470942},
+  url       = {https://doi.org/10.5281/zenodo.10470942}
 }
 ```
 
-All this work is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/>) ![license](https://i.creativecommons.org/l/by-sa/4.0/88x31.png).
+Some tours have been written with the help of other contributors, who are acknowledged at the top of the corresponding pages.
+
+```{important}
+These tours rely on the `FEniCSx` project. If you use them in published work, please also cite the `FEniCSx` components as [recommended by the FEniCS project](https://fenicsproject.org/citing/), namely:
+
+* I. A. Baratta, J. P. Dean, J. S. Dokken, M. Habera, J. S. Hale, C. N. Richardson, M. E. Rognes, M. W. Scroggs, N. Sime, G. N. Wells. DOLFINx: the next generation FEniCS problem solving environment, preprint, 2023. [doi:10.5281/zenodo.10447666](https://doi.org/10.5281/zenodo.10447666)
+* M. W. Scroggs, I. A. Baratta, C. N. Richardson, G. N. Wells. Basix: a runtime finite element basis evaluation library, *Journal of Open Source Software* 7(73), 3982, 2022. [doi:10.21105/joss.03982](https://doi.org/10.21105/joss.03982)
+* M. S. Alnæs, A. Logg, K. B. Ølgaard, M. E. Rognes, G. N. Wells. Unified Form Language: a domain-specific language for weak formulations of partial differential equations, *ACM Transactions on Mathematical Software* 40, 2014. [doi:10.1145/2566630](https://doi.org/10.1145/2566630)
+
+as well as the other libraries used in a given tour (e.g. `PETSc`, `Gmsh`, `dolfinx_mpc`, `JAX`) following their own recommendations.
+```
+
+All this work is licensed under the [Creative Commons Attribution-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-sa/4.0/) ![license](https://i.creativecommons.org/l/by-sa/4.0/88x31.png).
 
 
 ## About the author
 
-[Jeremy Bleyer](https://bleyerj.github.io/) is a researcher in Solid and Structural Mechanics at [Laboratoire Navier](https://navier-lab.fr), a joint research  (UMR 8205) of [Ecole Nationale des Ponts et Chaussées](http://www.enpc.fr),
-[Université Gustave Eiffel](https://www.univ-gustave-eiffel.fr/) and [CNRS](http://www.cnrs.fr).
+[Jeremy Bleyer](https://bleyerj.github.io/) is a researcher in Solid and Structural Mechanics at [Laboratoire Navier](https://navier-lab.fr), a joint research unit (UMR 8205) of [École nationale des ponts et chaussées](https://www.enpc.fr), [Université Gustave Eiffel](https://www.univ-gustave-eiffel.fr/) and [CNRS](https://www.cnrs.fr).
 
 [{fas}`at` jeremy.bleyer@enpc.fr](mailto:jeremy.bleyer@enpc.fr)
 
-[{fab}`linkedin` jeremy-bleyer](http://www.linkedin.com/in/jérémy-bleyer-0aabb531)
+[{fab}`linkedin` jeremy-bleyer](https://www.linkedin.com/in/jérémy-bleyer-0aabb531)
 
-<a href="https://orcid.org/0000-0001-8212-9921">
-<img alt="ORCID logo" src="https://info.orcid.org/wp-content/uploads/2019/11/orcid_32x32.png" width="16" height="16" />
- 0000-0001-8212-9921
-</a>
+[{fab}`orcid` 0000-0001-8212-9921](https://orcid.org/0000-0001-8212-9921)
 
 $\,$
 

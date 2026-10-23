@@ -2,13 +2,20 @@
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
+#   kernelspec:
+#     display_name: fenicsx-v0.11
+#     language: python
+#     name: python3
 # ---
 
+# %% [markdown]
 # # Nonlinear beam model in finite rotations {far}`star`{far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -26,7 +33,7 @@
 # ```
 #
 # ```{seealso}
-# This tour expands upon the work of {cite:p}`morandini2017finite`. Contrary to this implementation which required in-depth implementations of conditional UFL expression and custom assembly procedure, we adopt a slightly different discretization strategy which alleviates the problem encountered in this previous implementation.
+# This tour expands upon the work of {cite:p}`morandini2017finite`. Contrary to this implementation which required in-depth implementations of conditional UFL expressions and a custom assembly procedure, we adopt a slightly different discretization strategy which alleviates the problems encountered in this previous implementation.
 # ```
 #
 # The following animation illustrates how an initially horizontal beam, subject to a concentrated moment and horizontal transversal force, rolls up on itself several times. Note here that self-contact is not taken into account.$\newcommand{\bA}{\boldsymbol{A}}
@@ -43,7 +50,6 @@
 # \newcommand{\bP}{\boldsymbol{P}}
 # \newcommand{\bM}{\boldsymbol{M}}
 # \newcommand{\bC}{\boldsymbol{C}}
-# \newcommand{\bR}{\boldsymbol{R}}
 # \newcommand{\bI}{\boldsymbol{I}}
 # \newcommand{\T}{^\text{T}}
 # \newcommand{\btheta}{\boldsymbol{\theta}}
@@ -75,9 +81,9 @@
 #
 # * quaternion parametrizations
 #
-# * cosine direction parametrizations...
+# * direction cosine parametrizations...
 #
-# In all of these methods, a rotation matrix is parametrized by a finite set of parameters: e.g. 3 for vectorial and Euler angle parametrizations, 4 for quaternion parametrizations, 9 for cosine direction, etc. Each of these methods will have some sort of singularity in the parametrization as the mapping can never be bijective. As a result, all methods possess some advantages and some drawbacks, either on the theoretical or computational point of view.
+# In all of these methods, a rotation matrix is parametrized by a finite set of parameters: e.g. 3 for vectorial and Euler angle parametrizations, 4 for quaternion parametrizations, 9 for direction cosine, etc. Each of these methods will have some sort of singularity in the parametrization as the mapping can never be bijective. As a result, all methods possess some advantages and some drawbacks, from either a theoretical or computational point of view.
 #
 # In this tour, we make use of vectorial parametrizations which have the advantage of being based on a parameter, namely the rotation vector $\btheta$, which behaves as a Cartesian 3D vector. We refer to {cite:p}`bauchau2003vectorial` for an excellent and unified presentation of the vectorial parametrization. Implementation is provided in {download}`rotation_parametrization.py` described in the following document [](rotation_parametrization_description.md).
 #
@@ -86,7 +92,7 @@
 #
 # A rotation can be described by a unit rotation axis $\bu$ and a rotation angle $\varphi$, thus defining a rotation vector $\btheta=\varphi\bu$. The link with the rotation matrix $\bR$ is given by the well-known Euler-Rodrigues formula:
 # \begin{equation*}
-# \bR = \bI + \dfrac{\sin\varphi}{\varphi}\bP + \left(\dfrac{\sin(\varphi/2)}{\varphi/2}\right)^2\bP^2
+# \bR = \bI + \dfrac{\sin\varphi}{\varphi}\bP + \dfrac{1}{2}\left(\dfrac{\sin(\varphi/2)}{\varphi/2}\right)^2\bP^2
 # \end{equation*}
 # with $\bP = \skew(\btheta)$ where $\skew$ defines the skew-symmetric matrix associated with the cross-product operation of a vector, that is:
 # \begin{align*}
@@ -94,9 +100,9 @@
 # \skew(\ba) &= \begin{bmatrix} 0 & -a_3 & a_2\\ a_3 & 0 & -a_1 \\ -a_2 & a_1 & 0 \end{bmatrix}
 # \end{align*}
 #
-# We also introduce $\axial(\bA)=\ba$ the inverse operation associated to a skew-symmetric matrix $\bA$ the corresponding vector $\ba$ such that $\bA=\skew(\ba)$. We also have that $\axial(\bR\bA\bR\T)=\bR\ba$ when $\bR$ is a rotation matrix.
+# We also introduce $\axial(\bA)=\ba$ the inverse operation, which associates with a skew-symmetric matrix $\bA$ the vector $\ba$ such that $\bA=\skew(\ba)$. We also have that $\axial(\bR\bA\bR\T)=\bR\ba$ when $\bR$ is a rotation matrix.
 #
-# For any rotation matrix $\bR$, we have $\dot{\overline{\bR\T\bR}} = \dot\bR\T\bR +  \bR\T\dot\bR=0$ from which we deduce that $\bTheta=\bR\T\dot\bR$ is skew-symmetric. We denote by $\bvartheta = \axial(\bTheta)$ the so-called spatial spin vector associated with the rotation matrix. The link between the spin vector and the time derivative of the rotation vector is given by the rotation curvature matrix $\bH$:
+# For any rotation matrix $\bR$, we have $\dot{\overline{\bR\T\bR}} = \dot\bR\T\bR +  \bR\T\dot\bR=0$ from which we deduce that $\bTheta=\bR\T\dot\bR$ is skew-symmetric. We denote by $\bvartheta = \axial(\bTheta)$ the so-called material spin vector associated with the rotation matrix. The link between the spin vector and the time derivative of the rotation vector is given by the rotation curvature matrix $\bH$:
 # \begin{equation*}
 # \bvartheta = \bH\T\dot\btheta
 # \end{equation*}
@@ -106,7 +112,7 @@
 # For small rotations i.e. $\|\btheta\|=\varphi \ll 1$, we have $\bR \approx \bI + \bP$. As a result:
 #
 # \begin{equation*}
-# \dot\bR = \dot\bP = \bR\T\bTheta
+# \dot\bR = \dot\bP = \bR\bTheta
 # \end{equation*}
 #
 # we have, at first order, $\bTheta \approx \dot\bP$ and thus $\bvartheta \approx \dot\btheta$ and $\bH\approx\bI$.
@@ -115,11 +121,11 @@
 #
 # ### Beam kinematics and strain measures
 #
-# Following the notations from {cite:p}`magisano2020large`, we consider a nonlinear Timoshenko beam model which is described by the position  $\br_0(s)$ of the beam axis in the reference undeformed configuration $\mathcal{L}_0$ where $s$ is the beam curvilinear coordinate. The reference configuration $\mathcal{L}_0$ is also described by a triad of unit material vectors $\bG_i(s)$ representing the beam axis $\bG_1$ and the cross-section principal axis $\bG_2,\bG_3$. Note that $\bG_1$ is equal to the unit tangent vector:
+# Following the notations from {cite:p}`magisano2020large`, we consider a nonlinear Timoshenko beam model which is described by the position  $\br_0(s)$ of the beam axis in the reference undeformed configuration $\mathcal{L}_0$ where $s$ is the beam curvilinear coordinate. The reference configuration $\mathcal{L}_0$ is also described by a triad of unit material vectors $\bG_i(s)$ representing the beam axis $\bG_1$ and the cross-section principal axes $\bG_2,\bG_3$. Note that $\bG_1$ is equal to the unit tangent vector:
 # \begin{equation*}
 # \bG_1(s)=\dfrac{d\br_0}{ds}(s)
 # \end{equation*}
-# The material vectors triad can be equivalently described by a rotation matrix $\bR_0(s)$ which sends the initial cartesian frame $\be_i$ to the material triad $\bG_i(s)$ i.e.
+# The material vectors triad can be equivalently described by a rotation matrix $\bR_0(s)$ which sends the initial Cartesian frame $\be_i$ to the material triad $\bG_i(s)$ i.e.
 # \begin{equation*}
 # \bR_0(s) = \bG_i(s)\otimes \be_i
 # \end{equation*}
@@ -164,7 +170,7 @@
 # \bN &= \bC_N\bepsilon = \begin{bmatrix} ES & 0 & 0 \\ 0 & \mu S_2^* & 0 \\ 0 & 0 & \mu S_3^* \end{bmatrix}\bepsilon \\
 # \bM &= \bC_M\bchi = \begin{bmatrix} \mu J & 0 & 0 \\ 0 & EI_2 & 0 \\ 0 & 0 & EI_3 \end{bmatrix}\bchi
 # \end{align*}
-# where $S$ is the beam cross-section, $E,\mu$ the Young and shear moduli, $S_2^*,S_3^*$ the reduced cross-sections accounting for shear reduction coefficients (see [this tour](https://comet-fenics.readthedocs.io/en/latest/demo/cross_section_analysis/cross_section_analysis.html)), $J$ the torsional inertia and $I_2,I_3$ the area moment of inertia.
+# where $S$ is the beam cross-section area, $E,\mu$ the Young and shear moduli, $S_2^*,S_3^*$ the reduced cross-sections accounting for shear reduction coefficients (see [this tour](https://comet-fenics.readthedocs.io/en/latest/demo/cross_section_analysis/cross_section_analysis.html)), $J$ the torsional inertia and $I_2,I_3$ the area moments of inertia.
 #
 # The beam hyperelastic energy is then given by:
 # \begin{equation*}
@@ -188,7 +194,7 @@
 #
 # ## Incremental formulation
 #
-# As mentioned previously, any rotation parametrization will encounter singularity issues for large rotation angles (e.g. $\pi$ or $2\pi$ depending on the chosen parametrization). The previous formulation will therefore be unable to solve problems in which the solution experiences rotation angles of such amplitudes. As an alternative, it is possible to solve only, for a given load step, for the incremental displacement and rotation with respect to the known equilibrium from the previous converged load step. Positions and material triad orientations must therefore be updated at the end of every load step. With such an approach, singularity issues will only encountered if the incremental rotation is too large, which is not a strong requirement in practice.
+# As mentioned previously, any rotation parametrization will encounter singularity issues for large rotation angles (e.g. $\pi$ or $2\pi$ depending on the chosen parametrization). The previous formulation will therefore be unable to solve problems in which the solution experiences rotation angles of such amplitudes. As an alternative, it is possible to solve only, for a given load step, for the incremental displacement and rotation with respect to the known equilibrium from the previous converged load step. Positions and material triad orientations must therefore be updated at the end of every load step. With such an approach, singularity issues will only be encountered if the incremental rotation is too large, which is not a strong requirement in practice.
 #
 # In this `incremental` approach, let us consider that $\bu$ and $\btheta$ now represent the displacement and rotation vector increments with respect to a known configuration at load step $n$. The sought configuration at load step $n+1$ is obtained from:
 # \begin{align*}
@@ -199,19 +205,20 @@
 # Regarding the strain measures, we have:
 #
 # \begin{align*}
-# \bepsilon_{n+1} &=\bR_n\T\bR(\btheta)\T(\bu_{,s}+\br_{n,s}) - \br_{n,s} \\
+# \bepsilon_{n+1} &=\bR_n\T\bR(\btheta)\T(\bu_{,s}+\br_{n,s}) - \bG_1 \\
 # \bchi_{n+1} &= \axial( \bR_n\T\bR(\btheta)\T(\bR(\btheta)\bR_n)_{,s}) \\
 # &= \axial( \bR_n\T\bR_{n,s}) + \axial(\bR_n\T\bTheta_{,s}\bR_n) \\
 # &= \bchi_n + \bR_n\T\axial(\bTheta_{,s}) \\
 # &= \bchi_n + \bR_n\T\bH\T\btheta_{,s}
 # \end{align*}
 #
-# In the following implementation, we will store the curvature strain and the rotation matrix of the previous time step as functions defined on a suitable function space (DG-0 for instance). As discussed in {cite:p}`magisano2020large` such kind of choice results in a path-dependent solution due to the non-linear nature of the group of rotations. Several strategies can be considered to alleviate or suppress such lack of objectivity. In the following, we chose to ignore this issue, the effects of which diminish upon load step and mesh refinement.
+# In the following implementation, we will store the curvature strain and the rotation matrix of the previous load step as functions defined on a suitable function space (DG-0 for instance). As discussed in {cite:p}`magisano2020large` such kind of choice results in a path-dependent solution due to the non-linear nature of the group of rotations. Several strategies can be considered to alleviate or suppress such lack of objectivity. In the following, we choose to ignore this issue, the effects of which diminish upon load step and mesh refinement.
 #
 # ## Implementation
 #
-# We first import the relevant module and functions. In particular, we import the `ExponentialMap` parametrization of rotations from the `rotation_parametrization.py` module. We then define the mesh of a rectilinear beam along the global X axis.
+# We first import the relevant modules and functions. In particular, we import the `ExponentialMap` parametrization of rotations from the `rotation_parametrization.py` module. We then define the mesh of a rectilinear beam along the global X axis.
 
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import animation
@@ -220,14 +227,15 @@ from mpi4py import MPI
 from petsc4py import PETSc
 import basix
 import ufl
-from dolfinx import mesh, io, fem, nls
+from dolfinx import mesh, io, fem
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
 from rotation_parametrization import ExponentialMap
 
 
+# %% [markdown]
 # We explicitly build the mesh using the `ufl.Mesh` object with shape=`(3,)` and a list of cells. Doing so we obtain a mesh of topology dimension 1 and geometrical dimension 3, instead of 1 if we were using the `create_interval_mesh` built-in function. With this precaution, the following implementation will be completely generic without making any a priori assumption on the geometry, for instance when defining tangent vectors etc. We also define the `left_end` and `right_end` boundary markers for applying loading and boundary conditions. We use the `mark_facets` function from [](/tips/mark_facets/mark_facets.md) to tag the left and right ends for later applying boundary conditions.
 
+# %%
 def mark_facets(domain, surfaces_dict):
     """Mark facets of the domain according to a geometrical marker
 
@@ -259,7 +267,7 @@ def mark_facets(domain, surfaces_dict):
     return facet_tag
 
 
-# +
+# %%
 # Mesh
 length = 10.0
 N = 80  # number of elements
@@ -274,8 +282,8 @@ x[:, 0] = np.linspace(0, length, N + 1)
 cells = [[i, i + 1] for i in range(N)]
 
 # Use ufl.Mesh to generate custom mesh
-_mesh = ufl.Mesh(basix.ufl.element("Lagrange", shape, degree, shape=(gdim,)))
-domain = mesh.create_mesh(MPI.COMM_WORLD, cells, x, _mesh)
+ufl_mesh = ufl.Mesh(basix.ufl.element("Lagrange", shape, degree, shape=(gdim,)))
+domain = mesh.create_mesh(MPI.COMM_WORLD, cells, ufl_mesh, x)
 
 
 def left_end(x):
@@ -287,16 +295,11 @@ def right_end(x):
 
 
 facets = mark_facets(domain, {1: left_end, 2: right_end})
-# -
 
-# We now define the geometric and material properties of the beam cross-section as well as the loading corresponding to those investigated in {cite:p}`ibrahimbegovic1995computational`. The loading consists of an externally applied concentrated bending moment $\boldsymbol{m}(t)=-M_\text{max}t\be_y$ and concentrated load $\boldsymbol{f}(t)=F_\text{max} t \be_y$ applied in 400 load steps. Finally, we specify the method resolution relying either on the `total` rotation vector or on the `incremental` rotation vector, as discussed before.
+# %% [markdown]
+# We now define the geometric and material properties of the beam cross-section as well as the loading corresponding to those investigated in {cite:p}`ibrahimbegovic1995computational`. The loading consists of an externally applied concentrated bending moment $\boldsymbol{m}(t)=-M_\text{max}t\be_y$ and concentrated load $\boldsymbol{f}(t)=F_\text{max} t \be_y$ applied in 400 load steps. Finally, we specify the resolution method relying either on the `total` rotation vector or on the `incremental` rotation vector, as discussed before.
 
-# +
-# Geometrical properties
-radius = fem.Constant(domain, 0.2)
-S = np.pi * radius**2
-I = np.pi * radius**4 / 4
-
+# %%
 # Stiffness moduli
 ES = fem.Constant(domain, 1e4)
 GS = fem.Constant(domain, 1e4)
@@ -317,11 +320,11 @@ load = fem.Constant(domain, 0.0)
 
 # Resolution method {"total", "incremental"}
 method = "incremental"
-# -
 
-# We then define a mixed function space consisting of a $P_2$ displacement vector and $P_1$ rotation parameter vector. We will also need a DG-0 function space for keeping track of the previous rotation matrix $\bR_n$ (named `R_old`) as well as the previous curvature strain $\bchi_n$ for implementing the `incremental` approach. In the following, the previous rotation matrix `R_old` must be interpolated to the identity matrix. We also keep track of the total displacement vector.
+# %% [markdown]
+# We then define a mixed function space consisting of a $P_2$ displacement vector and $P_1$ rotation parameter vector. We will also need a DG-0 function space for keeping track of the previous rotation matrix $\bR_n$ (named `R_old`) as well as the previous curvature strain $\bchi_n$ for implementing the `incremental` approach. In the following, the previous rotation matrix `R_old` must be initialized to the identity matrix. We also keep track of the total displacement vector.
 
-# +
+# %%
 Ue = basix.ufl.element("P", domain.basix_cell(), 2, shape=(gdim,))
 Te = basix.ufl.element("P", domain.basix_cell(), 1, shape=(gdim,))
 V = fem.functionspace(domain, basix.ufl.mixed_element([Ue, Te]))
@@ -346,11 +349,6 @@ def Identity(x):
 
 R_old.interpolate(Identity)
 
-
-vtk = io.VTKFile(domain.comm, "results/helical_beam_rot.pvd", "w")
-vtk.write_function(R_old)
-vtk.close()
-
 V0 = fem.functionspace(domain, ("DG", 0, (3,)))
 curv_old = fem.Function(V0, name="Previous_curvature_strain")
 
@@ -359,11 +357,11 @@ Vu, _ = V.sub(0).collapse()
 total_displ = fem.Function(Vu, name="Previous_total_displacement")
 
 end_dof = fem.locate_dofs_topological((Vu, V.sub(0)), 0, facets.find(2))[0]
-# -
 
+# %% [markdown]
 # We then define the rotation parametrization and the corresponding rotation $\bR$ and curvature matrices $\bH$ obtained from the vector rotation parameter $\btheta$. We then use the mesh `Jacobian` (which we flatten to be of shape=`(3,)`) to compute the beam axis unit tangent vector `t0` in the reference configuration. We then define the `tgrad` function in order to compute the curvilinear derivative in the beam axis direction.
 
-# +
+# %%
 rot_param = ExponentialMap()
 R = rot_param.rotation_matrix(theta)
 H = rot_param.curvature_matrix(theta)
@@ -377,29 +375,28 @@ def tgrad(u):
     return ufl.dot(ufl.grad(u), t0)
 
 
-# -
-
+# %% [markdown]
 # The strain measures are now defined, depending on the chosen resolution method. We also define the constitutive matrices.
 
-# +
+# %%
 if method == "total":
     defo = ufl.dot(R.T, t0 + tgrad(u)) - t0
     curv = ufl.dot(H.T, tgrad(theta))
 elif method == "incremental":
     R_new = R * R_old
-    R_new_expr = fem.Expression(R_new, VR.element.interpolation_points())
+    R_new_expr = fem.Expression(R_new, VR.element.interpolation_points)
     defo = ufl.dot(R_new.T, t0 + tgrad(total_displ + u)) - t0
     curv = curv_old + ufl.dot(R_old.T * H.T, tgrad(theta))
-    curv_expr = fem.Expression(curv, V0.element.interpolation_points())
+    curv_expr = fem.Expression(curv, V0.element.interpolation_points)
 
 C_N = ufl.diag(ufl.as_vector([ES, GS_2, GS_3]))
 C_M = ufl.diag(ufl.as_vector([GJ, EI_2, EI_3]))
-# -
 
+# %% [markdown]
 # We first define a uniform quadrature degree of 4 for integrating the various nonlinear forms.
 # We are now in position to define the beam elastic energy as well as the nonlinear residual form expressing balance between the internal and external works. The corresponding tangent form is also differentiated for the Newton-Raphson solver.
 
-# +
+# %%
 metadata = {"quadrature_degree": 4}
 ds = ufl.Measure("ds", domain=domain, subdomain_data=facets, metadata=metadata)
 dx = ufl.Measure("dx", domain=domain, metadata=metadata)
@@ -411,37 +408,38 @@ residual = ufl.derivative(elastic_energy, v, v_)
 residual += load * (M_max * ufl.dot(H, theta_)[1] - F_max * u_[1]) * ds(2)
 
 tangent_form = ufl.derivative(residual, v, dv)
-# -
 
+# %% [markdown]
 # We finish by defining the clamped boundary conditions and the nonlinear Newton solver.
 
-# +
+# %%
 left_dofs = fem.locate_dofs_topological(V, 0, facets.find(1))
 u0 = fem.Function(V)
 bcs = [fem.dirichletbc(u0, left_dofs)]
 
-problem = fem.petsc.NonlinearProblem(residual, v, bcs)
+petsc_options = {
+    "snes_type": "newtonls",
+    "snes_linesearch_type": "none",
+    "snes_atol": 1e-8,
+    "snes_rtol": 1e-8,
+    "snes_stol": 1e-8,
+    "ksp_type": "preonly",
+    "pc_type": "lu",
+    "pc_factor_mat_solver_type": "mumps",
+}
+problem = fem.petsc.NonlinearProblem(
+    residual,
+    J=tangent_form,
+    u=v,
+    bcs=bcs,
+    petsc_options=petsc_options,
+    petsc_options_prefix="beam_",
+)
 
-solver = nls.petsc.NewtonSolver(domain.comm, problem)
-# Set Newton solver options
-solver.atol = 1e-6
-solver.rtol = 1e-6
-solver.convergence_criterion = "residual"
-solver.max_it = 100
-
-ksp = solver.krylov_solver
-opts = PETSc.Options()
-option_prefix = ksp.getOptionsPrefix()
-opts[f"{option_prefix}ksp_type"] = "preonly"
-opts[f"{option_prefix}ksp_rtol"] = 1.0e-6
-opts[f"{option_prefix}pc_type"] = "lu"
-opts[f"{option_prefix}pc_factor_mat_solver_type"] = "mumps"
-ksp.setFromOptions()
-# -
-
+# %% [markdown]
 # During the load stepping loop, total displacement vector will be saved to VTK format at every increment. We also plot the trajectory of the extremal point in the $X-Z$ plane. Note that depending on the resolution method, the total displacement is given by $\bu$ for the `total` method or by incrementing it with $\bu$ for the `incremental` method, stored in `total_displ`. For the latter case, we also update the previous rotation matrix `R_old` and curvature `curv_old`. Note also that for this approach, a good initial guess is the zero vector, rather than the previous increment. We therefore zero the solution vector `v` which will be used as an initial guess for the next increment.
 
-# +
+# %%
 uh = np.zeros((Nsteps + 1, 3))
 
 vtk = io.VTKFile(domain.comm, "results/helical_beam.pvd", "w")
@@ -452,8 +450,7 @@ for i, t in enumerate(times[1:]):
         print(f"Increment {i}/{Nsteps}")
     load.value = t
 
-    num_its, converged = solver.solve(v)
-    assert converged
+    problem.solve()
 
     v.x.scatter_forward()
 
@@ -473,7 +470,7 @@ for i, t in enumerate(times[1:]):
 
 vtk.close()
 
-# +
+# %%
 fig = plt.figure()
 ax = fig.gca()
 ax.set_xlim(-length / 2, length)
@@ -503,8 +500,8 @@ anim = animation.FuncAnimation(
 )
 plt.close()
 HTML(anim.to_html5_video())
-# -
 
+# %% [markdown]
 # ## References
 #
 # ```{bibliography}

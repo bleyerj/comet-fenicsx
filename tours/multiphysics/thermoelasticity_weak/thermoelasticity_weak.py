@@ -1,25 +1,27 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
-#     display_name: Python 3
+#     display_name: fenicsx-v0.11
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Linear thermoelasticity (weak coupling) {far}`star`
 #
-# ## Introduction
 #
 # ```{admonition} Objectives
 # :class: objectives
 #
-# In this tour, we will solve a linear thermoelastic problem. In permanent regime, the temperature field is uncoupled from the mechanical fields whereas the latter depend on the temperature due to presence of thermal strains in the thermoelastic constitutive relation. This situation can be described as *weak* thermomechanical coupling.
+# In this tour, we will solve a linear thermoelastic problem. In steady-state regime, the temperature field is uncoupled from the mechanical fields whereas the latter depend on the temperature due to the presence of thermal strains in the thermoelastic constitutive relation. This situation can be described as *weak* thermomechanical coupling.
 # ```
 #
 # ```{admonition} Download sources
@@ -30,16 +32,16 @@
 # ```
 #
 # ```{seealso}
-# *Full* thermomechanical coupling for a transient evolution problem is treated [in this tour](/tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md).
+# *Full* thermomechanical coupling for a transient evolution problem is treated [in this tour](/tours/multiphysics/thermoelasticity_full/thermoelasticity_full.md).
 # ```
 #
-# In the present setting, the temperature field can be either given as a `Constant` or an `Expression` throughout the domain or obtained as the solution of a steady-state heat (Poisson) equation. This last case will be implemented in this tour.
+# In the present setting, the temperature field can be either given as a `Constant` or an `Function` interpolated from a Python callable throughout the domain or obtained as the solution of a steady-state heat (Poisson) equation. This last case will be implemented in this tour.
 #
 # ## Problem position
 #
 # We consider the case of a rectangular 2D domain of dimensions $L\times H$ fully clamped on both lateral sides and subjected to a self-weight loading. The top side is subjected to a uniform temperature increase of $\Delta T = +20^{\circ}C$ while the bottom and lateral boundaries remain at the initial temperature $T_0$. The geometry and boundary regions are first defined.
 
-# +
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from mpi4py import MPI
@@ -72,19 +74,18 @@ def top(x):
     return np.isclose(x[1], H)
 
 
-# -
-
+# %% [markdown]
 # Because of the weak coupling discussed before, the thermal and mechanical problem can be solved separately. As a result, we don't need to resort to mixed function spaces but can just define separately both problems.
 #
 # ## Resolution of the thermal problem
 #
-# The temperature is solution to the following equation $\text{div}(k\nabla T) = 0$ where $k$ is the thermal conductivity (here we have no heat source). Since $k$ is assumed to be homogeneous, it will not influence the solution. We therefore obtain a standard Poisson equation without forcing terms. Its formulation and resolution in FEniCS is quite standard with the temperature variation $\Delta T$ as the main unknown.
+# The temperature is the solution to the following equation $\text{div}(k\nabla T) = 0$ where $k$ is the thermal conductivity (here we have no heat source). Since $k$ is assumed to be homogeneous, it will not influence the solution. We therefore obtain a standard Poisson equation without forcing terms. Its formulation and resolution in FEniCS is quite standard with the temperature variation $\Delta T$ as the main unknown.
 #
 # ```{note}
 # We needed to define the linear form `LT` in order to use the `LinearProblem` utility class. We could also have equivalently defined the residual `res = dot(grad(T), grad(T_))*dx` and used the nonlinear utility class `NonlinearProblem`.
 # ```
 
-# +
+# %%
 VT = fem.functionspace(domain, ("Q", 1))
 T_, dT = ufl.TestFunction(VT), ufl.TrialFunction(VT)
 Delta_T = fem.Function(VT, name="Temperature_variation")
@@ -102,13 +103,15 @@ bcT = [
 
 
 # solve problem
-problem = fem.petsc.LinearProblem(aT, LT, u=Delta_T, bcs=bcT)
+problem = fem.petsc.LinearProblem(
+    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal_"
+)
 problem.solve()
-# -
 
+# %% [markdown]
 # We use `pyvista` to plot the corresponding temperature field:
 
-# +
+# %%
 pyvista.set_jupyter_backend("static")
 
 topology, cell_types, geometry = plot.vtk_mesh(domain, gdim)
@@ -127,8 +130,8 @@ plotter.add_mesh(contours, line_width=3)
 plotter.view_xy()
 plotter.zoom_camera(2.5)
 plotter.show()
-# -
 
+# %% [markdown]
 # ## Mechanical problem
 #
 # The linearized thermoelastic constitutive equation is given by:
@@ -144,7 +147,7 @@ plotter.show()
 # The main difference lies in the presence of the temperature term in the constitutive relation which introduces a linear term with respect to the TestFunction {code}`u_` when writing the work of internal forces {code}`ufl.inner(sigma(du, Delta_T), eps(u_)) * ufl.dx`. As a result, the bilinear form is extracted using the left-hand side {code}`ufl.lhs` function whereas the thermal strain term, acting as a loading term, is extracted using the right-hand side {code}`ufl.rhs` function and added to the work of external forces when defining the linear form {code}`LM`.
 # ```
 
-# +
+# %%
 E = fem.Constant(domain, 50e3)
 nu = fem.Constant(domain, 0.2)
 mu = E / 2 / (1 + nu)
@@ -173,17 +176,21 @@ LM = ufl.rhs(Wint) + ufl.inner(f, u_) * ufl.dx
 
 lateral_dofs_u = fem.locate_dofs_geometrical(Vu, lateral_sides)
 bcu = [fem.dirichletbc(np.zeros((gdim,)), lateral_dofs_u, Vu)]
-# -
 
+# %% [markdown]
 # First, the self-weight loading is deactivated, only thermal stresses are computed.
 
+# %%
 u = fem.Function(Vu, name="Displacement")
-problem = fem.petsc.LinearProblem(aM, LM, u=u, bcs=bcu)
+problem = fem.petsc.LinearProblem(
+    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical_"
+)
 problem.solve()
 
+# %% [markdown]
 # The deformed shape under thermal expansion is plotted using `pyvista`:
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 u_topology, u_cell_types, u_geometry = plot.vtk_mesh(Vu)
 u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry)
 u_3D = np.zeros((u_geometry.shape[0], 3))
@@ -200,15 +207,16 @@ plotter.add_mesh(edges, color="k", line_width=1, opacity=0.5)
 plotter.view_xy()
 plotter.zoom_camera(2.5)
 plotter.show()
-# -
 
+# %% [markdown]
 # We now take into account the self-weight.
 
+# %%
 rho_g = 2400 * 9.81e-6
 f.value[1] = -rho_g
 problem.solve()
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 u_3D[:, :2] = u.x.array.reshape(-1, 2)
 u_grid.point_data["Displacement_weight"] = u_3D
 u_grid.set_active_vectors("Displacement_weight")

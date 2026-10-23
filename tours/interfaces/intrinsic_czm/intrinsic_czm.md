@@ -1,20 +1,20 @@
 ---
 jupytext:
   cell_metadata_filter: -all
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   main_language: python
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 ---
 
 # Cohesive zone modeling of debonding and bulk fracture {far}`star`{far}`star`{far}`star`
 
 ```{admonition} Objectives
 :class: objectives
-This tutorial demonstrates  the formulation of a cohesive fracture model with `FEniCSx`. We adopt an *intrinsic* cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to {cite:p}`hansbo2015discontinuous` for a related work. Other key aspects include:
+This tour demonstrates the formulation of a cohesive fracture model with `FEniCSx`. We adopt an *intrinsic* cohesive zone model (CZM) where cohesive elements are considered along all internal facets of the mesh. We will use for this purpose a Discontinuous Galerkin interpolation of the displacement field. The reader can also refer to {cite:p}`hansbo2015discontinuous` for a related work. Other key aspects include:
 - Interface submeshes
 - Interpolation of expressions on facets
 - Fixed-point resolution strategy
@@ -48,9 +48,6 @@ The problem that we consider is a heterogeneous elastic plate consisting of a ma
 :width: 600px
 ```
 
-```{attention}
-This tour requires version `0.9.0` of FEniCSx.
-```
 
 ```{admonition} Download sources
 :class: download
@@ -65,7 +62,7 @@ This tour requires version `0.9.0` of FEniCSx.
 
 Cohesive zone models are interface elements characterized by a discontinuous displacement and are able to transmit forces through the interface. The link between the interface opening (displacement jump) $\jump{\bu}$ and the traction $\bT$ is given by the choice of a specific constitutive law, usually known as a *traction-separation* law.
 
-Among the many models available in the literature, we choose here one of the simplest ones, namely an exponential traction separation law given by:
+Among the many models available in the literature, we choose here one of the simplest ones, namely an exponential traction-separation law given by:
 
 ```{math}
 :label: traction-separation
@@ -79,12 +76,12 @@ $\delta$ is an effective opening displacement given by:
 ```{math}
 :label: effective-opening
 
-\delta(t) := \sqrt{\jump{u_n(t)}^2+\beta\jump{u_t(t)}^2}
+\delta(t) := \sqrt{\jump{u_n(t)}^2+\beta^2\jump{u_t(t)}^2}
 ```
 
-and where $\beta$ is a coupling coefficient which enables to link the normal opening $\jump{u_n} = \jump{\bu}\cdot\bn$ and the tangential opening $\jump{u_t}=\jump{\bu}\cdot\bt$ with $\bn$ (resp. $\bt$) being the unit normal (resp. tangential vector) of the considered interface.
+and where $\beta$ is a coupling coefficient between the normal opening $\jump{u_n} = \jump{\bu}\cdot\bn$ and the tangential opening $\jump{u_t}=\jump{\bu}\cdot\bt$, $\bn$ (resp. $\bt$) being the unit normal (resp. tangent) vector of the considered interface.
 
-Alternatively, the traction-separation can be written as a function of a *damage variable* d given by:
+Alternatively, the traction-separation law can be written as a function of a *damage variable* $d$ given by:
 ```{math}
 :label: damage
 
@@ -98,19 +95,19 @@ yielding:
 \bT(\jump{\bu}, d) = \dfrac{\Gc}{\delta_0^2}(1-d)\jump{\bu}
 ```
 
-The above law works as a nonlinear "spring" model with a secant stiffness given by $\dfrac{\Gc}{\delta_0^2}(1-d)$. In addition, we should also account for irreversibility of damage evolution. As a result, in an unloading phase (i.e. $\dot{\delta} < 0$), damage and thus stiffness should not decrease and the interface acts as a linear elastic spring. As a result, expression {eq}`damage` is modified to account for irreversibility as follows:
+The above law works as a nonlinear "spring" model with a secant stiffness given by $\dfrac{\Gc}{\delta_0^2}(1-d)$. In addition, we should also account for irreversibility of damage evolution: damage cannot decrease, so that the stiffness cannot increase. In an unloading phase (i.e. $\dot{\delta} < 0$), damage remains constant and the interface acts as a linear elastic spring. As a result, expression {eq}`damage` is modified to account for irreversibility as follows:
 
 ```{math}
 :label: damage-irr
 
-d(t) = \max_{t'\in[0;t]} 1-\exp(-\delta(t')/\delta_0)
+d(t) = \max_{t'\in[0, t]} 1-\exp(-\delta(t')/\delta_0)
 ```
 
 In a loading phase for which $\dot{\delta}>0$, we have $\dot{d}>0$ and the interface element behaves as a nonlinear softening elastic spring. For a purely normal opening $(\jump{u_t}=0)$ in a loading phase, we have:
 \begin{equation*}
 T_n(\jump{u_n})=\dfrac{\Gc}{\delta_0^2}\exp(-\jump{u_n}/\delta_0)\jump{u_n}
 \end{equation*}
-which is maximum when $\jump{u_n}=\delta_0$ with a value $T_n(\delta_0) = \sigc = \dfrac{\Gc}{\delta_0}\exp(-1)$. $\delta_0$ therefore characterizes the critical opening for which the maximum strength $\sigc$ is reached. For $\jump{u_n}\gg \delta_0$, the stiffness tends to vanish and the cohesive element does no longer sustain any load. Finally, when integrating the traction-separation law for $\jump{u_n}$ from 0 to $+\infty$, we see that the total dissipated surface energy is:
+which is maximum when $\jump{u_n}=\delta_0$ with a value $T_n(\delta_0) = \sigc = \dfrac{\Gc}{\delta_0}\exp(-1)$. $\delta_0$ therefore characterizes the critical opening for which the maximum strength $\sigc$ is reached. For $\jump{u_n}\gg \delta_0$, the stiffness tends to vanish and the cohesive element no longer sustains any load. Finally, when integrating the traction-separation law for $\jump{u_n}$ from 0 to $+\infty$, we see that the total dissipated surface energy is:
 \begin{equation*}
 \text{Dissipation} = \int_0^{+\infty} T_n(\jump{u})d\jump{u} = \Gc
 \end{equation*}
@@ -149,7 +146,7 @@ def draw_frame(i):
     ax.set_xlim(min(loading_cycles), max(loading_cycles))
     ax.set_ylim(0, 1.2)
     ax.set_xlabel(r"Normalized opening $[\![u]\!]/\delta_0$")
-    ax.set_ylabel(r"Normalized traction $T([\![u]\!])/\sigma_0$")
+    ax.set_ylabel(r"Normalized traction $T([\![u]\!])/\sigma_c$")
     lines = [
         ax.plot(loading[: i + 1], T[: i + 1], "-k")[0],
         ax.plot(loading[i], T[i], "oC3")[0],
@@ -181,9 +178,9 @@ Note that we do not distinguish here the tensile from the compressive regime. In
 
 ### Variational formulation
 
-Now we consider a domain $\Omega$ subject to imposed displacements on its Dirichlet boundary $\Dirichlet$ and under given body forces $\boldsymbol{f}$ In addition, the domain $\Omega$ contains a set of interfaces $\Gamma$ over which the displacement is discontinuous (jump $\jump{\bu}$) and for which the traction vector is given by the previous traction-separation law {eq}`traction-separation-damage`.
+Now we consider a domain $\Omega$ subject to imposed displacements on its Dirichlet boundary $\Dirichlet$ and under given body forces $\boldsymbol{f}$. In addition, the domain $\Omega$ contains a set of interfaces $\Gamma$ over which the displacement is discontinuous (jump $\jump{\bu}$) and for which the traction vector is given by the previous traction-separation law {eq}`traction-separation-damage`.
 
-The weak form of equilibrium (virtual work principle) in presence of discontinuities reads:
+The weak form of equilibrium (virtual work principle) in the presence of discontinuities reads:
 
 $$
 \int_\Omega \bsig:\nabla^\text{s} \bv \dOm + \int_{\Gamma}\bT\cdot\jump{\bv}\dS = \int_\Omega \boldsymbol{f}\cdot\bv \dOm \quad \forall \bv \in V_0
@@ -196,10 +193,10 @@ For the above expression to be consistent, the definition of the jump $\jump{\bu
 $$
 \jump{\bu} = \bu^\oplus - \bu^\ominus
 $$
-where $\bn$ is oriented from side $\ominus$ to side $\oplus$. Note that in UFL with `n = FacetNormal(domain)`, this definition of the normal vector $\bn$ therefore corresponds to the restriction on the $\ominus$ side i.e. `n("-")` since `n` points outwards a given cell.
+where $\bn$ is oriented from side $\ominus$ to side $\oplus$. Note that in UFL with `n = FacetNormal(domain)`, this definition of the normal vector $\bn$ therefore corresponds to the restriction on the $\ominus$ side i.e. `n("-")` since `n` points outwards from a given cell.
 ```
 
-Injecting the elastic constitutive relation and traction separation law, the resulting nonlinear problem is given by:
+Substituting the elastic constitutive relation and the traction-separation law, the resulting nonlinear problem is given by:
 Find $\bu\in V$ such that:
 
 ```{math}
@@ -210,7 +207,7 @@ where $\bsig(\nabla^s \bu)$ is the linear elastic constitutive relation and wher
 
 ### Fixed-point resolution strategy
 
-The previous variational problem {eq}`czm-problem` is highly nonlinear. The Newton-Raphson method is not necessarily extremely robust in such softening situations, especially in the presence of unstable crack propagation phases. For this reason, we prefer here to resort to a fixed-point iteration scheme. For a given load step, we *iterate* between solving an elastic displacement problem with $d$ being fixed to a previously known value $d_i$, yielding the following linear problem:
+The previous variational problem {eq}`czm-problem` is highly nonlinear. The Newton-Raphson method is often not robust in such softening situations, especially in the presence of unstable crack propagation phases. For this reason, we prefer here to resort to a fixed-point iteration scheme. For a given load step, we *iterate* between solving an elastic displacement problem with $d$ being fixed to a previously known value $d^{(i)}$, yielding the following linear problem:
 
 Find $\bu^{(i+1)}\in V$ such that:
 
@@ -223,12 +220,12 @@ The newly computed displacement $\bu^{(i+1)}$ is then used to update the value o
 ```{math}
 \begin{align*}
 d^{(i+1)} &= \max\{d_\text{prev};  1-\exp(-\delta^{(i+1)}/\delta_0)\}\\
-\text{where } \delta^{(i+1)} &= \sqrt{\jump{u_n^{(i+1)}}^2+\beta\jump{u_t^{(i+1)}}^2}
+\text{where } \delta^{(i+1)} &= \sqrt{\jump{u_n^{(i+1)}}^2+\beta^2\jump{u_t^{(i+1)}}^2}
 \end{align*}
 ```
-with $d_\text{prev}$ denotes the previous damage level reached before this time step in order to enforce an irreversible damage evolution.
+where $d_\text{prev}$ denotes the damage level reached at the end of the previous load step, which enforces an irreversible damage evolution.
 
-These fixed point iterations are then stopped until $\|d^{(i+1)}-d^{(i)}\|\leq \epsilon$.
+These fixed-point iterations are repeated until $\|d^{(i+1)}-d^{(i)}\|\leq \epsilon$.
 
 ## Implementation
 
@@ -237,8 +234,6 @@ These fixed point iterations are then stopped until $\|d^{(i+1)}-d^{(i)}\|\leq \
 We define a function to create the mesh and other utility functions.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def create_matrix_inclusion_mesh(L, W, R, hsize):
     comm = MPI.COMM_WORLD
 
@@ -273,13 +268,13 @@ def create_matrix_inclusion_mesh(L, W, R, hsize):
         gmsh.model.mesh.generate(gdim)
 
     partitioner = dolfinx.cpp.mesh.create_cell_partitioner(
-        dolfinx.mesh.GhostMode.shared_facet
+        dolfinx.mesh.GhostMode.shared_facet, 2
     )
-    domain, cells, facets = dolfinx.io.gmshio.model_to_mesh(
+    mesh_data = dolfinx.io.gmsh.model_to_mesh(
         gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim, partitioner=partitioner
     )
     gmsh.finalize()
-    return (domain, cells, facets)
+    return mesh_data
 
 
 def create_piecewise_constant_field(
@@ -328,9 +323,10 @@ length = 1.0
 width = 0.5
 radius = 0.25
 hsize = 0.02
-domain, cell_marker, facet_marker = create_matrix_inclusion_mesh(
-    length, width, radius, hsize
-)
+mesh_data = create_matrix_inclusion_mesh(length, width, radius, hsize)
+domain = mesh_data.mesh
+cell_marker = mesh_data.cell_tags
+facet_marker = mesh_data.facet_tags
 INNER_FACET_TAG = 0  # tag of inner facets except interface
 MATRIX_TAG = 1  # tag of matrix phase
 INCL_TAG = 2  # tag of inclusion phase
@@ -369,7 +365,7 @@ plot_mesh(domain, facets, annotations=annotations, line_width=2, cmap="plasma_r"
 
 ### Submesh creation
 
-Here, we use the new functionalities offered by version `0.9.0` to create **submeshes** using `dolfinx.mesh.create_submesh`. The submesh will be of co-dimension[^codim] 1 and consists of facets in $\Gamma$ i.e. facets of the interface $\Gamma_\text{int}$ and of inner facets in $\Gamma_\text{bulk}$.
+We now create a **submesh** using `dolfinx.mesh.create_submesh`. The submesh is of co-dimension[^codim] 1 and consists of the facets in $\Gamma$, i.e. the facets of the interface $\Gamma_\text{int}$ and the inner facets in $\Gamma_\text{bulk}$. Besides the submesh `interface_mesh`, `create_submesh` returns an *entity map* `interfaces_cell_map` relating the facets of `domain` to the cells of `interface_mesh`, a map from the submesh vertices to the parent mesh vertices and a similar map for the geometry nodes (unused here).
 
 [^codim]: *Co-dimension* is a geometric concept which refers to the geometric dimension of a subset relative to a larger set. A co-dimension `codim` means that the subset is of dimension `dim-codim` where `dim` refers to the dimension of the original set. In the present context, facets are of co-dimension 1 with respect to the original mesh consisting of cells i.e. in 2D cells are of dimension 2 and facets of dimension 1, in 3D cells are of dimension 3 and facets of dimension 2.
 
@@ -380,29 +376,17 @@ interface_mesh, interfaces_cell_map, interfaces_vertex_map, _ = (
 )
 ```
 
-We must also recreate a `MeshTag` based on the new `interface_mesh` to correctly identify regions of the submesh.
+We must also transfer the facet tags to the new `interface_mesh` to identify the interface and bulk regions of the submesh. This is done with `dolfinx.mesh.transfer_meshtags_to_submesh`, using the vertex and entity maps returned by `create_submesh`.
 
 ```{code-cell} ipython3
-num_sub_facets = len(interfaces_cell_map)
-interfaces_facet_tags = dolfinx.mesh.meshtags(
-    interface_mesh,
-    fdim,
-    np.arange(num_sub_facets, dtype=np.int32),
-    facets.values[interfaces_cell_map],
+interfaces_facet_tags = dolfinx.mesh.transfer_meshtags_to_submesh(
+    facets, interface_mesh, interfaces_vertex_map, interfaces_cell_map
 )
 ```
 
-Finally, an important concept when dealing with integration of forms involving coefficients defined on a different mesh than the integration domain is that of an *entity map*. An entity map is a dictionary which links a mesh with a mapping relating entities in the integration domain mesh to the submesh, see also https://jsdokken.com/FEniCS-workshop/src/multiphysics/submeshes.html#integration-with-function-from-parent-and-sub-mesh.
+The entity map is essential when forms involve coefficients defined on a different mesh than the integration domain: it allows the assembler to find, for each facet of `domain`, the corresponding cell of `interface_mesh`. The entity map `interfaces_cell_map`, a `dolfinx.mesh.EntityMap` object, must therefore be passed to `fem.form` through the `entity_maps` argument whenever a form involves functions defined on the submesh, see also [the FEniCS workshop on submeshes](https://jsdokken.com/FEniCS-workshop/src/multiphysics/submeshes.html#integration-with-function-from-parent-and-sub-mesh).
 
-```{code-cell} ipython3
-facet_imap = domain.topology.index_map(facets.dim)
-num_facets = facet_imap.size_local + facet_imap.num_ghosts
-domain_to_interfaces = np.full(num_facets, INNER_FACET_TAG)
-domain_to_interfaces[interfaces_cell_map] = np.arange(len(interfaces_cell_map))
-entity_maps = {interface_mesh: domain_to_interfaces}
-```
-
-We now define the different integration measures. Note that we must choose a specific domain with which to associate the integration measure. We will use the full mesh `domain`, as it will be more convenient when dealing with multiple geometric dimensions. We check that the sum $|\Gamma_\text{int}|+|\Gamma_\text{bulk}|$ is equal to the total interface measure $|\Gamma|$ measured by integrating a cell measure over the submesh.
+We now define the different integration measures. Note that we must choose a specific domain with which to associate each integration measure. We will use the full mesh `domain`, as it will be more convenient when dealing with multiple geometric dimensions. We check that the sum $|\Gamma_\text{int}|+|\Gamma_\text{bulk}|$ is equal to the total interface measure $|\Gamma|$ measured by integrating a cell measure over the submesh.
 
 ```{code-cell} ipython3
 dx = ufl.Measure("dx", domain=domain)
@@ -412,14 +396,14 @@ dx_int = ufl.Measure("dx", domain=interface_mesh)
 Gamma_int = fem.assemble_scalar(fem.form(1 * dS(INT_TAG)))
 Gamma_bulk = fem.assemble_scalar(fem.form(1 * dS(INNER_FACET_TAG)))
 Gamma = fem.assemble_scalar(fem.form(1 * dx_int))
-print(f"Total interface area = {Gamma_int:.3f}")
-print(f"Total inner facets area = {Gamma_bulk:.3f}")
-print(f"Total interface measure = {Gamma:.3f} vs {Gamma_int+Gamma_bulk:.3f}")
+print(f"Total interface length = {Gamma_int:.3f}")
+print(f"Total inner facets length = {Gamma_bulk:.3f}")
+print(f"Total interface measure = {Gamma:.3f} vs {Gamma_int + Gamma_bulk:.3f}")
 ```
 
 ### Weak form formulation
 
-We first define linear elastic material properties by creating two fields for the Young modulus $E$ and Poisson ratio $\nu$, taking piecewise constant values in the matrix and inclusion phases. We refer to [](/tips/piecewise_constant_field/piecewise_constant_field.md) for more details. UFL functions for the strain and stress expressions are then defined.
+We first define linear elastic material properties by creating two fields for Young's modulus $E$ and Poisson's ratio $\nu$, taking piecewise constant values in the matrix and inclusion phases. We refer to [](/tips/piecewise_constant_field/piecewise_constant_field.md) for more details. UFL functions for the strain and stress expressions are then defined.
 
 ```{code-cell} ipython3
 E = create_piecewise_constant_field(
@@ -440,7 +424,7 @@ def sigma(v):
     return lmbda * ufl.tr(epsilon(v)) * ufl.Identity(tdim) + 2.0 * mu * epsilon(v)
 ```
 
-We define the two material parameters representing the fracture energy $\Gc$ and the critical stress $\sigc$. Both fields are piecewise constant functions (`"DG"-0`) defined on the interface mesh. Both parameters have smaller values on the interface, while facets in the bulk have stronger mechanical properties. We then define various functions such as {eq}`effective-opening`, {eq}`damage` and {eq}`traction-separation-damage` which will serve for expressing the cohesive law.
+We define the two material parameters representing the fracture energy $\Gc$ and the critical stress $\sigc$. Both fields are piecewise constant functions (`"DG"` of degree 0) defined on the interface mesh. Both parameters have smaller values on the interface, while facets in the bulk have stronger mechanical properties. We then define various functions such as {eq}`effective-opening`, {eq}`damage` and {eq}`traction-separation-damage` which will serve for expressing the cohesive law.
 
 ```{code-cell} ipython3
 Gc = create_piecewise_constant_field(
@@ -474,11 +458,11 @@ def T(opening, d):
     return K_int * opening
 ```
 
-Two function spaces are now defined. `V` refers to the displacement function space using a **Discontinuous Galerkin** (`"DG"`) of degree 1.
+Two function spaces are now defined. `V` refers to the displacement function space using a **Discontinuous Galerkin** (`"DG"`) interpolation of degree 1.
 
 We will also need to compute quantities which live only on the facets of the mesh e.g. the internal variables of the cohesive law (the damage `d` in the present case). The space `V_int` consists of a `"DG"` interpolation of degree 1 (piecewise affine on the facet and discontinuous at the vertices). This choice is made to simplify the visualization of facet fields. To enforce irreversibility of damage evolution, `d_prev` will store the value of interfacial damage at the previous converged increment. Finally, to test convergence of the damage field during the fixed-point iteration scheme, `d_old` will store the value of interfacial damage of the previous iteration.
 
-Note that an alternative for V_int is to use a quadrature space on the facet mesh using the space `Q` defined later. However, functions on `Q` can then only be visualized as point clouds, see https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html.
+Note that an alternative for `V_int` is to use a quadrature space on the facet mesh such as the space `Q` defined later. However, functions on `Q` can then only be visualized as point clouds, see [this for example](https://scientificcomputing.github.io/scifem/examples/xdmf_point_cloud.html).
 
 ```{code-cell} ipython3
 V = fem.functionspace(domain, ("DG", 1, (tdim,)))
@@ -492,7 +476,7 @@ d_prev = fem.Function(V_int, name="Previous_interfacial_damage")
 d_old = fem.Function(V_int, name="Interfacial_damage_old")
 ```
 
-The variational forms are now defined. The weak form contains the current value of damage `d` defined as a function on the facet mesh. This function being fixed, the resulting problem is therefore linear. The corresponding bilinear and linear (zero in the present example) forms are compiled using the previously defined entity map which allows to integrate forms containing functions defined on a submesh.
+The variational forms are now defined. The weak form contains the current value of damage `d` defined as a function on the facet mesh. This function being fixed, the resulting problem is therefore linear. The corresponding bilinear and linear (zero in the present example) forms are compiled by passing the entity map, which allows integrating forms containing functions defined on the submesh.
 
 The interface contribution `a_interface` to the bilinear form contains jump terms defined on all internal facets (bulk + interface) via the measure `dS`. Since we use an inner surface measure, all quantities must be restricted onto a facet. Although `d` lives on the facet mesh, we still need to restrict it in some way. We use here `ufl.avg`, although `"+"` or `"-"` would have also worked.
 
@@ -504,31 +488,37 @@ a = a_bulk + a_interface
 f = fem.Constant(domain, (0.0, 0.0))
 Fext = ufl.dot(f, v) * dx
 
-a_compiled = fem.form(a, entity_maps=entity_maps)
-Fext_compiled = fem.form(Fext, entity_maps=entity_maps)
+a_compiled = fem.form(a, entity_maps=[interfaces_cell_map])
+Fext_compiled = fem.form(Fext, entity_maps=[interfaces_cell_map])
+
+residual_form = fem.form((d - d_old) ** 2 * dx_int)
 ```
 
 (facet:expressions:interpolation)=
 ### Facet expressions interpolation
 
-In the load stepping process, the fixed-point procedure will iteratively update the damage field `d` with a new value computed from the current displacement estimate. To do so, we must compute the nonlinear expression {eq}`damage` at the interpolation points corresponding to the degrees of freedom of the `V_int` function space, namely the two vertices of a facet. To do so, we will build a linear form such that its assembled vector exactly corresponds to a vector of interpolated values using a custom quadrature trick.
+In the load stepping process, the fixed-point procedure will iteratively update the damage field `d` with a new value computed from the current displacement estimate. We must therefore evaluate the nonlinear expression {eq}`damage-irr` at the interpolation points corresponding to the degrees of freedom of the `V_int` function space, namely the two vertices of each facet. For this purpose, we build a linear form whose assembled vector exactly contains the interpolated values, using a custom quadrature trick.
+
+```{note}
+A `fem.Expression` can also be evaluated on facets and involve functions defined on a submesh of co-dimension 1, through the `entity_maps` argument. However, such expressions are *one-sided*: they are evaluated from a single cell adjacent to the facet and therefore cannot involve restricted quantities such as `ufl.jump(u)`. The quadrature trick described below handles such two-sided quantities naturally since it relies on an interior facet integral.
+```
 
 Suppose that we want to evaluate an expression `e` at certain points on facets. Assuming that $Q$ is a quadrature function space defined on facets and $x_g$, $\omega_g$ are $n$ quadrature integration points and weights defined on the reference element, the facet quadrature rule can be expressed as follows:
 
 $$
-\int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} \dfrac{|F|}{|F_\text{r}|}\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
+\int_{F} \widehat{e} q \dS = \sum_{g=1}^{n} |F|\omega_g \widehat{e}(x_g)q(x_g) \quad \forall q\in Q
 $$
-where $F$ is a facet, $|F|$ its area measure and $|F_\text{r}|$ that of the reference element. Here, for a 1D facet, the `basix` reference interval is of measure $|F_\text{r}|=1. $\widehat{e}$ is a generic expression and $q$ is a test function in $Q$.
-Generalizing this quadrature over a set of facets, the resulting assembled vector will therefore contain the values $|F|\omega_g \widehat{e}(x_g)$ at the corresponding dofs. As a result, if we choose $\widehat{e} = e/|F|$ and $\omega_g=|F_\text{r}|=1$, the resulting assembled vector will exactly contain the wanted values $e(x_g)$.
+where $F$ is a facet, $|F|$ its area measure, $\widehat{e}$ is a generic expression and $q$ is a test function in $Q$.
+Generalizing this quadrature over a set of facets, the resulting assembled vector therefore contains the values $|F|\omega_g \widehat{e}(x_g)$ at the corresponding dofs. As a result, if we choose $\widehat{e} = e/|F|$ and $\omega_g=1$, the resulting assembled vector exactly contains the desired values $e(x_g)$.
 
-This strategy is implemented below. The damage expression `d_expr` to interpolate is first defined. Note that it is defined as the maximum between expression {eq}`damage` and `d_prev` to ensure irreversibility. A custom `basix` quadrature element using unitary weights and interpolation points of `V_int` as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, `facet_interp` contains the compiled form discussed previously.
+This strategy is implemented below. The damage expression `d_expr` to interpolate is first defined. Note that it is defined as the maximum between expression {eq}`damage` and `d_prev` to ensure irreversibility. A custom `basix` quadrature element using unit weights and the interpolation points of `V_int` as quadrature points is defined on the interface mesh. The corresponding custom integration measure is also defined. Finally, `facet_interp` contains the compiled form discussed previously. Note that geometric quantities must be restricted on interior facets, even when they take the same value on both sides: we therefore use the facet area `ufl.FacetArea(domain)("+")`.
 
 ```{code-cell} ipython3
 n = ufl.FacetNormal(domain)
 delta = effective_opening(ufl.jump(u), n("-"))
 d_expr = ufl.max_value(ufl.avg(d_prev), 1 - ufl.exp(-delta / ufl.avg(delta_0)))
 
-q_p = V_int.element.interpolation_points()
+q_p = V_int.element.interpolation_points
 weights = np.full(q_p.shape[0], 1.0, dtype=dolfinx.default_scalar_type)
 q_el = basix.ufl.quadrature_element(
     interface_mesh.basix_cell(), scheme="custom", points=q_p, weights=weights
@@ -539,27 +529,27 @@ dS_custom = ufl.Measure(
     "dS",
     domain=domain,
     metadata={
-        "quadrature_scheme": "custom",
+        "quadrature_rule": "custom",
         "quadrature_points": q_p,
         "quadrature_weights": weights,
     },
     subdomain_data=facets,
 )
 
+
 facet_interp = fem.form(
-    1 / ufl.FacetArea(domain) * d_expr * ufl.avg(q_) * dS_custom,
-    entity_maps=entity_maps,
+    1 / ufl.FacetArea(domain)("+") * d_expr * ufl.avg(q_) * dS_custom,
+    entity_maps=[interfaces_cell_map],
 )
 ```
 
 ### Dirichlet boundary conditions
 
-Here, we define the Dirichlet boundary conditions consisting of fixed displacement on the left part and and an imposed displacement $(t, 0)$ on the right boundary.Note that since we use DG discretization of the displacement field,
-DG dofs do not live on the facets but are associated with cell interior. As a result, they cannot be found using `locate_dofs_topological` and the facet marker. We must use a geometrical approach to locating the dofs instead.
+Here, we define the Dirichlet boundary conditions consisting of a fixed displacement on the left part and an imposed displacement $(t, 0)$ on the right boundary. Note that since we use a DG discretization of the displacement field, DG dofs do not live on the facets but are associated with cell interiors. As a result, they cannot be found using `locate_dofs_topological` and the facet marker. We must locate the dofs geometrically instead.
 
 Note that an alternative could have been to employ a weak Nitsche imposition of the Dirichlet BCs which is very similar to a cohesive traction law at the boundary.
 
-Finally, the imposed displacement constant `Uimp` is initialized with unitary values. This will serve to define a unitary virtual displacement field `v_reac` to be used for measuring the reaction force on the boundary in a consistent manner. We refer to [](/tips/computing_reactions/computing_reactions.md) for more details.
+Finally, the imposed displacement constant `Uimp` is initialized with unit values. This will serve to define a unit virtual displacement field `v_reac` to be used for measuring the reaction force on the boundary in a consistent manner. We refer to [](/tips/computing_reactions/computing_reactions.md) for more details.
 
 ```{code-cell} ipython3
 Uimp = fem.Constant(domain, (1.0, 0.0))
@@ -573,11 +563,11 @@ bcs = [
 v_reac = fem.Function(V)
 fem.set_bc(v_reac.x.array, bcs)
 virtual_work_form = fem.form(
-    ufl.action(ufl.action(a, u) - Fext, v_reac), entity_maps=entity_maps
+    ufl.action(ufl.action(a, u) - Fext, v_reac), entity_maps=[interfaces_cell_map]
 )
 ```
 
-The linear problem associated with resolution of displacement at fixed damage is now defined outside the load-stepping loop.
+The linear problem for the displacement at fixed damage is now defined outside the load-stepping loop.
 
 ```{code-cell} ipython3
 problem = LinearProblem(
@@ -586,16 +576,17 @@ problem = LinearProblem(
     u=u,
     bcs=bcs,
     petsc_options={"ksp_type": "preonly", "pc_type": "lu"},
+    petsc_options_prefix="displacement_",
 )
 ```
 
-We will monitor the evolution of total damage over the structure by computing a normalized (or average) value of damage, separating its contribution from the physical interface $\Gamma_\text{int}$ from the internal facets in the bulk matrix $\Gamma_\text{bulk}$.
+We will monitor the evolution of total damage over the structure by computing a normalized (or average) value of damage, separating the physical interface $\Gamma_\text{int}$ contribution from that of the internal facets in the bulk matrix $\Gamma_\text{bulk}$.
 
 ```{code-cell} ipython3
-interface_damage = fem.form(ufl.avg(d) * dS(INT_TAG), entity_maps=entity_maps)
+interface_damage = fem.form(ufl.avg(d) * dS(INT_TAG), entity_maps=[interfaces_cell_map])
 bulk_damage = fem.form(
     ufl.avg(d) * dS(INNER_FACET_TAG),
-    entity_maps=entity_maps,
+    entity_maps=[interfaces_cell_map],
 )
 ```
 
@@ -603,7 +594,7 @@ bulk_damage = fem.form(
 
 The load stepping loop is now started with progressively applied imposed displacement. For each load step, the inner fixed-point iteration loop is performed to first compute the new displacement and then update the value of damage by evaluating its expression on the different facets from assembling the `facet_interp` form. Convergence is checked by measuring the $L^2$ difference between two consecutive values of the damage field.
 
-At the end of each time step, the total resulting force on the right boundary is computed as well as normalized values of the total damage, distinguishing the interfacial from the bulk contribution. Finally, the `d_prev` variable is updated with new values to account for damage irreversibility.
+At the end of each load step, the total resulting force on the right boundary is computed as well as normalized values of the total damage, distinguishing the interfacial from the bulk contribution. Finally, the `d_prev` variable is updated with new values to account for damage irreversibility.
 
 ```{code-cell} ipython3
 Nincr = 60
@@ -614,10 +605,10 @@ tol = 1e-4
 damage_results = [[0.0, 0.0]]
 Force = [0.0]
 iterations = [0]
-out_file = io.VTKFile(MPI.COMM_WORLD, "results/czm.pvd", "a")
+out_file = io.VTKFile(MPI.COMM_WORLD, "results/czm.pvd", "w")
 for i, t in enumerate(loading[1:]):
     if MPI.COMM_WORLD.rank == 0:
-        print(f"Load step {i+1}/{len(loading)-1}")
+        print(f"Load step {i + 1}/{len(loading) - 1}")
     Uimp.value[0] = t
     nRes = 1.0
     j = 0
@@ -627,9 +618,7 @@ for i, t in enumerate(loading[1:]):
         # interpolation of damage on facets
         d.x.array[:] = fem.assemble_vector(facet_interp).array
         # normalized residual for convergence check
-        nRes = (
-            np.sqrt((fem.assemble_scalar(fem.form((d - d_old) ** 2 * dx_int)))) / Gamma
-        )
+        nRes = np.sqrt((fem.assemble_scalar(residual_form))) / Gamma
         d_old.x.array[:] = d.x.array[:]
         j += 1
         print(f"    Iteration {j:2d} | Residual: {nRes}")
@@ -637,9 +626,7 @@ for i, t in enumerate(loading[1:]):
             break
     else:
         raise ValueError(
-            "Fixed-point solver did not converge in less than {} iterations".format(
-                Niter_max
-            )
+            f"Fixed-point solver did not converge within {Niter_max} iterations"
         )
     iterations.append(j)
     d_prev.x.array[:] = d.x.array[:]

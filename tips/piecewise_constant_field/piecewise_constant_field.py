@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     default_lexer: ipython3
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Create a piecewise constant field for spatially varying properties
 #
 # ```{admonition} Objectives
@@ -27,7 +29,7 @@
 # * {Download}`Jupyter notebook<./piecewise_constant_field.ipynb>`
 # ```
 
-# +
+# %%
 import numpy as np
 import matplotlib.pyplot as plt
 from mpi4py import MPI
@@ -58,11 +60,10 @@ def create_piecewise_constant_field(domain, cell_markers, property_dict, name=No
     return k
 
 
-# -
-
+# %% [markdown]
 # For instance, we first create a square mesh and define a geometric marker marking a square strip of inner radius `a` and outer radius `b`:
 
-# +
+# %%
 N = 40
 domain = mesh.create_unit_square(
     MPI.COMM_WORLD, N, N, cell_type=mesh.CellType.quadrilateral
@@ -76,11 +77,10 @@ def strip(x, a, b, eps=1e-8):
     )
 
 
-# -
-
+# %% [markdown]
 # We then use the function `mark_entities` introduced in [](/tips/mark_facets/mark_facets.md) to mark the corresponding cells and create a piecewise constant field.
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 def mark_entities(domain, dim, entities_dict):
     """Mark entities of specified dimension according to geometrical location
 
@@ -116,8 +116,7 @@ def mark_entities(domain, dim, entities_dict):
     return entities_tags
 
 
-# -
-
+# %%
 tdim = domain.topology.dim
 cell_markers = mark_entities(
     domain,
@@ -134,7 +133,7 @@ func = create_piecewise_constant_field(
     domain, cell_markers, {k: float(k) for k in range(5)}
 )
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 import pyvista
 from dolfinx import plot
 

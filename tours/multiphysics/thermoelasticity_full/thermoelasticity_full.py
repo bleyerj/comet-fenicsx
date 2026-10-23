@@ -1,17 +1,19 @@
 # ---
 # jupyter:
 #   jupytext:
+#     formats: md:myst,ipynb,py:percent
 #     text_representation:
 #       extension: .py
-#       format_name: light
-#       format_version: '1.5'
-#       jupytext_version: 1.16.1
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.19.3
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
 #     name: python3
 # ---
 
+# %% [markdown]
 # # Thermo-elastic evolution problem (full coupling) {far}`star`{far}`star`
 #
 # ```{admonition} Objectives
@@ -46,32 +48,31 @@
 #
 # ```{seealso}
 #
-# Static elastic computation with thermal strains is treated in the [](/tours/linear_problems/thermoelasticity_weak/thermoelasticity_weak.md) tour.
+# Static elastic computation with thermal strains is treated in the [](/tours/multiphysics/thermoelasticity_weak/thermoelasticity_weak.md) tour.
 # ```
 #
 # ## Problem position
 #
-# The problem consists of a quarter of a square plate perforated by a circular hole. Thermo-elastic properties are isotropic and correspond to those of aluminium (note that stress units are in $\text{MPa}$, distances in $\text{m}$ and mass in $\text{kg}$). Linearized thermo-elasticity will be considered around a reference temperature of $T_0 = 293 \text{ K}$. A temperature increase of $\Delta T=+10^{\circ}\text{C}$ will be applied on the hole boundary. Symmetry conditions are applied on the corresponding symmetry planes and stress and flux-free boundary conditions are adopted on the plate outer boundary.
+# The problem consists of a quarter of a square plate perforated by a circular hole. Thermo-elastic properties are isotropic and correspond to those of aluminum (note that stress units are in $\text{MPa}$, distances in $\text{m}$ and mass in $\text{kg}$). Linearized thermo-elasticity will be considered around a reference temperature of $T_0 = 293 \text{ K}$. A temperature increase of $\Delta T=+10^{\circ}\text{C}$ will be applied on the hole boundary. Symmetry conditions are applied on the corresponding symmetry planes and stress and flux-free boundary conditions are adopted on the plate outer boundary.
 #
 # We first import the relevant modules.
 
-# +
+# %%
 import matplotlib.pyplot as plt
 import numpy as np
 import gmsh
 from mpi4py import MPI
 import basix
 import ufl
-from dolfinx import fem, mesh, io, nls
-from dolfinx.io.gmshio import model_to_mesh
+from dolfinx import fem, mesh, io
+from dolfinx.io.gmsh import model_to_mesh
 
 import dolfinx.fem.petsc
-import dolfinx.nls.petsc
-# -
 
+# %% [markdown]
 # The mesh is then defined using the `gmsh` Python API.
 
-# + tags=["hide-input"]
+# %% tags=["hide-input"]
 # Create mesh using gmsh
 L = 1.0
 R = 0.1
@@ -104,11 +105,13 @@ gmsh.model.addPhysicalGroup(gdim - 1, [2], 3, name="left")
 gmsh.model.addPhysicalGroup(gdim - 1, [3, 4], 4, name="right_top")
 gmsh.model.mesh.generate(gdim)
 
-domain, _, facets = model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
-
+mesh_data = model_to_mesh(gmsh.model, MPI.COMM_WORLD, model_rank, gdim=gdim)
+domain = mesh_data.mesh
+markers = mesh_data.cell_tags
+facets = mesh_data.facet_tags
 gmsh.finalize()
-# -
 
+# %% [markdown]
 # We now define the relevant function space for the considered problem. Since we will adopt a monolithic approach i.e. in which both fields are coupled and solved at the same time, we will need to resort to a mixed function space for both the displacement $\boldsymbol{u}$ and the temperature variation $\Theta=T-T_0$.
 #
 # ```{seealso}
@@ -116,7 +119,7 @@ gmsh.finalize()
 # For an introduction on the use of mixed function spaces, check out the tutorials on the [mixed Poisson equation](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_mixed-poisson.html) or the [Stokes problem](https://docs.fenicsproject.org/dolfinx/main/python/demos/demo_stokes.html) of the official documentation or the [](/intro/plates/plates.md) tour in this book.
 # ```
 
-# +
+# %%
 # Define elements spaces
 Vue = basix.ufl.element(
     "P", domain.basix_cell(), 2, shape=(2,)
@@ -135,15 +138,15 @@ DThole_value = 10.0
 dt = fem.Constant(domain, 0.0)  # time step
 
 DThole = fem.Function(V_t)
-DThole.vector.set(DThole_value)
+DThole.x.petsc_vec.set(DThole_value)
 
 Tref = fem.Function(V_t)
-Tref.vector.set(Tref_value)
-# -
+Tref.x.petsc_vec.set(Tref_value)
 
-# Dirichlet boundary conditions must be defined from the full FunctionSpace `V` using the appropriate subspaces that is `V.sub(0)` for the displacement (and `.sub(0)` or `.sub(1)` for the corresponding x/y component) and `V.sub(1)` for the temperature. Note also that in the following, we will in fact work with the temperature variation $\Theta = T-T_0$ as a field unkwown instead of the total temperature. Hence, the boundary condition on the hole boundary reads indeed as $\Delta T=+10^{\circ}\text{C}$ .
+# %% [markdown]
+# Dirichlet boundary conditions must be defined from the full FunctionSpace `V` using the appropriate subspaces that is `V.sub(0)` for the displacement (and `.sub(0)` or `.sub(1)` for the corresponding x/y component) and `V.sub(1)` for the temperature. Note also that in the following, we will in fact work with the temperature variation $\Theta = T-T_0$ as a field unknown instead of the total temperature. Hence, the boundary condition on the hole boundary reads indeed as $\Delta T=+10^{\circ}\text{C}$ .
 
-# +
+# %%
 inner_T_dofs = fem.locate_dofs_topological((V.sub(1), V_t), facets.dim, facets.find(1))
 bottom_uy_dofs = fem.locate_dofs_topological(
     (V.sub(0).sub(1), V_uy), facets.dim, facets.find(2)
@@ -164,8 +167,8 @@ bcs = [
     fem.dirichletbc(u0y, bottom_uy_dofs, V.sub(0).sub(1)),
     fem.dirichletbc(u0x, left_ux_dofs, V.sub(0).sub(0)),
 ]
-# -
 
+# %% [markdown]
 # ## Variational formulation and time discretization
 #
 # The linearized thermoelastic constitutive equations are given by:
@@ -194,12 +197,12 @@ bcs = [
 # where the heat flux is related to the temperature gradient through the isotropic Fourier law: $\boldsymbol{q} = - k\nabla T$ with $k$ being the thermal conductivity. Using the entropy constitutive relation, the weak form of the heat equation reads as:
 #
 # $$
-# \int_{\Omega}\rho T_0 \dot{s}\widehat{T}d\Omega - \int_{\Omega} \boldsymbol{q}\cdot\nabla \widehat{T}d\Omega= -\int_{\partial \Omega} \boldsymbol{q}\cdot\boldsymbol{n} \widehat{T} dS \quad \forall \widehat{T} \in V_T
+# \int_{\Omega}\rho T_0 \dot{s}\widehat{T}d\Omega - \int_{\Omega} \boldsymbol{q}\cdot\nabla \widehat{T}d\Omega= -\int_{\partial \Omega} \boldsymbol{q}\cdot\boldsymbol{n} \widehat{T} \dS \quad \forall \widehat{T} \in V_T
 # $$
 #
 #
 # $$
-# \int_{\Omega}\left(\rho C_{\varepsilon}\dot{T} + \kappa T_0\text{tr}(\dot{\boldsymbol{\varepsilon}})\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T
+# \int_{\Omega}\left(\rho C_{\varepsilon}\dot{T} + \kappa T_0\text{tr}(\dot{\boldsymbol{\varepsilon}})\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} \dS \quad \forall \widehat{T} \in V_T
 # $$
 #
 # with $V_T$ being the FunctionSpace for the temperature field.
@@ -209,7 +212,7 @@ bcs = [
 # ```{math}
 # :label: thermoelastic-thermal
 #
-# \int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} dS \quad \forall \widehat{T} \in V_T
+# \int_{\Omega}\left(\rho C_{\varepsilon}\dfrac{T-T_n}{\Delta t} + \kappa T_0\text{tr}\left(\dfrac{\boldsymbol{\varepsilon}-\boldsymbol{\varepsilon}_n}{\Delta t}\right)\right) \widehat{T}d\Omega + \int_{\Omega} k \nabla T\cdot\nabla \widehat{T}d\Omega= \int_{\partial \Omega} k\partial_n T \widehat{T} \dS \quad \forall \widehat{T} \in V_T
 # ```
 #
 # where $T$ and $\boldsymbol{\varepsilon}$ correspond to the *unknown* fields at the time increment $n+1$. For more details on the time discretization of the heat equation, see also the [Heat equation FEniCS tutorial](https://jsdokken.com/dolfinx-tutorial/chapter2/heat_equation.html).
@@ -226,7 +229,7 @@ bcs = [
 #
 # The solution of the coupled problem at $t=t_{n+1}$ is now $(\boldsymbol{u}_{n+1},T_{n+1})=(\boldsymbol{u},T)\in V_U\times V_T$ verifying {eq}`thermoelastic-thermal` and {eq}`thermoelastic-mechanical`. These two forms are implemented below with zero right-hand sides (zero Neumann BCs for both problems here). One slight modification is that the temperature unknown $T$ is replaced by the temperature variation $\Theta=T-T_0$ which appears naturally in the stress constitutive relation. Note that we use here a `NonlinearProblem` to be more general.
 
-# +
+# %%
 v = fem.Function(V)
 (u, Theta) = ufl.split(v)
 v_ = ufl.TestFunction(V)
@@ -254,13 +257,13 @@ kappa = alpha * (3 * lmbda + 2 * mu)
 
 sig = (
     lmbda * ufl.tr(eps(u)) * ufl.Identity(gdim)
-    + mu * eps(u)
+    + 2 * mu * eps(u)
     - kappa * Theta * ufl.Identity(gdim)
 )
 j = -k * ufl.grad(Theta)
 
 s = cV / Tref * Theta + kappa / rho * ufl.tr(eps(u))
-s_expr = fem.Expression(s, V_aux.element.interpolation_points())
+s_expr = fem.Expression(s, V_aux.element.interpolation_points)
 
 mech_res = ufl.inner(sig, eps(u_)) * ufl.dx
 therm_res = (
@@ -270,22 +273,31 @@ Res = mech_res + therm_res
 Jac = ufl.derivative(Res, v, dv)
 
 
-problem = fem.petsc.NonlinearProblem(Res, v, bcs=bcs, J=Jac)
+petsc_options = {
+    "snes_type": "newtonls",
+    "snes_linesearch_type": "none",
+    "snes_atol": 1e-8,
+    "snes_rtol": 1e-8,
+    "snes_stol": 1e-8,
+    "ksp_type": "preonly",
+    "pc_type": "lu",
+    "pc_factor_mat_solver_type": "mumps",
+}
+problem = fem.petsc.NonlinearProblem(
+    Res,
+    v,
+    bcs=bcs,
+    J=Jac,
+    petsc_options=petsc_options,
+    petsc_options_prefix="thermomechanics_",
+)
 
-newton = nls.petsc.NewtonSolver(domain.comm, problem)
-newton.rtol = 1e-8
-newton.atol = 1e-8
-newton.convergence_criterion = "incremental"
-newton.report = True
-newton.max_it = 10
-ksp = newton.krylov_solver
-# -
-
+# %% [markdown]
 # ## Resolution
 #
 # The problem is now solved by looping over time increments. Because of the typical exponential time variation of temperature evolution of the heat equation, time steps are discretized on a non-uniform (logarithmic) scale. $\Delta t$ is therefore updated at each time step. Note that since we work in terms of temperature variation and not absolute temperature all fields can be initialized to zero, otherwise $T$ would have needed to be initialized to the reference temperature $T_0$.
 
-# +
+# %%
 Nincr = 50
 t = np.logspace(1, 4, Nincr + 1)
 x = V_t.tabulate_dof_coordinates()[bottom_T_dofs, 0]  # x position of dofs
@@ -297,8 +309,10 @@ vtk_T = io.VTKFile(domain.comm, "temperature.pvd", "w")
 for i, dti in enumerate(np.diff(t)):
     dt.value = dti
 
-    num_its, converged = newton.solve(v)
-    assert converged
+    problem.solve()
+    converged = problem.solver.getConvergedReason()
+    num_its = problem.solver.getIterationNumber()
+    assert converged > 0, f"Solver did not converge with reason {converged}."
 
     s_old.interpolate(s_expr)
 
@@ -307,17 +321,18 @@ for i, dti in enumerate(np.diff(t)):
     T_out = v.sub(1).collapse()
     T_out.name = "Temperature variation"
 
-    # vtk_d.write_function(u_out, i)
-    # vtk_T.write_function(T_out, i)
+    vtk_d.write_function(u_out, i)
+    vtk_T.write_function(T_out, i)
 
-    T_res[:, i + 1] = T_out.vector.array[bottom_T_dofs]
+    T_res[:, i + 1] = T_out.x.petsc_vec.array[bottom_T_dofs]
 
 vtk_d.close()
 vtk_T.close()
-# -
 
-# At each time increment, the variation of the temperature increase $\Theta$ along a line $(x, y=0)$ is saved in the `T_res` array. This evolution is plotted below. As expected, the temperature gradually increases over time, reaching eventually a uniform value of $+10^{\circ}\text{C}$ over infinitely long waiting time.
+# %% [markdown]
+# At each time increment, the temperature variation $\Theta$ along a line $(x, y=0)$ is saved in the `T_res` array. This evolution is plotted below. As expected, the temperature gradually increases over time, reaching eventually a uniform value of $+10^{\circ}\text{C}$ over infinitely long waiting time.
 
+# %%
 t_plot = t[:: Nincr // 10]
 plt.gca().set_prop_cycle(color=plt.cm.bwr(np.linspace(0, 1, len(t_plot))))
 plt.plot(x, T_res[:, :: Nincr // 10], label=[rf"$t={ti:.1f}$" for ti in t_plot])
@@ -327,6 +342,7 @@ plt.xlabel(r"$x$-coordinate along $y=0$")
 plt.ylabel(r"Temperature variation $\Theta$ [°C]")
 plt.show()
 
+# %% [markdown]
 # ## References
 #
 # ```{bibliography}

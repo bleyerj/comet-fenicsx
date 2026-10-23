@@ -1,25 +1,24 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: md:myst,ipynb,py
   text_representation:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.19.3
 kernelspec:
-  display_name: Python 3
+  display_name: fenicsx-v0.11
   language: python
   name: python3
 ---
 
 # Linear thermoelasticity (weak coupling) {far}`star`
 
-## Introduction
 
 ```{admonition} Objectives
 :class: objectives
 
-In this tour, we will solve a linear thermoelastic problem. In permanent regime, the temperature field is uncoupled from the mechanical fields whereas the latter depend on the temperature due to presence of thermal strains in the thermoelastic constitutive relation. This situation can be described as *weak* thermomechanical coupling.
+In this tour, we will solve a linear thermoelastic problem. In steady-state regime, the temperature field is uncoupled from the mechanical fields whereas the latter depend on the temperature due to the presence of thermal strains in the thermoelastic constitutive relation. This situation can be described as *weak* thermomechanical coupling.
 ```
 
 ```{admonition} Download sources
@@ -30,10 +29,10 @@ In this tour, we will solve a linear thermoelastic problem. In permanent regime,
 ```
 
 ```{seealso}
-*Full* thermomechanical coupling for a transient evolution problem is treated [in this tour](/tours/linear_problems/thermoelasticity_full/thermoelasticity_full.md).
+*Full* thermomechanical coupling for a transient evolution problem is treated [in this tour](/tours/multiphysics/thermoelasticity_full/thermoelasticity_full.md).
 ```
 
-In the present setting, the temperature field can be either given as a `Constant` or an `Expression` throughout the domain or obtained as the solution of a steady-state heat (Poisson) equation. This last case will be implemented in this tour.
+In the present setting, the temperature field can be either given as a `Constant` or an `Function` interpolated from a Python callable throughout the domain or obtained as the solution of a steady-state heat (Poisson) equation. This last case will be implemented in this tour.
 
 ## Problem position
 
@@ -76,7 +75,7 @@ Because of the weak coupling discussed before, the thermal and mechanical proble
 
 ## Resolution of the thermal problem
 
-The temperature is solution to the following equation $\text{div}(k\nabla T) = 0$ where $k$ is the thermal conductivity (here we have no heat source). Since $k$ is assumed to be homogeneous, it will not influence the solution. We therefore obtain a standard Poisson equation without forcing terms. Its formulation and resolution in FEniCS is quite standard with the temperature variation $\Delta T$ as the main unknown.
+The temperature is the solution to the following equation $\text{div}(k\nabla T) = 0$ where $k$ is the thermal conductivity (here we have no heat source). Since $k$ is assumed to be homogeneous, it will not influence the solution. We therefore obtain a standard Poisson equation without forcing terms. Its formulation and resolution in FEniCS is quite standard with the temperature variation $\Delta T$ as the main unknown.
 
 ```{note}
 We needed to define the linear form `LT` in order to use the `LinearProblem` utility class. We could also have equivalently defined the residual `res = dot(grad(T), grad(T_))*dx` and used the nonlinear utility class `NonlinearProblem`.
@@ -100,7 +99,9 @@ bcT = [
 
 
 # solve problem
-problem = fem.petsc.LinearProblem(aT, LT, u=Delta_T, bcs=bcT)
+problem = fem.petsc.LinearProblem(
+    aT, LT, u=Delta_T, bcs=bcT, petsc_options_prefix="thermal_"
+)
 problem.solve()
 ```
 
@@ -177,7 +178,9 @@ First, the self-weight loading is deactivated, only thermal stresses are compute
 
 ```{code-cell} ipython3
 u = fem.Function(Vu, name="Displacement")
-problem = fem.petsc.LinearProblem(aM, LM, u=u, bcs=bcu)
+problem = fem.petsc.LinearProblem(
+    aM, LM, u=u, bcs=bcu, petsc_options_prefix="mechanical_"
+)
 problem.solve()
 ```
 

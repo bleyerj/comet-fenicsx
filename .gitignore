@@ -58,6 +58,8 @@ _minted*
 *.xdmf
 *.h5
 *.msh
+!tips/import_msh/plate_hole.msh
+!tours/shells/linear_shell/I_beam.msh
 *.json
 *.vtu
 *.pvtu
